@@ -128,7 +128,7 @@ function GroupIDPage() {
                   username={mentor.username}
                   description={mentor.shortDescription}
                   country={mentor.country}
-                  skills={mentor.skills}
+                  teaching={mentor.teaching}
                 />
               ))}
             </div>
