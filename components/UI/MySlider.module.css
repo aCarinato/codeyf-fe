@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  gap: 3.2rem;
+  /* width = 7 * 24.8 + 6 * 1.6 =  */
+  width: 210.8rem;
+  padding: 3.2rem 1.2rem;
+}
