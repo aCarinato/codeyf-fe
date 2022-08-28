@@ -17,7 +17,7 @@ function CodingMentorsScreen() {
   return (
     // <div className="grid grid---4cols">
     <Fragment>
-      <div className="grid grid---2cols-30-70">
+      <div className="grid grid---2cols-15-85">
         <div>
           <MentorFilter
             buddies={mentors}

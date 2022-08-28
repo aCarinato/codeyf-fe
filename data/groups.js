@@ -2,7 +2,8 @@ export const groups = [
   {
     id: '1',
     name: 'python study',
-    description: 'Finding buddies to learn python',
+    description:
+      'Finding buddies to learn python. The group is open to beginners from Amsterdam time zone',
     organiser: '2',
     nBuddies: 6,
     buddies: ['1', '3'],

@@ -22,7 +22,7 @@ function MentorCard(props) {
 
       <p className="card-learning">Teaching:</p>
       <div className="tech-span-box">
-        {teaching.slice(0, 7).map((item, index) => (
+        {teaching.slice(0, 6).map((item, index) => (
           <span className={`tech-span tech-span---${item}`} key={index}>
             {item}
           </span>

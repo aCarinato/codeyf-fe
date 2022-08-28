@@ -21,18 +21,20 @@ function GroupsPage() {
 
   return (
     <Fragment>
-      <div className="grid grid---2cols-30-70">
+      <div className="grid grid---2cols-15-85">
         <div>
           <GroupFilter groups={groups} setFilteredGroups={setFilteredGroups} />
         </div>
         <div>
-          <div className="btn-container-10">
+          <div className="flex flex-justify-space-between">
+            <div></div>
             <BtnCTA
-              label="Create Group"
+              label="Create New Group"
               classname="btn-dark"
               onCLickAction={() => router.push('/coding-groups/create-group')}
             />
           </div>
+          <br></br>
           <div className="flex">
             {filteredGroups.map((group) => (
               <GroupCard

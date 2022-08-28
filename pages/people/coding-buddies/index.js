@@ -18,7 +18,7 @@ function CodingBuddiesScreen() {
   return (
     <Fragment>
       {/* <div>{JSON.stringify(filteredBuddies)}</div> */}
-      <div className="grid grid---2cols-30-70">
+      <div className="grid grid---2cols-15-85">
         <div>
           <BuddyFilter
             buddies={buddies}

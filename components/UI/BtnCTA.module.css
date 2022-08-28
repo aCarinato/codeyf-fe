@@ -17,15 +17,32 @@
 
 .btn-dark {
   background-color: var(--main-primary-color);
-  padding: 0.8rem 1.8rem;
+  padding: 1.2rem 2.4rem;
   cursor: pointer;
   color: white;
   font-weight: bold;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   border-radius: 2.2rem;
 }
 
 .btn-dark:hover {
   background-color: var(--main-tints-color);
+}
+
+.btn-light-big {
+  background-color: white;
+  padding: 1.2rem 2.4rem;
+  cursor: pointer;
+  color: var(--main-primary-color);
+  font-weight: bold;
+  border: none;
+  font-size: 1.4rem;
+  border: 1px solid var(--main-primary-color);
+  border-radius: 2.2rem;
+}
+
+.btn-light-big:hover {
+  background-color: var(--main-primary-color);
+  color: white;
 }

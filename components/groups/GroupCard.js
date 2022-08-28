@@ -21,7 +21,7 @@ function GroupCard(props) {
   if (availableSpots > 0) {
     availabilityStatus = (
       <p className="card-group-available">
-        Still {availableSpots} spots available!
+        {availableSpots} more spots available!
       </p>
     );
   } else {

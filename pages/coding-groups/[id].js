@@ -54,22 +54,31 @@ function GroupIDPage() {
   };
 
   let availabilityStatus;
+  let availableSpots;
   if (group && group !== [] && participants) {
-    const availableSpots = group.nBuddies - participants.length - 1;
+    availableSpots = group.nBuddies - participants.length - 1;
 
     if (availableSpots > 0) {
       availabilityStatus = (
         <div>
-          <p>Still {availableSpots} spots available!</p>
-          <br></br>
-          <BtnCTA label="Join the group" />
+          <p className="card-group-available">
+            {availableSpots} more spots available!
+          </p>
+          <BtnCTA classname="btn-dark" label="Join Group" />
         </div>
       );
       //   console.log(availabilityStatus);
     } else {
-      availabilityStatus = <p>Group filled</p>;
+      availabilityStatus = (
+        <p className="card-group-unavailable">Group filled</p>
+      );
     }
   }
+
+  // let mentorAvailabilityStatus
+  // if (group && group.mentorRequired === 'yes' ) {
+  //   if ()
+  // }
 
   useEffect(() => {
     fetchGroup();
@@ -78,69 +87,101 @@ function GroupIDPage() {
 
   return group && group.name ? (
     <Fragment>
-      <div>Group {group.name}</div>
-      <br></br>
-      <div>Description: {group.description}</div>
-      <br></br>
-      <p>Number of spots: {group.nBuddies}</p>
-      <br></br>
-      <div>Organiser:</div>
-      {organiser && organiser.username && (
-        <div className="grid grid---4cols">
-          <BuddyCard
-            username={organiser.username}
-            description={organiser.shortDescription}
-            country={organiser.country}
-            learning={organiser.learning}
-          />
-        </div>
-      )}
-      <br></br>
-      {participants && participants.length > 0 && (
-        <div>
-          <p>Participants</p>
-          <br></br>
-          <div className="grid grid---4cols">
-            {' '}
-            {participants.map((participant, index) => (
-              <BuddyCard
-                key={index}
-                username={participant.username}
-                description={participant.shortDescription}
-                country={participant.country}
-                learning={participant.learning}
-              />
-            ))}
-          </div>
-          <br></br>
-          {availabilityStatus}
-        </div>
-      )}
-      <br></br>
-      {group.mentorRequired && (
-        <div>
-          <p>Mentors</p>
-          {mentors && mentors.length > 0 ? (
-            <div className="grid grid---4cols">
-              {mentors.map((mentor, index) => (
-                <MentorCard
-                  key={index}
-                  username={mentor.username}
-                  description={mentor.shortDescription}
-                  country={mentor.country}
-                  teaching={mentor.teaching}
-                />
-              ))}
-            </div>
+      <div className="flex flex-justify-space-between">
+        <h2>{group.name}</h2>
+        <div className="flex">
+          {availableSpots > 0 ? (
+            <BtnCTA classname="btn-dark" label="Join Group" />
           ) : (
+            availabilityStatus
+          )}
+          {group.mentorRequired === 'yes' && mentors.length === 0 && (
+            <BtnCTA classname="btn-light-big" label="Mentor Group" />
+          )}
+        </div>
+      </div>
+      <br></br>
+      <div>
+        <h4>Description:</h4>
+        <p>{group.description}</p>
+      </div>
+      <br></br>
+      <div>
+        <h4>Number of spots:</h4>
+        <p>{group.nBuddies}</p>
+      </div>
+
+      <br></br>
+
+      <div className="grid grid---2cols-20-80">
+        <div>
+          <h4>Organiser:</h4>
+          <br></br>
+          {organiser && organiser.username && (
+            <div className="grid grid---4cols">
+              <BuddyCard
+                username={organiser.username}
+                description={organiser.shortDescription}
+                country={organiser.country}
+                learning={organiser.learning}
+              />
+            </div>
+          )}
+          <br></br>
+          {group.mentorRequired === 'yes' && (
             <div>
-              <p>1 spot available as a mentor!</p>
+              <h4>Mentor</h4>
               <br></br>
-              <BtnCTA label="Mentor the group" />
+              {mentors && mentors.length > 0 ? (
+                <div>
+                  {mentors.map((mentor, index) => (
+                    <MentorCard
+                      key={index}
+                      username={mentor.username}
+                      description={mentor.shortDescription}
+                      country={mentor.country}
+                      teaching={mentor.teaching}
+                    />
+                  ))}
+                  <br></br>
+                  <p className="card-group-unavailable">
+                    Mentor position filled
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <p className="card-group-available">
+                    Mentor position available!
+                  </p>
+                  <br></br>
+                  <BtnCTA classname="btn-light-big" label="Mentor Group" />
+                </div>
+              )}
             </div>
           )}
         </div>
-      )}
+        <div>
+          {participants && participants.length > 0 && (
+            <div>
+              <h4>Coding buddies</h4>
+              <br></br>
+              <div className="flex flex-justify-flex-start">
+                {' '}
+                {participants.map((participant, index) => (
+                  <BuddyCard
+                    key={index}
+                    username={participant.username}
+                    description={participant.shortDescription}
+                    country={participant.country}
+                    learning={participant.learning}
+                  />
+                ))}
+                <div>{availabilityStatus}</div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </Fragment>
   ) : (
     <div>Loading...</div>
