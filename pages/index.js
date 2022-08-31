@@ -8,12 +8,14 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../context/Context';
 
 function HomePage() {
-  const { peoples, setPeople } = useMainContext();
+  const { peoples, setPeople, mobileView } = useMainContext();
 
   useEffect(() => {
     setPeople(people);
     // console.log(peoples);
   }, []);
+
+  // console.log(mobileView);
 
   return (
     <Fragment>

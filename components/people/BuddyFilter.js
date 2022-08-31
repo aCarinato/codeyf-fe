@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { countries } from '../../data/countries';
 import { allSkills } from '../../data/allSkills';
 import { allLearning } from '../../data/allLearning';
@@ -6,13 +6,24 @@ import { allLearning } from '../../data/allLearning';
 import { checkboxSelection, arrayEquals } from '../../lib/helper/functions';
 
 function BuddyFilter(props) {
-  const { buddies, setFilteredBuddies } = props;
+  const {
+    country,
+    setCountry,
+    language,
+    setLanguage,
+    learning,
+    setLearning,
+    skills,
+    setSkills,
+    buddies,
+    setFilteredBuddies,
+  } = props;
 
-  const [country, setCountry] = useState('all');
-  const [language, setLanguage] = useState('all');
-  //   tech stack
-  const [learning, setLearning] = useState([]);
-  const [skills, setSkills] = useState([]);
+  // const [country, setCountry] = useState('all');
+  // const [language, setLanguage] = useState('all');
+  // //   tech stack
+  // const [learning, setLearning] = useState([]);
+  // const [skills, setSkills] = useState([]);
 
   const allLearningNames = allLearning.map((learning) => learning.name);
   const allSkillsNames = allSkills.map((skill) => skill.name);
@@ -34,7 +45,7 @@ function BuddyFilter(props) {
       // filter on language
       let languageCondition;
       if (language === 'all') {
-        languageCondition = buddy.language !== [];
+        languageCondition = buddy.languages !== [];
       } else {
         languageCondition = buddy.languages.includes(language);
       }
@@ -92,7 +103,7 @@ function BuddyFilter(props) {
   }, [country, language, learning, skills]);
 
   return (
-    <div>
+    <div className="filter-container">
       <h3>Filter</h3>
       <div className="filter-select-container">
         <div>
@@ -172,58 +183,3 @@ function BuddyFilter(props) {
 }
 
 export default BuddyFilter;
-
-//   const selectLearning = (e) => {
-//     let currentLearningSelection = [];
-
-//     currentLearningSelection = learning.slice();
-
-//     if (arrayEquals(currentLearningSelection, [])) {
-//       currentLearningSelection.push(e.target.value);
-//       setLearning(currentLearningSelection);
-//     } else if (arrayEquals(currentLearningSelection, allLearningNames)) {
-//       currentLearningSelection = [];
-//       currentLearningSelection.push(e.target.value);
-//       setLearning(currentLearningSelection);
-//     } else {
-//       if (currentLearningSelection.includes(e.target.value)) {
-//         const index = currentLearningSelection.indexOf(e.target.value);
-//         currentLearningSelection.splice(index, 1);
-//         if (arrayEquals(currentLearningSelection, [])) {
-//           setLearning(allLearningNames);
-//         } else {
-//           setLearning(currentLearningSelection);
-//         }
-//       } else {
-//         currentLearningSelection.push(e.target.value);
-//         setLearning(currentLearningSelection);
-//       }
-//     }
-//   };
-
-//   const selectSkills = (e) => {
-//     let currentSkillsSelection = [];
-//     currentSkillsSelection = skills.slice();
-
-//     if (arrayEquals(currentSkillsSelection, [])) {
-//       currentSkillsSelection.push(e.target.value);
-//       setSkills(currentSkillsSelection);
-//     } else if (arrayEquals(currentSkillsSelection, allSkillsNames)) {
-//       currentSkillsSelection = [];
-//       currentSkillsSelection.push(e.target.value);
-//       setSkills(currentSkillsSelection);
-//     } else {
-//       if (currentSkillsSelection.includes(e.target.value)) {
-//         const index = currentSkillsSelection.indexOf(e.target.value);
-//         currentSkillsSelection.splice(index, 1);
-//         if (arrayEquals(currentSkillsSelection, [])) {
-//           setSkills(allSkillsNames);
-//         } else {
-//           setSkills(currentSkillsSelection);
-//         }
-//       } else {
-//         currentSkillsSelection.push(e.target.value);
-//         setSkills(currentSkillsSelection);
-//       }
-//     }
-//   };

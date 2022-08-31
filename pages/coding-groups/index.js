@@ -7,10 +7,11 @@ import GroupCard from '../../components/groups/GroupCard';
 import BtnCTA from '../../components/UI/BtnCTA';
 import GroupFilter from '../../components/groups/GroupFilter';
 // context
-// import { useMainContext } from '../../context/Context';
+import { useMainContext } from '../../context/Context';
 
 function GroupsPage() {
-  // const { people } = useMainContext();
+  const { mobileView } = useMainContext();
+
   const router = useRouter();
 
   const [filteredGroups, setFilteredGroups] = useState([]);
@@ -21,10 +22,16 @@ function GroupsPage() {
 
   return (
     <Fragment>
-      <div className="grid grid---2cols-15-85">
-        <div>
-          <GroupFilter groups={groups} setFilteredGroups={setFilteredGroups} />
-        </div>
+      {/* <div className="grid grid---2cols-15-85"> */}
+      <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+        {!mobileView && (
+          <div>
+            <GroupFilter
+              groups={groups}
+              setFilteredGroups={setFilteredGroups}
+            />
+          </div>
+        )}
         <div>
           <div className="flex flex-justify-space-between">
             <div></div>
