@@ -1,43 +1,31 @@
 import { useEffect, useState } from 'react';
 // data
-import { allMentorWantedSelections } from '../../data/allMentorWanted';
-import { allMentorFoundSelections } from '../../data/allMentorFound';
-import { allLearning } from '../../data/allLearning';
+// import { allMentorWantedSelections } from '../../data/allMentorWanted';
+// import { allMentorFoundSelections } from '../../data/allMentorFound';
+// import { allLearning } from '../../data/allLearning';
 // helper functions
 import { checkboxSelection, arrayEquals } from '../../lib/helper/functions';
 
 function GroupFilter(props) {
-  const { groups, setFilteredGroups } = props;
-
-  //   number of participants
-  const allNumbersOfParticipants = [
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-  ];
-  const [nParticipants, setNParticipants] = useState([]);
-
-  //   mentor wanted
-  const [mentorWanted, setMentorWanted] = useState([]);
-  const allMentorWantedSelectionsValues = allMentorFoundSelections.map(
-    (item) => item.label
-  );
-
-  //   mentor found
-  const [mentorFound, setMentorFoundd] = useState([]);
-  const allMentorFoundSelectionsValues = allMentorFoundSelections.map(
-    (item) => item.label
-  );
-
-  //   learning
-  const [learning, setLearning] = useState([]);
-  const allLearningNames = allLearning.map((learning) => learning.name);
+  const {
+    groups,
+    nParticipants,
+    setNParticipants,
+    setFilteredGroups,
+    allNumbersOfParticipants,
+    mentorWanted,
+    setMentorWanted,
+    allMentorWantedSelections,
+    allMentorWantedSelectionsValues,
+    mentorFound,
+    setMentorFound,
+    allMentorFoundSelectionsValues,
+    learning,
+    setLearning,
+    allLearningNames,
+    allMentorFoundSelections,
+    allLearning,
+  } = props;
 
   useEffect(() => {
     let remainingGroups;
@@ -105,26 +93,14 @@ function GroupFilter(props) {
         groupHasAllMentors =
           group.mentors.length === group.nMentorsRequired ? 'yes' : 'no';
 
-        // console.log('mentor positions filled (or mentor not even required)');
-        // console.log('groupHasAllMentors: ' + groupHasAllMentors);
-
         let mentorFoundCondition;
         mentorFoundCondition = mentorFound.includes(groupHasAllMentors);
-        //   console.log('mentorFound (state):');
-        //   console.log(mentorFound);
-        //   console.log(mentorFoundCondition);
-        // selected (in the checkbox) 'mentor is required and found already'
         if (arrayEquals(mentorFound, []) || groupHasAllMentors === 'yes')
           mentorFoundCondition = true;
 
         // selected (in the checkbox) 'mentor is required but not found already'
         if (arrayEquals(mentorFound, ['no']) && groupHasAllMentors === 'yes')
           mentorFoundCondition = false;
-        //   console.log('mentor found? (or mentor not even required)');
-        //   console.log(mentorFoundCondition);
-        //   console.log('Group To be included?');
-
-        //   console.log(mentorWantedCondition && mentorFoundCondition);
 
         //   filter learning
         let learningCondition;
@@ -160,11 +136,11 @@ function GroupFilter(props) {
       <fieldset>
         <legend>Number of participants (buddies and mentors)</legend>
         {allNumbersOfParticipants.map((option) => (
-          <div key={option}>
+          <div key={option.id}>
             <input
               type="checkbox"
-              name={option}
-              value={option}
+              name={option.value}
+              value={option.value}
               onChange={(e) =>
                 checkboxSelection(
                   e,
@@ -174,7 +150,7 @@ function GroupFilter(props) {
                 )
               }
             />
-            <label htmlFor={option}> {option}</label>
+            <label htmlFor={option.value}> {option.value}</label>
           </div>
         ))}
       </fieldset>
@@ -213,7 +189,7 @@ function GroupFilter(props) {
                 checkboxSelection(
                   e,
                   mentorFound,
-                  setMentorFoundd,
+                  setMentorFound,
                   allMentorFoundSelectionsValues
                 )
               }

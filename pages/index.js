@@ -8,12 +8,14 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../context/Context';
 
 function HomePage() {
-  const { peoples, setPeople } = useMainContext();
+  const { peoples, setPeople, mobileView } = useMainContext();
 
   useEffect(() => {
     setPeople(people);
     // console.log(peoples);
   }, []);
+
+  // console.log(mobileView);
 
   return (
     <Fragment>
@@ -48,7 +50,7 @@ function HomePage() {
       <br></br>
       <h3>
         Groups{' '}
-        <Link href={'/coding-groups'}>
+        <Link href={'/projects/coding-groups'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
           </a>

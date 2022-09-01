@@ -1,20 +1,31 @@
 import { useEffect, useState } from 'react';
 import { countries } from '../../data/countries';
 import { allSkills } from '../../data/allSkills';
-import { allLearning } from '../../data/allLearning';
+import { allTeaching } from '../../data/allTeaching';
 // functions
 import { checkboxSelection, arrayEquals } from '../../lib/helper/functions';
 
 function MentorFilter(props) {
-  const { buddies, setFilteredBuddies } = props;
+  const {
+    country,
+    setCountry,
+    language,
+    setLanguage,
+    learning,
+    setLearning,
+    skills,
+    setSkills,
+    buddies,
+    setFilteredBuddies,
+  } = props;
 
-  const [country, setCountry] = useState('all');
-  const [language, setLanguage] = useState('all');
+  // const [country, setCountry] = useState('all');
+  // const [language, setLanguage] = useState('all');
   //   tech stack
-  const [learning, setLearning] = useState([]);
-  const [skills, setSkills] = useState([]);
+  // const [learning, setLearning] = useState([]);
+  // const [skills, setSkills] = useState([]);
 
-  const allLearningNames = allLearning.map((learning) => learning.name);
+  const allTeachingNames = allTeaching.map((learning) => learning.name);
   const allSkillsNames = allSkills.map((skill) => skill.name);
 
   useEffect(() => {
@@ -133,12 +144,12 @@ function MentorFilter(props) {
       <br></br>
       <fieldset>
         <legend>Available to teach</legend>
-        {allLearning.map((learn) => (
+        {allTeaching.map((learn) => (
           <div key={learn.id}>
             <input
               //   onChange={selectLearning}
               onChange={(e) =>
-                checkboxSelection(e, learning, setLearning, allLearningNames)
+                checkboxSelection(e, learning, setLearning, allTeachingNames)
               }
               type="checkbox"
               id={learn.name}
