@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 // data
-import { groups } from '../../data/groups';
-import { people } from '../../data/people';
+import { groups } from '../../../data/groups';
+import { people } from '../../../data/people';
 
-import MentorCard from '../../components/people/MentorCard';
-import BuddyCard from '../../components/people/BuddyCard';
-import BtnCTA from '../../components/UI/BtnCTA';
+import MentorCard from '../../../components/people/MentorCard';
+import BuddyCard from '../../../components/people/BuddyCard';
+import BtnCTA from '../../../components/UI/BtnCTA';
 
 function GroupIDPage() {
   const router = useRouter();
