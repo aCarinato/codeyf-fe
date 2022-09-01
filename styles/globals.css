@@ -166,6 +166,10 @@ fieldset {
   gap: 2.3rem;
 }
 
+.flex-justify-center {
+  justify-content: center;
+}
+
 .flex-justify-flex-start {
   justify-content: flex-start;
 }

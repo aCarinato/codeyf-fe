@@ -39,6 +39,7 @@ function CodingMentorsScreen() {
 
   useEffect(() => {
     // THESE FUNCTIONS ARE USED TO MAP THE INDEXES TO THE NAMES
+    // teaching
     let currentTeaching;
     currentTeaching = allTeaching.filter((learn) =>
       teachingCheckedIndex.includes(learn.id)
@@ -48,6 +49,7 @@ function CodingMentorsScreen() {
     // console.log(currentLearningNames);
     setTeachingCheckedNames(currentTeachingNames);
 
+    // skills
     let currentSkills;
     currentSkills = allSkills.filter((skill) =>
       skillsCheckedIndex.includes(skill.id)
