@@ -186,7 +186,9 @@ function GroupsPage() {
             <BtnCTA
               label="Create New Group"
               classname="btn-dark"
-              onCLickAction={() => router.push('/coding-groups/create-group')}
+              onCLickAction={() =>
+                router.push('/projects/coding-groups/create-group')
+              }
             />
           </div>
           <br></br>

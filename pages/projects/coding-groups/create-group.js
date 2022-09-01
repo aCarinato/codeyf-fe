@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import MyForm from '../../components/UI/MyForm';
+import MyForm from '../../../components/UI/MyForm';
 
 function CreateGroupPage() {
   const formFields = [
