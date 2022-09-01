@@ -50,7 +50,7 @@ function HomePage() {
       <br></br>
       <h3>
         Groups{' '}
-        <Link href={'/coding-groups'}>
+        <Link href={'/projects/coding-groups'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
           </a>

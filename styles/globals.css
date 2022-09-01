@@ -100,15 +100,15 @@ fieldset {
   padding: 1.2rem;
 }
 
-.main-link:link,
-.main-link:visited {
+/* .main-link:visited */
+.main-link:link {
   text-decoration: none;
   color: var(--main-primary-color);
   transition: all 0.3s;
 }
 
-.main-link:hover,
-.main-link:active {
+/* .main-link:active */
+.main-link:hover {
   color: blueviolet;
 }
 

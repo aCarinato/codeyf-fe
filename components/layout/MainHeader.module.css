@@ -18,14 +18,17 @@
   gap: 3.2rem;
 }
 
-.main-nav-link:link,
-.main-nav-link:visited {
+.main-nav-link {
+  color: var(--main-primary-color);
+}
+
+/* .main-nav-link:visited */
+.main-nav-link:link {
   text-decoration: none;
-  color: navy;
   transition: all 0.3s;
 }
 
-.main-nav-link:hover,
-.main-nav-link:active {
+/* .main-nav-link:active */
+.main-nav-link:hover {
   color: blueviolet;
 }

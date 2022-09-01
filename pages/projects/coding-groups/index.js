@@ -1,20 +1,20 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // data
-import { groups } from '../../data/groups';
-import { allNumbersOfParticipants } from '../../data/allNumbersOfParticipants';
-import { allMentorFoundSelections } from '../../data/allMentorFound';
-import { allMentorWantedSelections } from '../../data/allMentorWanted';
-import { allLearning } from '../../data/allLearning';
+import { groups } from '../../../data/groups';
+import { allNumbersOfParticipants } from '../../../data/allNumbersOfParticipants';
+import { allMentorFoundSelections } from '../../../data/allMentorFound';
+import { allMentorWantedSelections } from '../../../data/allMentorWanted';
+import { allLearning } from '../../../data/allLearning';
 // functions
-import { funcFilterGroups } from '../../lib/helper/functions';
+import { funcFilterGroups } from '../../../lib/helper/functions';
 // own components
-import GroupCard from '../../components/groups/GroupCard';
-import BtnCTA from '../../components/UI/BtnCTA';
-import GroupFilter from '../../components/groups/GroupFilter';
-import GroupFilterMobile from '../../components/groups/mobile-filters/GroupFilterMobile';
+import GroupCard from '../../../components/groups/GroupCard';
+import BtnCTA from '../../../components/UI/BtnCTA';
+import GroupFilter from '../../../components/groups/GroupFilter';
+import GroupFilterMobile from '../../../components/groups/mobile-filters/GroupFilterMobile';
 // context
-import { useMainContext } from '../../context/Context';
+import { useMainContext } from '../../../context/Context';
 
 function GroupsPage() {
   const { mobileView } = useMainContext();

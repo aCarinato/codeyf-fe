@@ -1,11 +1,19 @@
 import classes from './MainHeader.module.css';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 // context
 import { useMainContext } from '../../context/Context';
+import { useState } from 'react';
+// external
+// import { Icon } from '@iconify/react';
+import MobileMenu from './MobileMenu';
 
 function MainHeader() {
   const { mobileView } = useMainContext();
 
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  // console.log(showMobileMenu);
   return (
     <header className={classes.header}>
       <nav className={classes.logo}>
@@ -15,8 +23,11 @@ function MainHeader() {
         </Link>
       </nav>
       <nav className={classes.nav}>
+        {showMobileMenu && <MobileMenu setShowMobileMenu={setShowMobileMenu} />}
         {mobileView ? (
-          <div>----</div>
+          <div onClick={() => setShowMobileMenu(!showMobileMenu)}>
+            <Icon icon="charm:menu-hamburger" />
+          </div>
         ) : (
           <ul className={classes['main-nav-list']}>
             <li>
@@ -30,7 +41,7 @@ function MainHeader() {
               </Link>
             </li>
             <li>
-              <Link href="/coding-groups">
+              <Link href="/projects/coding-groups">
                 <a className={classes['main-nav-link']}>groups</a>
               </Link>
             </li>
