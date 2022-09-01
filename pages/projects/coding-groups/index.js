@@ -128,6 +128,11 @@ function GroupsPage() {
 
   return (
     <Fragment>
+      <div>
+        <h1>Coding Groups</h1>
+        <h4 className="h4-header">To learn with and from the others</h4>
+        <br></br>
+      </div>
       {showFilter && (
         <GroupFilterMobile
           // setFilteredGroups={setFilteredGroups}
@@ -183,6 +188,7 @@ function GroupsPage() {
                 : 'flex flex-justify-space-between'
             }
           >
+            {!mobileView && <div></div>}
             <BtnCTA
               label="Create New Group"
               classname="btn-dark"

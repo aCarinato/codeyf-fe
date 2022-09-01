@@ -117,6 +117,13 @@ function CodingBuddiesScreen() {
 
   return (
     <Fragment>
+      <div>
+        <h1>Coding Buddies</h1>
+        <h4 className="h4-header">
+          Friendly learners on their way to coding mastery
+        </h4>
+        <br></br>
+      </div>
       {showFilter && (
         <BuddyFilterMobile
           country={country}

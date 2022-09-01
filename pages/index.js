@@ -20,7 +20,9 @@ function HomePage() {
   return (
     <Fragment>
       <h1>The Coding Community</h1>
-      <h4>Find projects and people to code with, mentor and learn from</h4>
+      <h4 className="h4-header">
+        Find projects and people to code with, mentor and learn from
+      </h4>
       {/* <div>{JSON.stringify(peoples)}</div> */}
       <br></br>
       <br></br>

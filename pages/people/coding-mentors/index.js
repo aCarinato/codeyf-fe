@@ -73,6 +73,11 @@ function CodingMentorsScreen() {
 
   return (
     <Fragment>
+      <div>
+        <h1>Coding Mentors</h1>
+        <h4 className="h4-header">Experienced developers willing to help</h4>
+        <br></br>
+      </div>
       {showFilter && (
         <MentorFilterMobile
           country={country}
