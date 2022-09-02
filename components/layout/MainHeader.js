@@ -1,58 +1,89 @@
 import classes from './MainHeader.module.css';
 import Link from 'next/link';
-import { Icon } from '@iconify/react';
-// context
-import { useMainContext } from '../../context/Context';
 import { useState } from 'react';
-// external
-// import { Icon } from '@iconify/react';
-import MobileMenu from './MobileMenu';
+import DropdownMenu from './DropdownMenu';
 
 function MainHeader() {
-  const { mobileView } = useMainContext();
+  const [expandedPeople, setExpandedPeople] = useState(false);
+  const [expandedProjects, setExpandedProjects] = useState(false);
 
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const peopleMenuItems = [
+    {
+      id: '0',
+      name: 'buddies',
+      link: '/people/coding-buddies',
+    },
+    {
+      id: '1',
+      name: 'mentors',
+      link: '/people/coding-mentors',
+    },
+  ];
 
-  // console.log(showMobileMenu);
+  const projectsMenuItems = [
+    {
+      id: '0',
+      name: 'groups',
+      link: '/projects/coding-groups',
+    },
+    {
+      id: '1',
+      name: 'assignements',
+      link: '/projects/coding-assignements',
+    },
+  ];
+
   return (
-    <header className={classes.header}>
-      <nav className={classes.logo}>
-        {' '}
-        <Link href="/">
-          <a className={classes['main-nav-link']}>CODEYFUL</a>
-        </Link>
-      </nav>
-      <nav className={classes.nav}>
-        {showMobileMenu && <MobileMenu setShowMobileMenu={setShowMobileMenu} />}
-        {mobileView ? (
-          <div onClick={() => setShowMobileMenu(!showMobileMenu)}>
-            <Icon icon="charm:menu-hamburger" />
+    <header className={classes.container}>
+      <div className={classes['container-item']}>
+        <div
+          className={classes['container-item-label']}
+          //   onClick={() => router.push('/')}
+        >
+          <Link href="/">
+            <a className={classes['main-nav-link']}>CODEYFUL</a>
+          </Link>
+        </div>
+      </div>
+      <div className={classes['container-item']}>
+        <div
+          className={classes['container-item-dropdown']}
+          onMouseEnter={() => setExpandedPeople(true)}
+          onMouseLeave={() => setExpandedPeople(false)}
+        >
+          <div
+            className={
+              expandedPeople
+                ? classes['container-item-label-border']
+                : classes['container-item-label']
+            }
+          >
+            PEOPLE
           </div>
-        ) : (
-          <ul className={classes['main-nav-list']}>
-            <li>
-              <Link href="/people/coding-buddies">
-                <a className={classes['main-nav-link']}>buddies</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/people/coding-mentors">
-                <a className={classes['main-nav-link']}>mentors</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/projects/coding-groups">
-                <a className={classes['main-nav-link']}>groups</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/login">
-                <a className={classes['main-nav-link']}>login</a>
-              </Link>
-            </li>
-          </ul>
-        )}
-      </nav>
+          {expandedPeople && <DropdownMenu menuItems={peopleMenuItems} />}
+        </div>
+        <div
+          //   className={classes['container-item-dropdown']}
+          onMouseEnter={() => setExpandedProjects(true)}
+          onMouseLeave={() => setExpandedProjects(false)}
+        >
+          <div
+            className={
+              expandedProjects
+                ? classes['container-item-label-border']
+                : classes['container-item-label']
+            }
+          >
+            PROJECTS
+          </div>
+          {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
+        </div>
+        <div className={classes['container-item-label']}>
+          <Link href="/login">
+            <a className={classes['main-nav-link']}>LOGIN</a>
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }

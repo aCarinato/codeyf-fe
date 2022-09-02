@@ -1,0 +1,57 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.8rem;
+  height: 9.6rem;
+  padding: 0 4.8rem;
+}
+
+/* .logo {
+  height: 2.4rem;
+  line-height: 2.4rem;
+} */
+
+.main-nav-list {
+  list-style: none;
+  display: flex;
+  gap: 3.2rem;
+}
+
+.main-nav-link {
+  color: var(--main-primary-color);
+}
+
+/* .main-nav-link:visited */
+.main-nav-link:link {
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+/* .main-nav-link:active */
+.main-nav-link:hover {
+  color: blueviolet;
+}
+
+/* .sub-ul {
+  background-color: brown;
+  height: 20rem;
+
+  transform: translateY(47%);
+} */
+
+.li-item {
+  list-style: none;
+  cursor: pointer;
+}
+
+.li-people-expanded {
+  transform: translate(-141%, 0%);
+  /* position: absolute; */
+}
+
+.li-projects-expanded {
+  /* transform: translate(-100%, 0%); */
+  transform: translate(0%, 0%);
+  /* position: absolute; */
+}
