@@ -1,9 +1,16 @@
 import classes from './MainHeader.module.css';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import DropdownMenu from './DropdownMenu';
+import MobileMenu from './MobileMenu';
+// context
+import { useMainContext } from '../../context/Context';
 
 function MainHeader() {
+  const { mobileView } = useMainContext();
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
   const [expandedPeople, setExpandedPeople] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState(false);
 
@@ -45,45 +52,55 @@ function MainHeader() {
           </Link>
         </div>
       </div>
-      <div className={classes['container-item']}>
+      {showMobileMenu && <MobileMenu setShowMobileMenu={setShowMobileMenu} />}
+      {mobileView ? (
         <div
-          className={classes['container-item-dropdown']}
-          onMouseEnter={() => setExpandedPeople(true)}
-          onMouseLeave={() => setExpandedPeople(false)}
+          className={classes['mobile-icon']}
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
         >
+          <Icon icon="charm:menu-hamburger" />
+        </div>
+      ) : (
+        <div className={classes['container-item']}>
           <div
-            className={
-              expandedPeople
-                ? classes['container-item-label-border']
-                : classes['container-item-label']
-            }
+            className={classes['container-item-dropdown']}
+            onMouseEnter={() => setExpandedPeople(true)}
+            onMouseLeave={() => setExpandedPeople(false)}
           >
-            PEOPLE
+            <div
+              className={
+                expandedPeople
+                  ? classes['container-item-label-border']
+                  : classes['container-item-label']
+              }
+            >
+              PEOPLE
+            </div>
+            {expandedPeople && <DropdownMenu menuItems={peopleMenuItems} />}
           </div>
-          {expandedPeople && <DropdownMenu menuItems={peopleMenuItems} />}
-        </div>
-        <div
-          //   className={classes['container-item-dropdown']}
-          onMouseEnter={() => setExpandedProjects(true)}
-          onMouseLeave={() => setExpandedProjects(false)}
-        >
           <div
-            className={
-              expandedProjects
-                ? classes['container-item-label-border']
-                : classes['container-item-label']
-            }
+            //   className={classes['container-item-dropdown']}
+            onMouseEnter={() => setExpandedProjects(true)}
+            onMouseLeave={() => setExpandedProjects(false)}
           >
-            PROJECTS
+            <div
+              className={
+                expandedProjects
+                  ? classes['container-item-label-border']
+                  : classes['container-item-label']
+              }
+            >
+              PROJECTS
+            </div>
+            {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
           </div>
-          {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
+          <div className={classes['container-item-label']}>
+            <Link href="/login">
+              <a className={classes['main-nav-link']}>LOGIN</a>
+            </Link>
+          </div>
         </div>
-        <div className={classes['container-item-label']}>
-          <Link href="/login">
-            <a className={classes['main-nav-link']}>LOGIN</a>
-          </Link>
-        </div>
-      </div>
+      )}
     </header>
   );
 }

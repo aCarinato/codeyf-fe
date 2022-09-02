@@ -50,3 +50,7 @@
 .main-nav-link:hover {
   color: var(--main-tints-color);
 }
+
+.mobile-icon {
+  line-height: 5.2rem;
+}
