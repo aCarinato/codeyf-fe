@@ -23,12 +23,10 @@
 }
 
 .container-item-label-border {
-  /* padding: 1rem; */
   line-height: 5.2rem;
   text-align: center;
   padding: 0 1rem;
   cursor: pointer;
-  /* width: 100%; */
   width: 12.2rem;
   border-bottom: 1px solid var(--main-primary-color);
 }
