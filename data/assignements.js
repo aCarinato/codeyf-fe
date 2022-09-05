@@ -1,10 +1,13 @@
 export const assignements = [
   {
     _id: '0',
+    createdBy: '4',
     title: 'Form validator',
+    details:
+      'Creating an input form that can accept at least the following fields: username, email, password. When th submit button is pressed the form gives feedback on the validity of the iput. No backend required.',
     description: 'Client side form validation',
     goals: [
-      'Styled as per common industry standards',
+      'Styled as per common industry standards. Vanilla CSS or frameworks allowed (bootstrap, material UI, etc.)',
       'Conditional formatting of input field based on validity',
       'Throw an error on screen if an input does not match the input type',
       'Throw an error on screen if some input is missing when submit',
@@ -24,24 +27,27 @@ export const assignements = [
     ],
     resources: [
       {
+        _id: '0',
         name: 'form validation',
         link: 'www.redditAPIeeee.com',
         type: 'video',
       },
       {
+        _id: '1',
         name: 'how to make a form with html, css and vanilla javascript',
         link: 'www.tosorea.com',
         type: 'blog article',
       },
     ],
     reviews: [
-      { id: '0', comment: '', rate: '5' },
-      { id: '1', comment: '', rate: '5' },
-      { id: '2', comment: '', rate: '4' },
+      { _id: '0', comment: 'Very useful tutorial for ', rate: '5' },
+      { _id: '1', comment: '', rate: '5' },
+      { _id: '2', comment: '', rate: '4' },
     ],
     repo: 'https://github.com/aCarinato/giroq-frontend',
-    stages: [
+    steps: [
       {
+        _id: '0',
         n: '1',
         tasks: [
           {
@@ -59,6 +65,7 @@ export const assignements = [
         ],
       },
       {
+        _id: '1',
         n: '2',
         tasks: [
           {
@@ -74,11 +81,24 @@ export const assignements = [
         ],
       },
     ],
-    comments: [],
+    comments: [
+      {
+        _id: '0',
+        commentBy: '0',
+        text: 'Better to use useRef() or useState()?',
+      },
+      {
+        _id: '1',
+        commentBy: '3',
+        text: 'Bootstrap to style components',
+      },
+    ],
   },
   {
     _id: '1',
+    createdBy: '0',
     title: 'Reddit API with Python',
+    details: '',
     description: 'Automate retrieval of reddit posts',
     goals: [
       'Accept a subreddit name as an input',
@@ -95,24 +115,27 @@ export const assignements = [
     skills: ['third-party API', 'machine learning', 'NLP', 'topic clustering'],
     resources: [
       {
+        _id: '0',
         name: 'reddit API with python',
         link: 'www.redditAPIeeee.com',
         type: 'video',
       },
       {
+        _id: '1',
         name: 'topic clustering with python',
         link: 'www.tosorea.com',
         type: 'blog article',
       },
     ],
     reviews: [
-      { id: '0', comment: '', rate: '5' },
-      { id: '1', comment: '', rate: '4' },
-      { id: '2', comment: '', rate: '4' },
+      { _id: '0', comment: '', rate: '5' },
+      { _id: '1', comment: '', rate: '4' },
+      { _id: '2', comment: '', rate: '4' },
     ],
     repo: 'https://github.com/aCarinato/giroq-frontend',
-    stages: [
+    steps: [
       {
+        _id: '0',
         n: '1',
         tasks: [
           {
@@ -122,6 +145,7 @@ export const assignements = [
         ],
       },
       {
+        _id: '1',
         n: '2',
         tasks: [
           {
@@ -135,6 +159,7 @@ export const assignements = [
         ],
       },
       {
+        _id: '2',
         n: '3',
         tasks: [
           {

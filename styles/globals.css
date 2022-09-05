@@ -358,3 +358,22 @@ fieldset {
   font-weight: bold;
   padding: 0.6rem 1.2rem;
 }
+
+/* TABLES */
+/* table {
+  border: 1px solid black;
+} */
+
+tr {
+  border: 1px solid black;
+}
+
+tbody tr:nth-child(odd) {
+  border-bottom: 1px solid #4a34d8;
+}
+
+th,
+td {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--main-shades-color);
+}
