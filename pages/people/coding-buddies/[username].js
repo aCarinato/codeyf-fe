@@ -36,22 +36,22 @@ function BuddyPage() {
               <p>{buddy.country}</p>
               <p>Languages:</p>
               <ul>
-                {buddy.languages.map((language) => (
-                  <li>{language}</li>
+                {buddy.languages.map((language, index) => (
+                  <li key={index}>{language}</li>
                 ))}
               </ul>
               <br></br>
               <p>Is learning or wants to learn:</p>
               <ul>
-                {buddy.learning.map((learn) => (
-                  <li>{learn}</li>
+                {buddy.learning.map((learn, index) => (
+                  <li key={index}>{learn}</li>
                 ))}
               </ul>
               <br></br>
               <p>Skills:</p>
               <ul>
-                {buddy.skills.map((skill) => (
-                  <li>{skill}</li>
+                {buddy.skills.map((skill, index) => (
+                  <li key={index}>{skill}</li>
                 ))}
               </ul>
             </Fragment>
