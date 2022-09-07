@@ -2,6 +2,7 @@ import classes from './MySlider.module.css';
 import BuddyCard from '../people/BuddyCard';
 import GroupCard from '../groups/GroupCard';
 import MentorCard from '../people/MentorCard';
+import AssignementCard from '../assignements/AssignementCard';
 
 function MySlider(props) {
   const { array, type } = props;
@@ -15,6 +16,10 @@ function MySlider(props) {
   }
 
   if (type === 'group') {
+    items = array;
+  }
+
+  if (type === 'assignement') {
     items = array;
   }
 
@@ -50,16 +55,29 @@ function MySlider(props) {
           />
         ))}
       {type === 'group' &&
-        slicedItems.map((item) => (
+        slicedItems.map((group) => (
           <GroupCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            description={item.description}
-            techStack={item.learning}
-            nBuddies={item.nBuddies}
-            buddies={item.buddies}
-            proposedProject={item.proposedProject}
+            key={group.id}
+            id={group.id}
+            name={group.name}
+            description={group.description}
+            techStack={group.learning}
+            nBuddies={group.nBuddies}
+            buddies={group.buddies}
+            proposedProject={group.proposedProject}
+          />
+        ))}
+      {type === 'assignement' &&
+        slicedItems.map((assignement) => (
+          <AssignementCard
+            key={assignement._id}
+            id={assignement._id}
+            title={assignement.title}
+            description={assignement.description}
+            difficulty={assignement.difficulty.label}
+            maxParticipants={assignement.maxParticipants.label}
+            stack={assignement.stack}
+            reviews={assignement.reviews}
           />
         ))}
     </div>
