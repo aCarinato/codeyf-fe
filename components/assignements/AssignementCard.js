@@ -27,9 +27,12 @@ function AssignementCard(props) {
       <br></br>
       <p className="card-learning">Tech stack:</p>
       <div className="tech-span-box">
-        {stack.slice(0, 7).map((item, index) => (
-          <span key={index} className={`tech-span tech-span---${item}`}>
-            {item}
+        {stack.slice(0, 7).map((item) => (
+          <span
+            key={item._id}
+            className={`tech-span tech-span---${item.label}`}
+          >
+            {item.label}
           </span>
         ))}
       </div>

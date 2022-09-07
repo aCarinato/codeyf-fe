@@ -2,6 +2,7 @@ import { Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import { people } from '../data/people';
 import { groups } from '../data/groups';
+import { assignements } from '../data/assignements';
 import MySlider from '../components/UI/MySlider';
 import { Icon } from '@iconify/react';
 // context
@@ -21,7 +22,8 @@ function HomePage() {
     <Fragment>
       <h1>The Coding Community</h1>
       <h4 className="h4-header">
-        Find projects and people to code with, mentor and learn from
+        Build your skill set. Find projects and people to code with, mentor and
+        learn from
       </h4>
       {/* <div>{JSON.stringify(peoples)}</div> */}
       <br></br>
@@ -60,6 +62,18 @@ function HomePage() {
       </h3>
       <div className="overflower">
         <MySlider array={groups} type="group" />
+      </div>
+      <br></br>
+      <h3>
+        Assignements{' '}
+        <Link href={'/projects/coding-assignements'}>
+          <a className="light-link">
+            <Icon icon="akar-icons:arrow-right" /> View all
+          </a>
+        </Link>
+      </h3>
+      <div className="overflower">
+        <MySlider array={assignements} type="assignement" />
       </div>
     </Fragment>
   );

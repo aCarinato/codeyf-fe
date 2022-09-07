@@ -4,10 +4,16 @@ import { Fragment, useEffect, useState } from 'react';
 // own components
 import AssignementCard from '../../../components/assignements/AssignementCard';
 import BtnCTA from '../../../components/UI/BtnCTA';
+import AssignementFilter from '../../../components/assignements/AssignementFilter';
+import AssignementFilterMobile from '../../../components/assignements/AssignementFilterMobile';
 // own functions
+import { functFilterAssignements } from '../../../lib/helper/assignements/filterFunction';
 // import { averageRate } from '../../../lib/helper/reviewFunctions';
 // data
 import { assignements } from '../../../data/assignements';
+import { allDifficulty } from '../../../data/assignements/allDifficulty';
+import { allParticipants } from '../../../data/assignements/allParticipants';
+import { allStack } from '../../../data/assignements/allStack';
 // context
 import { useMainContext } from '../../../context/Context';
 
@@ -16,9 +22,38 @@ function AssignmentsScreen() {
   const router = useRouter();
   const [filteredAssignements, setFilteredAssignements] = useState([]);
 
+  // FILTER
+  const [difficultyCheckedIndex, setDifficultyCheckedIndex] = useState([]);
+  const [participantsCheckedIndex, setParticipantsCheckedIndex] = useState([]);
+  const [stackCheckedIndex, setStackCheckedIndex] = useState([]);
+  // mobile filter
+  const [showFilter, setShowFilter] = useState(false);
+
   useEffect(() => {
     setFilteredAssignements(assignements);
   }, []);
+
+  useEffect(() => {
+    if (!mobileView) {
+      functFilterAssignements(
+        assignements,
+        difficultyCheckedIndex,
+        participantsCheckedIndex,
+        stackCheckedIndex,
+        setFilteredAssignements
+      );
+    }
+  }, [difficultyCheckedIndex, participantsCheckedIndex, stackCheckedIndex]);
+
+  const mobileFilterAssignements = () => {
+    functFilterAssignements(
+      assignements,
+      difficultyCheckedIndex,
+      participantsCheckedIndex,
+      stackCheckedIndex,
+      setFilteredAssignements
+    );
+  };
 
   return (
     <Fragment>
@@ -27,38 +62,79 @@ function AssignmentsScreen() {
         <h4 className="h4-header">To build alone or with other learners</h4>
         <br></br>
       </div>
+      {showFilter && (
+        <AssignementFilterMobile
+          allDifficulty={allDifficulty}
+          difficultyCheckedIndex={difficultyCheckedIndex}
+          setDifficultyCheckedIndex={setDifficultyCheckedIndex}
+          allParticipants={allParticipants}
+          participantsCheckedIndex={participantsCheckedIndex}
+          setParticipantsCheckedIndex={setParticipantsCheckedIndex}
+          allStack={allStack}
+          stackCheckedIndex={stackCheckedIndex}
+          setStackCheckedIndex={setStackCheckedIndex}
+          mobileFilterAssignements={mobileFilterAssignements}
+          onClose={() => setShowFilter(false)}
+        />
+      )}
       <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
-        {!mobileView && <div>FILTER</div>}
-        <div
-          className={
-            mobileView
-              ? 'flex flex-justify-center'
-              : 'flex flex-justify-space-between'
-          }
-        >
-          {!mobileView && <div></div>}
-          <BtnCTA
-            label="Add New Assignement"
-            classname="btn-dark"
-            onCLickAction={() =>
-              router.push('/projects/coding-assignements/create-assignement')
-            }
-          />
-        </div>
-        <br></br>
-        <div className="flex">
-          {filteredAssignements.map((assignement) => (
-            <AssignementCard
-              key={assignement._id}
-              id={assignement._id}
-              title={assignement.title}
-              description={assignement.description}
-              difficulty={assignement.difficulty}
-              maxParticipants={assignement.maxParticipants}
-              stack={assignement.stack}
-              reviews={assignement.reviews}
+        {!mobileView && (
+          <div>
+            <AssignementFilter
+              allDifficulty={allDifficulty}
+              difficultyCheckedIndex={difficultyCheckedIndex}
+              setDifficultyCheckedIndex={setDifficultyCheckedIndex}
+              allParticipants={allParticipants}
+              participantsCheckedIndex={participantsCheckedIndex}
+              setParticipantsCheckedIndex={setParticipantsCheckedIndex}
+              allStack={allStack}
+              stackCheckedIndex={stackCheckedIndex}
+              setStackCheckedIndex={setStackCheckedIndex}
             />
-          ))}
+          </div>
+        )}
+        <div>
+          <div
+            className={
+              mobileView
+                ? 'flex flex-justify-center'
+                : 'flex flex-justify-space-between'
+            }
+          >
+            {!mobileView && <div></div>}
+            <BtnCTA
+              label="Add New Assignement"
+              classname="btn-dark"
+              onCLickAction={() =>
+                router.push('/projects/coding-assignements/create-assignement')
+              }
+            />
+          </div>
+          <br></br>
+          <div className="flex">
+            {mobileView && (
+              <BtnCTA
+                label="filter assignements"
+                classname="btn-light-big"
+                onCLickAction={() => setShowFilter(true)}
+                icon={true}
+                iconType="ci:filter-outline"
+              />
+            )}
+
+            {filteredAssignements.map((assignement) => (
+              <AssignementCard
+                key={assignement._id}
+                id={assignement._id}
+                title={assignement.title}
+                description={assignement.description}
+                difficulty={assignement.difficulty.label}
+                maxParticipants={assignement.maxParticipants.label}
+                stack={assignement.stack}
+                reviews={assignement.reviews}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </Fragment>

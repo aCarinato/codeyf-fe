@@ -5,6 +5,8 @@ import { Fragment, useEffect, useState } from 'react';
 // data
 import { assignements } from '../../../data/assignements';
 import { people } from '../../../data/people';
+// own components
+import Rating from '../../../components/UI/Rating';
 
 function AssignementScreen() {
   const router = useRouter();
@@ -68,11 +70,11 @@ function AssignementScreen() {
           </div>
           <div>
             <h4>Difficulty:</h4>
-            <p>{assignement.difficulty}</p>
+            <p>{assignement.difficulty.label}</p>
           </div>
           <div>
             <h4>Max. number of participants:</h4>
-            <p>{assignement.maxParticipants}</p>
+            <p>{assignement.maxParticipants.label}</p>
           </div>
         </div>
         <br></br>
@@ -90,9 +92,9 @@ function AssignementScreen() {
         <br></br>
         <h4>Tech stack:</h4>
         <div className="flex flex-justify-flex-start">
-          {assignement.stack.map((item, index) => (
-            <span key={index} className={`tech-span`}>
-              {item}
+          {assignement.stack.map((item) => (
+            <span key={item._id} className={`tech-span`}>
+              {item.label}
             </span>
           ))}
         </div>
@@ -141,9 +143,8 @@ function AssignementScreen() {
               item.tasks.map((task) => (
                 <tr key={task.participantId}>
                   {item.tasks.indexOf(task) === 0 && (
-                    <td rowSpan={assignement.maxParticipants.toString()}>
-                      {item.n}
-                    </td>
+                    // <td rowSpan={assignement.maxParticipants.toString()}>
+                    <td rowSpan={assignement.idealConfig.length}>{item.n}</td>
                   )}
                   <td>{task.participantId}</td>
                   <td>
@@ -182,7 +183,7 @@ function AssignementScreen() {
                   {/* <td>{resource.name}</td> */}
                   <td>{resource.type}</td>
                   <td>
-                    <a href={`${resource.link}`}>{resource.link}</a>
+                    <a href={`${resource.link}`}>{resource.name}</a>
                   </td>
                 </tr>
               ))}
@@ -191,7 +192,20 @@ function AssignementScreen() {
         </div>
         <br></br>
         <div>
-          <h4>Comments</h4>
+          <h4>Reviews</h4>
+          {assignement.reviews.map((review) => (
+            <div key={review._id}>
+              <div className="flex flex-justify-space-between">
+                <p>
+                  User id {review.createdBy} on {review.createdAt}
+                </p>
+                <Rating value={review.rating} />
+              </div>
+
+              <p>{review.comment}</p>
+              <br></br>
+            </div>
+          ))}
         </div>
         <br></br>
       </Fragment>
