@@ -427,6 +427,20 @@ td {
   border: 0.1rem solid var(--main-primary-color);
 }
 
+.input-invalid {
+  border: 0.1rem solid red;
+  background-color: #ffeded;
+}
+.input-invalid:focus {
+  border-color: #ff8800;
+  background-color: #fbe8d2;
+}
+
+.input-error-msg {
+  font-size: 1.2rem;
+  color: red;
+}
+
 /* ----------------- */
 /*  UTILITY CLASSES  */
 /* ----------------- */

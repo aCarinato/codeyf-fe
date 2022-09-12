@@ -40,23 +40,24 @@ function CreateAssignementScreen() {
     },
   ]);
 
-  console.log(shortDescription);
+  // INPUT VALIDATION
+  // title
+  // const [enteredTitle, setEnteredTitle] = useState('');
+  const [titleTouched, setTitleTouched] = useState(false);
+  const enteredTitleIsValid = title.trim() !== '';
+  const titleIsInvalid = !enteredTitleIsValid && titleTouched;
+
+  let formIsValid;
+
+  if (enteredTitleIsValid) formIsValid = true;
+
   // QUILLL
   const { quill, quillRef } = useQuill();
   const [quillFullDescription, setQuillFullDescription] = useState('');
-  // useEffect(() => {
-  //   if (quill) {
-  //     quill.clipboard.dangerouslyPasteHTML('<h1>React Hook for Quill!</h1>');
-  //   }
-  // }, [quill]);
+
   useEffect(() => {
     if (quill) {
       quill.on('text-change', (delta, oldDelta, source) => {
-        // console.log('Text change!');
-        // console.log(quill.getText()); // Get text only
-        // console.log(quill.getContents()); // Get delta contents
-        // console.log(quill.root.innerHTML); // Get innerHTML using quill
-        // console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
         setQuillFullDescription(quill.root.innerHTML);
       });
     }
@@ -258,21 +259,27 @@ function CreateAssignementScreen() {
   };
 
   const handleSubmit = () => {
-    const body = {
-      title,
-      shortDescription,
-      fullDescription: quillFullDescription,
-      difficulty,
-      maxParticipants: participants,
-      idealConfig,
-      stack,
-      topics,
-      goals,
-      steps,
-      resources,
-    };
+    setTitleTouched(true);
 
-    console.log(body);
+    if (!formIsValid) {
+      return;
+    } else {
+      const body = {
+        title,
+        shortDescription,
+        fullDescription: quillFullDescription,
+        difficulty,
+        maxParticipants: participants,
+        idealConfig,
+        stack,
+        topics,
+        goals,
+        steps,
+        resources,
+      };
+
+      console.log(body);
+    }
   };
 
   return (
@@ -285,15 +292,20 @@ function CreateAssignementScreen() {
               Title:
             </label>
             <input
+              className={titleIsInvalid ? 'input-invalid' : ''}
               type="text"
               id="title"
               name="title"
               required
               onChange={(e) => setTitle(e.target.value)}
+              onBlur={() => setTitleTouched(true)}
               // minLength="4"
               // maxLength="8"
               // size="10"
             />
+            {titleIsInvalid && (
+              <p className="input-error-msg">Insert value for title</p>
+            )}
           </div>
           <br></br>
           <div className="flex-column">
