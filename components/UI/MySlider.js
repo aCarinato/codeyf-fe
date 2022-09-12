@@ -73,7 +73,7 @@ function MySlider(props) {
             key={assignement._id}
             id={assignement._id}
             title={assignement.title}
-            description={assignement.description}
+            description={assignement.shortDescription}
             difficulty={assignement.difficulty.label}
             maxParticipants={assignement.maxParticipants.label}
             stack={assignement.stack}

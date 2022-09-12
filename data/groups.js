@@ -12,8 +12,8 @@ export const groups = [
     mentors: ['1'],
     filled: false,
     learning: ['python', 'html'],
-    isProposedProject: false,
-    proposedProject: '',
+    hasProposedAssignment: true,
+    proposedAssignmentID: '0',
     proposedProjectLink: '',
   },
   {
@@ -28,8 +28,8 @@ export const groups = [
     mentors: [],
     filled: false,
     learning: ['javascript', 'html', 'css'],
-    isProposedProject: true,
-    proposedProject: 'Odin Project',
+    hasProposedAssignment: true,
+    proposedAssignmentID: '1',
     proposedProjectLink: 'Odin Project',
   },
   {
@@ -44,8 +44,8 @@ export const groups = [
     mentors: [],
     filled: true,
     learning: ['react', 'node', 'express'],
-    isProposedProject: false,
-    proposedProject: '',
+    hasProposedAssignment: false,
+    proposedAssignmentID: '',
     proposedProjectLink: '',
   },
 ];

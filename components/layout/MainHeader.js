@@ -35,8 +35,8 @@ function MainHeader() {
     },
     {
       id: '1',
-      name: 'assignements',
-      link: '/projects/coding-assignements',
+      name: 'assignments',
+      link: '/projects/coding-assignments',
     },
   ];
 

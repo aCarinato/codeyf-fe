@@ -3,14 +3,28 @@ export const assignements = [
     _id: '0',
     createdBy: '4',
     title: 'Form validator',
-    details:
+    fullDescription:
       'Creating an input form that can accept at least the following fields: username, email, password. When th submit button is pressed the form gives feedback on the validity of the iput. No backend required.',
-    description: 'Client side form validation',
+    shortDescription: 'Client side form validation',
     goals: [
-      'Styled as per common industry standards. Vanilla CSS or frameworks allowed (bootstrap, material UI, etc.)',
-      'Conditional formatting of input field based on validity',
-      'Throw an error on screen if an input does not match the input type',
-      'Throw an error on screen if some input is missing when submit',
+      {
+        _id: '0',
+        label:
+          'Styled as per common industry standards. Vanilla CSS or frameworks allowed (bootstrap, material UI, etc.)',
+      },
+      {
+        _id: '1',
+        label: 'Conditional formatting of input field based on validity',
+      },
+      {
+        _id: '2',
+        label:
+          'Throw an error on screen if an input does not match the input type',
+      },
+      {
+        _id: '3',
+        label: 'Throw an error on screen if some input is missing when submit',
+      },
     ],
     difficulty: { _id: '0', label: 'beginner' },
     maxParticipants: { _id: '3', label: '3' },
@@ -23,11 +37,11 @@ export const assignements = [
       { _id: '1', label: 'css' },
       { _id: '2', label: 'javascript' },
     ],
-    skills: [
-      'styling',
-      'javascript functions',
-      'code refactoring',
-      'error handling',
+    topics: [
+      { _id: '0', label: 'styling' },
+      { _id: '1', label: 'javascript functions' },
+      { _id: '2', label: 'code refactoring' },
+      { _id: '3', label: 'error handling' },
     ],
     resources: [
       {
@@ -35,12 +49,14 @@ export const assignements = [
         name: 'form validation',
         link: 'www.redditAPIeeee.com',
         type: 'video',
+        upvotes: '',
       },
       {
         _id: '1',
         name: 'how to make a form with html, css and vanilla javascript',
         link: 'https://medium.com/london-app-brewery/why-i-left-medicine-and-built-a-tech-company-cfd4f94087be',
         type: 'blog article',
+        upvotes: '',
       },
     ],
     reviews: [
@@ -69,7 +85,7 @@ export const assignements = [
     repo: 'https://github.com/aCarinato/giroq-frontend',
     steps: [
       {
-        _id: '0',
+        _id: '1',
         n: '1',
         tasks: [
           {
@@ -87,7 +103,7 @@ export const assignements = [
         ],
       },
       {
-        _id: '1',
+        _id: '2',
         n: '2',
         tasks: [
           {
@@ -130,34 +146,44 @@ export const assignements = [
     _id: '1',
     createdBy: '8',
     title: 'Reddit API with Python',
-    details: '',
-    description: 'Automate retrieval of reddit posts',
+    fullDescription: '',
+    shortDescription: 'Automate retrieval of reddit posts',
     goals: [
-      'Accept a subreddit name as an input',
-      'Retrieve at least 200 posts from a subreddit.',
-      'Retrive hot reddits',
-      'Retrive most popular reddits',
-      'Save on .csv file',
-      'BONUS: Perform topic clustering on retrieved reddits',
+      { _id: '0', label: 'Accept a subreddit name as an input' },
+      { _id: '1', label: 'Retrieve at least 200 posts from a subreddit.' },
+      { _id: '2', label: 'Retrive hot reddits' },
+      { _id: '3', label: 'Retrive most popular reddits' },
+      { _id: '4', label: 'Save on .csv file' },
+      {
+        _id: '5',
+        label: 'BONUS: Perform topic clustering on retrieved reddits',
+      },
     ],
     // difficulty: 'beginner',
     difficulty: { _id: '1', label: 'intermediate' },
     maxParticipants: { _id: '2', label: '2' },
     idealConfig: [{ _id: '0', n: '1', role: 'python scripting' }],
     stack: [{ _id: '3', label: 'python' }],
-    skills: ['third-party API', 'machine learning', 'NLP', 'topic clustering'],
+    topics: [
+      { _id: '4', label: 'third-party API' },
+      { _id: '5', label: 'machine learning' },
+      { _id: '6', label: 'NLP' },
+      { _id: '7', label: 'topic clustering' },
+    ],
     resources: [
       {
         _id: '0',
         name: 'reddit API with python',
         link: 'https://www.redditAPIeeee.com',
         type: 'video',
+        upvotes: '',
       },
       {
         _id: '1',
         name: 'topic clustering with python',
         link: 'https://www.tosorea.com',
         type: 'blog article',
+        upvotes: '',
       },
     ],
     reviews: [
@@ -186,7 +212,7 @@ export const assignements = [
     repo: 'https://github.com/aCarinato/giroq-frontend',
     steps: [
       {
-        _id: '0',
+        _id: '1',
         n: '1',
         tasks: [
           {
@@ -196,7 +222,7 @@ export const assignements = [
         ],
       },
       {
-        _id: '1',
+        _id: '2',
         n: '2',
         tasks: [
           {
@@ -210,7 +236,7 @@ export const assignements = [
         ],
       },
       {
-        _id: '2',
+        _id: '3',
         n: '3',
         tasks: [
           {

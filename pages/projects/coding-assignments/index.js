@@ -58,7 +58,7 @@ function AssignmentsScreen() {
   return (
     <Fragment>
       <div>
-        <h1>Coding Assignements</h1>
+        <h1>Coding Assignments</h1>
         <h4 className="h4-header">To build alone or with other learners</h4>
         <br></br>
       </div>
@@ -103,10 +103,10 @@ function AssignmentsScreen() {
           >
             {!mobileView && <div></div>}
             <BtnCTA
-              label="Add New Assignement"
+              label="Add New Assignment"
               classname="btn-dark"
               onCLickAction={() =>
-                router.push('/projects/coding-assignements/create-assignement')
+                router.push('/projects/coding-assignments/create-assignment')
               }
             />
           </div>
@@ -114,7 +114,7 @@ function AssignmentsScreen() {
           <div className="flex">
             {mobileView && (
               <BtnCTA
-                label="filter assignements"
+                label="filter assignments"
                 classname="btn-light-big"
                 onCLickAction={() => setShowFilter(true)}
                 icon={true}
@@ -127,7 +127,7 @@ function AssignmentsScreen() {
                 key={assignement._id}
                 id={assignement._id}
                 title={assignement.title}
-                description={assignement.description}
+                description={assignement.shortDescription}
                 difficulty={assignement.difficulty.label}
                 maxParticipants={assignement.maxParticipants.label}
                 stack={assignement.stack}
