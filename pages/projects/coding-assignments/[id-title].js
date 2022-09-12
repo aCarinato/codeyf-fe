@@ -66,7 +66,7 @@ function AssignementScreen() {
         <div className="flex flex-justify-space-between">
           <div>
             <h4>Description:</h4>
-            <p>{assignement.description}</p>
+            <p>{assignement.shortDescription}</p>
           </div>
           <div>
             <h4>Difficulty:</h4>
@@ -80,13 +80,13 @@ function AssignementScreen() {
         <br></br>
         <div>
           <h4>Details</h4>
-          <p>{assignement.details}</p>
+          <p>{assignement.fullDescription}</p>
         </div>
         <br></br>
         <h4>Functionalities required for successful completion</h4>
         <ul>
-          {assignement.goals.map((item, index) => (
-            <li key={index}>{item}</li>
+          {assignement.goals.map((item) => (
+            <li key={item._id}>{item.label}</li>
           ))}
         </ul>
         <br></br>
@@ -99,11 +99,11 @@ function AssignementScreen() {
           ))}
         </div>
         <br></br>
-        <h4>Skills involved:</h4>
+        <h4>Main topics:</h4>
         <div className="flex flex-justify-flex-start">
-          {assignement.skills.map((item, index) => (
-            <span key={index} className={`tech-span`}>
-              {item}
+          {assignement.topics.map((item) => (
+            <span key={item._id} className={`tech-span`}>
+              {item.label}
             </span>
           ))}
         </div>

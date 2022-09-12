@@ -3,9 +3,11 @@ import { Fragment, useEffect, useState } from 'react';
 // data
 import { groups } from '../../../data/groups';
 import { people } from '../../../data/people';
-
+import { assignements } from '../../../data/assignements';
+// own components
 import MentorCard from '../../../components/people/MentorCard';
 import BuddyCard from '../../../components/people/BuddyCard';
+import AssignementCard from '../../../components/assignements/AssignementCard';
 import BtnCTA from '../../../components/UI/BtnCTA';
 
 function GroupIDPage() {
@@ -17,6 +19,7 @@ function GroupIDPage() {
   const [organiser, setOrganiser] = useState('');
   const [participants, setParticipants] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [assignement, setAssignment] = useState(null);
 
   const fetchGroup = () => {
     const selectedGroup = groups.filter((group) => group.id === id)[0];
@@ -75,14 +78,22 @@ function GroupIDPage() {
     }
   }
 
-  // let mentorAvailabilityStatus
-  // if (group && group.mentorRequired === 'yes' ) {
-  //   if ()
-  // }
+  const fetchAssignment = () => {
+    if (group && group !== [] && group.hasProposedAssignment) {
+      const selectedAssinment = assignements.filter(
+        (item) => item._id === group.proposedAssignmentID
+      );
+
+      setAssignment(selectedAssinment[0]);
+    }
+  };
+
+  // console.log(assignement);
 
   useEffect(() => {
     fetchGroup();
     fetchPeople();
+    fetchAssignment();
   }, [id, group]);
 
   return group && group.name ? (
@@ -181,6 +192,24 @@ function GroupIDPage() {
             </div>
           )}
         </div>
+      </div>
+      <div>
+        {assignement && (
+          <>
+            <h4>Assignment</h4>
+            <br></br>
+            <AssignementCard
+              key={assignement._id}
+              id={assignement._id}
+              title={assignement.title}
+              description={assignement.description}
+              difficulty={assignement.difficulty.label}
+              maxParticipants={assignement.maxParticipants.label}
+              stack={assignement.stack}
+              reviews={assignement.reviews}
+            />
+          </>
+        )}
       </div>
     </Fragment>
   ) : (

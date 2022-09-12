@@ -66,7 +66,7 @@ function HomePage() {
       <br></br>
       <h3>
         Assignements{' '}
-        <Link href={'/projects/coding-assignements'}>
+        <Link href={'/projects/coding-assignments'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
           </a>
