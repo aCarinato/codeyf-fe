@@ -50,7 +50,6 @@ function AssignementScreen() {
     assignement &&
     assignement.title && (
       <Fragment>
-        <br></br>
         <div className="flex flex-justify-space-between">
           <h2>{assignement.title}</h2>
           {creator && creator.username && (

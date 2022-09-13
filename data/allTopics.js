@@ -1,10 +1,17 @@
 export const allTopics = [
   { _id: '0', label: 'styling' },
-  { _id: '1', label: 'javascript functions' },
+  { _id: '1', label: 'interfaces' },
   { _id: '2', label: 'code refactoring' },
   { _id: '3', label: 'error handling' },
   { _id: '4', label: 'third-party API' },
   { _id: '5', label: 'machine learning' },
   { _id: '6', label: 'NLP' },
   { _id: '7', label: 'topic clustering' },
+  { _id: '8', label: 'frontend' },
+  { _id: '9', label: 'backend' },
+  { _id: '10', label: 'blockchain' },
+  { _id: '11', label: 'game dev' },
+  { _id: '12', label: 'ecommerce' },
+  { _id: '13', label: 'relational database' },
+  { _id: '14', label: 'non relational database' },
 ];

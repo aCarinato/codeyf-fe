@@ -30,7 +30,7 @@ function MentorCard(props) {
       </div>
       <div className="card-footer">
         <div className="card-footer-profile">
-          <Link href={`/people/coding-buddies/${username}`}>
+          <Link href={`/people/coding-mentors/${username}`}>
             <a className="main-link">
               View Profile <Icon icon="bx:user" />
             </a>

@@ -298,6 +298,15 @@ fieldset {
   flex-grow: 1;
 }
 
+.tech-span-box-left {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center;
+  align-content: center; */
+  /* align-items: flex-start; */
+  flex-grow: 1;
+}
+
 .tech-span {
   padding: 0 2rem;
   margin: 0.5rem 0.5rem;
@@ -468,6 +477,9 @@ td {
 
 .test-newline {
   white-space: pre-wrap;
+}
+
+.left-align {
 }
 
 /* img {

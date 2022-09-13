@@ -15,6 +15,7 @@ export const groups = [
     hasProposedAssignment: true,
     proposedAssignmentID: '0',
     proposedProjectLink: '',
+    isClosed: false,
   },
   {
     id: '2',
@@ -31,6 +32,7 @@ export const groups = [
     hasProposedAssignment: true,
     proposedAssignmentID: '1',
     proposedProjectLink: 'Odin Project',
+    isClosed: false,
   },
   {
     id: '3',
@@ -47,5 +49,6 @@ export const groups = [
     hasProposedAssignment: false,
     proposedAssignmentID: '',
     proposedProjectLink: '',
+    isClosed: false,
   },
 ];
