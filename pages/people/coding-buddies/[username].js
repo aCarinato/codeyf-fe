@@ -31,8 +31,12 @@ function BuddyPage() {
       buddy.activeGroups &&
       buddy.activeGroups.length > 0
     ) {
+      const buddyingGroups = buddy.activeGroups.filter(
+        (group) => group.buddying === true
+      );
+
       const selectedCurrentGroups = groups.filter((group) =>
-        buddy.activeGroups.map((item) => item._id).includes(group.id)
+        buddyingGroups.map((item) => item._id).includes(group.id)
       );
       setCurrentGroups(selectedCurrentGroups);
     }
@@ -61,8 +65,12 @@ function BuddyPage() {
       buddy.pastGroups &&
       buddy.pastGroups.length > 0
     ) {
+      const buddyingGroups = buddy.pastGroups.filter(
+        (group) => group.buddying === true
+      );
+
       const selectedPastGroups = groups.filter((group) =>
-        buddy.pastGroups.map((item) => item._id).includes(group.id)
+        buddyingGroups.map((item) => item._id).includes(group.id)
       );
       setPastGroups(selectedPastGroups);
     }
@@ -183,7 +191,7 @@ function BuddyPage() {
               {buddy.activeGroups.length > 0 && (
                 <Fragment>
                   <h4>current groups</h4>
-                  <div className="flex">
+                  <div className="flex flex-justify-flex-start">
                     {currentGroups.map((group) => (
                       <GroupCard
                         key={group.id}
@@ -203,7 +211,7 @@ function BuddyPage() {
               {buddy.activeAssignments.length > 0 && (
                 <Fragment>
                   <h4>current assignments</h4>
-                  <div className="flex">
+                  <div className="flex flex-justify-flex-start">
                     {currentAssignments.map((assignement) => (
                       <AssignementCard
                         key={assignement._id}
@@ -231,7 +239,7 @@ function BuddyPage() {
               {buddy.pastGroups.length > 0 && (
                 <Fragment>
                   <h4>past groups</h4>
-                  <div className="flex">
+                  <div className="flex flex-justify-flex-start">
                     {pastGroups.map((group) => (
                       <GroupCard
                         key={group.id}
@@ -251,7 +259,7 @@ function BuddyPage() {
               {buddy.pastAssignments.length > 0 && (
                 <Fragment>
                   <h4>past assignments</h4>
-                  <div className="flex">
+                  <div className="flex flex-justify-flex-start">
                     {pastAssignments.map((assignement) => (
                       <AssignementCard
                         key={assignement._id}
