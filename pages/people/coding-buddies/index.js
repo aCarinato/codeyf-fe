@@ -124,6 +124,7 @@ function CodingBuddiesScreen() {
         </h4>
         <br></br>
       </div>
+      <br></br>
       {showFilter && (
         <BuddyFilterMobile
           country={country}
@@ -176,7 +177,10 @@ function CodingBuddiesScreen() {
               country={buddy.country}
               learning={buddy.learning}
             />
-          ))}
+          ))}{' '}
+          <div className="white-card"></div>
+          <div className="white-card"></div>
+          <div className="white-card"></div>
         </div>
       </div>
     </Fragment>

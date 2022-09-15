@@ -133,6 +133,7 @@ function GroupsPage() {
         <h4 className="h4-header">To learn with and from the others</h4>
         <br></br>
       </div>
+      <br></br>
       {showFilter && (
         <GroupFilterMobile
           // setFilteredGroups={setFilteredGroups}
@@ -219,7 +220,10 @@ function GroupsPage() {
                 buddies={group.buddies}
                 proposedProject={group.proposedProject}
               />
-            ))}
+            ))}{' '}
+            <div className="white-card"></div>
+            <div className="white-card"></div>
+            <div className="white-card"></div>
           </div>
         </div>
       </div>
