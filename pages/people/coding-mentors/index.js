@@ -78,6 +78,7 @@ function CodingMentorsScreen() {
         <h4 className="h4-header">Experienced developers willing to help</h4>
         <br></br>
       </div>
+      <br></br>
       {showFilter && (
         <MentorFilterMobile
           country={country}
@@ -130,6 +131,9 @@ function CodingMentorsScreen() {
               teaching={mentor.teaching}
             />
           ))}
+          <div className="white-card"></div>
+          <div className="white-card"></div>
+          <div className="white-card"></div>
         </div>
       </div>
     </Fragment>

@@ -62,6 +62,7 @@ function AssignmentsScreen() {
         <h4 className="h4-header">To build alone or with other learners</h4>
         <br></br>
       </div>
+      <br></br>
       {showFilter && (
         <AssignementFilterMobile
           allDifficulty={allDifficulty}
@@ -121,7 +122,6 @@ function AssignmentsScreen() {
                 iconType="ci:filter-outline"
               />
             )}
-
             {filteredAssignements.map((assignement) => (
               <AssignementCard
                 key={assignement._id}
@@ -133,7 +133,10 @@ function AssignmentsScreen() {
                 stack={assignement.stack}
                 reviews={assignement.reviews}
               />
-            ))}
+            ))}{' '}
+            <div className="white-card"></div>
+            <div className="white-card"></div>
+            <div className="white-card"></div>
           </div>
         </div>
       </div>

@@ -40,6 +40,7 @@ function HomePage() {
         <MySlider array={people} type="buddy" />
       </div>
       <br></br>
+      <br></br>
       <h3>
         Mentors{' '}
         <Link href={'/people/coding-mentors'}>
@@ -52,6 +53,7 @@ function HomePage() {
         <MySlider array={people} type="mentor" />
       </div>
       <br></br>
+      <br></br>
       <h3>
         Groups{' '}
         <Link href={'/projects/coding-groups'}>
@@ -63,6 +65,7 @@ function HomePage() {
       <div className="overflower">
         <MySlider array={groups} type="group" />
       </div>
+      <br></br>
       <br></br>
       <h3>
         Assignements{' '}
