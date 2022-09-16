@@ -1,12 +1,12 @@
 export const groups = [
   {
-    id: '1',
+    _id: '1',
     name: 'python study',
     description:
       'Finding buddies to learn python. The group is open to beginners from Amsterdam time zone',
-    organiser: '2',
+    organiser: '1',
     nBuddies: 6,
-    buddies: ['1', '3'],
+    buddies: ['1', '3', '7', '8'],
     mentorRequired: 'yes',
     nMentorsRequired: 1,
     mentors: ['1'],
@@ -16,9 +16,22 @@ export const groups = [
     proposedAssignmentID: '0',
     proposedProjectLink: '',
     isClosed: false,
+    feedback: [
+      {
+        fromUserID: '1',
+        to: [
+          { userID: '3', rate: '5', comment: 'Very nice working together' },
+          { userID: '7', rate: '4', comment: 'Improving consistencys' },
+        ],
+      },
+      {
+        fromUserID: '3',
+        to: [{ userID: '1', rate: '4', comment: 'Communication to improve' }],
+      },
+    ],
   },
   {
-    id: '2',
+    _id: '2',
     name: 'learning javascript - full beginner',
     description: 'For ',
     organiser: '2',
@@ -35,7 +48,7 @@ export const groups = [
     isClosed: false,
   },
   {
-    id: '3',
+    _id: '3',
     name: 'frontend react',
     description: '',
     organiser: '3',
@@ -52,7 +65,7 @@ export const groups = [
     isClosed: false,
   },
   {
-    id: '4',
+    _id: '4',
     name: 'frontend react',
     description: 'building a simple ecommerce application with MERN stack',
     organiser: '5',

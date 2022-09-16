@@ -4,15 +4,7 @@ import { Icon } from '@iconify/react';
 import BtnCTA from '../UI/BtnCTA';
 
 function GroupCard(props) {
-  const {
-    id,
-    name,
-    description,
-    techStack,
-    nBuddies,
-    buddies,
-    proposedProject,
-  } = props;
+  const { id, name, techStack, nBuddies, buddies, mode = 'viewer' } = props;
   //   const techStack = group.techStack;
   let availabilityStatus;
 
@@ -46,21 +38,42 @@ function GroupCard(props) {
       <p>Max {nBuddies} participants</p>
       {availabilityStatus}
       <div className="card-footer">
-        <div className="card-footer-profile">
-          <Link href={`/projects/coding-groups/${id}`}>
-            <a className="main-link">
-              View Group <Icon icon="akar-icons:people-group" />
-            </a>
-          </Link>
-        </div>
-        <div className="card-footer-message">
-          <BtnCTA
-            label="Message"
-            onCLickAction={() => {}}
-            icon={true}
-            iconType="ant-design:message-outlined"
-          />
-        </div>
+        {mode === 'viewer' ? (
+          <>
+            <div className="card-footer-profile">
+              <Link href={`/projects/coding-groups/${id}`}>
+                <a className="main-link">
+                  View Group <Icon icon="akar-icons:people-group" />
+                </a>
+              </Link>
+            </div>
+            <div className="card-footer-message">
+              <BtnCTA
+                label="Message"
+                onCLickAction={() => {}}
+                icon={true}
+                iconType="ant-design:message-outlined"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="card-footer-profile">
+              <Link href={`/projects/coding-groups/${id}/edit`}>
+                <a className="main-link">
+                  Edit <Icon icon="akar-icons:edit" />
+                </a>
+              </Link>
+            </div>
+            <div className="card-footer-profile">
+              <Link href={`/projects/coding-groups/${id}/manage`}>
+                <a className="main-link">
+                  Mark completion <Icon icon="fa6-solid:trophy" />
+                </a>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
