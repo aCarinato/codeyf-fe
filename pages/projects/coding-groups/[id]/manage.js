@@ -12,6 +12,8 @@ function ManageGroupPage() {
   const { query } = router;
   const id = query.id;
 
+  const [currentUser, setCurrentUser] = useState(null);
+
   const [group, setGroup] = useState({});
   const [loading, setLoading] = useState(false);
   const [reviewees, setReviewees] = useState([]);
@@ -21,6 +23,73 @@ function ManageGroupPage() {
 
   //   modal for reviewing
   const [showEditReview, setShowEditReview] = useState(false);
+
+  const [reviewsOnMe, setReviewsOnMe] = useState([]);
+  //   [{from: '3', complete: true, rate: '4', comment: 'Communication to improve'}, {from: '7', complete: false, rate: '', comment: ''}, {from: '8', complete: false, rate: '', comment: ''}, ]
+  const fetchReviewsOnMe = () => {
+    if (
+      group !== undefined &&
+      group !== {} &&
+      group.name &&
+      currentUser !== null
+    ) {
+      let tempReviewsOnMe = [];
+      // find all participants
+      const reviewers = group.buddies.filter((item) => item !== currentUser.id);
+      //   reviewers = ['3','7', '8']
+      //  find the index of the reviews in group.feedback
+      reviewers.map((item) => {
+        const idxCurrReviewer = group.feedback
+          .map((item2) => item2.fromUserID)
+          .indexOf(item);
+
+        //   find the index of the review about current user
+        if (idxCurrReviewer !== -1) {
+          const idxUserID = group.feedback[idxCurrReviewer].to
+            .map((item) => item.userID)
+            .indexOf(currentUser.id);
+
+          if (idxUserID === -1) {
+            let tempReviewsOnMeItem = {
+              from: item,
+              complete: false,
+              rate: '',
+              comment: '',
+            };
+            tempReviewsOnMe.push(tempReviewsOnMeItem);
+          } else {
+            let tempReviewsOnMeItem = {
+              from: item,
+              complete: true,
+              rate: group.feedback[idxCurrReviewer].to[idxUserID].rate,
+              comment: group.feedback[idxCurrReviewer].to[idxUserID].comment,
+            };
+            tempReviewsOnMe.push(tempReviewsOnMeItem);
+          }
+        } else {
+          let tempReviewsOnMeItem = {
+            from: item,
+            complete: false,
+            rate: '',
+            comment: '',
+          };
+          tempReviewsOnMe.push(tempReviewsOnMeItem);
+        }
+      });
+
+      setReviewsOnMe(tempReviewsOnMe);
+    }
+  };
+
+  const fetchCurrentUser = () => {
+    if (group !== undefined && group !== {} && group.name) {
+      const currentUserId = group.organiser;
+      const filteredUser = people.filter(
+        (person) => person.id === currentUserId
+      )[0];
+      setCurrentUser(filteredUser);
+    }
+  };
 
   const fecthGroup = () => {
     setLoading(true);
@@ -107,13 +176,15 @@ function ManageGroupPage() {
     setShowEditReview(true);
   };
 
-  console.log(reviewEdit);
+  //   console.log(reviewEdit);
 
   useEffect(() => {
     fecthGroup();
+    fetchCurrentUser();
     fetchReviewees();
+    fetchReviewsOnMe();
     // fetchReviewStatus();
-  }, [id, group]);
+  }, [id, group, currentUser]);
 
   //   console.log(reviewStatus);
 
@@ -146,7 +217,7 @@ function ManageGroupPage() {
               </div>
 
               <br></br>
-              <h4>reviews</h4>
+              <h4>Review the other participants</h4>
               <p>
                 Give all participants feedback and make sure they will do the
                 same.
@@ -190,6 +261,97 @@ function ManageGroupPage() {
                   </tbody>
                 </table>
               </div>
+              <br></br>
+              <h4>Reviews from the other participants</h4>
+              <p>This is what the others had to say about you.</p>
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>username</td>
+                      <td>reviewed?</td>
+                      <td>rate</td>
+                      <td>comment</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reviewsOnMe.map((item) => (
+                      <tr key={item.from}>
+                        <td>
+                          {
+                            people.filter(
+                              (person) => person.id === item.from
+                            )[0].username
+                          }
+                        </td>
+                        <td>{item.complete ? 'Y' : 'N'}</td>
+                        <td>{item.rate}</td>
+                        <td>{item.comment}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <br></br>
+              {/* {currentUser !== null && group.organiser === currentUser.id && (
+                <div>
+                  <h4>Review status from all participants</h4>
+                  {group.buddies.map((item) => {
+                    if (item !== currentUser.id) {
+                      return (
+                        <p key={item}>
+                          {
+                            people.filter((person) => person.id === item)[0]
+                              .username
+                          }
+                        </p>
+                      );
+                    }
+                  })}
+                </div>
+              )}
+              <br></br> */}
+              {currentUser !== null && group.organiser === currentUser.id && (
+                <div>
+                  <h4>Review status from all participants (part2)</h4>
+                  <table>
+                    <thead>
+                      <tr>
+                        <td>from</td>
+                        <td>to</td>
+                        <td>rate</td>
+                        <td>comment</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.feedback.map((item) => {
+                        if (item.fromUserID !== currentUser.id) {
+                          return item.to.map((to) => (
+                            <tr key={to.userID}>
+                              <td>
+                                {
+                                  people.filter(
+                                    (person) => person.id === item.fromUserID
+                                  )[0].username
+                                }
+                              </td>
+                              <td>
+                                {
+                                  people.filter(
+                                    (person) => person.id === to.userID
+                                  )[0].username
+                                }
+                              </td>
+                              <td>{to.rate}</td>
+                              <td>{to.comment}</td>
+                            </tr>
+                          ));
+                        }
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
               {showEditReview && (
                 <EditReview
                   onClose={() => setShowEditReview(false)}

@@ -4,7 +4,15 @@ import { Icon } from '@iconify/react';
 import BtnCTA from '../UI/BtnCTA';
 
 function GroupCard(props) {
-  const { id, name, techStack, nBuddies, buddies, mode = 'viewer' } = props;
+  const {
+    id,
+    name,
+    techStack,
+    nBuddies,
+    buddies,
+    mode = 'viewer',
+    status,
+  } = props;
   //   const techStack = group.techStack;
   let availabilityStatus;
 
@@ -58,20 +66,24 @@ function GroupCard(props) {
           </>
         ) : (
           <>
-            <div className="card-footer-profile">
-              <Link href={`/projects/coding-groups/${id}/edit`}>
-                <a className="main-link">
-                  Edit <Icon icon="akar-icons:edit" />
-                </a>
-              </Link>
-            </div>
-            <div className="card-footer-profile">
-              <Link href={`/projects/coding-groups/${id}/manage`}>
-                <a className="main-link">
-                  Mark completion <Icon icon="fa6-solid:trophy" />
-                </a>
-              </Link>
-            </div>
+            {status === 'draft' && (
+              <div className="card-footer-profile">
+                <Link href={`/projects/coding-groups/${id}/edit`}>
+                  <a className="main-link">
+                    Edit <Icon icon="akar-icons:edit" />
+                  </a>
+                </Link>
+              </div>
+            )}
+            {status === 'active' && (
+              <div className="card-footer-profile">
+                <Link href={`/projects/coding-groups/${id}/manage`}>
+                  <a className="main-link">
+                    Mark completion <Icon icon="fa6-solid:trophy" />
+                  </a>
+                </Link>
+              </div>
+            )}
           </>
         )}
       </div>

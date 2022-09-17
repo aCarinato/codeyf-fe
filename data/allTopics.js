@@ -14,4 +14,7 @@ export const allTopics = [
   { _id: '12', label: 'ecommerce' },
   { _id: '13', label: 'relational database' },
   { _id: '14', label: 'non relational database' },
+  { _id: '15', label: 'authentication' },
+  { _id: '16', label: 'deployment' },
+  { _id: '17', label: 'data pipelines' },
 ];
