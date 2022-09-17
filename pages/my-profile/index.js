@@ -11,6 +11,7 @@ function MyProfilePage() {
   const [user, setUser] = useState({});
   const [draftGroups, setDraftGroups] = useState([]);
   const [activeGroups, setActiveGroups] = useState([]);
+  const [participatedGroups, setParticipatedGroups] = useState([]);
 
   const fetchUser = () => {
     setLoading(true);
@@ -20,7 +21,7 @@ function MyProfilePage() {
   };
 
   const fecthOrganisedGroups = () => {
-    if (user !== {} && user.id) {
+    if (user !== undefined && user !== {} && user.id) {
       const filteredDraftGroups = groups.filter(
         (group) => group.organiser === user.id && group.status === 'draft'
       );
@@ -33,9 +34,20 @@ function MyProfilePage() {
     }
   };
 
+  const fetchParticipatedGroups = () => {
+    if (user !== undefined && user !== {} && user.id) {
+      const filteredParticipatedGroups = groups.filter(
+        (group) =>
+          group.organiser !== user.id && group.buddies.includes(user.id)
+      );
+      setParticipatedGroups(filteredParticipatedGroups);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
     fecthOrganisedGroups();
+    fetchParticipatedGroups();
   }, [user]);
 
   return (
@@ -95,6 +107,30 @@ function MyProfilePage() {
                   <div className="white-card"></div>
                   <div className="white-card"></div>
                 </div>
+                <br></br>
+              </Fragment>
+            )}
+            {participatedGroups.length > 0 && (
+              <Fragment>
+                <h5>Participated groups</h5>
+                <div className="flex">
+                  {participatedGroups.map((group) => (
+                    <GroupCard
+                      key={group._id}
+                      id={group._id}
+                      name={group.name}
+                      description={group.description}
+                      techStack={group.learning}
+                      nBuddies={group.nBuddies}
+                      buddies={group.buddies}
+                      proposedProject={group.proposedProject}
+                      mode="viewer"
+                    />
+                  ))}
+                  <div className="white-card"></div>
+                  <div className="white-card"></div>
+                </div>
+                <br></br>
               </Fragment>
             )}
             {/* SETTINGS (signout, edit, delete, etc.) - NOTIFICATIONS (messages, review requests, etc.) */}

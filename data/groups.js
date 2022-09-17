@@ -106,7 +106,7 @@ export const groups = [
     description: 'building a simple ecommerce application with MERN stack',
     organiser: '5',
     nBuddies: 5,
-    buddies: ['6', '5'],
+    buddies: ['6', '5', '1'],
     mentorRequired: 'no',
     nMentorsRequired: 0,
     mentors: [],
