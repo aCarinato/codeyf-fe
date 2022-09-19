@@ -28,10 +28,10 @@ function HomePage() {
     let message;
     try {
       setIsLoading(true);
-      // const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/people`);
-      const res = await axios.get(
-        'https://codeyful-be.herokuapp.com/api/people'
-      );
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/people`);
+      // const res = await axios.get(
+      //   'https://codeyful-be.herokuapp.com/api/people'
+      // );
 
       message = res.data.message;
       setMessageFromServer(message);
