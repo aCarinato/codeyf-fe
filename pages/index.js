@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { people } from '../data/people';
 import { groups } from '../data/groups';
@@ -7,16 +7,36 @@ import MySlider from '../components/UI/MySlider';
 import { Icon } from '@iconify/react';
 // context
 import { useMainContext } from '../context/Context';
+// packages
+import axios from 'axios';
 
 function HomePage() {
   const { peoples, setPeople, mobileView } = useMainContext();
 
   useEffect(() => {
     setPeople(people);
+    fetchMessage();
     // console.log(peoples);
   }, []);
 
   // console.log(mobileView);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [messageFromServer, setMessageFromServer] = useState('');
+
+  const fetchMessage = async () => {
+    let message;
+    try {
+      setIsLoading(true);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/people`);
+
+      message = res.data.message;
+      setMessageFromServer(message);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Fragment>
@@ -28,6 +48,7 @@ function HomePage() {
       {/* <div>{JSON.stringify(peoples)}</div> */}
       <br></br>
       <br></br>
+      <div>{isLoading ? <div>Loading</div> : messageFromServer}</div>
       <h3>
         Coding buddies{' '}
         <Link href={'/people/coding-buddies'}>

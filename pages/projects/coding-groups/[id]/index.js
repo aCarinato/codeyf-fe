@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 // data
-import { groups } from '../../../data/groups';
-import { people } from '../../../data/people';
-import { assignements } from '../../../data/assignements';
+import { groups } from '../../../../data/groups';
+import { people } from '../../../../data/people';
+import { assignements } from '../../../../data/assignements';
 // own components
-import MentorCard from '../../../components/people/MentorCard';
-import BuddyCard from '../../../components/people/BuddyCard';
-import AssignementCard from '../../../components/assignements/AssignementCard';
-import BtnCTA from '../../../components/UI/BtnCTA';
+import MentorCard from '../../../../components/people/MentorCard';
+import BuddyCard from '../../../../components/people/BuddyCard';
+import AssignementCard from '../../../../components/assignements/AssignementCard';
+import BtnCTA from '../../../../components/UI/BtnCTA';
 
 function GroupIDPage() {
   const router = useRouter();
@@ -22,7 +22,7 @@ function GroupIDPage() {
   const [assignement, setAssignment] = useState(null);
 
   const fetchGroup = () => {
-    const selectedGroup = groups.filter((group) => group.id === id)[0];
+    const selectedGroup = groups.filter((group) => group._id === id)[0];
     setGroup(selectedGroup);
   };
 

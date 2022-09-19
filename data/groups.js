@@ -1,12 +1,12 @@
 export const groups = [
   {
-    id: '1',
+    _id: '1',
     name: 'python study',
     description:
       'Finding buddies to learn python. The group is open to beginners from Amsterdam time zone',
-    organiser: '2',
+    organiser: '1',
     nBuddies: 6,
-    buddies: ['1', '3'],
+    buddies: ['1', '3', '7', '8'],
     mentorRequired: 'yes',
     nMentorsRequired: 1,
     mentors: ['1'],
@@ -16,12 +16,59 @@ export const groups = [
     proposedAssignmentID: '0',
     proposedProjectLink: '',
     isClosed: false,
+    status: 'active',
+    feedback: [
+      {
+        fromUserID: '1',
+        to: [
+          { userID: '3', rate: '5', comment: 'Very nice working together' },
+          { userID: '7', rate: '', comment: '' },
+          { userID: '8', rate: '3', comment: 'Not too good' },
+        ],
+      },
+      {
+        fromUserID: '3',
+        to: [
+          {
+            userID: '1',
+            rate: '3',
+            comment: 'Communication to improve but he is a good guy',
+          },
+          { userID: '7', rate: '4', comment: 'Improving consistencys' },
+          { userID: '8', rate: '3', comment: 'Not too good' },
+        ],
+      },
+      {
+        fromUserID: '7',
+        to: [
+          {
+            userID: '1',
+            rate: '',
+            comment: '',
+          },
+          { userID: '3', rate: '5', comment: 'Improving consistencys' },
+          { userID: '8', rate: '4', comment: 'Good but to be improved' },
+        ],
+      },
+      {
+        fromUserID: '8',
+        to: [
+          {
+            userID: '1',
+            rate: '3',
+            comment: 'Communication to improve but he is a good guy',
+          },
+          { userID: '3', rate: '5', comment: 'Improving consistencys' },
+          { userID: '7', rate: '4', comment: 'Good but to be improved' },
+        ],
+      },
+    ],
   },
   {
-    id: '2',
+    _id: '2',
     name: 'learning javascript - full beginner',
     description: 'For ',
-    organiser: '2',
+    organiser: '1',
     nBuddies: 4,
     buddies: ['5'],
     mentorRequired: 'yes',
@@ -33,9 +80,10 @@ export const groups = [
     proposedAssignmentID: '1',
     proposedProjectLink: 'Odin Project',
     isClosed: false,
+    status: 'draft',
   },
   {
-    id: '3',
+    _id: '3',
     name: 'frontend react',
     description: '',
     organiser: '3',
@@ -50,14 +98,15 @@ export const groups = [
     proposedAssignmentID: '',
     proposedProjectLink: '',
     isClosed: false,
+    status: 'active',
   },
   {
-    id: '4',
+    _id: '4',
     name: 'frontend react',
     description: 'building a simple ecommerce application with MERN stack',
     organiser: '5',
     nBuddies: 5,
-    buddies: ['6', '5'],
+    buddies: ['6', '5', '1'],
     mentorRequired: 'no',
     nMentorsRequired: 0,
     mentors: [],
@@ -67,5 +116,71 @@ export const groups = [
     proposedAssignmentID: '1',
     proposedProjectLink: '',
     isClosed: false,
+    status: 'active',
+  },
+  {
+    _id: '5',
+    name: 'ML study',
+    description:
+      'Finding buddies to learn ML. The group is open to beginners from Rossano Veneto time zone',
+    organiser: '1',
+    nBuddies: 6,
+    buddies: ['1', '3', '7', '8'],
+    mentorRequired: 'yes',
+    nMentorsRequired: 1,
+    mentors: ['1'],
+    filled: false,
+    learning: ['python', 'html'],
+    hasProposedAssignment: true,
+    proposedAssignmentID: '0',
+    proposedProjectLink: '',
+    isClosed: false,
+    status: 'active',
+    feedback: [
+      {
+        fromUserID: '1',
+        to: [
+          { userID: '3', rate: '5', comment: 'Very nice working together' },
+          { userID: '7', rate: '', comment: '' },
+          { userID: '8', rate: '3', comment: 'Not too good' },
+        ],
+      },
+      {
+        fromUserID: '3',
+        to: [
+          {
+            userID: '1',
+            rate: '3',
+            comment: 'Communication to improve but he is a good guy',
+          },
+          { userID: '7', rate: '4', comment: 'Improving consistencys' },
+          { userID: '8', rate: '3', comment: 'Not too good' },
+        ],
+      },
+      {
+        fromUserID: '7',
+        to: [
+          {
+            userID: '1',
+            rate: '',
+            comment: '',
+          },
+          { userID: '3', rate: '5', comment: 'Improving consistencys' },
+          { userID: '8', rate: '4', comment: 'Good but to be improved' },
+        ],
+      },
+      {
+        fromUserID: '8',
+        to: [
+          {
+            userID: '1',
+            rate: '3',
+            comment: 'Communication to improve but he is a good guy',
+          },
+          { userID: '3', rate: '5', comment: 'Improving consistencys' },
+          { userID: '7', rate: '4', comment: 'Good but to be improved' },
+        ],
+      },
+    ],
   },
 ];
