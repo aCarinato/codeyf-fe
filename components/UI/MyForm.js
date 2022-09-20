@@ -6,12 +6,15 @@ function MyForm(props) {
   const { formFields, labelCTA, formSubmit, error } = props;
 
   return (
-    <form onSubmit={formSubmit}>
+    <form className={classes.container} onSubmit={formSubmit}>
       {formFields.map((field, index) => (
-        <div key={index}>
-          <label htmlFor={field.id}>{field.label}</label>
+        <div className={classes['myform-input-section']} key={index}>
+          <label className={classes['myform-label']} htmlFor={field.id}>
+            {field.label}
+          </label>
           {field.type === 'input' && (
             <input
+              className={classes['myform-text-input']}
               id={field.id}
               type={field.inputType}
               ref={field.ref}
@@ -63,7 +66,7 @@ function MyForm(props) {
       ))}
       {error && <div>{error}</div>}
       <br></br>
-      <div>
+      <div className={classes['btn-container']}>
         <BtnCTA classname="btn-dark" type="submit" label={labelCTA} />
       </div>
     </form>

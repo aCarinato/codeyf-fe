@@ -1,6 +1,7 @@
 export const people = [
   {
     id: '1',
+    registrationCompleted: true,
     username: 'ale',
     shortDescription: 'Self taught beginner',
     longDescription: 'Self taught beginner',
@@ -8,6 +9,10 @@ export const people = [
     languages: ['en', 'it'],
     isBuddy: true,
     isMentor: true,
+    interest: [
+      { _id: '0', label: 'styling' },
+      { _id: '6', label: 'NLP' },
+    ],
     skills: ['python - beginner', 'data-science - beginner'],
     learning: [
       'python',
@@ -24,7 +29,15 @@ export const people = [
     // pastGroups: [],
     // pastAssignements: [],
     nPoints: 0,
-    feedback: [],
+    feedback: [
+      {
+        from: '3',
+        rate: '3',
+        comment: 'Communication to improve but he is a good guy',
+        groupID: '',
+        assignmentID: '',
+      },
+    ],
     rating: 0,
     messages: [{ id: '', from: '', content: '', reveivedAt: '' }],
     isAdmin: false,
@@ -59,6 +72,7 @@ export const people = [
   },
   {
     id: '2',
+    registrationCompleted: true,
     username: 'Jean Blanc',
     shortDescription: 'Frontend senior developer',
     longDescription: 'Self taught beginner',
@@ -109,6 +123,7 @@ export const people = [
   },
   {
     id: '3',
+    registrationCompleted: true,
     username: 'jonny jo',
     shortDescription: 'Self taught beginner',
     longDescription: 'Self taught beginner',
@@ -159,6 +174,7 @@ export const people = [
   },
   {
     id: '4',
+    registrationCompleted: true,
     username: 'toni',
     shortDescription: 'Self taught beginner',
     longDescription:
@@ -212,6 +228,7 @@ export const people = [
   },
   {
     id: '5',
+    registrationCompleted: true,
     username: 'bepi',
     shortDescription: 'Self taught beginner',
     longDescription: 'Self taught beginner',
@@ -258,6 +275,7 @@ export const people = [
   },
   {
     id: '6',
+    registrationCompleted: true,
     username: 'jiji',
     shortDescription: 'Self taught beginner',
     longDescription: 'Self taught beginner',
@@ -304,6 +322,7 @@ export const people = [
   },
   {
     id: '7',
+    registrationCompleted: true,
     username: 'savio',
     shortDescription: 'El mejo',
     longDescription: 'Self taught beginner',
@@ -350,6 +369,7 @@ export const people = [
   },
   {
     id: '8',
+    registrationCompleted: true,
     username: 'cioca',
     shortDescription: 'Senior fe developer',
     longDescription: 'Self taught beginner',
