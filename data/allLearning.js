@@ -4,11 +4,17 @@ export const allLearning = [
   { id: '2', name: 'html' },
   { id: '3', name: 'css' },
   { id: '4', name: 'react' },
-  { id: '5', name: 'gamedev' },
+  { id: '5', name: 'java' },
   { id: '6', name: 'django' },
-  { id: '7', name: 'blockchain' },
+  { id: '7', name: 'kotlin' },
   { id: '8', name: 'node' },
   { id: '9', name: 'express' },
+  { id: '10', name: 'docker' },
+  { id: '11', name: 'github' },
+  { id: '12', name: '.NET' },
+  { id: '13', name: 'C' },
+  { id: '14', name: 'C++' },
+  { id: '15', name: 'C#' },
 ];
 
 // hOW am I supposed to take this.

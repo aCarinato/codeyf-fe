@@ -1,1 +1,26 @@
+.container {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 12px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  /* text-align: center; */
+  width: 32rem;
+  margin: auto;
+  padding: 2.4rem;
+  /* margin: 1rem; */
+}
 
+.myform-input-section {
+  padding: 1.2rem 0;
+}
+
+.myform-label {
+  display: block;
+  width: 90%;
+}
+
+.myform-text-input {
+  width: 100%;
+}
+
+.btn-container {
+  text-align: center;
+}

@@ -17,4 +17,11 @@ export const allTopics = [
   { _id: '15', label: 'authentication' },
   { _id: '16', label: 'deployment' },
   { _id: '17', label: 'data pipelines' },
+  { _id: '18', label: 'web scraping' },
+  { _id: '19', label: 'microservices' },
+  { _id: '20', label: 'containerisation' },
+  { _id: '21', label: 'asynchronous programming' },
+  { _id: '22', label: 'API design' },
+  { _id: '23', label: 'testing' },
+  { _id: '24', label: 'CD/CI' },
 ];
