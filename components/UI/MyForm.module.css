@@ -15,6 +15,7 @@
 .myform-label {
   display: block;
   width: 90%;
+  text-align: left;
 }
 
 .myform-text-input {

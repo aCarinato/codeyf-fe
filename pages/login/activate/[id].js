@@ -104,8 +104,6 @@ function ActivateAccount() {
           onCLickAction={submit}
         />
       )}
-
-      {/* <button onClick={submit}>ACTIVATE</button> */}
     </div>
   );
 }

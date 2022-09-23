@@ -1,6 +1,7 @@
 import classes from './MyForm.module.css';
 // own components
 import BtnCTA from './BtnCTA';
+import { Fragment } from 'react';
 
 function MyForm(props) {
   const { formFields, labelCTA, formSubmit, error } = props;
@@ -13,20 +14,32 @@ function MyForm(props) {
             {field.label}
           </label>
           {field.type === 'input' && (
-            <input
-              className={classes['myform-text-input']}
-              id={field.id}
-              type={field.inputType}
-              ref={field.ref}
-              //   defaultValue={field.defaultValue}
-              placeholder={field.placeholder}
-              required
-            />
+            <Fragment>
+              <input
+                className={
+                  field.inputIsInvalid
+                    ? 'input-invalid'
+                    : classes['myform-text-input']
+                }
+                id={field.id}
+                type={field.inputType}
+                // ref={field.ref}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                //   defaultValue={field.defaultValue}
+                placeholder={field.placeholder}
+                required
+              />
+              {field.inputIsInvalid && (
+                <p className="input-error-msg">{field.inputErrorMsg}</p>
+              )}
+            </Fragment>
           )}
           {field.type === 'textarea' && (
             <textarea
               id={field.id}
-              ref={field.ref}
+              // ref={field.ref}
               rows="5"
               cols="33"
               //   defaultValue={field.defaultValue}
@@ -51,7 +64,6 @@ function MyForm(props) {
           )}
           {field.type === 'select' && (
             <div>
-              {/* <label htmlFor={field.id}>{field.label}</label> */}
               <select name={field.id} id={field.id}>
                 <option value="">--Please choose a country--</option>
                 {field.options.map((option, index) => (

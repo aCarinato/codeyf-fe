@@ -54,7 +54,7 @@ Spacing System (px)
   --main-btnlight-color: #cbe3f7;
   /* --main-btnlight-color: #aef8ec; */
   --main-error-color: rgb(199, 37, 137);
-  --main-disabled-color: rgb(117, 179, 117);
+  --main-success-color: rgb(117, 179, 117);
   --main-text-color: rgb(63, 80, 110);
 
   --main-cta-light-hover-color: #8dace5;
@@ -327,12 +327,12 @@ fieldset {
 
 .card-group-available {
   margin-bottom: 1.2rem;
-  color: green;
+  color: var(--main-success-color);
 }
 
 .card-group-unavailable {
   margin-bottom: 1.2rem;
-  color: red;
+  color: var(--main-error-color);
 }
 
 .card-footer {
@@ -428,6 +428,7 @@ td {
   font-size: 1.2rem;
   font-weight: bold;
   padding-bottom: 0.4rem;
+  /* text-align: left; */
 }
 
 /* BUTTONS */
@@ -443,11 +444,13 @@ td {
 
 .input-invalid {
   border: 0.1rem solid var(--main-error-color);
-  background-color: #ffeded;
+  background-color: #ffe1f4;
+  width: 100%;
 }
+
 .input-invalid:focus {
-  border-color: #ff8800;
-  background-color: #fbe8d2;
+  border-color: #ffa9de;
+  background-color: #ffc6e9;
 }
 
 .input-error-msg {
@@ -460,6 +463,13 @@ td {
   font-size: 1.6rem;
   color: var(--main-error-color);
   /* font-weight: bold; */
+}
+
+.submit-success-msg {
+  padding-top: 0.4rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--main-primary-color);
 }
 
 /* ----------------- */
