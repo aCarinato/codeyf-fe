@@ -15,7 +15,7 @@ function ForgotPasswordPage() {
       label: 'Your email',
       id: 'email',
       inputType: 'email',
-      // value: { email },
+      value: email,
       onChange: (e) => {
         setEmail(e.target.value);
         setSuccess('');
@@ -36,12 +36,12 @@ function ForgotPasswordPage() {
         { email }
       );
 
-      console.log(res);
+      // console.log(res);
 
       setEmail('');
 
       if (res.data.error) {
-        console.log(res.data.error);
+        // console.log(res.data.error);
         setError(res.data.error);
       }
 
@@ -56,7 +56,10 @@ function ForgotPasswordPage() {
 
   return (
     <div className="center-text">
-      <p>Please type email address to receive the link for password reset</p>
+      <p>
+        Please type the email address you have registered with to receive the
+        link for password reset.
+      </p>
       <br></br>
       <MyForm
         formFields={forgotPasswordFormFields}
@@ -65,7 +68,7 @@ function ForgotPasswordPage() {
         error=""
       />
       <br></br>
-      {success !== '' && <p>{success}</p>}
+      {success !== '' && <p className="submit-success-msg">{success}</p>}
       {error !== '' && <p className="submit-error-msg">{error}</p>}
     </div>
   );

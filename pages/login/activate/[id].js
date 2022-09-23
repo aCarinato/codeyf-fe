@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 // packages
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
@@ -60,7 +60,7 @@ function ActivateAccount() {
         //   res.data.newUser.token,
         //   res.data.newUser.isAdmin
         // );
-        router.push('/login/activate/confirm');
+        // router.push('/login/activate/confirm');
       }
       //   if (res.data)
     } catch (err) {
@@ -78,31 +78,42 @@ function ActivateAccount() {
 
   return (
     <div>
-      <h1>Hi {state.username}, activate your account!</h1>
-      <br></br>
-      {/* {state.success && (
-        <div>
-          <p>
-            Congratulations {state.username}, you successfully activated your
-            account!
-          </p>
-          <p>Please login and complete the registration to enable all features.</p>
-        </div>
-      )} */}
       {state.error !== '' ? (
         <div>
           <p className="submit-error-msg">{state.error}</p>
           <br></br>
           <p className="link-text">
-            <Link href="/login">Go to register</Link>
+            <Link href="/login">Go to registration page</Link>
           </p>
         </div>
       ) : (
-        <BtnCTA
-          classname="btn-dark"
-          label={state.buttonText}
-          onCLickAction={submit}
-        />
+        <Fragment>
+          {state.success !== '' ? (
+            <div>
+              <p className="submit-success-msg">
+                Congratulations, you successfully activated your account!
+              </p>
+              <br></br>
+              <p className="submit-success-msg">
+                Please login and complete your profile to enable all features.
+              </p>
+              <br></br>
+              <Link href="/login">
+                <p className="link-text">Go to profile</p>
+              </Link>{' '}
+            </div>
+          ) : (
+            <Fragment>
+              <h2>Hi {state.username}, activate your account!</h2>
+              <br></br>
+              <BtnCTA
+                classname="btn-dark"
+                label={state.buttonText}
+                onCLickAction={submit}
+              />
+            </Fragment>
+          )}
+        </Fragment>
       )}
     </div>
   );

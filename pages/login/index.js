@@ -193,7 +193,7 @@ function LoginPage() {
           setError(res.data.error);
         }
 
-        console.log(res);
+        // console.log(res);
 
         if (res.data.success) {
           setSuccess(res.data.message);
