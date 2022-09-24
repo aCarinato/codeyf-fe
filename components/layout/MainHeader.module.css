@@ -10,6 +10,7 @@
 .container-item {
   display: flex;
   cursor: pointer;
+  align-items: center;
 }
 
 .container-item-label {

@@ -1,14 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+// own components
 import Modal from '../UI/Modal';
-
+// style
 import classes from './MobileMenu.module.css';
+import { Icon } from '@iconify/react';
+// context
+import { useMainContext } from '../../context/Context';
 
 function MobileMenu(props) {
+  const { mobileView, authState } = useMainContext();
+
   const { setShowMobileMenu } = props;
 
   const [expandedPeople, setExpandedPeople] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    if (authState !== null && authState.username.length > 0) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [authState]);
 
   return (
     <Modal>
@@ -28,18 +44,28 @@ function MobileMenu(props) {
               className={classes['menu-li']}
               onClick={() => setShowMobileMenu(false)}
             >
-              <Link href="/">
-                <a className={classes['main-nav-mob-link']}>HOME</a>
-              </Link>
+              {isLoggedIn ? (
+                <Link href="/my-profile">
+                  {/* <a className={classes['main-nav-mob-link']}>LOGIN</a> */}
+                  <>
+                    <Icon icon="carbon:user-avatar-filled-alt" /> MY PROFILE
+                  </>
+                </Link>
+              ) : (
+                <Link href="/login">
+                  <a className={classes['main-nav-mob-link']}>LOGIN</a>
+                </Link>
+              )}
             </li>
             <li
               className={classes['menu-li']}
               onClick={() => setShowMobileMenu(false)}
             >
-              <Link href="/login">
-                <a className={classes['main-nav-mob-link']}>LOGIN</a>
+              <Link href="/">
+                <a className={classes['main-nav-mob-link']}>HOME</a>
               </Link>
             </li>
+
             <li
               className={classes['menu-li']}
               onClick={() => setExpandedPeople(!expandedPeople)}
@@ -96,7 +122,7 @@ function MobileMenu(props) {
               </ul>
             )}
 
-            <li className={classes['menu-li']}>LEARNING</li>
+            {/* <li className={classes['menu-li']}>LEARNING</li> */}
           </ul>
         </div>
       </div>

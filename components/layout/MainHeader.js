@@ -1,18 +1,29 @@
 import classes from './MainHeader.module.css';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+// own components
 import DropdownMenu from './DropdownMenu';
 import MobileMenu from './MobileMenu';
 // context
 import { useMainContext } from '../../context/Context';
 
 function MainHeader() {
-  const { mobileView } = useMainContext();
+  const { mobileView, authState } = useMainContext();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const [expandedPeople, setExpandedPeople] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    if (authState !== null && authState.username.length > 0) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [authState]);
 
   const peopleMenuItems = [
     {
@@ -94,11 +105,19 @@ function MainHeader() {
             </div>
             {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
           </div>
-          <div className={classes['container-item-label']}>
-            <Link href="/login">
-              <a className={classes['main-nav-link']}>LOGIN</a>
-            </Link>
-          </div>
+          {isLoggedIn ? (
+            <div className={classes['container-item']}>
+              <Link href="/my-profile">
+                <Icon icon="carbon:user-avatar-filled-alt" />
+              </Link>
+            </div>
+          ) : (
+            <div className={classes['container-item-label']}>
+              <Link href="/login">
+                <a className={classes['main-nav-link']}>LOGIN</a>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </header>

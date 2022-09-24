@@ -25,6 +25,56 @@ export function ContextProvider({ children }) {
     }
   }, []);
 
+  // USER AUTHENTICATION
+  const [authState, setAuthState] = useState({
+    username: '',
+    email: '',
+    token: '',
+    isAdmin: '',
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setAuthState(JSON.parse(localStorage.getItem('codeyful-user-auth')));
+      // setAdminState(JSON.parse(localStorage.getItem('nappi-admin-auth')));
+    }
+  }, []);
+
+  const loginHandler = (username, email, token, isAdmin) => {
+    //  saves the credentials in local storage and in the state
+    // localStorage.setItem('token', token);
+
+    // console.log(username, email, token, isAdmin);
+
+    localStorage.setItem(
+      'codeyful-user-auth',
+      JSON.stringify({
+        username,
+        email,
+        token,
+        isAdmin,
+      })
+    );
+
+    setAuthState({
+      username,
+      email,
+      token,
+      isAdmin,
+    });
+  };
+
+  const logoutHandler = () => {
+    // localStorage.removeItem('token');
+    localStorage.removeItem('codeyful-user-auth');
+    setAuthState({
+      username: '',
+      email: '',
+      token: '',
+      isAdmin: '',
+    });
+  };
+
   const value = {
     mobileView,
     setMobileView,
@@ -32,6 +82,9 @@ export function ContextProvider({ children }) {
     setPeople,
     groups,
     setGroups,
+    authState,
+    userLogin: loginHandler,
+    userLogout: logoutHandler,
   };
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>;
