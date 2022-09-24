@@ -15,7 +15,7 @@ function HomePage() {
 
   useEffect(() => {
     setPeople(people);
-    fetchMessage();
+    // fetchMessage();
     // console.log(peoples);
   }, []);
 
@@ -51,7 +51,7 @@ function HomePage() {
       {/* <div>{JSON.stringify(peoples)}</div> */}
       <br></br>
       <br></br>
-      <div>{isLoading ? <div>Loading</div> : messageFromServer}</div>
+      {/* <div>{isLoading ? <div>Loading</div> : messageFromServer}</div> */}
       <h3>
         Coding buddies{' '}
         <Link href={'/people/coding-buddies'}>

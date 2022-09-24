@@ -1,12 +1,16 @@
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 // own component
 import MyForm from '../../components/UI/MyForm';
 // libraries
 import axios from 'axios';
 import parse from 'html-react-parser';
+// context
+import { useMainContext } from '../../context/Context';
 
 function LoginPage() {
+  const { authState, userLogin } = useMainContext();
+
   const router = useRouter();
 
   const [loginMode, setLoginMode] = useState(true);
@@ -48,7 +52,9 @@ function LoginPage() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // LOGIN
+  // ---------- //
+  //    LOGIN   //
+  // ---------- //
   const loginFormFields = [
     {
       type: 'input',
@@ -58,7 +64,10 @@ function LoginPage() {
       value: enteredEmail,
       inputIsInvalid: emailIsInvalid,
       inputErrorMsg: 'Please enter a valid address',
-      onChange: (e) => setEnteredEmail(e.target.value),
+      onChange: (e) => {
+        setEnteredEmail(e.target.value);
+        setError(null);
+      },
       onBlur: (e) => setEnteredEmailTouched(true),
     },
     {
@@ -69,7 +78,10 @@ function LoginPage() {
       value: enteredPassword,
       inputIsInvalid: passwordIsInvalid,
       inputErrorMsg: 'Longer than 7 characters',
-      onChange: (e) => setEnteredPassword(e.target.value),
+      onChange: (e) => {
+        setEnteredPassword(e.target.value);
+        setError(null);
+      },
       onBlur: (e) => setEnteredPasswordTouched(true),
       // ref: passwordInputRef,
       // defaultValue:
@@ -78,20 +90,67 @@ function LoginPage() {
     },
   ];
 
-  // SIGNUP
-  // const [showForm, setShowForm] = useState(true);
-  // const [showSuccess, setShowSuccess] = useState(false);
-
-  // const usernameInputRef = useRef();
-  // const emailInputRef = useRef();
-  // const passwordInputRef = useRef();
-  // const confirmPasswordInputRef = useRef();
-
   // FORM VALIDITY
-  let formIsValid;
+  let loginFormIsValid;
+  if (enteredEmailIsValid && enteredPasswordIsValid) loginFormIsValid = true;
 
-  if (enteredUsernameIsValid && enteredEmailIsValid && enteredPasswordIsValid)
-    formIsValid = true;
+  const loginHandler = async (e) => {
+    e.preventDefault();
+    setEnteredEmailTouched(true);
+    setEnteredPasswordTouched(true);
+
+    setSuccess(null);
+    setError(null);
+
+    if (!loginFormIsValid) {
+      return;
+    } else {
+      const loginUser = {
+        email: enteredEmail,
+        password: enteredPassword,
+      };
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/auth/login`,
+          loginUser
+        );
+
+        // console.log(res);
+
+        if (res.data.error) {
+          // console.log(res.data.error);
+          setError(res.data.error);
+        }
+
+        if (res.data.success) {
+          userLogin(
+            res.data.loginUser.username,
+            res.data.loginUser.email,
+            res.data.loginUser.token,
+            res.data.loginUser.isAdmin
+          );
+
+          setEnteredEmail('');
+          setEnteredPassword('');
+          setEnteredEmailTouched(false);
+          setEnteredPasswordTouched(false);
+          console.log('SUCCESFULLY LOGGED IN');
+          // router.push('/login/confirmation-email');
+
+          // setShowForm(false);
+          // setShowSuccess(true);
+          // login()
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  // ---------- //
+  //   SIGNUP   //
+  // ---------- //
 
   const signupFormFields = [
     {
@@ -156,7 +215,13 @@ function LoginPage() {
     },
   ];
 
-  const signup = async (e) => {
+  // FORM VALIDITY
+  let signupFormIsValid;
+
+  if (enteredUsernameIsValid && enteredEmailIsValid && enteredPasswordIsValid)
+    signupFormIsValid = true;
+
+  const signupHandler = async (e) => {
     e.preventDefault();
     setEnteredUsernameTouched(true);
     setEnteredEmailTouched(true);
@@ -171,7 +236,7 @@ function LoginPage() {
     // const enteredEmail = emailInputRef.current.value;
     // const enteredPassword = passwordInputRef.current.value;
 
-    if (!formIsValid) {
+    if (!signupFormIsValid) {
       return;
     } else {
       const signupUser = {
@@ -197,10 +262,7 @@ function LoginPage() {
 
         if (res.data.success) {
           setSuccess(res.data.message);
-          // router.push('/login/confirmation-email');
 
-          // setShowForm(false);
-          // setShowSuccess(true);
           // login()
         }
 
@@ -218,20 +280,23 @@ function LoginPage() {
     }
   };
 
+  // REDIRECT USER IF ALREADY LOGGED IN
+  if (authState && authState.token.length > 0) router.push('/my-profile');
+
   return (
     <Fragment>
       {loginMode ? (
         <MyForm
           formFields={loginFormFields}
           labelCTA="login"
-          formSubmit={() => {}}
+          formSubmit={(e) => loginHandler(e)}
           error=""
         />
       ) : (
         <MyForm
           formFields={signupFormFields}
           labelCTA="sign me up"
-          formSubmit={(e) => signup(e)}
+          formSubmit={(e) => signupHandler(e)}
           error=""
         />
       )}
@@ -301,7 +366,7 @@ function LoginPage() {
         )}
       </Fragment>
 
-      {success && parse(success)}
+      {!loginMode && success && parse(success)}
       {/* {error && <p className="submit-error-msg">{error}</p>} */}
 
       {/* {showSuccess && (
