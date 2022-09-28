@@ -19,7 +19,7 @@ export const allSkills = [
   { id: '17', name: 'javascript - advanced' },
   { id: '18', name: 'frontend - beginner' },
   { id: '19', name: 'frontend - intermediate' },
-  { id: '20', name: 'fronten - advanced' },
+  { id: '20', name: 'frontend - advanced' },
   { id: '21', name: 'backend - beginner' },
   { id: '22', name: 'backend - intermediate' },
   { id: '23', name: 'backend - advanced' },

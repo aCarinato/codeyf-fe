@@ -613,6 +613,8 @@ function CreateAssignementScreen() {
                       <input
                         className="width-80"
                         type="text"
+                        // ------------------------- //
+                        // CHECK CAREFULLY THIS ID!!
                         id="0"
                         // value=''
                         onChange={(e) => handleChangeGoal(e, '0')}

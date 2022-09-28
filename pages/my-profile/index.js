@@ -1,24 +1,38 @@
+// react / next
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 // own components
 import UserRoute from '../../components/routes/UserRoute';
 import BtnCTA from '../../components/UI/BtnCTA';
+import CompleteProfileForm from '../../components/profile/CompleteProfileForm';
+// packages
+import { Icon } from '@iconify/react';
 // context
 import { useMainContext } from '../../context/Context';
 
 function MyProfile() {
-  const { userLogout } = useMainContext();
+  const { authState, currentUser, userLogout } = useMainContext();
 
   return (
     <UserRoute>
       <div>
-        <h2>MyProfile</h2>
-        <br></br>
-        <div>
-          <BtnCTA
-            classname="btn-dark"
-            label="Logout"
-            onCLickAction={() => userLogout()}
-          />
+        <div className="flex flex-justify-space-between">
+          <h2>MyProfile - {currentUser && currentUser.username}</h2>
+          <Link href="/my-profile/settings">
+            <div className="main-link">
+              <Icon icon="bytesize:settings" /> settings
+            </div>
+          </Link>
         </div>
+
+        <br></br>
+        {currentUser && currentUser.isProfileCompleted ? (
+          <div>YOUR PROFILE PAGE</div>
+        ) : (
+          <div>
+            <CompleteProfileForm />
+          </div>
+        )}
       </div>
     </UserRoute>
   );

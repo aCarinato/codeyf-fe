@@ -47,9 +47,9 @@ function MobileMenu(props) {
               {isLoggedIn ? (
                 <Link href="/my-profile">
                   {/* <a className={classes['main-nav-mob-link']}>LOGIN</a> */}
-                  <>
+                  <a className={classes['main-nav-mob-link']}>
                     <Icon icon="carbon:user-avatar-filled-alt" /> MY PROFILE
-                  </>
+                  </a>
                 </Link>
               ) : (
                 <Link href="/login">

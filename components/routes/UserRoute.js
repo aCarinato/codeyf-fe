@@ -12,7 +12,7 @@ const UserRoute = ({ children }) => {
   const [ok, setOk] = useState(false);
   const router = useRouter();
   // const { locale } = router;
-  const { authState } = useMainContext();
+  const { authState, setCurrentUser } = useMainContext();
 
   useEffect(() => {
     // let cancel = false;
@@ -35,7 +35,10 @@ const UserRoute = ({ children }) => {
           },
         }
       );
-      if (data.ok) setOk(true);
+      if (data.ok) {
+        setOk(true);
+        setCurrentUser(data.user);
+      }
     } catch (err) {
       //   router.push('/login');
       console.log(err);

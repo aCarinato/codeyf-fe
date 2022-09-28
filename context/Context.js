@@ -10,6 +10,9 @@ export function ContextProvider({ children }) {
   const [peoples, setPeople] = useState([]);
   const [groups, setGroups] = useState([]);
 
+  // current logged in user
+  const [currentUser, setCurrentUser] = useState(null);
+
   // Mobile
   const [mobileView, setMobileView] = useState(null);
 
@@ -85,6 +88,8 @@ export function ContextProvider({ children }) {
     authState,
     userLogin: loginHandler,
     userLogout: logoutHandler,
+    currentUser,
+    setCurrentUser,
   };
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>;
