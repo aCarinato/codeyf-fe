@@ -89,7 +89,7 @@ function ResetPasswordPage() {
           { resetPasswordLink, newPassword }
         );
 
-        console.log(res);
+        // console.log(res);
 
         //   setEmail('');
 

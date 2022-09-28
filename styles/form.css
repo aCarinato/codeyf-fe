@@ -1,0 +1,83 @@
+/* ----------- */
+/*    FORMS    */
+/* ----------- */
+.container {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 12px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  /* text-align: center; */
+  width: 32rem;
+  margin: auto;
+  padding: 2.4rem;
+  /* margin: 1rem; */
+}
+
+.myform-input-section {
+  padding: 1.2rem 0;
+}
+
+.myform-label {
+  display: block;
+  width: 90%;
+  text-align: left;
+}
+
+.myform-text-input {
+  width: 100%;
+}
+
+.btn-container {
+  text-align: center;
+}
+
+.form-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-bottom: 0.4rem;
+  /* text-align: left; */
+}
+
+/* BUTTONS */
+.btn-circle {
+  font-weight: bold;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 1.6rem;
+  cursor: pointer;
+  background-color: var(--main-btnlight-color);
+  border: 0.1rem solid var(--main-primary-color);
+}
+
+.input-invalid {
+  border: 0.1rem solid var(--main-error-color);
+  background-color: #ffe1f4;
+  /* width: 100%; */
+}
+
+.input-invalid:focus {
+  border-color: #ffa9de;
+  background-color: #ffc6e9;
+}
+
+.input-error-msg {
+  font-size: 1.2rem;
+  color: var(--main-error-color);
+}
+
+.submit-error-msg {
+  padding-top: 0.4rem;
+  font-size: 1.6rem;
+  color: var(--main-error-color);
+  /* font-weight: bold; */
+}
+
+.submit-success-msg {
+  padding-top: 0.4rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--main-primary-color);
+}
+
+/* FIELDSET */
+.fieldset-error {
+  border: 0.05rem solid var(--main-error-color);
+}
