@@ -20,6 +20,10 @@ function LoginPage() {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
 
+  const [submittedUsernameIsValid, setSubmittedUsernameIsValid] =
+    useState(true);
+  const [submittedEmailIsValid, setSubmittedEmailIsValid] = useState(true);
+
   const [enteredUsernameTouched, setEnteredUsernameTouched] = useState(false);
   const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
   const [enteredPasswordTouched, setEnteredPasswordTouched] = useState(false);
@@ -28,12 +32,15 @@ function LoginPage() {
 
   // CHECKING INPUT VALIDITY
   // username
-  const enteredUsernameIsValid = enteredUsername.trim() !== '';
+  const enteredUsernameIsValid =
+    enteredUsername.trim() !== '' && submittedUsernameIsValid;
   const usernameIsInvalid = !enteredUsernameIsValid && enteredUsernameTouched;
 
   // email
   const enteredEmailIsValid =
-    enteredEmail.trim() !== '' && enteredEmail.includes('@');
+    enteredEmail.trim() !== '' &&
+    enteredEmail.includes('@') &&
+    submittedEmailIsValid;
   const emailIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
 
   // password
@@ -152,6 +159,8 @@ function LoginPage() {
   //   SIGNUP   //
   // ---------- //
 
+  // const usernameErrorMsg = setSubmittedUsernameIsValid ? '' : ''
+
   const signupFormFields = [
     {
       type: 'input',
@@ -160,12 +169,17 @@ function LoginPage() {
       inputType: 'text',
       value: enteredUsername,
       inputIsInvalid: usernameIsInvalid,
-      inputErrorMsg: 'Username must be at least 1 character',
+      inputErrorMsg: submittedUsernameIsValid
+        ? 'Username must be at least 1 character'
+        : error,
       onChange: (e) => {
         setEnteredUsername(e.target.value);
+        setSubmittedUsernameIsValid(true);
         setError(null);
       },
-      onBlur: (e) => setEnteredUsernameTouched(true),
+      onBlur: (e) => {
+        setEnteredUsernameTouched(true);
+      },
       // ref: usernameInputRef,
     },
     {
@@ -175,9 +189,10 @@ function LoginPage() {
       inputType: 'email',
       value: enteredEmail,
       inputIsInvalid: emailIsInvalid,
-      inputErrorMsg: 'Please enter a valid address',
+      inputErrorMsg: submittedEmailIsValid ? 'Invalid email' : error,
       onChange: (e) => {
         setEnteredEmail(e.target.value);
+        setSubmittedEmailIsValid(true);
         setError(null);
       },
       onBlur: (e) => setEnteredEmailTouched(true),
@@ -205,7 +220,7 @@ function LoginPage() {
       inputType: 'password',
       value: enteredConfirmPassword,
       inputIsInvalid: confirmPasswordIsInvalid,
-      inputErrorMsg: 'Password does not match',
+      inputErrorMsg: 'Passwords do not match',
       onChange: (e) => {
         setEnteredConfirmPassword(e.target.value);
         setError(null);
@@ -218,7 +233,12 @@ function LoginPage() {
   // FORM VALIDITY
   let signupFormIsValid;
 
-  if (enteredUsernameIsValid && enteredEmailIsValid && enteredPasswordIsValid)
+  if (
+    enteredUsernameIsValid &&
+    enteredEmailIsValid &&
+    enteredPasswordIsValid &&
+    enteredConfirmPasswordIsValid
+  )
     signupFormIsValid = true;
 
   const signupHandler = async (e) => {
@@ -227,6 +247,9 @@ function LoginPage() {
     setEnteredEmailTouched(true);
     setEnteredPasswordTouched(true);
     setEnteredConfirmPasswordTouched(true);
+
+    setSubmittedUsernameIsValid(true);
+    setSubmittedEmailIsValid(true);
 
     setSuccess(null);
     setError(null);
@@ -255,6 +278,11 @@ function LoginPage() {
 
         if (res.data.error) {
           // console.log(res.data.error);
+          if (res.data.errorType === 'username')
+            setSubmittedUsernameIsValid(false);
+
+          if (res.data.errorType === 'email') setSubmittedEmailIsValid(false);
+
           setError(res.data.error);
         }
 
@@ -263,17 +291,18 @@ function LoginPage() {
         if (res.data.success) {
           setSuccess(res.data.message);
 
-          // login()
-        }
+          setEnteredUsername('');
+          setEnteredEmail('');
+          setEnteredPassword('');
+          setEnteredConfirmPassword('');
+          setEnteredUsernameTouched(false);
+          setEnteredEmailTouched(false);
+          setEnteredPasswordTouched(false);
+          setEnteredConfirmPasswordTouched(false);
 
-        setEnteredUsername('');
-        setEnteredEmail('');
-        setEnteredPassword('');
-        setEnteredConfirmPassword('');
-        setEnteredUsernameTouched(false);
-        setEnteredEmailTouched(false);
-        setEnteredPasswordTouched(false);
-        setEnteredConfirmPasswordTouched(false);
+          setSubmittedUsernameIsValid(true);
+          setSubmittedEmailIsValid(true);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -301,7 +330,9 @@ function LoginPage() {
         />
       )}
 
-      {error && <div className="center-text submit-error-msg">{error}</div>}
+      {error && submittedUsernameIsValid && submittedEmailIsValid && (
+        <div className="center-text submit-error-msg">{error}</div>
+      )}
 
       <Fragment>
         {loginMode ? (

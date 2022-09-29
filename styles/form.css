@@ -50,7 +50,7 @@
 .input-invalid {
   border: 0.1rem solid var(--main-error-color);
   background-color: #ffe1f4;
-  /* width: 100%; */
+  width: 100%;
 }
 
 .input-invalid:focus {
