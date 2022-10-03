@@ -24,11 +24,14 @@ function CompleteProfileForm() {
   const [longDescription, setLongDescription] = useState('');
   const [country, setCountry] = useState('--select country--');
   const [languages, setLanguages] = useState([]);
-  const [availability, setAvailability] = useState([false, false]);
+  const [availability, setAvailability] = useState([true, null]);
   const [topics, setTopics] = useState([]);
   const [learning, setLearning] = useState([]);
   const [teaching, setTeaching] = useState([]);
   const [skillsLevel, setSkillsLevel] = useState([]);
+  const [companyJob, setCompanyJob] = useState(null);
+  const [linkedin, setLinkedin] = useState('');
+  const [yearsExperience, setYearsExperience] = useState(0);
 
   // touched
   const [shortDescriptionTouched, setShortDescriptionTouched] = useState(false);
@@ -39,6 +42,9 @@ function CompleteProfileForm() {
   const [learningTouched, setLearningTouched] = useState(false);
   const [teachingTouched, setTeachingTouched] = useState(false);
   const [skillsLevelTouched, setSkillsLevelTouched] = useState(false);
+  const [companyJobTouched, setCompanyJobTouched] = useState(false);
+  const [yearsExperienceTouched, setYearsExperienceTouched] = useState(false);
+  const [linkedinTouched, setLinkedinTouched] = useState(false);
 
   //   INPUT VALIDITY
   const shortDescriptionIsValid =
@@ -52,8 +58,7 @@ function CompleteProfileForm() {
   const languagesIsValid = languages.length > 0;
   const languagesIsInvalid = !languagesIsValid && languagesTouched;
 
-  const availabilityIsValid =
-    availability[0] === true || availability[1] === true;
+  const availabilityIsValid = availability[1] !== null;
   const availabilityIsInvalid = !availabilityIsValid && availablityTouched;
 
   const topicsIsValid = topics.length > 2;
@@ -65,12 +70,24 @@ function CompleteProfileForm() {
   const learningIsInvalid = !learningIsValid && learningTouched;
 
   const teachingIsValid =
-    (availability[1] && teaching.length > 1) ||
+    (availability[1] && teaching.length > 0) ||
     (availability[0] && !availability[1]);
   const teachingIsInvalid = !teachingIsValid && teachingTouched;
 
   const skillsLevelIsValid = skillsLevel.length > 0;
   const skillsLevelIsInvalid = !skillsLevelIsValid && skillsLevelTouched;
+
+  const companyJobIsValid = availability[1] && companyJob !== null;
+  const companyJobIsInvalid = !companyJobIsValid && companyJobTouched;
+
+  // const linkedinIsValid =
+  //   (availability[1] && linkedin.trim() !== '') ||
+  //   (availability[0] && !availability[1]);
+  // const linkedinIsInvalid = !linkedinIsValid && linkedinTouched;
+
+  const yearsExperienceIsValid = availability[1] && yearsExperience > 0;
+  const yearsExperienceIsInvalid =
+    !yearsExperienceIsValid && yearsExperienceTouched;
 
   let formIsValid;
 
@@ -81,7 +98,10 @@ function CompleteProfileForm() {
     topicsIsValid &&
     learningIsValid &&
     teachingIsValid &&
-    skillsLevelIsValid
+    skillsLevelIsValid &&
+    companyJobIsValid &&
+    yearsExperienceIsValid
+    // && linkedinIsValid
   )
     formIsValid = true;
 
@@ -96,7 +116,10 @@ function CompleteProfileForm() {
     setLearningTouched(true);
     setTeachingTouched(true);
     setSkillsLevelTouched(true);
-    // console.log(formIsValid);
+    setCompanyJobTouched(true);
+    setYearsExperienceTouched(true);
+    // setLinkedinTouched(true);
+
     if (!formIsValid) {
       return;
     } else {
@@ -112,6 +135,9 @@ function CompleteProfileForm() {
             topics,
             learning,
             teaching,
+            yearsExperience,
+            companyJob,
+            linkedin,
             skillsLevel,
           },
           {
@@ -196,12 +222,12 @@ function CompleteProfileForm() {
   // AVAILABILITY
   const handleAvailabilityChange = (e) => {
     const tempAvailability = [...availability];
-    if (e.target.value === 'buddy') {
-      tempAvailability[0] = !tempAvailability[0];
+    if (e.target.value === 'yes') {
+      tempAvailability[1] = true;
       setAvailability(tempAvailability);
     }
-    if (e.target.value === 'mentor') {
-      tempAvailability[1] = !tempAvailability[1];
+    if (e.target.value === 'no') {
+      tempAvailability[1] = false;
       setAvailability(tempAvailability);
     }
 
@@ -298,7 +324,17 @@ function CompleteProfileForm() {
 
   // console.log(languages);
 
-  const successMsg = <div>Thank you for completing your profile!</div>;
+  const successMsg = (
+    <div>
+      <h3>Thank you for completing your profile!</h3>
+      {availability[1] && (
+        <p>
+          Your request to be a mentor is being processed. The outcome will be
+          notified in your profile within 48 hours
+        </p>
+      )}
+    </div>
+  );
 
   return (
     <div>
@@ -306,7 +342,7 @@ function CompleteProfileForm() {
         successMsg
       ) : (
         <div className="grid grid--2cols">
-          <div>
+          <div className="padding-3rem">
             <div className="myform-input-section">
               <label className="myform-label" htmlFor="short-description">
                 short description (max 30 characters) <sup>*</sup>
@@ -358,7 +394,9 @@ function CompleteProfileForm() {
                 Country
               </label>
               <select
-                className={countryIsInvalid ? 'input-invalid ' : ''}
+                className={
+                  countryIsInvalid ? 'input-invalid ' : 'myform-select-input'
+                }
                 name="country"
                 id="country"
                 value={country}
@@ -376,7 +414,7 @@ function CompleteProfileForm() {
                 ))}
               </select>
               {countryIsInvalid && (
-                <p className="input-error-msg">Please select a country</p>
+                <p className="input-error-msg">select a country</p>
               )}
             </div>
 
@@ -400,56 +438,14 @@ function CompleteProfileForm() {
                 ))}
               </fieldset>
               {languagesIsInvalid && (
-                <p className="input-error-msg">
-                  Please select at least one language
-                </p>
-              )}
-            </div>
-
-            {/* BUDDY - MENTOR */}
-            <div className="myform-input-section">
-              <fieldset
-                className={availabilityIsInvalid ? 'fieldset-error' : ''}
-              >
-                <legend>Available as student and/or mentor?</legend>
-                <div>
-                  <input
-                    type="checkbox"
-                    name="buddy"
-                    value="buddy"
-                    onChange={(e) => {
-                      handleAvailabilityChange(e);
-                    }}
-                  />
-                  <label htmlFor="buddy">Student</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    name="mentor"
-                    value="mentor"
-                    onChange={(e) => {
-                      handleAvailabilityChange(e);
-                    }}
-                  />
-                  <label htmlFor="mentor">Mentor</label>
-                </div>
-              </fieldset>
-              <p>
-                NOTE: you will be able to set your state as "unavailable" at any
-                time
-              </p>
-              {availabilityIsInvalid && (
-                <p className="input-error-msg">
-                  Please select at least one option
-                </p>
+                <p className="input-error-msg">select at least one language</p>
               )}
             </div>
 
             {/* TOPICS */}
             <div className="myform-input-section">
               <fieldset className={topicsIsInvalid ? 'fieldset-error' : ''}>
-                <legend>Topics of your interest</legend>
+                <legend>Main topics of interest</legend>
                 {allTopics.map((item) => (
                   <div key={item._id}>
                     <input
@@ -466,9 +462,34 @@ function CompleteProfileForm() {
                 ))}
               </fieldset>
               {topicsIsInvalid && (
-                <p className="input-error-msg">
-                  Please select at least three topics
-                </p>
+                <p className="input-error-msg">select at least three topics</p>
+              )}
+            </div>
+
+            {/* LEARNING */}
+            <div className="myform-input-section">
+              <fieldset className={learningIsInvalid ? 'fieldset-error' : ''}>
+                <legend>
+                  Programming languages and frameworks you've studied or want to
+                  study
+                </legend>
+                {allTechStacks.map((item) => (
+                  <div key={item._id}>
+                    <input
+                      type="checkbox"
+                      name={item.label}
+                      value={item.label}
+                      onChange={() => toggleLearning(item._id)}
+                      // checked={
+                      //   stackCheckedIndex.indexOf(item._id) === -1 ? false : true
+                      // }
+                    />
+                    <label htmlFor={item.label}>{item.label}</label>
+                  </div>
+                ))}
+              </fieldset>
+              {learningIsInvalid && (
+                <p className="input-error-msg">select at least two items</p>
               )}
             </div>
 
@@ -494,74 +515,175 @@ function CompleteProfileForm() {
                 ))}
               </fieldset>
               {skillsLevelIsInvalid && (
-                <p className="input-error-msg">
-                  Please select at least one item
-                </p>
+                <p className="input-error-msg">select at least one item</p>
               )}
             </div>
           </div>
 
-          <div>
-            {/* LEARNING */}
-            {availability[0] && (
-              <div className="myform-input-section">
-                <fieldset className={learningIsInvalid ? 'fieldset-error' : ''}>
-                  <legend>
-                    Programming languages and frameworks you want to learn (as a
-                    student)
-                  </legend>
-                  {allTechStacks.map((item) => (
-                    <div key={item._id}>
-                      <input
-                        type="checkbox"
-                        name={item.label}
-                        value={item.label}
-                        onChange={() => toggleLearning(item._id)}
-                        // checked={
-                        //   stackCheckedIndex.indexOf(item._id) === -1 ? false : true
-                        // }
-                      />
-                      <label htmlFor={item.label}>{item.label}</label>
-                    </div>
-                  ))}
-                </fieldset>
-                {learningIsInvalid && (
-                  <p className="input-error-msg">
-                    Please select at least two items
-                  </p>
-                )}
-              </div>
-            )}
+          <div className="padding-3rem">
+            {/* MENTOR */}
+            <div className="myform-input-section">
+              <fieldset
+                className={availabilityIsInvalid ? 'fieldset-error' : ''}
+              >
+                <legend>Do you want to mentor students?</legend>
+                <div>
+                  <input
+                    type="radio"
+                    name="mentor"
+                    value="yes"
+                    onChange={(e) => {
+                      handleAvailabilityChange(e);
+                    }}
+                  />
+                  <label htmlFor="buddy">Yes</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="mentor"
+                    value="no"
+                    onChange={(e) => {
+                      handleAvailabilityChange(e);
+                    }}
+                  />
+                  <label htmlFor="mentor">No</label>
+                </div>
+              </fieldset>
+              {/* <p>
+                NOTE: you will be able to set your state as "unavailable" at any
+                time so people will not be able to reach out to you.
+              </p> */}
+              {availabilityIsInvalid && (
+                <p className="input-error-msg">select at least one option</p>
+              )}
+            </div>
 
             {/* TEACHING */}
             {availability[1] && (
-              <div className="myform-input-section">
-                <fieldset className={teachingIsInvalid ? 'fieldset-error' : ''}>
-                  <legend>
-                    Programming languages and frameworks you want to help with
-                    (as a mentor)
-                  </legend>
-                  {allTechStacks.map((item) => (
-                    <div key={item._id}>
+              <Fragment>
+                {/* COMPANY JOB */}
+                <div className="myform-input-section">
+                  <fieldset
+                    className={companyJobIsInvalid ? 'fieldset-error' : ''}
+                  >
+                    <legend>
+                      Are you working or have you worked as a developer in a
+                      company?
+                    </legend>
+                    <div>
                       <input
-                        type="checkbox"
-                        name={item.label}
-                        value={item.label}
-                        onChange={() => toggleTeaching(item._id)}
-                        // checked={
-                        //   stackCheckedIndex.indexOf(item._id) === -1 ? false : true
-                        // }
+                        type="radio"
+                        name="company"
+                        value="yes"
+                        onChange={() => {
+                          setCompanyJob(true);
+                          setCompanyJobTouched(true);
+                        }}
                       />
-                      <label htmlFor={item.label}>{item.label}</label>
+                      <label htmlFor="buddy">yes</label>
                     </div>
-                  ))}
-                </fieldset>
-                {teachingIsInvalid && (
-                  <p className="input-error-msg">
-                    Please select at least two items
-                  </p>
-                )}
-              </div>
+                    <div>
+                      <input
+                        type="radio"
+                        name="company"
+                        value="no"
+                        onChange={() => {
+                          setCompanyJob(false);
+                          setCompanyJobTouched(true);
+                        }}
+                      />
+                      <label htmlFor="company">no</label>
+                    </div>
+                  </fieldset>
+                  {companyJobIsInvalid && (
+                    <p className="input-error-msg">select an option</p>
+                  )}
+                </div>
+
+                {/* YEARS OF EXPERIENCE */}
+                <div className="myform-input-section">
+                  <label className="myform-label" htmlFor="experience">
+                    Years of experience coding <sup>*</sup>
+                  </label>
+                  <input
+                    className={
+                      yearsExperienceIsInvalid
+                        ? 'input-invalid myform-text-input'
+                        : 'myform-text-input'
+                    }
+                    id="experience"
+                    name="experience"
+                    type="number"
+                    value={yearsExperience}
+                    onChange={(e) => {
+                      setYearsExperience(Number(e.target.value));
+                    }}
+                    onBlur={() => setYearsExperienceTouched(true)}
+                    // placeholder="who you are or what you like in one sentence"
+                  />
+                  {yearsExperienceIsInvalid && (
+                    <p className="input-error-msg">
+                      enter a number greater than 0
+                    </p>
+                  )}
+                </div>
+
+                {/* LINKEDIN */}
+                <div className="myform-input-section">
+                  <label className="myform-label" htmlFor="linkedin">
+                    Linkedin profile
+                  </label>
+                  <input
+                    className="myform-text-input"
+                    // className={
+                    //   linkedinIsInvalid
+                    //     ? 'input-invalid myform-text-input'
+                    //     : 'myform-text-input'
+                    // }
+                    id="linkedin"
+                    name="linkedin"
+                    type="text"
+                    value={linkedin}
+                    onChange={(e) => {
+                      setLinkedin(e.target.value);
+                    }}
+                    // onBlur={() => setLinkedinTouched(true)}
+                  />
+                  {/* {linkedinIsInvalid && (
+                    <p className="input-error-msg">enter a link</p>
+                  )} */}
+                </div>
+
+                {/* TEACHING */}
+                <div className="myform-input-section">
+                  <fieldset
+                    className={teachingIsInvalid ? 'fieldset-error' : ''}
+                  >
+                    <legend>
+                      Programming languages and frameworks you're available to
+                      help with as a mentor
+                    </legend>
+                    {allTechStacks.map((item) => (
+                      <div key={item._id}>
+                        <input
+                          type="checkbox"
+                          name={item.label}
+                          value={item.label}
+                          onChange={() => toggleTeaching(item._id)}
+                          // checked={
+                          //   stackCheckedIndex.indexOf(item._id) === -1 ? false : true
+                          // }
+                        />
+                        <label htmlFor={item.label}>{item.label}</label>
+                      </div>
+                    ))}
+                  </fieldset>
+                  {teachingIsInvalid && (
+                    <p className="input-error-msg">select at least two items</p>
+                  )}
+                </div>
+              </Fragment>
             )}
 
             <div>
