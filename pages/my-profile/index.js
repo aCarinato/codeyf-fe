@@ -26,8 +26,14 @@ function MyProfile() {
         </div>
 
         <br></br>
-        {currentUser && currentUser.isProfileCompleted ? (
-          <div>YOUR PROFILE PAGE</div>
+        {currentUser && currentUser.registrationCompleted ? (
+          <div>
+            <h4>YOUR PROFILE PAGE</h4>
+            <br></br>
+            {currentUser && currentUser.mentorPendingApproval && (
+              <p>Your mentor application is being processed</p>
+            )}
+          </div>
         ) : (
           <div>
             <CompleteProfileForm />
