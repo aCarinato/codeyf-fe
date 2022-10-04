@@ -87,3 +87,13 @@
 /* .test-column {
   width: 100%;
 } */
+
+/* ------------- */
+/* MEDIA QUERIES */
+/* ------------- */
+
+@media (max-width: 768px) {
+  .grid--2cols {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

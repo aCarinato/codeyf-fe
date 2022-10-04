@@ -48,7 +48,7 @@ function CompleteProfileForm() {
 
   //   INPUT VALIDITY
   const shortDescriptionIsValid =
-    shortDescription.trim() !== '' && shortDescription.length < 30;
+    shortDescription.trim() !== '' && shortDescription.length < 80;
   const shortDescriptionIsInvalid =
     !shortDescriptionIsValid && shortDescriptionTouched;
 
@@ -345,7 +345,7 @@ function CompleteProfileForm() {
           <div className="padding-3rem">
             <div className="myform-input-section">
               <label className="myform-label" htmlFor="short-description">
-                short description (max 30 characters) <sup>*</sup>
+                short description (max 80 characters) <sup>*</sup>
               </label>
               <textarea
                 className={
@@ -356,7 +356,7 @@ function CompleteProfileForm() {
                 id="short-description"
                 name="short-description"
                 type="text"
-                maxLength="35"
+                maxLength="80"
                 rows="2"
                 cols="50"
                 value={shortDescription}
@@ -366,8 +366,7 @@ function CompleteProfileForm() {
               />
               {shortDescriptionIsInvalid && (
                 <p className="input-error-msg">
-                  Insert value for short description less than 30 characters
-                  long
+                  short description less than 80 characters long
                 </p>
               )}
             </div>
@@ -615,6 +614,7 @@ function CompleteProfileForm() {
                     id="experience"
                     name="experience"
                     type="number"
+                    min={0}
                     value={yearsExperience}
                     onChange={(e) => {
                       setYearsExperience(Number(e.target.value));
