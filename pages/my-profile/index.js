@@ -18,11 +18,18 @@ function MyProfile() {
       <div>
         <div className="flex flex-justify-space-between">
           <h2>MyProfile - {currentUser && currentUser.username}</h2>
-          <Link href="/my-profile/settings">
-            <div className="main-link">
-              <Icon icon="bytesize:settings" /> settings
-            </div>
-          </Link>
+          <div>
+            <Link href="/my-profile/settings">
+              <div className="main-link">
+                <Icon icon="bytesize:settings" /> settings
+              </div>
+            </Link>
+            {currentUser && currentUser.isAdmin && (
+              <Link href="/admin">
+                <div className="main-link">admin dashboard</div>
+              </Link>
+            )}
+          </div>
         </div>
 
         <br></br>

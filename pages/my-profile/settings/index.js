@@ -52,9 +52,9 @@ function SettingsPage() {
       </div>
       <br></br>
       <div className="flex flex-justify-space-between">
-        <Link href="/my-profile/settings/edit-account">
+        <Link href="/my-profile/settings/edit-profile">
           <p className="link-text">
-            edit account <Icon icon="clarity:note-edit-line" />
+            edit profile <Icon icon="clarity:note-edit-line" />
           </p>
         </Link>
       </div>
