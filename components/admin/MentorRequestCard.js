@@ -6,6 +6,7 @@ function MentorRequestCard(props) {
   const {
     id,
     username,
+    handle,
     companyJob,
     yearsExperience,
     linkedin,
@@ -25,7 +26,7 @@ function MentorRequestCard(props) {
         </a>{' '}
       </p>
       <br></br>
-      <Link href={`/people/coding-mentors/${username}`}>
+      <Link href={`/people/coding-buddies/${handle}`}>
         <a className="main-link">View Profile</a>
       </Link>
       <div className="tech-span-box">

@@ -47,7 +47,7 @@ function MentorRequestsPage() {
         }
       );
 
-      console.log(res);
+      // console.log(res);
 
       fetchPendingMentors();
     } catch (err) {
@@ -67,7 +67,7 @@ function MentorRequestsPage() {
         }
       );
 
-      console.log(res);
+      // console.log(res);
 
       fetchPendingMentors();
     } catch (err) {
@@ -85,6 +85,7 @@ function MentorRequestsPage() {
             key={request._id}
             id={request._id}
             username={request.username}
+            handle={request.handle}
             companyJob={request.companyJob}
             yearsExperience={request.yearsExperience}
             linkedin={request.linkedin}

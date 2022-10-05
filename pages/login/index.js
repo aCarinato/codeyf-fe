@@ -142,7 +142,7 @@ function LoginPage() {
           setEnteredPassword('');
           setEnteredEmailTouched(false);
           setEnteredPasswordTouched(false);
-          console.log('SUCCESFULLY LOGGED IN');
+          // console.log('SUCCESFULLY LOGGED IN');
           // router.push('/login/confirmation-email');
 
           // setShowForm(false);

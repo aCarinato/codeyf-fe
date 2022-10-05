@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 
+import axios from 'axios';
+
 const mainContext = React.createContext({ people: [], groups: [] });
 
 export function useMainContext() {
@@ -42,6 +44,36 @@ export function ContextProvider({ children }) {
       // setAdminState(JSON.parse(localStorage.getItem('nappi-admin-auth')));
     }
   }, []);
+
+  const fetchUser = async () => {
+    if (authState && authState.email.length > 0) {
+      const email = authState.email;
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/user/`,
+          {
+            email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        // console.log(res);
+        if (res.data.success) {
+          setCurrentUser(res.data.user);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    // current user
+    fetchUser();
+  }, [authState && authState.email]);
 
   const loginHandler = (username, email, token, isAdmin) => {
     //  saves the credentials in local storage and in the state

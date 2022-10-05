@@ -5,6 +5,7 @@ import { groups } from '../../../data/groups';
 import { assignements } from '../../../data/assignements';
 // libraries
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 // own components
 import GroupCard from '../../../components/groups/GroupCard';
 import AssignementCard from '../../../components/assignements/AssignementCard';
@@ -12,7 +13,7 @@ import AssignementCard from '../../../components/assignements/AssignementCard';
 function BuddyPage() {
   const router = useRouter();
   const { query } = router;
-  const username = query.username;
+  const handle = query.handle;
 
   const [buddy, setBuddy] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,6 +24,20 @@ function BuddyPage() {
   // past
   const [pastGroups, setPastGroups] = useState([]);
   const [pastAssignments, setPastAssignments] = useState([]);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/student/${handle}`
+      );
+      // console.log(res.data.user);
+      if (res.data.success) {
+        setBuddy(res.data.user);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchCurrentGroups = () => {
     if (
@@ -92,17 +107,19 @@ function BuddyPage() {
 
   useEffect(() => {
     setLoading(true);
-    const filteredBuddy = people.filter((person) => {
-      return person.username === username && person.isBuddy === true;
-    });
+    // const filteredBuddy = people.filter((person) => {
+    //   return person.username === username && person.isBuddy === true;
+    // });
 
-    setBuddy(filteredBuddy[0]);
+    fetchUser();
+
+    // setBuddy(filteredBuddy[0]);
     fetchCurrentGroups();
     fetchCurrentAssignments();
     fetchPastGroups();
     fetchPastAssignments();
     setLoading(false);
-  }, [buddy, username]);
+  }, [buddy, handle]);
 
   return (
     <Fragment>
@@ -110,7 +127,7 @@ function BuddyPage() {
         <div>Loading...</div>
       ) : (
         <Fragment>
-          {buddy && buddy.username && (
+          {buddy && buddy.handle && (
             <Fragment>
               <div className="flex flex-justify-space-between">
                 <div>
@@ -123,8 +140,8 @@ function BuddyPage() {
                   </p>
                   <div>
                     <Icon icon="clarity:language-solid" />{' '}
-                    {buddy.languages.map((language, index) => (
-                      <span key={index}>{language} </span>
+                    {buddy.languages.map((language) => (
+                      <span key={language._id}>{language.code} </span>
                     ))}
                   </div>
                 </div>
@@ -134,9 +151,12 @@ function BuddyPage() {
               <br></br>
               <h4>Is learning or wants to learn:</h4>
               <div className="tech-span-box-left">
-                {buddy.learning.map((item, index) => (
-                  <span className={`tech-span tech-span---${item}`} key={index}>
-                    {item}
+                {buddy.learning.map((item) => (
+                  <span
+                    className={`tech-span tech-span---${item}`}
+                    key={item._id}
+                  >
+                    {item.label}
                   </span>
                 ))}
               </div>
@@ -144,12 +164,12 @@ function BuddyPage() {
               <br></br>
               <h4>Skills:</h4>
               <ul>
-                {buddy.skills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
+                {buddy.skillsLevel.map((skill) => (
+                  <li key={skill._id}>{skill.label}</li>
                 ))}
               </ul>
               <br></br>
-              {(buddy.verifiedTechSkills.length > 0 ||
+              {/* {(buddy.verifiedTechSkills.length > 0 ||
                 buddy.verifiedTopics.length > 0) && (
                 <h3>CODEYFUL EXPERIENCE</h3>
               )}
@@ -168,9 +188,9 @@ function BuddyPage() {
                     </div>
                   ))}
                 </div>
-              )}
+              )} */}
               <br></br>
-              {buddy.verifiedTopics.length > 0 && (
+              {/* {buddy.verifiedTopics.length > 0 && (
                 <div>
                   <h4>Verified topics</h4>
                   <div>
@@ -275,7 +295,7 @@ function BuddyPage() {
                   </div>
                   <br></br>
                 </Fragment>
-              )}
+              )} */}
             </Fragment>
           )}
         </Fragment>

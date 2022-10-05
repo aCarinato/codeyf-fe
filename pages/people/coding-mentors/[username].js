@@ -5,6 +5,7 @@ import { groups } from '../../../data/groups';
 import { assignements } from '../../../data/assignements';
 // libraries
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 // own components
 import GroupCard from '../../../components/groups/GroupCard';
 import AssignementCard from '../../../components/assignements/AssignementCard';
@@ -23,6 +24,17 @@ function MentorProfilePage() {
   // past
   const [pastGroups, setPastGroups] = useState([]);
   const [pastAssignments, setPastAssignments] = useState([]);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/mentor/${username}`
+      );
+      setMentor(res.data.user);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchCurrentGroups = () => {
     if (
@@ -62,15 +74,17 @@ function MentorProfilePage() {
 
   useEffect(() => {
     setLoading(true);
-    const filteredMentor = people.filter((person) => {
-      return person.username === username && person.isMentor === true;
-    });
+    // const filteredMentor = people.filter((person) => {
+    //   return person.username === username && person.isMentor === true;
+    // });
 
-    setMentor(filteredMentor[0]);
+    fetchUser();
+    // setMentor(filteredMentor[0]);
     fetchCurrentGroups();
     fetchPastGroups();
     setLoading(false);
   }, [mentor, username]);
+
   return (
     <Fragment>
       {loading ? (
@@ -90,8 +104,8 @@ function MentorProfilePage() {
                   </p>
                   <div>
                     <Icon icon="clarity:language-solid" />{' '}
-                    {mentor.languages.map((language, index) => (
-                      <span key={index}>{language} </span>
+                    {mentor.languages.map((language) => (
+                      <span key={language._id}>{language.code} </span>
                     ))}
                   </div>
                 </div>
@@ -101,9 +115,12 @@ function MentorProfilePage() {
               <br></br>
               <h4>Is teaching:</h4>
               <div className="tech-span-box-left">
-                {mentor.teaching.map((item, index) => (
-                  <span className={`tech-span tech-span---${item}`} key={index}>
-                    {item}
+                {mentor.teaching.map((item) => (
+                  <span
+                    className={`tech-span tech-span---${item}`}
+                    key={item._id}
+                  >
+                    {item.label}
                   </span>
                 ))}
               </div>
@@ -111,20 +128,21 @@ function MentorProfilePage() {
               <br></br>
               <h4>Skills:</h4>
               <ul>
-                {mentor.skills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
+                {mentor.skillsLevel.map((skill) => (
+                  <li key={skill._id}>{skill.label}</li>
                 ))}
               </ul>
               <br></br>
               <br></br>
-              {(mentor.activeGroups.length > 0 ||
-                mentor.activeAssignments.length > 0) && (
+              {((mentor.activeGroups && mentor.activeGroups.length > 0) ||
+                (mentor.activeAssignments &&
+                  mentor.activeAssignments.length > 0)) && (
                 <Fragment>
                   <h3>CURRENT ACTIVITY</h3>
                   <br></br>
                 </Fragment>
               )}
-              {mentor.activeGroups.length > 0 && (
+              {mentor.activeGroups && mentor.activeGroups.length > 0 && (
                 <Fragment>
                   <h4>current groups</h4>
                   <div className="flex flex-justify-flex-start">
@@ -145,14 +163,15 @@ function MentorProfilePage() {
                 </Fragment>
               )}
               <br></br>
-              {(mentor.pastGroups.length > 0 ||
-                mentor.pastAssignments.length > 0) && (
+              {((mentor.pastGroups && mentor.pastGroups.length > 0) ||
+                (mentor.pastAssignments &&
+                  mentor.pastAssignments.length > 0)) && (
                 <Fragment>
                   <h3>PAST ACTIVITY</h3>
                   <br></br>
                 </Fragment>
               )}
-              {mentor.pastGroups.length > 0 && (
+              {mentor.pastGroups && mentor.pastGroups.length > 0 && (
                 <Fragment>
                   <h4>past groups</h4>
                   <div className="flex flex-justify-flex-start">
