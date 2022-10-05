@@ -3,7 +3,7 @@ import BtnCTA from '../UI/BtnCTA';
 import { Icon } from '@iconify/react';
 
 function MentorCard(props) {
-  const { username, description, country, teaching } = props;
+  const { username, handle, description, country, teaching } = props;
   return (
     <div className="main-card-container">
       <div className="card-header">
@@ -30,7 +30,7 @@ function MentorCard(props) {
       </div>
       <div className="card-footer">
         <div className="card-footer-profile">
-          <Link href={`/people/coding-mentors/${username}`}>
+          <Link href={`/people/coding-mentors/${handle}`}>
             <a className="main-link">
               View Profile <Icon icon="bx:user" />
             </a>

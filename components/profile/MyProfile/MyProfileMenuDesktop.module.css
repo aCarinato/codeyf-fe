@@ -1,0 +1,9 @@
+.list-item {
+  list-style: none;
+  padding: 0.6rem 0.4rem;
+}
+
+.list-item:hover {
+  /* border-bottom: 1px solid #eff8ff; */
+  background-color: #eff8ff;
+}

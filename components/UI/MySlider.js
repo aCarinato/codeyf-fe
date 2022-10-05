@@ -39,6 +39,7 @@ function MySlider(props) {
           <BuddyCard
             key={item.id}
             username={item.username}
+            handle={item.handle}
             description={item.shortDescription}
             country={item.country}
             learning={item.learning}
@@ -49,6 +50,7 @@ function MySlider(props) {
           <MentorCard
             key={item.id}
             username={item.username}
+            handle={item.handle}
             description={item.shortDescription}
             country={item.country}
             teaching={item.teaching}

@@ -9,8 +9,10 @@ import { allSkillsLevel } from '../../data/allSkillsLevel';
 import BtnCTA from '../UI/BtnCTA';
 // packages
 import axios from 'axios';
+import { Icon } from '@iconify/react';
 // context
 import { useMainContext } from '../../context/Context';
+import Link from 'next/link';
 
 function CompleteProfileForm() {
   const { authState } = useMainContext();
@@ -77,7 +79,9 @@ function CompleteProfileForm() {
   const skillsLevelIsValid = skillsLevel.length > 0;
   const skillsLevelIsInvalid = !skillsLevelIsValid && skillsLevelTouched;
 
-  const companyJobIsValid = availability[1] && companyJob !== null;
+  const companyJobIsValid =
+    (availability[1] && companyJob !== null) ||
+    (availability[0] && !availability[1]);
   const companyJobIsInvalid = !companyJobIsValid && companyJobTouched;
 
   // const linkedinIsValid =
@@ -85,7 +89,9 @@ function CompleteProfileForm() {
   //   (availability[0] && !availability[1]);
   // const linkedinIsInvalid = !linkedinIsValid && linkedinTouched;
 
-  const yearsExperienceIsValid = availability[1] && yearsExperience > 0;
+  const yearsExperienceIsValid =
+    (availability[1] && yearsExperience > 0) ||
+    (availability[0] && !availability[1]);
   const yearsExperienceIsInvalid =
     !yearsExperienceIsValid && yearsExperienceTouched;
 
@@ -104,6 +110,8 @@ function CompleteProfileForm() {
     // && linkedinIsValid
   )
     formIsValid = true;
+
+  console.log(companyJob);
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -330,9 +338,17 @@ function CompleteProfileForm() {
       {availability[1] && (
         <p>
           Your request to be a mentor is being processed. The outcome will be
-          notified in your profile within 48 hours
+          notified within 48 hours
         </p>
       )}
+      <br></br>
+      <div>
+        <Link href="/my-profile">
+          <p className="link-text">
+            <Icon icon="akar-icons:arrow-back" /> to my profile
+          </p>
+        </Link>
+      </div>
     </div>
   );
 
@@ -544,6 +560,10 @@ function CompleteProfileForm() {
                     value="no"
                     onChange={(e) => {
                       handleAvailabilityChange(e);
+                      setYearsExperience(0);
+                      setCompanyJob(null);
+                      setLinkedin('');
+                      setTeaching([]);
                     }}
                   />
                   <label htmlFor="mentor">No</label>

@@ -9,9 +9,10 @@ import BtnCTA from '../../../components/UI/BtnCTA';
 // packages
 import { Icon } from '@iconify/react';
 import axios from 'axios';
+import { Fragment } from 'react';
 
 function SettingsPage() {
-  const { authState, userLogout } = useMainContext();
+  const { authState, currentUser, userLogout } = useMainContext();
 
   const router = useRouter();
 
@@ -32,7 +33,7 @@ function SettingsPage() {
           },
         }
       );
-      console.log(res.data);
+      // console.log(res.data);
       userLogout();
       router.push('/login');
     } catch (err) {
@@ -50,14 +51,19 @@ function SettingsPage() {
           </p>
         </Link>
       </div>
-      <br></br>
-      <div className="flex flex-justify-space-between">
-        <Link href="/my-profile/settings/edit-profile">
-          <p className="link-text">
-            edit profile <Icon icon="clarity:note-edit-line" />
-          </p>
-        </Link>
-      </div>
+      {currentUser && currentUser.registrationCompleted && (
+        <Fragment>
+          <br></br>
+          <div className="flex flex-justify-space-between">
+            <Link href="/my-profile/settings/edit-profile">
+              <p className="link-text">
+                edit profile <Icon icon="clarity:note-edit-line" />
+              </p>
+            </Link>
+          </div>
+        </Fragment>
+      )}
+
       <br></br>
       <div className="flex flex-justify-space-between">
         <p>logout</p>
@@ -80,6 +86,25 @@ function SettingsPage() {
           />
         </div>
       </div>
+      {currentUser && currentUser.registrationCompleted && (
+        <Fragment>
+          <br></br>
+          <div className="flex flex-justify-space-between">
+            <p>Currently available as student?</p>
+            <div></div>
+          </div>
+        </Fragment>
+      )}
+
+      {currentUser && currentUser.registrationCompleted && (
+        <Fragment>
+          <br></br>
+          <div className="flex flex-justify-space-between">
+            <p>Currently available as a mentor?</p>
+            <div></div>
+          </div>
+        </Fragment>
+      )}
     </UserRoute>
   );
 }

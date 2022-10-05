@@ -25,8 +25,6 @@ export function ContextProvider({ children }) {
       } else {
         setMobileView(false);
       }
-      console.log(mobileView);
-      // setAuthState(JSON.parse(localStorage.getItem('gq-user-auth')));
     }
   }, []);
 

@@ -13,7 +13,7 @@ import AssignementCard from '../../../components/assignements/AssignementCard';
 function MentorProfilePage() {
   const router = useRouter();
   const { query } = router;
-  const username = query.username;
+  const handle = query.handle;
 
   const [mentor, setMentor] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ function MentorProfilePage() {
   const fetchUser = async () => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/people/mentor/${username}`
+        `${process.env.NEXT_PUBLIC_API}/people/mentor/${handle}`
       );
       setMentor(res.data.user);
     } catch (err) {
@@ -83,7 +83,7 @@ function MentorProfilePage() {
     fetchCurrentGroups();
     fetchPastGroups();
     setLoading(false);
-  }, [mentor, username]);
+  }, [mentor, handle]);
 
   return (
     <Fragment>
@@ -91,7 +91,7 @@ function MentorProfilePage() {
         <div>Loading...</div>
       ) : (
         <Fragment>
-          {mentor && mentor.username && (
+          {mentor && mentor.handle && (
             <Fragment>
               <div className="flex flex-justify-space-between">
                 <div>

@@ -8,11 +8,10 @@ function NotificationPage() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    if (currentUser && currentUser.hasNotifications)
-      setNotifications(currentUser.notifications);
+    if (currentUser) setNotifications(currentUser.notifications);
   }, [currentUser]);
 
-  // console.log(authState);
+  // console.log(currentUser);
 
   return (
     <div>

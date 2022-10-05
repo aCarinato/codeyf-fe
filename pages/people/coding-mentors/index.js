@@ -126,6 +126,7 @@ function CodingMentorsScreen() {
             <MentorCard
               key={mentor.id}
               username={mentor.username}
+              handle={mentor.handle}
               description={mentor.shortDescription}
               country={mentor.country}
               teaching={mentor.teaching}

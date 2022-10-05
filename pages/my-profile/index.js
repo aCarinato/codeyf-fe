@@ -5,14 +5,18 @@ import Link from 'next/link';
 import UserRoute from '../../components/routes/UserRoute';
 import BtnCTA from '../../components/UI/BtnCTA';
 import CompleteProfileForm from '../../components/profile/CompleteProfileForm';
+import MyProfileMenuDesktop from '../../components/profile/MyProfile/MyProfileMenuDesktop';
 // packages
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 // context
 import { useMainContext } from '../../context/Context';
+import { useRouter } from 'next/router';
 
 function MyProfile() {
-  const { authState, currentUser, userLogout } = useMainContext();
+  const { authState, currentUser, mobileView } = useMainContext();
+
+  const router = useRouter();
 
   const readNotifications = async () => {
     const res = await axios.put(
@@ -26,61 +30,39 @@ function MyProfile() {
     );
   };
 
+  // if (currentUser && currentUser.registrationCompleted === false)
+  //   router.push('my-profile/complete-profile');
+
   return (
     <UserRoute>
       <div>
-        <div className="flex flex-justify-space-between">
-          <h2>MyProfile - {currentUser && currentUser.username}</h2>
+        <h2>MyProfile - {currentUser && currentUser.username}</h2>
+
+        <br></br>
+
+        <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+          {!mobileView && (
+            <div>
+              <MyProfileMenuDesktop
+                currentUser={currentUser}
+                readNotifications={readNotifications}
+              />
+            </div>
+          )}
           <div>
-            <Link href="/my-profile/settings">
-              <div className="main-link">
-                <Icon icon="bytesize:settings" /> settings
-              </div>
-            </Link>
-            {currentUser && currentUser.isAdmin && (
-              <Link href="/admin">
-                <div className="main-link">admin dashboard</div>
-              </Link>
+            {currentUser && !currentUser.registrationCompleted && (
+              <Fragment>
+                <br></br>
+                <Link href="/my-profile/complete-profile">
+                  <p className="link-text">
+                    <Icon icon="akar-icons:arrow-back" /> please complete your
+                    profile
+                  </p>
+                </Link>
+              </Fragment>
             )}
           </div>
         </div>
-
-        <br></br>
-        {currentUser && currentUser.registrationCompleted ? (
-          <div>
-            <h4>YOUR PROFILE PAGE</h4>
-            <br></br>
-            {currentUser && currentUser.mentorPendingApproval && (
-              <Fragment>
-                <br></br>
-                <p>Your mentor application is being processed</p>
-              </Fragment>
-            )}
-            <Link href="/my-profile/notifications">
-              <div
-                onClick={readNotifications}
-                className={
-                  currentUser.hasNotifications
-                    ? 'notification-link'
-                    : 'main-link'
-                }
-              >
-                notifications{' '}
-                <span>
-                  {currentUser.hasNotifications && (
-                    <sup>
-                      <Icon icon="ci:notification" />
-                    </sup>
-                  )}
-                </span>
-              </div>
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <CompleteProfileForm />
-          </div>
-        )}
       </div>
     </UserRoute>
   );
