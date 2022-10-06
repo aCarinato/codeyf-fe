@@ -109,6 +109,8 @@ function MentorProfilePage() {
                 longDescription={mentor.longDescription}
                 country={mentor.country}
                 languages={mentor.languages}
+                profilePic={mentor.profilePic}
+                github={mentor.github}
                 isBuddy={mentor.isBuddy}
                 currentlyAvailableAsBuddy={mentor.currentlyAvailableAsBuddy}
                 mentorPendingApproval={mentor.mentorPendingApproval}

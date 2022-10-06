@@ -44,6 +44,7 @@
 .card-img {
   width: 100%;
   border-radius: 50%;
+  /* border: 1px solid var(--main-primary-color); */
 }
 
 .card-header-username-country {

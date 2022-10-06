@@ -1,0 +1,20 @@
+.profile-pic {
+  width: 20rem;
+  height: 20rem;
+  /* width: 25%;
+    aspect-ratio: 1 / 1; */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--main-text-color);
+}
+
+/* ------------- */
+/* MEDIA QUERIES */
+/* ------------- */
+
+@media (max-width: 768px) {
+  .profile-pic {
+    width: 15rem;
+    height: 15rem;
+  }
+}
