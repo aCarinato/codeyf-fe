@@ -33,7 +33,10 @@ function CompleteProfileForm() {
   const [skillsLevel, setSkillsLevel] = useState([]);
   const [companyJob, setCompanyJob] = useState(null);
   const [linkedin, setLinkedin] = useState('');
+  const [github, setGithub] = useState('');
   const [yearsExperience, setYearsExperience] = useState(0);
+
+  const [image, setImage] = useState({});
 
   // touched
   const [shortDescriptionTouched, setShortDescriptionTouched] = useState(false);
@@ -46,7 +49,7 @@ function CompleteProfileForm() {
   const [skillsLevelTouched, setSkillsLevelTouched] = useState(false);
   const [companyJobTouched, setCompanyJobTouched] = useState(false);
   const [yearsExperienceTouched, setYearsExperienceTouched] = useState(false);
-  const [linkedinTouched, setLinkedinTouched] = useState(false);
+  // const [linkedinTouched, setLinkedinTouched] = useState(false);
 
   //   INPUT VALIDITY
   const shortDescriptionIsValid =
@@ -154,7 +157,9 @@ function CompleteProfileForm() {
             yearsExperience,
             companyJob,
             linkedin,
+            github,
             skillsLevel,
+            image,
           },
           {
             headers: {
@@ -174,6 +179,26 @@ function CompleteProfileForm() {
       } catch (err) {
         console.log(err);
       }
+    }
+  };
+
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    let formData = new FormData();
+    formData.append('image', file);
+    console.log([...formData]);
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/user/upload-image`,
+        formData
+      );
+      // console.log('uploaded image => ', data);
+      setImage({
+        url: data.url,
+        public_id: data.public_id,
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -331,7 +356,7 @@ function CompleteProfileForm() {
         <div className="grid grid--2cols">
           <div className="padding-3rem">
             <div className="myform-input-section">
-              <label className="myform-label" htmlFor="short-description">
+              <label className="myform-label bold" htmlFor="short-description">
                 short description (max 80 characters) <sup>*</sup>
               </label>
               <textarea
@@ -358,7 +383,7 @@ function CompleteProfileForm() {
               )}
             </div>
             <div className="myform-input-section">
-              <label className="myform-label" htmlFor="long-description">
+              <label className="myform-label bold" htmlFor="long-description">
                 long description (max 250 characters)
               </label>
               <textarea
@@ -376,8 +401,8 @@ function CompleteProfileForm() {
 
             {/* COUNTRY */}
             <div className="myform-input-section">
-              <label className="myform-label" htmlFor="country">
-                Country
+              <label className="myform-label bold" htmlFor="country">
+                Country <sup>*</sup>
               </label>
               <select
                 className={
@@ -407,7 +432,9 @@ function CompleteProfileForm() {
             {/* LANGUAGES */}
             <div className="myform-input-section">
               <fieldset className={languagesIsInvalid ? 'fieldset-error' : ''}>
-                <legend>Languages you speak</legend>
+                <legend>
+                  Languages <sup>*</sup>
+                </legend>
                 {allLanguages.map((item) => (
                   <div key={item._id}>
                     <input
@@ -428,10 +455,57 @@ function CompleteProfileForm() {
               )}
             </div>
 
+            {/* IMAGE */}
+            <div className="myform-input-section">
+              <label className="myform-label bold">
+                Profile picture <sup>*</sup>
+              </label>
+              {image && image.url && (
+                <div>
+                  <img src={`${image.url}`} />
+                </div>
+              )}
+              {/* <input onChange={uploadImg} type="file" accept="images/*" /> */}
+
+              <input
+                onChange={(e) => handleImage(e)}
+                type="file"
+                accept="image/*"
+              />
+            </div>
+
+            {/* GITHUB */}
+            <div className="myform-input-section">
+              <label className="myform-label bold" htmlFor="linkedin">
+                GitHub profile
+              </label>
+              <input
+                className="myform-text-input"
+                // className={
+                //   linkedinIsInvalid
+                //     ? 'input-invalid myform-text-input'
+                //     : 'myform-text-input'
+                // }
+                id="github"
+                name="github"
+                type="text"
+                value={github}
+                onChange={(e) => {
+                  setGithub(e.target.value);
+                }}
+                // onBlur={() => setLinkedinTouched(true)}
+              />
+              {/* {linkedinIsInvalid && (
+                    <p className="input-error-msg">enter a link</p>
+                  )} */}
+            </div>
+
             {/* TOPICS */}
             <div className="myform-input-section">
               <fieldset className={topicsIsInvalid ? 'fieldset-error' : ''}>
-                <legend>Main topics of interest</legend>
+                <legend>
+                  Topics of interest <sup>*</sup>
+                </legend>
                 {allTopics.map((item) => (
                   <div key={item._id}>
                     <input
@@ -457,7 +531,7 @@ function CompleteProfileForm() {
               <fieldset className={learningIsInvalid ? 'fieldset-error' : ''}>
                 <legend>
                   Programming languages and frameworks you've studied or want to
-                  study
+                  study <sup>*</sup>
                 </legend>
                 {allTechStacks.map((item) => (
                   <div key={item._id}>
@@ -484,7 +558,9 @@ function CompleteProfileForm() {
               <fieldset
                 className={skillsLevelIsInvalid ? 'fieldset-error' : ''}
               >
-                <legend>Your skill level</legend>
+                <legend>
+                  Your skill level <sup>*</sup>
+                </legend>
                 {allSkillsLevel.map((item) => (
                   <div key={item._id}>
                     <input
@@ -512,7 +588,9 @@ function CompleteProfileForm() {
               <fieldset
                 className={availabilityIsInvalid ? 'fieldset-error' : ''}
               >
-                <legend>Do you want to mentor students?</legend>
+                <legend>
+                  Do you want to mentor students? <sup>*</sup>
+                </legend>
                 <div>
                   <input
                     type="radio"
@@ -559,7 +637,7 @@ function CompleteProfileForm() {
                   >
                     <legend>
                       Are you working or have you worked as a developer in a
-                      company?
+                      company? <sup>*</sup>
                     </legend>
                     <div>
                       <input
@@ -593,7 +671,7 @@ function CompleteProfileForm() {
 
                 {/* YEARS OF EXPERIENCE */}
                 <div className="myform-input-section">
-                  <label className="myform-label" htmlFor="experience">
+                  <label className="myform-label bold" htmlFor="experience">
                     Years of experience coding <sup>*</sup>
                   </label>
                   <input
@@ -622,7 +700,7 @@ function CompleteProfileForm() {
 
                 {/* LINKEDIN */}
                 <div className="myform-input-section">
-                  <label className="myform-label" htmlFor="linkedin">
+                  <label className="myform-label bold" htmlFor="linkedin">
                     Linkedin profile
                   </label>
                   <input
@@ -653,7 +731,7 @@ function CompleteProfileForm() {
                   >
                     <legend>
                       Programming languages and frameworks you're available to
-                      help with as a mentor
+                      help with as a mentor <sup>*</sup>
                     </legend>
                     {allTechStacks.map((item) => (
                       <div key={item._id}>

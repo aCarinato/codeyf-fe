@@ -1,6 +1,8 @@
 // packages
 import { Icon } from '@iconify/react';
 import { Fragment } from 'react';
+// styles
+import classes from './MyProfileDetails.module.css';
 
 function MyProfileDetails(props) {
   const {
@@ -9,6 +11,7 @@ function MyProfileDetails(props) {
     longDescription,
     country,
     languages,
+    profilePic,
     isBuddy,
     currentlyAvailableAsBuddy,
     isMentor,
@@ -18,12 +21,17 @@ function MyProfileDetails(props) {
     skillsLevel,
     companyJob,
     linkedin,
+    github,
     yearsExperience,
     teaching,
   } = props;
   return (
     <div>
-      <div className="center-text">IMG</div>
+      {profilePic && profilePic.url && (
+        <div className="center-text padding-3rem">
+          <img className={classes['profile-pic']} src={profilePic.url} />
+        </div>
+      )}
       <div className="flex flex-justify-space-between">
         <div>
           <h3>{username}</h3>
@@ -51,6 +59,16 @@ function MyProfileDetails(props) {
           </Fragment>
         )}
       </div>
+      {github.length > 0 && (
+        <Fragment>
+          <br></br>
+          <h5>
+            <a href={github} target="_blank">
+              GitHub profile
+            </a>
+          </h5>
+        </Fragment>
+      )}
       <br></br>
       <h5>Roles and availability</h5>
       {isBuddy && (

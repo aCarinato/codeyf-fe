@@ -44,3 +44,8 @@
 .unavailability-msg {
   color: var(--main-error-color);
 }
+
+/* TEXT */
+.bold {
+  font-weight: bold;
+}

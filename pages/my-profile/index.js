@@ -69,6 +69,8 @@ function MyProfile() {
                     longDescription={currentUser.longDescription}
                     country={currentUser.country}
                     languages={currentUser.languages}
+                    profilePic={currentUser.profilePic}
+                    github={currentUser.github}
                     isBuddy={currentUser.isBuddy}
                     currentlyAvailableAsBuddy={
                       currentUser.currentlyAvailableAsBuddy

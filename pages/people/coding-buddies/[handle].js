@@ -145,6 +145,8 @@ function BuddyPage() {
                 longDescription={buddy.longDescription}
                 country={buddy.country}
                 languages={buddy.languages}
+                profilePic={buddy.profilePic}
+                github={buddy.github}
                 isBuddy={buddy.isBuddy}
                 currentlyAvailableAsBuddy={buddy.currentlyAvailableAsBuddy}
                 mentorPendingApproval={buddy.mentorPendingApproval}
