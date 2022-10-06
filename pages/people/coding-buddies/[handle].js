@@ -9,6 +9,8 @@ import axios from 'axios';
 // own components
 import GroupCard from '../../../components/groups/GroupCard';
 import AssignementCard from '../../../components/assignements/AssignementCard';
+import BtnCTA from '../../../components/UI/BtnCTA';
+import MyProfileDetails from '../../../components/profile/MyProfile/MyProfileDetails';
 
 function BuddyPage() {
   const router = useRouter();
@@ -129,173 +131,33 @@ function BuddyPage() {
         <Fragment>
           {buddy && buddy.handle && (
             <Fragment>
-              <div className="flex flex-justify-space-between">
-                <div>
-                  <h3>{buddy.username}</h3>
-                  <p>{buddy.shortDescription}</p>
-                </div>
-                <div className="flex">
-                  <p>
-                    <Icon icon="clarity:map-marker-line" /> {buddy.country}
-                  </p>
-                  <div>
-                    <Icon icon="clarity:language-solid" />{' '}
-                    {buddy.languages.map((language) => (
-                      <span key={language._id}>{language.code} </span>
-                    ))}
-                  </div>
-                </div>
+              <div>
+                <BtnCTA
+                  label="Message"
+                  onCLickAction={() => {}}
+                  icon={true}
+                  iconType="ant-design:message-outlined"
+                />
               </div>
-              <br></br>
-              <p>{buddy.longDescription}</p>
-              <br></br>
-              <h4>Is learning or wants to learn:</h4>
-              <div className="tech-span-box-left">
-                {buddy.learning.map((item) => (
-                  <span
-                    className={`tech-span tech-span---${item}`}
-                    key={item._id}
-                  >
-                    {item.label}
-                  </span>
-                ))}
-              </div>
-
-              <br></br>
-              <h4>Skills:</h4>
-              <ul>
-                {buddy.skillsLevel.map((skill) => (
-                  <li key={skill._id}>{skill.label}</li>
-                ))}
-              </ul>
-              <br></br>
-              {/* {(buddy.verifiedTechSkills.length > 0 ||
-                buddy.verifiedTopics.length > 0) && (
-                <h3>CODEYFUL EXPERIENCE</h3>
-              )}
-              <br></br>
-              {buddy.verifiedTechSkills.length > 0 && (
-                <div>
-                  <h4>Verified tech skills</h4>
-                  {buddy.verifiedTechSkills.map((item) => (
-                    <div key={item._id}>
-                      <label>{item.main}</label>
-                      <div>
-                        {item.sub.map((subitem) => (
-                          <span key={subitem}>{subitem}, </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )} */}
-              <br></br>
-              {/* {buddy.verifiedTopics.length > 0 && (
-                <div>
-                  <h4>Verified topics</h4>
-                  <div>
-                    {buddy.verifiedTopics.map((item) => (
-                      <span key={item._id}>{item.label}, </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <br></br>
-              {(buddy.activeGroups.length > 0 ||
-                buddy.activeAssignments.length > 0) && (
-                <Fragment>
-                  <h3>CURRENT ACTIVITY</h3>
-                  <br></br>
-                </Fragment>
-              )}
-              {buddy.activeGroups.length > 0 && (
-                <Fragment>
-                  <h4>current groups</h4>
-                  <div className="flex flex-justify-flex-start">
-                    {currentGroups.map((group) => (
-                      <GroupCard
-                        key={group.id}
-                        id={group.id}
-                        name={group.name}
-                        description={group.description}
-                        techStack={group.learning}
-                        nBuddies={group.nBuddies}
-                        buddies={group.buddies}
-                        proposedProject={group.proposedProject}
-                      />
-                    ))}
-                  </div>
-                  <br></br>
-                </Fragment>
-              )}
-              {buddy.activeAssignments.length > 0 && (
-                <Fragment>
-                  <h4>current assignments</h4>
-                  <div className="flex flex-justify-flex-start">
-                    {currentAssignments.map((assignement) => (
-                      <AssignementCard
-                        key={assignement._id}
-                        id={assignement._id}
-                        title={assignement.title}
-                        description={assignement.shortDescription}
-                        difficulty={assignement.difficulty.label}
-                        maxParticipants={assignement.maxParticipants.label}
-                        stack={assignement.stack}
-                        reviews={assignement.reviews}
-                      />
-                    ))}
-                  </div>
-                  <br></br>
-                </Fragment>
-              )}
-              <br></br>
-              {(buddy.pastGroups.length > 0 ||
-                buddy.pastAssignments.length > 0) && (
-                <Fragment>
-                  <h3>PAST ACTIVITY</h3>
-                  <br></br>
-                </Fragment>
-              )}
-              {buddy.pastGroups.length > 0 && (
-                <Fragment>
-                  <h4>past groups</h4>
-                  <div className="flex flex-justify-flex-start">
-                    {pastGroups.map((group) => (
-                      <GroupCard
-                        key={group.id}
-                        id={group.id}
-                        name={group.name}
-                        description={group.description}
-                        techStack={group.learning}
-                        nBuddies={group.nBuddies}
-                        buddies={group.buddies}
-                        proposedProject={group.proposedProject}
-                      />
-                    ))}
-                  </div>
-                  <br></br>
-                </Fragment>
-              )}
-              {buddy.pastAssignments.length > 0 && (
-                <Fragment>
-                  <h4>past assignments</h4>
-                  <div className="flex flex-justify-flex-start">
-                    {pastAssignments.map((assignement) => (
-                      <AssignementCard
-                        key={assignement._id}
-                        id={assignement._id}
-                        title={assignement.title}
-                        description={assignement.shortDescription}
-                        difficulty={assignement.difficulty.label}
-                        maxParticipants={assignement.maxParticipants.label}
-                        stack={assignement.stack}
-                        reviews={assignement.reviews}
-                      />
-                    ))}
-                  </div>
-                  <br></br>
-                </Fragment>
-              )} */}
+              <MyProfileDetails
+                username={buddy.username}
+                shortDescription={buddy.shortDescription}
+                longDescription={buddy.longDescription}
+                country={buddy.country}
+                languages={buddy.languages}
+                isBuddy={buddy.isBuddy}
+                currentlyAvailableAsBuddy={buddy.currentlyAvailableAsBuddy}
+                mentorPendingApproval={buddy.mentorPendingApproval}
+                isMentor={buddy.isMentor}
+                currentlyAvailableAsMentor={buddy.currentlyAvailableAsMentor}
+                topics={buddy.topics}
+                learning={buddy.learning}
+                skillsLevel={buddy.skillsLevel}
+                companyJob={buddy.companyJob}
+                linkedin={buddy.linkedin}
+                yearsExperience={buddy.yearsExperience}
+                teaching={buddy.teaching}
+              />
             </Fragment>
           )}
         </Fragment>

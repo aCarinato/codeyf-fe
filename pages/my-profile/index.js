@@ -4,8 +4,8 @@ import Link from 'next/link';
 // own components
 import UserRoute from '../../components/routes/UserRoute';
 import BtnCTA from '../../components/UI/BtnCTA';
-import CompleteProfileForm from '../../components/profile/CompleteProfileForm';
 import MyProfileMenuDesktop from '../../components/profile/MyProfile/MyProfileMenuDesktop';
+import MyProfileDetails from '../../components/profile/MyProfile/MyProfileDetails';
 // packages
 import { Icon } from '@iconify/react';
 import axios from 'axios';
@@ -50,7 +50,7 @@ function MyProfile() {
             </div>
           )}
           <div>
-            {currentUser && !currentUser.registrationCompleted && (
+            {currentUser && !currentUser.registrationCompleted ? (
               <Fragment>
                 <br></br>
                 <Link href="/my-profile/complete-profile">
@@ -59,6 +59,34 @@ function MyProfile() {
                     profile
                   </p>
                 </Link>
+              </Fragment>
+            ) : (
+              <Fragment>
+                {currentUser && (
+                  <MyProfileDetails
+                    username={currentUser.username}
+                    shortDescription={currentUser.shortDescription}
+                    longDescription={currentUser.longDescription}
+                    country={currentUser.country}
+                    languages={currentUser.languages}
+                    isBuddy={currentUser.isBuddy}
+                    currentlyAvailableAsBuddy={
+                      currentUser.currentlyAvailableAsBuddy
+                    }
+                    mentorPendingApproval={currentUser.mentorPendingApproval}
+                    isMentor={currentUser.isMentor}
+                    currentlyAvailableAsMentor={
+                      currentUser.currentlyAvailableAsMentor
+                    }
+                    topics={currentUser.topics}
+                    learning={currentUser.learning}
+                    skillsLevel={currentUser.skillsLevel}
+                    companyJob={currentUser.companyJob}
+                    linkedin={currentUser.linkedin}
+                    yearsExperience={currentUser.yearsExperience}
+                    teaching={currentUser.teaching}
+                  />
+                )}
               </Fragment>
             )}
           </div>

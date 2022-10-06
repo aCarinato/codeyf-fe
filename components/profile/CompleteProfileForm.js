@@ -111,7 +111,7 @@ function CompleteProfileForm() {
   )
     formIsValid = true;
 
-  console.log(companyJob);
+  // console.log(companyJob);
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -132,6 +132,13 @@ function CompleteProfileForm() {
       return;
     } else {
       try {
+        let mentorPendingApproval;
+        if (availability[1]) {
+          mentorPendingApproval = true;
+        } else {
+          mentorPendingApproval = false;
+        }
+
         const res = await axios.put(
           `${process.env.NEXT_PUBLIC_API}/user/complete-profile`,
           {
@@ -140,6 +147,7 @@ function CompleteProfileForm() {
             country,
             languages,
             availability,
+            mentorPendingApproval,
             topics,
             learning,
             teaching,
@@ -168,44 +176,7 @@ function CompleteProfileForm() {
       }
     }
   };
-  // console.log(authState.token);
-  // FUNCTIONS
-  // LANGUAGES
-  // const addInputLanguage = () => {
-  //   const tempInputLanguages = [...langs];
 
-  //   let currentID = tempInputLanguages.length;
-  //   const ids = tempInputLanguages.map((item) => Number(item._id));
-  //   if (ids.includes(currentID)) currentID = (Math.max(...ids) + 1).toString();
-  //   tempInputLanguages.push({ _id: currentID, lang: {} });
-  //   setLangs(tempInputLanguages);
-  // };
-
-  // const removeInputLanguage = (id) => {
-  //   const tempInputLanguages = [...langs];
-  //   const index = tempInputLanguages.map((item) => item._id).indexOf(id);
-  //   tempInputLanguages.splice(index, 1);
-  //   setLangs(tempInputLanguages);
-  // };
-
-  // const handleLanguage = (e, id) => {
-  //   const tempInputLanguages = [...langs];
-  //   const filteredLang = languages.filter(
-  //     (lan) => lan._id === e.target.value
-  //   )[0];
-  //   const index = tempInputLanguages.map((item) => item._id).indexOf(id);
-  //   // console.log(filteredLang);
-  //   tempInputLanguages[index].lang = filteredLang;
-  //   setLangs(tempInputLanguages);
-  // };
-
-  // const langSelectionInvalid = (id) => {
-  //   // const filteredLang = languages.filter((lan) => lan._id === id)[0];
-  //   const index = langs.map((item) => item._id).indexOf(id);
-  //   if (langs[index].lang === undefined) {
-  //     return true;
-  //   }
-  // };
   const toggleLanguages = (id) => {
     let currentIndex;
     let tempLanguages = [...languages];

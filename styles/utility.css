@@ -35,3 +35,12 @@
 .padding-3rem {
   padding: 3rem;
 }
+
+/* MESSAGES */
+.availability-msg {
+  color: var(--main-success-color);
+}
+
+.unavailability-msg {
+  color: var(--main-error-color);
+}

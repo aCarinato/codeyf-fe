@@ -9,6 +9,8 @@ import axios from 'axios';
 // own components
 import GroupCard from '../../../components/groups/GroupCard';
 import AssignementCard from '../../../components/assignements/AssignementCard';
+import BtnCTA from '../../../components/UI/BtnCTA';
+import MyProfileDetails from '../../../components/profile/MyProfile/MyProfileDetails';
 
 function MentorProfilePage() {
   const router = useRouter();
@@ -93,105 +95,134 @@ function MentorProfilePage() {
         <Fragment>
           {mentor && mentor.handle && (
             <Fragment>
-              <div className="flex flex-justify-space-between">
-                <div>
-                  <h3>{mentor.username}</h3>
-                  <p>{mentor.shortDescription}</p>
-                </div>
-                <div className="flex">
-                  <p>
-                    <Icon icon="clarity:map-marker-line" /> {mentor.country}
-                  </p>
-                  <div>
-                    <Icon icon="clarity:language-solid" />{' '}
-                    {mentor.languages.map((language) => (
-                      <span key={language._id}>{language.code} </span>
-                    ))}
-                  </div>
-                </div>
+              <div>
+                <BtnCTA
+                  label="Message"
+                  onCLickAction={() => {}}
+                  icon={true}
+                  iconType="ant-design:message-outlined"
+                />
               </div>
-              <br></br>
-              <p>{mentor.longDescription}</p>
-              <br></br>
-              <h4>Is teaching:</h4>
-              <div className="tech-span-box-left">
-                {mentor.teaching.map((item) => (
-                  <span
-                    className={`tech-span tech-span---${item}`}
-                    key={item._id}
-                  >
-                    {item.label}
-                  </span>
-                ))}
-              </div>
-
-              <br></br>
-              <h4>Skills:</h4>
-              <ul>
-                {mentor.skillsLevel.map((skill) => (
-                  <li key={skill._id}>{skill.label}</li>
-                ))}
-              </ul>
-              <br></br>
-              <br></br>
-              {((mentor.activeGroups && mentor.activeGroups.length > 0) ||
-                (mentor.activeAssignments &&
-                  mentor.activeAssignments.length > 0)) && (
-                <Fragment>
-                  <h3>CURRENT ACTIVITY</h3>
-                  <br></br>
-                </Fragment>
-              )}
-              {mentor.activeGroups && mentor.activeGroups.length > 0 && (
-                <Fragment>
-                  <h4>current groups</h4>
-                  <div className="flex flex-justify-flex-start">
-                    {currentGroups.map((group) => (
-                      <GroupCard
-                        key={group.id}
-                        id={group.id}
-                        name={group.name}
-                        description={group.description}
-                        techStack={group.learning}
-                        nBuddies={group.nBuddies}
-                        buddies={group.buddies}
-                        proposedProject={group.proposedProject}
-                      />
-                    ))}
-                  </div>
-                  <br></br>
-                </Fragment>
-              )}
-              <br></br>
-              {((mentor.pastGroups && mentor.pastGroups.length > 0) ||
-                (mentor.pastAssignments &&
-                  mentor.pastAssignments.length > 0)) && (
-                <Fragment>
-                  <h3>PAST ACTIVITY</h3>
-                  <br></br>
-                </Fragment>
-              )}
-              {mentor.pastGroups && mentor.pastGroups.length > 0 && (
-                <Fragment>
-                  <h4>past groups</h4>
-                  <div className="flex flex-justify-flex-start">
-                    {pastGroups.map((group) => (
-                      <GroupCard
-                        key={group.id}
-                        id={group.id}
-                        name={group.name}
-                        description={group.description}
-                        techStack={group.learning}
-                        nBuddies={group.nBuddies}
-                        buddies={group.buddies}
-                        proposedProject={group.proposedProject}
-                      />
-                    ))}
-                  </div>
-                  <br></br>
-                </Fragment>
-              )}
+              <MyProfileDetails
+                username={mentor.username}
+                shortDescription={mentor.shortDescription}
+                longDescription={mentor.longDescription}
+                country={mentor.country}
+                languages={mentor.languages}
+                isBuddy={mentor.isBuddy}
+                currentlyAvailableAsBuddy={mentor.currentlyAvailableAsBuddy}
+                mentorPendingApproval={mentor.mentorPendingApproval}
+                isMentor={mentor.isMentor}
+                currentlyAvailableAsMentor={mentor.currentlyAvailableAsMentor}
+                topics={mentor.topics}
+                learning={mentor.learning}
+                skillsLevel={mentor.skillsLevel}
+                companyJob={mentor.companyJob}
+                linkedin={mentor.linkedin}
+                yearsExperience={mentor.yearsExperience}
+                teaching={mentor.teaching}
+              />
             </Fragment>
+            // <Fragment>
+            //   <div className="flex flex-justify-space-between">
+            //     <div>
+            //       <h3>{mentor.username}</h3>
+            //       <p>{mentor.shortDescription}</p>
+            //     </div>
+            //     <div className="flex">
+            //       <p>
+            //         <Icon icon="clarity:map-marker-line" /> {mentor.country}
+            //       </p>
+            //       <div>
+            //         <Icon icon="clarity:language-solid" />{' '}
+            //         {mentor.languages.map((language) => (
+            //           <span key={language._id}>{language.code} </span>
+            //         ))}
+            //       </div>
+            //     </div>
+            //   </div>
+            //   <br></br>
+            //   <p>{mentor.longDescription}</p>
+            //   <br></br>
+            //   <h4>Is teaching:</h4>
+            //   <div className="tech-span-box-left">
+            //     {mentor.teaching.map((item) => (
+            //       <span
+            //         className={`tech-span tech-span---${item}`}
+            //         key={item._id}
+            //       >
+            //         {item.label}
+            //       </span>
+            //     ))}
+            //   </div>
+
+            //   <br></br>
+            //   <h4>Skills:</h4>
+            //   <ul>
+            //     {mentor.skillsLevel.map((skill) => (
+            //       <li key={skill._id}>{skill.label}</li>
+            //     ))}
+            //   </ul>
+            //   <br></br>
+            //   <br></br>
+            //   {((mentor.activeGroups && mentor.activeGroups.length > 0) ||
+            //     (mentor.activeAssignments &&
+            //       mentor.activeAssignments.length > 0)) && (
+            //     <Fragment>
+            //       <h3>CURRENT ACTIVITY</h3>
+            //       <br></br>
+            //     </Fragment>
+            //   )}
+            //   {mentor.activeGroups && mentor.activeGroups.length > 0 && (
+            //     <Fragment>
+            //       <h4>current groups</h4>
+            //       <div className="flex flex-justify-flex-start">
+            //         {currentGroups.map((group) => (
+            //           <GroupCard
+            //             key={group.id}
+            //             id={group.id}
+            //             name={group.name}
+            //             description={group.description}
+            //             techStack={group.learning}
+            //             nBuddies={group.nBuddies}
+            //             buddies={group.buddies}
+            //             proposedProject={group.proposedProject}
+            //           />
+            //         ))}
+            //       </div>
+            //       <br></br>
+            //     </Fragment>
+            //   )}
+            //   <br></br>
+            //   {((mentor.pastGroups && mentor.pastGroups.length > 0) ||
+            //     (mentor.pastAssignments &&
+            //       mentor.pastAssignments.length > 0)) && (
+            //     <Fragment>
+            //       <h3>PAST ACTIVITY</h3>
+            //       <br></br>
+            //     </Fragment>
+            //   )}
+            //   {mentor.pastGroups && mentor.pastGroups.length > 0 && (
+            //     <Fragment>
+            //       <h4>past groups</h4>
+            //       <div className="flex flex-justify-flex-start">
+            //         {pastGroups.map((group) => (
+            //           <GroupCard
+            //             key={group.id}
+            //             id={group.id}
+            //             name={group.name}
+            //             description={group.description}
+            //             techStack={group.learning}
+            //             nBuddies={group.nBuddies}
+            //             buddies={group.buddies}
+            //             proposedProject={group.proposedProject}
+            //           />
+            //         ))}
+            //       </div>
+            //       <br></br>
+            //     </Fragment>
+            //   )}
+            // </Fragment>
           )}
         </Fragment>
       )}
