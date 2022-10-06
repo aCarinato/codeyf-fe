@@ -5,6 +5,7 @@ import axios from 'axios';
 // own components
 import AdminRoute from '../../../components/routes/AdminRoute';
 import MyForm from '../../../components/UI/MyForm';
+import BtnCTA from '../../../components/UI/BtnCTA';
 // context
 import { useMainContext } from '../../../context/Context';
 
@@ -25,7 +26,7 @@ function CreateUserPage() {
 
   // submit error
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   // CHECKING INPUT VALIDITY
   // username
@@ -118,10 +119,13 @@ function CreateUserPage() {
     if (!signupFormIsValid) {
       return;
     } else {
+      let handle = enteredUsername.replace(/ /g, '');
+
       const signupUser = {
         username: enteredUsername,
         email: enteredEmail,
         password: enteredPassword,
+        handle,
       };
 
       //   console.log(signupUser);
@@ -137,6 +141,11 @@ function CreateUserPage() {
           }
         );
 
+        if (res.data.success) {
+          setSuccess(true);
+        } else {
+          setError('Something went wrong');
+        }
         // console.log(res);
       } catch (err) {
         console.log(err);
@@ -144,17 +153,29 @@ function CreateUserPage() {
     }
   };
 
+  const successMsg = (
+    <div>
+      <p>User created!</p>
+      <br></br>
+      <BtnCTA label="create new user" onCLickAction={() => setSuccess(false)} />
+    </div>
+  );
+
   return (
     <AdminRoute>
       <h3>Create New User</h3>
-      <div>
-        <MyForm
-          formFields={createUserFormFields}
-          labelCTA="create new user"
-          formSubmit={(e) => createUserHandler(e)}
-          error=""
-        />
-      </div>
+      {success ? (
+        successMsg
+      ) : (
+        <div>
+          <MyForm
+            formFields={createUserFormFields}
+            labelCTA="create new user"
+            formSubmit={(e) => createUserHandler(e)}
+            error=""
+          />
+        </div>
+      )}
     </AdminRoute>
   );
 }

@@ -135,7 +135,6 @@ sup {
 .main-link {
   cursor: pointer;
 }
-
 .main-link:link {
   text-decoration: none;
   color: var(--main-primary-color);
@@ -157,6 +156,22 @@ sup {
 .light-link:hover,
 .light-link:active {
   color: var(--main-tints-color);
+}
+
+.notification-link {
+  cursor: pointer;
+  color: var(--main-error-color);
+}
+
+.notification-link:link {
+  text-decoration: none;
+  color: var(--main-error-color);
+  transition: all 0.3s;
+}
+
+/* .main-link:active */
+.notification-link:hover {
+  color: blueviolet;
 }
 
 /* .tech-span---python {

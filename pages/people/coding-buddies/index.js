@@ -173,6 +173,7 @@ function CodingBuddiesScreen() {
             <BuddyCard
               key={buddy.id}
               username={buddy.username}
+              handle={buddy.handle}
               description={buddy.shortDescription}
               country={buddy.country}
               learning={buddy.learning}

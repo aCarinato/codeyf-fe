@@ -1,51 +1,96 @@
 // react / next
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
 // own components
 import UserRoute from '../../components/routes/UserRoute';
 import BtnCTA from '../../components/UI/BtnCTA';
-import CompleteProfileForm from '../../components/profile/CompleteProfileForm';
+import MyProfileMenuDesktop from '../../components/profile/MyProfile/MyProfileMenuDesktop';
+import MyProfileDetails from '../../components/profile/MyProfile/MyProfileDetails';
 // packages
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 // context
 import { useMainContext } from '../../context/Context';
+import { useRouter } from 'next/router';
 
 function MyProfile() {
-  const { authState, currentUser, userLogout } = useMainContext();
+  const { authState, currentUser, mobileView } = useMainContext();
+
+  const router = useRouter();
+
+  const readNotifications = async () => {
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${authState.token}`,
+        },
+      }
+    );
+  };
+
+  // if (currentUser && currentUser.registrationCompleted === false)
+  //   router.push('my-profile/complete-profile');
 
   return (
     <UserRoute>
       <div>
-        <div className="flex flex-justify-space-between">
-          <h2>MyProfile - {currentUser && currentUser.username}</h2>
+        <h2>MyProfile - {currentUser && currentUser.username}</h2>
+
+        <br></br>
+
+        <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+          {!mobileView && (
+            <div>
+              <MyProfileMenuDesktop
+                currentUser={currentUser}
+                readNotifications={readNotifications}
+              />
+            </div>
+          )}
           <div>
-            <Link href="/my-profile/settings">
-              <div className="main-link">
-                <Icon icon="bytesize:settings" /> settings
-              </div>
-            </Link>
-            {currentUser && currentUser.isAdmin && (
-              <Link href="/admin">
-                <div className="main-link">admin dashboard</div>
-              </Link>
+            {currentUser && !currentUser.registrationCompleted ? (
+              <Fragment>
+                <br></br>
+                <Link href="/my-profile/complete-profile">
+                  <p className="link-text">
+                    <Icon icon="akar-icons:arrow-back" /> please complete your
+                    profile
+                  </p>
+                </Link>
+              </Fragment>
+            ) : (
+              <Fragment>
+                {currentUser && (
+                  <MyProfileDetails
+                    username={currentUser.username}
+                    shortDescription={currentUser.shortDescription}
+                    longDescription={currentUser.longDescription}
+                    country={currentUser.country}
+                    languages={currentUser.languages}
+                    isBuddy={currentUser.isBuddy}
+                    currentlyAvailableAsBuddy={
+                      currentUser.currentlyAvailableAsBuddy
+                    }
+                    mentorPendingApproval={currentUser.mentorPendingApproval}
+                    isMentor={currentUser.isMentor}
+                    currentlyAvailableAsMentor={
+                      currentUser.currentlyAvailableAsMentor
+                    }
+                    topics={currentUser.topics}
+                    learning={currentUser.learning}
+                    skillsLevel={currentUser.skillsLevel}
+                    companyJob={currentUser.companyJob}
+                    linkedin={currentUser.linkedin}
+                    yearsExperience={currentUser.yearsExperience}
+                    teaching={currentUser.teaching}
+                  />
+                )}
+              </Fragment>
             )}
           </div>
         </div>
-
-        <br></br>
-        {currentUser && currentUser.registrationCompleted ? (
-          <div>
-            <h4>YOUR PROFILE PAGE</h4>
-            <br></br>
-            {currentUser && currentUser.mentorPendingApproval && (
-              <p>Your mentor application is being processed</p>
-            )}
-          </div>
-        ) : (
-          <div>
-            <CompleteProfileForm />
-          </div>
-        )}
       </div>
     </UserRoute>
   );
