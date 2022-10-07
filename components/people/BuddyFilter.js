@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { countries } from '../../data/countries';
-import { allSkills } from '../../data/allSkills';
-import { allLearning } from '../../data/allLearning';
+// import { allSkills } from '../../data/allSkills';
+import { allSkillsLevel } from '../../data/allSkillsLevel';
+// import { allLearning } from '../../data/allLearning';
+import { allTechStacks } from '../../data/allTechStacks';
+import { allLanguages } from '../../data/allLanguages';
 // functions
 import { checkboxSelection, arrayEquals } from '../../lib/helper/functions';
 
@@ -19,14 +22,8 @@ function BuddyFilter(props) {
     setFilteredBuddies,
   } = props;
 
-  // const [country, setCountry] = useState('all');
-  // const [language, setLanguage] = useState('all');
-  // //   tech stack
-  // const [learning, setLearning] = useState([]);
-  // const [skills, setSkills] = useState([]);
-
-  const allLearningNames = allLearning.map((learning) => learning.name);
-  const allSkillsNames = allSkills.map((skill) => skill.name);
+  const allLearningNames = allTechStacks.map((learning) => learning.label);
+  const allSkillsNames = allSkillsLevel.map((skill) => skill.label);
 
   useEffect(() => {
     // console.log('***************************************');
@@ -47,14 +44,16 @@ function BuddyFilter(props) {
       if (language === 'all') {
         languageCondition = buddy.languages !== [];
       } else {
-        languageCondition = buddy.languages.includes(language);
+        let langCodes = buddy.languages.map((lang) => lang.code);
+        languageCondition = langCodes.includes(language);
       }
       //   console.log(buddy.name + ' language ' + languageCondition);
 
       //   filter learning
       let learningCondition;
       //   console.log(learning);
-      learningCondition = buddy.learning.filter((learn) =>
+      let learningLabels = buddy.learning.map((item) => item.label);
+      learningCondition = learningLabels.filter((learn) =>
         learning.includes(learn)
       );
 
@@ -69,7 +68,8 @@ function BuddyFilter(props) {
 
       //   filter skills
       let skillsCondition;
-      skillsCondition = buddy.skills.filter((skill) => skills.includes(skill));
+      let skillsLabels = buddy.skillsLevel.map((item) => item.label);
+      skillsCondition = skillsLabels.filter((skill) => skills.includes(skill));
 
       if (arrayEquals(skills, [])) {
         skillsCondition = true;
@@ -135,46 +135,48 @@ function BuddyFilter(props) {
           onChange={(e) => setLanguage(e.target.value)}
         >
           <option value="all">All</option>
-          <option value="en">English</option>
-          <option value="it">Italian</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
+
+          {allLanguages.map((lang) => (
+            <option key={lang._id} value={lang.code}>
+              {lang.label}
+            </option>
+          ))}
         </select>
       </div>
       <br></br>
       <fieldset>
         <legend>WANTS TO LEARN</legend>
-        {allLearning.map((learn) => (
-          <div key={learn.id}>
+        {allTechStacks.map((learn) => (
+          <div key={learn._id}>
             <input
               //   onChange={selectLearning}
               onChange={(e) =>
                 checkboxSelection(e, learning, setLearning, allLearningNames)
               }
               type="checkbox"
-              id={learn.name}
-              name={learn.name}
-              value={learn.name}
+              id={learn._id}
+              name={learn.label}
+              value={learn.label}
             />
-            <label htmlFor={learn.name}> {learn.name}</label>
+            <label htmlFor={learn.label}> {learn.label}</label>
           </div>
         ))}
       </fieldset>
       <br></br>
       <fieldset>
         <legend>SKILLS</legend>
-        {allSkills.map((skill) => (
-          <div key={skill.id}>
+        {allSkillsLevel.map((skill) => (
+          <div key={skill._id}>
             <input
               //   onChange={selectSkills}
               onChange={(e) =>
                 checkboxSelection(e, skills, setSkills, allSkillsNames)
               }
               type="checkbox"
-              name={skill.name}
-              value={skill.name}
+              name={skill.label}
+              value={skill.label}
             />
-            <label htmlFor={skill.name}> {skill.name}</label>
+            <label htmlFor={skill.label}> {skill.label}</label>
           </div>
         ))}
       </fieldset>

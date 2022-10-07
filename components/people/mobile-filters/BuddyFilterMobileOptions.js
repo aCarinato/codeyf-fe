@@ -1,6 +1,9 @@
 import { countries } from '../../../data/countries';
-import { allLearning } from '../../../data/allLearning';
+// import { allLearning } from '../../../data/allLearning';
 import { allSkills } from '../../../data/allSkills';
+import { allLanguages } from '../../../data/allLanguages';
+import { allTechStacks } from '../../../data/allTechStacks';
+import { allSkillsLevel } from '../../../data/allSkillsLevel';
 
 function BuddyFilterMobileOptions(props) {
   const {
@@ -80,39 +83,41 @@ function BuddyFilterMobileOptions(props) {
           defaultValue={language}
         >
           <option value="all">All</option>
-          <option value="en">English</option>
-          <option value="it">Italian</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
+
+          {allLanguages.map((lang) => (
+            <option key={lang._id} value={lang.code}>
+              {lang.label}
+            </option>
+          ))}
         </select>
       </div>
       <br></br>
       <fieldset>
         <legend>WANTS TO LEARN</legend>
-        {allLearning.map((learn) => (
-          <div key={learn.id}>
+        {allTechStacks.map((learn) => (
+          <div key={learn._id}>
             <input
               //   onChange={selectLearning}
               onChange={() => {
-                handleToggleLearning(learn.id);
+                handleToggleLearning(learn._id);
               }}
               type="checkbox"
               checked={
-                learningCheckedIndex.indexOf(learn.id) === -1 ? false : true
+                learningCheckedIndex.indexOf(learn._id) === -1 ? false : true
               }
-              id={learn.name}
-              name={learn.name}
-              value={learn.name}
+              id={learn._id}
+              name={learn.label}
+              value={learn.label}
             />
-            <label htmlFor={learn.name}> {learn.name}</label>
+            <label htmlFor={learn.label}> {learn.label}</label>
           </div>
         ))}
       </fieldset>
       <br></br>
       <fieldset>
         <legend>SKILLS</legend>
-        {allSkills.map((skill) => (
-          <div key={skill.id}>
+        {allSkillsLevel.map((skill) => (
+          <div key={skill._id}>
             <input
               //   onChange={selectSkills}
               onChange={() => handleToggleSkills(skill.id)}
@@ -120,10 +125,10 @@ function BuddyFilterMobileOptions(props) {
               checked={
                 skillsCheckedIndex.indexOf(skill.id) === -1 ? false : true
               }
-              name={skill.name}
-              value={skill.name}
+              name={skill.label}
+              value={skill.label}
             />
-            <label htmlFor={skill.name}> {skill.name}</label>
+            <label htmlFor={skill.label}> {skill.label}</label>
           </div>
         ))}
       </fieldset>

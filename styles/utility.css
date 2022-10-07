@@ -19,14 +19,6 @@
   width: 80%;
 }
 
-.center-text {
-  text-align: center;
-}
-
-.test-newline {
-  white-space: pre-wrap;
-}
-
 /* PADDING */
 .padding-2rem {
   padding: 2rem;
@@ -48,4 +40,16 @@
 /* TEXT */
 .bold {
   font-weight: bold;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.right-text {
+  text-align: right;
+}
+
+.test-newline {
+  white-space: pre-wrap;
 }

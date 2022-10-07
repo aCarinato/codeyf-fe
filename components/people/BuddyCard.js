@@ -22,9 +22,12 @@ function BuddyCard(props) {
 
       <p className="card-learning">Is learning / wants to learn:</p>
       <div className="tech-span-box">
-        {learning.slice(0, 6).map((item, index) => (
-          <span className={`tech-span tech-span---${item}`} key={index}>
-            {item}
+        {learning.slice(0, 6).map((item) => (
+          <span
+            className={`tech-span tech-span---${item.label}`}
+            key={item._id}
+          >
+            {item.label}
           </span>
         ))}
       </div>
