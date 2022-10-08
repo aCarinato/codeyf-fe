@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { allTechStacks } from '../../data/allTechStacks';
+import { allSkillsLevel } from '../../data/allSkillsLevel';
 import { countries } from '../../data/countries';
-import { allSkills } from '../../data/allSkills';
-import { allTeaching } from '../../data/allTeaching';
-// functions
-import { checkboxSelection, arrayEquals } from '../../lib/helper/functions';
+import { allLanguages } from '../../data/allLanguages';
 
 function MentorFilter(props) {
   const {
@@ -11,109 +9,58 @@ function MentorFilter(props) {
     setCountry,
     language,
     setLanguage,
-    learning,
-    setLearning,
-    skills,
-    setSkills,
-    buddies,
-    setFilteredBuddies,
+    teachingCheckedIndex,
+    setTeachingCheckedIndex,
+    skillsCheckedIndex,
+    setSkillsCheckedIndex,
   } = props;
 
-  // const [country, setCountry] = useState('all');
-  // const [language, setLanguage] = useState('all');
-  //   tech stack
-  // const [learning, setLearning] = useState([]);
-  // const [skills, setSkills] = useState([]);
+  //   TOGGLE FUNCTIONS: used to store the indices of the select options
 
-  const allTeachingNames = allTeaching.map((learning) => learning.name);
-  const allSkillsNames = allSkills.map((skill) => skill.name);
+  const toggleTeaching = (id) => {
+    let currentIndex;
+    currentIndex = teachingCheckedIndex.indexOf(id);
+    const newCheckedIndex = [...teachingCheckedIndex];
 
-  useEffect(() => {
-    // console.log('***************************************');
-    let remainingBuddies;
-    remainingBuddies = buddies.filter((buddy) => {
-      // filter on country
-      let countryCondition;
-      if (country === 'all') {
-        countryCondition = buddy.country !== '';
-      } else {
-        countryCondition = buddy.country === country;
-      }
-      //   console.log('--------------');
-      //   console.log(buddy.name + ' country ' + countryCondition);
+    if (currentIndex === -1) {
+      newCheckedIndex.push(id);
+    } else {
+      newCheckedIndex.splice(currentIndex, 1);
+    }
 
-      // filter on language
-      let languageCondition;
-      if (language === 'all') {
-        languageCondition = buddy.language !== [];
-      } else {
-        languageCondition = buddy.languages.includes(language);
-      }
-      //   console.log(buddy.name + ' language ' + languageCondition);
+    setTeachingCheckedIndex(newCheckedIndex);
+  };
 
-      //   filter learning
-      let learningCondition;
-      //   console.log(learning);
-      learningCondition = buddy.teaching.filter((learn) =>
-        learning.includes(learn)
-      );
+  const toggleSkills = (id) => {
+    let currentIndex;
+    currentIndex = skillsCheckedIndex.indexOf(id);
+    const newCheckedIndex = [...skillsCheckedIndex];
 
-      if (arrayEquals(learning, [])) {
-        learningCondition = true;
-      } else if (!arrayEquals(learningCondition, [])) {
-        learningCondition = true;
-      } else {
-        learningCondition = false;
-      }
-      //   console.log(buddy.name + ' learn ' + learningCondition);
+    if (currentIndex === -1) {
+      newCheckedIndex.push(id);
+    } else {
+      newCheckedIndex.splice(currentIndex, 1);
+    }
 
-      //   filter skills
-      let skillsCondition;
-      skillsCondition = buddy.skills.filter((skill) => skills.includes(skill));
-
-      if (arrayEquals(skills, [])) {
-        skillsCondition = true;
-      } else if (!arrayEquals(skillsCondition, [])) {
-        skillsCondition = true;
-      } else {
-        skillsCondition = false;
-      }
-
-      //   console.log(buddy.name + ' skill ' + skillsCondition);
-
-      //   console.log(
-      //     buddy.name +
-      //       ' country&language&learning&skill ' +
-      //       (countryCondition &&
-      //         languageCondition &&
-      //         skillsCondition &&
-      //         learningCondition)
-      //   );
-      //   console.log('--------------');
-
-      return (
-        countryCondition &&
-        languageCondition &&
-        learningCondition &&
-        skillsCondition
-      );
-    });
-
-    setFilteredBuddies(remainingBuddies);
-  }, [country, language, learning, skills]);
+    setSkillsCheckedIndex(newCheckedIndex);
+  };
 
   return (
-    <div>
+    <div className="filter-container">
       <h3>Filter</h3>
       <div className="filter-select-container">
+        <br></br>
         <div>
-          <label htmlFor="country">COUNTRY</label>
+          <label className="bold" htmlFor="country">
+            COUNTRY
+          </label>
         </div>
         <div>
           <select
             name="countries"
             id="countries"
             onChange={(e) => setCountry(e.target.value)}
+            defaultValue={country}
           >
             <option value="all">All</option>
             {countries.map((country, index) => (
@@ -124,57 +71,64 @@ function MentorFilter(props) {
           </select>
         </div>
       </div>
-
+      <br></br>
       <div className="filter-select-container">
         <div>
-          <label htmlFor="language">LANGUAGE</label>
+          <label className="bold" htmlFor="country">
+            LANGUAGE
+          </label>
         </div>
-        <select
-          name="language"
-          id="language"
-          onChange={(e) => setLanguage(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="en">English</option>
-          <option value="it">Italian</option>
-          <option value="es">Spanish</option>
-          <option value="fr">French</option>
-        </select>
+        <div>
+          <select
+            name="countries"
+            id="countries"
+            onChange={(e) => setLanguage(e.target.value)}
+            defaultValue={language}
+          >
+            <option value="all">All</option>
+            {allLanguages.map((lang) => (
+              <option key={lang._id} value={lang._id}>
+                {lang.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <br></br>
       <fieldset>
-        <legend>Available to teach</legend>
-        {allTeaching.map((learn) => (
-          <div key={learn.id}>
+        <legend>AVAILABLE TO TEACH</legend>
+        {allTechStacks.map((learn) => (
+          <div key={learn._id}>
             <input
               //   onChange={selectLearning}
-              onChange={(e) =>
-                checkboxSelection(e, learning, setLearning, allTeachingNames)
+              onChange={() => toggleTeaching(learn._id)}
+              checked={
+                teachingCheckedIndex.indexOf(learn._id) === -1 ? false : true
               }
               type="checkbox"
-              id={learn.name}
-              name={learn.name}
-              value={learn.name}
+              id={learn._id}
+              name={learn.label}
+              value={learn.label}
             />
-            <label htmlFor={learn.name}> {learn.name}</label>
+            <label htmlFor={learn.label}> {learn.label}</label>
           </div>
         ))}
       </fieldset>
       <br></br>
       <fieldset>
         <legend>SKILLS</legend>
-        {allSkills.map((skill) => (
-          <div key={skill.id}>
+        {allSkillsLevel.map((skill) => (
+          <div key={skill._id}>
             <input
-              //   onChange={selectSkills}
-              onChange={(e) =>
-                checkboxSelection(e, skills, setSkills, allSkillsNames)
+              onChange={() => toggleSkills(skill._id)}
+              checked={
+                skillsCheckedIndex.indexOf(skill._id) === -1 ? false : true
               }
               type="checkbox"
-              name={skill.name}
-              value={skill.name}
+              name={skill.label}
+              value={skill.label}
             />
-            <label htmlFor={skill.name}> {skill.name}</label>
+            <label htmlFor={skill.label}> {skill.label}</label>
           </div>
         ))}
       </fieldset>

@@ -1,6 +1,6 @@
-import Modal from '../../UI/Modal';
-import MentorFilterMobileOptions from './MentorFilterMobileOptions';
-import BtnCTA from '../../UI/BtnCTA';
+import Modal from '../UI/Modal';
+import MentorFilter from './MentorFilter';
+import BtnCTA from '../UI/BtnCTA';
 
 function MentorFilterMobile(props) {
   const {
@@ -10,8 +10,6 @@ function MentorFilterMobile(props) {
     setLanguage,
     teachingCheckedIndex,
     setTeachingCheckedIndex,
-    teachingCheckedNames,
-    setTeachingCheckedNames,
     skillsCheckedIndex,
     setSkillsCheckedIndex,
     filterMentors,
@@ -35,22 +33,18 @@ function MentorFilterMobile(props) {
             X
           </div>
         </div>
-
         <div>
-          <MentorFilterMobileOptions
+          <MentorFilter
             country={country}
             setCountry={setCountry}
             language={language}
             setLanguage={setLanguage}
             teachingCheckedIndex={teachingCheckedIndex}
             setTeachingCheckedIndex={setTeachingCheckedIndex}
-            teachingCheckedNames={teachingCheckedNames}
-            setTeachingCheckedNames={setTeachingCheckedNames}
             skillsCheckedIndex={skillsCheckedIndex}
             setSkillsCheckedIndex={setSkillsCheckedIndex}
           />
         </div>
-        <div> </div>
       </div>
     </Modal>
   );

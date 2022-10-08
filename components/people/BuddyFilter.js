@@ -17,7 +17,6 @@ function BuddyFilter(props) {
 
   //   TOGGLE FUNCTIONS: used to store the indices of the select options
 
-  //   difficulty
   const toggleLearning = (id) => {
     let currentIndex;
     currentIndex = learningCheckedIndex.indexOf(id);

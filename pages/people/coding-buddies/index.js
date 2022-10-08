@@ -24,13 +24,12 @@ function CodingBuddiesScreen() {
   // FILTER
   const [country, setCountry] = useState('all');
   const [language, setLanguage] = useState('all');
+  const [learningCheckedIndex, setLearningCheckedIndex] = useState([]);
+  const [skillsCheckedIndex, setSkillsCheckedIndex] = useState([]);
+
   //   tech stack
   const [learning, setLearning] = useState([]);
   const [skills, setSkills] = useState([]);
-
-  // MOBILE FILTER
-  const [learningCheckedIndex, setLearningCheckedIndex] = useState([]);
-  const [skillsCheckedIndex, setSkillsCheckedIndex] = useState([]);
 
   const fetchBuddies = async () => {
     try {
