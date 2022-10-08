@@ -1,6 +1,6 @@
-import Modal from '../../UI/Modal';
-import BuddyFilterMobileOptions from './BuddyFilterMobileOptions';
-import BtnCTA from '../../UI/BtnCTA';
+import Modal from '../UI/Modal';
+import BuddyFilter from './BuddyFilter';
+import BtnCTA from '../UI/BtnCTA';
 
 function BuddyFilterMobile(props) {
   const {
@@ -10,23 +10,10 @@ function BuddyFilterMobile(props) {
     setLanguage,
     learningCheckedIndex,
     setLearningCheckedIndex,
-    learningCheckedNames,
-    setLearningCheckedNames,
     skillsCheckedIndex,
     setSkillsCheckedIndex,
     filterBuddies,
     onClose,
-    // country,
-    // setCountry,
-    // language,
-    // setLanguage,
-    // learning,
-    // setLearning,
-    // skills,
-    // setSkills,
-
-    // buddies,
-    // setFilteredBuddies,
   } = props;
   return (
     <Modal onClose={onClose}>
@@ -46,22 +33,18 @@ function BuddyFilterMobile(props) {
             X
           </div>
         </div>
-
         <div>
-          <BuddyFilterMobileOptions
+          <BuddyFilter
             country={country}
             setCountry={setCountry}
             language={language}
             setLanguage={setLanguage}
             learningCheckedIndex={learningCheckedIndex}
             setLearningCheckedIndex={setLearningCheckedIndex}
-            learningCheckedNames={learningCheckedNames}
-            setLearningCheckedNames={setLearningCheckedNames}
             skillsCheckedIndex={skillsCheckedIndex}
             setSkillsCheckedIndex={setSkillsCheckedIndex}
           />
         </div>
-        <div> </div>
       </div>
     </Modal>
   );

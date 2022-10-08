@@ -6,8 +6,8 @@ import { filterBuddies } from '../../../lib/helper/buddies/filterFunctions';
 import BtnCTA from '../../../components/UI/BtnCTA';
 import BuddyCard from '../../../components/people/BuddyCard';
 import SpinningLoader from '../../../components/UI/SpinningLoader';
-import BuddyFilterTop from '../../../components/people/BuddyFilterTop';
-import BuddyFilterMobileTop from '../../../components/people/BuddyFilterMobileTop';
+import BuddyFilter from '../../../components/people/BuddyFilter';
+import BuddyFilterMobile from '../../../components/people/BuddyFilterMobile';
 // context
 import { useMainContext } from '../../../context/Context';
 // packages
@@ -38,7 +38,7 @@ function CodingBuddiesScreen() {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API}/people/buddies`
       );
-      // console.log(res.data);
+      console.log(res.data);
       if (res.data.success) {
         // console.log('LI GHEMOOO');
         setBuddies(res.data.buddies);
@@ -59,16 +59,20 @@ function CodingBuddiesScreen() {
     if (!mobileView) {
       filterBuddies(
         buddies,
+        country,
+        language,
         learningCheckedIndex,
         skillsCheckedIndex,
         setFilteredBuddies
       );
     }
-  }, [learningCheckedIndex, skillsCheckedIndex]);
+  }, [country, language, learningCheckedIndex, skillsCheckedIndex]);
 
   const mobileFilterBuddies = () => {
     filterBuddies(
       buddies,
+      country,
+      language,
       learningCheckedIndex,
       skillsCheckedIndex,
       setFilteredBuddies
@@ -90,7 +94,11 @@ function CodingBuddiesScreen() {
           </div>
           <br></br>
           {showFilter && (
-            <BuddyFilterMobileTop
+            <BuddyFilterMobile
+              country={country}
+              setCountry={setCountry}
+              language={language}
+              setLanguage={setLanguage}
               learningCheckedIndex={learningCheckedIndex}
               setLearningCheckedIndex={setLearningCheckedIndex}
               skillsCheckedIndex={skillsCheckedIndex}
@@ -102,7 +110,11 @@ function CodingBuddiesScreen() {
           <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
             {!mobileView && (
               <div>
-                <BuddyFilterTop
+                <BuddyFilter
+                  country={country}
+                  setCountry={setCountry}
+                  language={language}
+                  setLanguage={setLanguage}
                   learningCheckedIndex={learningCheckedIndex}
                   setLearningCheckedIndex={setLearningCheckedIndex}
                   skillsCheckedIndex={skillsCheckedIndex}
