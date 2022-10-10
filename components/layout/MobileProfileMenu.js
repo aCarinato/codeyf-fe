@@ -11,10 +11,16 @@ import axios from 'axios';
 import { useMainContext } from '../../context/Context';
 
 function MobileProfileMenu(props) {
-  const { currentUser, authState, setCurrentUser } = useMainContext();
+  const {
+    currentUser,
+    authState,
+    ctxHasNotifications,
+    setCtxHasNotifications,
+  } = useMainContext();
   const { setShowMobileProfileMenu } = props;
 
   const readNotifications = async () => {
+    setCtxHasNotifications(false);
     const res = await axios.put(
       `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
       {},
@@ -26,30 +32,30 @@ function MobileProfileMenu(props) {
     );
   };
 
-  const fetchUser = async () => {
-    if (authState && authState.email.length > 0) {
-      const email = authState.email;
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/user/`,
-          {
-            email,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          }
-        );
-        // console.log(res);
-        if (res.data.success) {
-          setCurrentUser(res.data.user);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
+  // const fetchUser = async () => {
+  //   if (authState && authState.email.length > 0) {
+  //     const email = authState.email;
+  //     try {
+  //       const res = await axios.post(
+  //         `${process.env.NEXT_PUBLIC_API}/user/`,
+  //         {
+  //           email,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${authState.token}`,
+  //           },
+  //         }
+  //       );
+  //       // console.log(res);
+  //       if (res.data.success) {
+  //         setCurrentUser(res.data.user);
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  // };
 
   return (
     <Modal>
@@ -79,13 +85,13 @@ function MobileProfileMenu(props) {
               <Link href="/my-profile/notifications">
                 <a
                   className={
-                    currentUser.hasNotifications
+                    ctxHasNotifications
                       ? classes['main-nav-mob-link-notification']
                       : classes['main-nav-mob-link']
                   }
                   onClick={() => {
                     setShowMobileProfileMenu(false);
-                    if (currentUser && currentUser.hasNotifications) {
+                    if (ctxHasNotifications) {
                       readNotifications();
                       // fetchUser();
                     }
@@ -93,7 +99,7 @@ function MobileProfileMenu(props) {
                 >
                   NOTIFICATIONS{' '}
                   <span>
-                    {currentUser.hasNotifications && (
+                    {ctxHasNotifications && (
                       <sup>
                         <Icon icon="ci:notification" />
                       </sup>

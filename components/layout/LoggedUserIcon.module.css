@@ -1,0 +1,12 @@
+.container-item {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+}
+
+.container-item-notified {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  color: var(--main-error-color);
+}

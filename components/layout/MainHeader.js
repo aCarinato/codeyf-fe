@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import DropdownMenu from './DropdownMenu';
 import MobileMenu from './MobileMenu';
 import MobileProfileMenu from './MobileProfileMenu';
+import LoggedUserIcon from './LoggedUserIcon';
 // context
 import { useMainContext } from '../../context/Context';
 
@@ -79,42 +80,32 @@ function MainHeader() {
           >
             <Icon icon="charm:menu-hamburger" />
           </div>
-          {isLoggedIn && (
-            <div
-              className={
-                currentUser && currentUser.hasNotifications
-                  ? classes['container-item-notified']
-                  : classes['container-item']
-              }
-              onClick={() => setShowMobileProfileMenu(!showMobileProfileMenu)}
-            >
-              {/* <Link href="/my-profile"> */}
-              <div>
-                <Icon icon="carbon:user-avatar-filled-alt" />
-                {currentUser && currentUser.hasNotifications && (
-                  <sup>
-                    <Icon icon="ci:notification" />
-                  </sup>
-                )}
-              </div>
-              {/* </Link> */}
-            </div>
+          {
+            currentUser && isLoggedIn && (
+              <LoggedUserIcon
+                hasNotifications={currentUser.hasNotifications}
+                showMobileProfileMenu={showMobileProfileMenu}
+                setShowMobileProfileMenu={setShowMobileProfileMenu}
+              />
+            )
             // <div
             //   className={
             //     currentUser && currentUser.hasNotifications
-            //       ? classes['mobile-icon-notified']
-            //       : classes['mobile-icon']
+            //       ? classes['container-item-notified']
+            //       : classes['container-item']
             //   }
             //   onClick={() => setShowMobileProfileMenu(!showMobileProfileMenu)}
             // >
-            //   <Icon icon="carbon:user-avatar-filled-alt" />{' '}
-            //   {currentUser && currentUser.hasNotifications && (
-            //     <sup>
-            //       <Icon icon="ci:notification" />
-            //     </sup>
-            //   )}
+            //   <div>
+            //     <Icon icon="carbon:user-avatar-filled-alt" />
+            //     {currentUser && currentUser.hasNotifications && (
+            //       <sup>
+            //         <Icon icon="ci:notification" />
+            //       </sup>
+            //     )}
+            //   </div>
             // </div>
-          )}
+          }
         </div>
       ) : (
         <div className={classes['container-item']}>
@@ -150,26 +141,31 @@ function MainHeader() {
             </div>
             {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
           </div>
-          {isLoggedIn ? (
-            <div
-              className={
-                currentUser && currentUser.hasNotifications
-                  ? classes['container-item-notified']
-                  : classes['container-item']
-              }
-            >
-              <Link href="/my-profile">
-                <div>
-                  <Icon icon="carbon:user-avatar-filled-alt" />
-                  {currentUser && currentUser.hasNotifications && (
-                    <sup>
-                      <Icon icon="ci:notification" />
-                    </sup>
-                  )}
-                </div>
-              </Link>
-            </div>
+          {currentUser && isLoggedIn ? (
+            <LoggedUserIcon
+              hasNotifications={currentUser.hasNotifications}
+              showMobileProfileMenu={showMobileProfileMenu}
+              setShowMobileProfileMenu={setShowMobileProfileMenu}
+            />
           ) : (
+            // <div
+            //   className={
+            //     currentUser && currentUser.hasNotifications
+            //       ? classes['container-item-notified']
+            //       : classes['container-item']
+            //   }
+            // >
+            //   <Link href="/my-profile">
+            //     <div>
+            //       <Icon icon="carbon:user-avatar-filled-alt" />
+            //       {currentUser && currentUser.hasNotifications && (
+            //         <sup>
+            //           <Icon icon="ci:notification" />
+            //         </sup>
+            //       )}
+            //     </div>
+            //   </Link>
+            // </div>
             <div className={classes['container-item-label']}>
               <Link href="/login">
                 <a className={classes['main-nav-link']}>LOGIN</a>

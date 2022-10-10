@@ -12,6 +12,8 @@ export function ContextProvider({ children }) {
   const [peoples, setPeople] = useState([]);
   const [groups, setGroups] = useState([]);
 
+  const [ctxHasNotifications, setCtxHasNotifications] = useState(false);
+
   // current logged in user
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -61,6 +63,11 @@ export function ContextProvider({ children }) {
         // console.log(res);
         if (res.data.success) {
           setCurrentUser(res.data.user);
+          if (res.data.user.hasNotifications) {
+            setCtxHasNotifications(true);
+          } else {
+            setCtxHasNotifications(false);
+          }
         }
       } catch (err) {
         console.log(err);
@@ -71,7 +78,7 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     // current user
     fetchUser();
-  }, [currentUser, authState && authState.email]);
+  }, [authState && authState.email]);
 
   const loginHandler = (username, email, token, isAdmin) => {
     //  saves the credentials in local storage and in the state
@@ -120,6 +127,8 @@ export function ContextProvider({ children }) {
     userLogout: logoutHandler,
     currentUser,
     setCurrentUser,
+    ctxHasNotifications,
+    setCtxHasNotifications,
   };
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>;

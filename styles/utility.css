@@ -2,9 +2,7 @@
 /*  UTILITY CLASSES  */
 /* ----------------- */
 
-.margin-6auto {
-  margin: 0.6rem auto;
-}
+/* WIDTH */
 
 .width-45 {
   width: 45%;
@@ -17,6 +15,15 @@
 
 .width-80 {
   width: 80%;
+}
+
+/* MARGIN */
+.margin-6auto {
+  margin: 0.6rem auto;
+}
+
+.margin-auto {
+  margin: auto;
 }
 
 /* PADDING */

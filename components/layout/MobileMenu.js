@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../../context/Context';
 
 function MobileMenu(props) {
-  const { mobileView, authState, currentUser } = useMainContext();
+  const { authState } = useMainContext();
 
   const { setShowMobileMenu } = props;
 

@@ -353,7 +353,7 @@ function CompleteProfileForm() {
       {success ? (
         successMsg
       ) : (
-        <div className="grid grid--2cols">
+        <div className="grid grid--2cols margin-6auto">
           <div className="padding-3rem">
             <div className="myform-input-section">
               <label className="myform-label bold" htmlFor="short-description">
