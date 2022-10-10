@@ -3,8 +3,11 @@ import classes from './MyProfileMenuDesktop.module.css';
 import Link from 'next/link';
 // packages
 import { Icon } from '@iconify/react';
+// context
+import { useMainContext } from '../../../context/Context';
 
 function MyProfileMenuDesktop(props) {
+  const { ctxHasNotifications, setCtxHasNotifications } = useMainContext();
   const { currentUser, readNotifications } = props;
 
   return (
@@ -14,14 +17,14 @@ function MyProfileMenuDesktop(props) {
           <div
             onClick={readNotifications}
             className={
-              currentUser && currentUser.hasNotifications
+              currentUser && ctxHasNotifications
                 ? 'notification-link'
                 : 'main-link'
             }
           >
             notifications{' '}
             <span>
-              {currentUser && currentUser.hasNotifications && (
+              {currentUser && ctxHasNotifications && (
                 <sup>
                   <Icon icon="ci:notification" />
                 </sup>

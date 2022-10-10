@@ -14,11 +14,13 @@ import { useMainContext } from '../../context/Context';
 import { useRouter } from 'next/router';
 
 function MyProfile() {
-  const { authState, currentUser, mobileView } = useMainContext();
+  const { authState, currentUser, mobileView, setCtxHasNotifications } =
+    useMainContext();
 
   const router = useRouter();
 
   const readNotifications = async () => {
+    setCtxHasNotifications(false);
     const res = await axios.put(
       `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
       {},

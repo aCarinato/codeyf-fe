@@ -315,19 +315,23 @@ function LoginPage() {
   return (
     <Fragment>
       {loginMode ? (
-        <MyForm
-          formFields={loginFormFields}
-          labelCTA="login"
-          formSubmit={(e) => loginHandler(e)}
-          error=""
-        />
+        <div className="center-text">
+          <MyForm
+            formFields={loginFormFields}
+            labelCTA="login"
+            formSubmit={(e) => loginHandler(e)}
+            error=""
+          />
+        </div>
       ) : (
-        <MyForm
-          formFields={signupFormFields}
-          labelCTA="sign me up"
-          formSubmit={(e) => signupHandler(e)}
-          error=""
-        />
+        <div className="center-text">
+          <MyForm
+            formFields={signupFormFields}
+            labelCTA="sign me up"
+            formSubmit={(e) => signupHandler(e)}
+            error=""
+          />
+        </div>
       )}
 
       {error && submittedUsernameIsValid && submittedEmailIsValid && (
