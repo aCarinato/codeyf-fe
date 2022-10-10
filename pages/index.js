@@ -1,45 +1,81 @@
 import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { people } from '../data/people';
+// import { people } from '../data/people';
 import { groups } from '../data/groups';
 import { assignements } from '../data/assignements';
 import MySlider from '../components/UI/MySlider';
 import { Icon } from '@iconify/react';
 // context
-import { useMainContext } from '../context/Context';
+// import { useMainContext } from '../context/Context';
 // packages
 import axios from 'axios';
 
 function HomePage() {
-  const { peoples, setPeople, mobileView } = useMainContext();
+  // const { peoples, setPeople, mobileView } = useMainContext();
 
-  useEffect(() => {
-    setPeople(people);
-    // fetchMessage();
-    // console.log(peoples);
-  }, []);
+  // useEffect(() => {
+  //   setPeople(people);
+  // }, []);
 
-  // console.log(mobileView);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [messageFromServer, setMessageFromServer] = useState('');
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [messageFromServer, setMessageFromServer] = useState('');
+  // const fetchMessage = async () => {
+  //   let message;
+  //   try {
+  //     setIsLoading(true);
+  //     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/people`);
+  //     // const res = await axios.get(
+  //     //   'https://codeyful-be.herokuapp.com/api/people'
+  //     // );
 
-  const fetchMessage = async () => {
-    let message;
+  //     message = res.data.message;
+  //     setMessageFromServer(message);
+  //     setIsLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const [buddies, setBuddies] = useState([]);
+  const [mentors, setMentors] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchMentors = async () => {
     try {
-      setIsLoading(true);
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/people`);
-      // const res = await axios.get(
-      //   'https://codeyful-be.herokuapp.com/api/people'
-      // );
-
-      message = res.data.message;
-      setMessageFromServer(message);
-      setIsLoading(false);
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/mentors`
+      );
+      //   console.log(res.data);
+      if (res.data.success) {
+        setMentors(res.data.mentors);
+      }
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const fetchBuddies = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/buddies`
+      );
+      if (res.data.success) {
+        setBuddies(res.data.buddies);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBuddies();
+    fetchMentors();
+  }, []);
 
   return (
     <Fragment>
@@ -61,7 +97,7 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider array={people} type="buddy" />
+        <MySlider array={buddies} type="buddy" />
       </div>
       <br></br>
       <br></br>
@@ -74,7 +110,7 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider array={people} type="mentor" />
+        <MySlider array={mentors} type="mentor" />
       </div>
       <br></br>
       <br></br>

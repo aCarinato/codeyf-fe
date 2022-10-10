@@ -37,23 +37,25 @@ function MySlider(props) {
       {type === 'buddy' &&
         slicedItems.map((item) => (
           <BuddyCard
-            key={item.id}
+            key={item._id}
             username={item.username}
             handle={item.handle}
             description={item.shortDescription}
             country={item.country}
             learning={item.learning}
+            profilePic={item.profilePic}
           />
         ))}
       {type === 'mentor' &&
         slicedItems.map((item) => (
           <MentorCard
-            key={item.id}
+            key={item._id}
             username={item.username}
             handle={item.handle}
             description={item.shortDescription}
             country={item.country}
             teaching={item.teaching}
+            profilePic={item.profilePic}
           />
         ))}
       {type === 'group' &&

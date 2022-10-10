@@ -85,3 +85,8 @@
 .fieldset-error {
   border: 0.05rem solid var(--main-error-color);
 }
+
+/* IMAGE */
+.img-input-container {
+  width: 100%;
+}

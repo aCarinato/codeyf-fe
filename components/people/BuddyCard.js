@@ -3,12 +3,20 @@ import BtnCTA from '../UI/BtnCTA';
 import { Icon } from '@iconify/react';
 
 function BuddyCard(props) {
-  const { username, handle, description, country, learning } = props;
+  const { username, handle, description, country, learning, profilePic } =
+    props;
   return (
     <div className="main-card-container">
       <div className="card-header">
         <div className="card-img-container">
-          <img className="card-img" src="/img/pizza.png" />
+          <img
+            className="card-img"
+            src={
+              profilePic && profilePic.url && profilePic.url !== ''
+                ? profilePic.url
+                : '/img/default-pic.png'
+            }
+          />
         </div>
         <div className="card-header-username-country">
           {/* <div> */}

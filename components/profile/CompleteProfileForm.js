@@ -34,7 +34,7 @@ function CompleteProfileForm() {
   const [companyJob, setCompanyJob] = useState(null);
   const [linkedin, setLinkedin] = useState('');
   const [github, setGithub] = useState('');
-  const [yearsExperience, setYearsExperience] = useState(0);
+  const [yearsExperience, setYearsExperience] = useState('');
 
   const [image, setImage] = useState({});
 
@@ -368,7 +368,7 @@ function CompleteProfileForm() {
                 id="short-description"
                 name="short-description"
                 type="text"
-                maxLength="80"
+                maxLength="79"
                 rows="2"
                 cols="50"
                 value={shortDescription}
@@ -461,8 +461,8 @@ function CompleteProfileForm() {
                 Profile picture <sup>*</sup>
               </label>
               {image && image.url && (
-                <div>
-                  <img src={`${image.url}`} />
+                <div className="img-input-container">
+                  <img className="img-input-container" src={`${image.url}`} />
                 </div>
               )}
               {/* <input onChange={uploadImg} type="file" accept="images/*" /> */}
@@ -481,11 +481,6 @@ function CompleteProfileForm() {
               </label>
               <input
                 className="myform-text-input"
-                // className={
-                //   linkedinIsInvalid
-                //     ? 'input-invalid myform-text-input'
-                //     : 'myform-text-input'
-                // }
                 id="github"
                 name="github"
                 type="text"
@@ -495,9 +490,6 @@ function CompleteProfileForm() {
                 }}
                 // onBlur={() => setLinkedinTouched(true)}
               />
-              {/* {linkedinIsInvalid && (
-                    <p className="input-error-msg">enter a link</p>
-                  )} */}
             </div>
 
             {/* TOPICS */}
@@ -683,7 +675,7 @@ function CompleteProfileForm() {
                     id="experience"
                     name="experience"
                     type="number"
-                    min={0}
+                    // min="0"
                     value={yearsExperience}
                     onChange={(e) => {
                       setYearsExperience(Number(e.target.value));

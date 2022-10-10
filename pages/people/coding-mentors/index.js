@@ -134,6 +134,7 @@ function MentorsPage() {
                     description={mentor.shortDescription}
                     country={mentor.country}
                     teaching={mentor.teaching}
+                    profilePic={mentor.profilePic}
                   />
                 ))
               ) : (

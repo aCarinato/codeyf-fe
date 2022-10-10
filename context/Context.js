@@ -71,7 +71,7 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     // current user
     fetchUser();
-  }, [authState && authState.email]);
+  }, [currentUser, authState && authState.email]);
 
   const loginHandler = (username, email, token, isAdmin) => {
     //  saves the credentials in local storage and in the state

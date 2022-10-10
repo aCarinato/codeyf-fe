@@ -141,6 +141,7 @@ function CodingBuddiesScreen() {
                     description={buddy.shortDescription}
                     country={buddy.country}
                     learning={buddy.learning}
+                    profilePic={buddy.profilePic}
                   />
                 ))
               ) : (
