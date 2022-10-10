@@ -1,189 +1,162 @@
-import { people } from '../../../data/people';
-import { allLearning } from '../../../data/allLearning';
-import { allSkills } from '../../../data/allSkills';
+// next react
+import { Fragment, useEffect, useState } from 'react';
 // own functions
-import { arrayEquals } from '../../../lib/helper/functions';
+import { filterBuddies } from '../../../lib/helper/buddies/filterFunctions';
 // own components
 import BtnCTA from '../../../components/UI/BtnCTA';
 import BuddyCard from '../../../components/people/BuddyCard';
+import SpinningLoader from '../../../components/UI/SpinningLoader';
 import BuddyFilter from '../../../components/people/BuddyFilter';
-import BuddyFilterMobile from '../../../components/people/mobile-filters/BuddyFilterMobile';
-import { Fragment, useEffect, useState } from 'react';
+import BuddyFilterMobile from '../../../components/people/BuddyFilterMobile';
 // context
 import { useMainContext } from '../../../context/Context';
+// packages
+import axios from 'axios';
 
 function CodingBuddiesScreen() {
   const { mobileView } = useMainContext();
-  const buddies = people.filter((buddy) => buddy.isBuddy);
+  // const buddies = people.filter((buddy) => buddy.isBuddy);
+  const [buddies, setBuddies] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // FILTER
   const [country, setCountry] = useState('all');
   const [language, setLanguage] = useState('all');
+  const [learningCheckedIndex, setLearningCheckedIndex] = useState([]);
+  const [skillsCheckedIndex, setSkillsCheckedIndex] = useState([]);
+
   //   tech stack
   const [learning, setLearning] = useState([]);
   const [skills, setSkills] = useState([]);
 
-  // MOBILE FILTER
-  const [learningCheckedIndex, setLearningCheckedIndex] = useState([]);
-  const [learningCheckedNames, setLearningCheckedNames] = useState([]);
-  const [skillsCheckedIndex, setSkillsCheckedIndex] = useState([]);
-  const [skillsCheckedNames, setSkillsCheckedNames] = useState([]);
+  const fetchBuddies = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/buddies`
+      );
+      console.log(res.data);
+      if (res.data.success) {
+        // console.log('LI GHEMOOO');
+        setBuddies(res.data.buddies);
+        setFilteredBuddies(res.data.buddies);
+        // setFilteredBuddies(res.data.buddies);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // console.log(learningChecked);
   useEffect(() => {
-    setFilteredBuddies(buddies);
+    fetchBuddies();
   }, []);
 
   useEffect(() => {
-    // THESE FUNCTIONS ARE USED TO MAP THE INDEXES TO THE NAMES
-    let currentLearning;
-    currentLearning = allLearning.filter((learn) =>
-      learningCheckedIndex.includes(learn.id)
+    if (!mobileView) {
+      filterBuddies(
+        buddies,
+        country,
+        language,
+        learningCheckedIndex,
+        skillsCheckedIndex,
+        setFilteredBuddies
+      );
+    }
+  }, [country, language, learningCheckedIndex, skillsCheckedIndex]);
+
+  const mobileFilterBuddies = () => {
+    filterBuddies(
+      buddies,
+      country,
+      language,
+      learningCheckedIndex,
+      skillsCheckedIndex,
+      setFilteredBuddies
     );
-    let currentLearningNames;
-    currentLearningNames = currentLearning.map((item) => item.name);
-    // console.log(currentLearningNames);
-    setLearningCheckedNames(currentLearningNames);
-
-    let currentSkills;
-    currentSkills = allSkills.filter((skill) =>
-      skillsCheckedIndex.includes(skill.id)
-    );
-    let currentSkillsNames;
-    currentSkillsNames = currentSkills.map((skill) => skill.name);
-    // console.log(currentLearningNames);
-    setSkillsCheckedNames(currentSkillsNames);
-  }, [learningCheckedIndex, skillsCheckedIndex]);
-
-  const filterBuddies = () => {
-    let remainingBuddies;
-    remainingBuddies = buddies.filter((buddy) => {
-      // filter on country
-      let countryCondition;
-      if (country === 'all') {
-        countryCondition = buddy.country !== '';
-      } else {
-        countryCondition = buddy.country === country;
-      }
-
-      // filter on language
-      let languageCondition;
-      if (language === 'all') {
-        languageCondition = buddy.languages !== [];
-      } else {
-        languageCondition = buddy.languages.includes(language);
-      }
-
-      //   filter learning
-      let learningCondition;
-      learningCondition = buddy.learning.filter((learn) =>
-        learningCheckedNames.includes(learn)
-      );
-
-      if (arrayEquals(learningCheckedNames, [])) {
-        learningCondition = true;
-      } else if (!arrayEquals(learningCondition, [])) {
-        learningCondition = true;
-      } else {
-        learningCondition = false;
-      }
-
-      // filter skills
-      let skillsCondition;
-      skillsCondition = buddy.skills.filter((skill) =>
-        skillsCheckedNames.includes(skill)
-      );
-
-      if (arrayEquals(skillsCheckedNames, [])) {
-        skillsCondition = true;
-      } else if (!arrayEquals(skillsCondition, [])) {
-        skillsCondition = true;
-      } else {
-        skillsCondition = false;
-      }
-
-      return (
-        countryCondition &&
-        languageCondition &&
-        learningCondition &&
-        skillsCondition
-      );
-    });
-    // console.log(remainingBuddies);
-    setFilteredBuddies(remainingBuddies);
   };
 
   return (
     <Fragment>
-      <div>
-        <h1>Coding Buddies</h1>
-        <h4 className="h4-header">
-          Friendly learners on their way to coding mastery
-        </h4>
-        <br></br>
-      </div>
-      <br></br>
-      {showFilter && (
-        <BuddyFilterMobile
-          country={country}
-          setCountry={setCountry}
-          language={language}
-          setLanguage={setLanguage}
-          learningCheckedIndex={learningCheckedIndex}
-          setLearningCheckedIndex={setLearningCheckedIndex}
-          learningCheckedNames={learningCheckedNames}
-          setLearningCheckedNames={setLearningCheckedNames}
-          skillsCheckedIndex={skillsCheckedIndex}
-          setSkillsCheckedIndex={setSkillsCheckedIndex}
-          filterBuddies={filterBuddies}
-          onClose={() => setShowFilter(false)}
-        />
-      )}
-      <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
-        {!mobileView && (
+      {loading ? (
+        <SpinningLoader />
+      ) : (
+        <Fragment>
           <div>
-            <BuddyFilter
+            <h1>Coding Buddies</h1>
+            <h4 className="h4-header">
+              Friendly learners on their way to coding mastery
+            </h4>
+            <br></br>
+          </div>
+          <br></br>
+          {showFilter && (
+            <BuddyFilterMobile
               country={country}
               setCountry={setCountry}
               language={language}
               setLanguage={setLanguage}
-              learning={learning}
-              setLearning={setLearning}
-              skills={skills}
-              setSkills={setSkills}
-              buddies={buddies}
-              setFilteredBuddies={setFilteredBuddies}
-            />
-          </div>
-        )}
-
-        <div className="flex">
-          {mobileView && (
-            <BtnCTA
-              label="filter buddies"
-              classname="btn-light-big"
-              onCLickAction={() => setShowFilter(true)}
-              icon={true}
-              iconType="ci:filter-outline"
+              learningCheckedIndex={learningCheckedIndex}
+              setLearningCheckedIndex={setLearningCheckedIndex}
+              skillsCheckedIndex={skillsCheckedIndex}
+              setSkillsCheckedIndex={setSkillsCheckedIndex}
+              filterBuddies={mobileFilterBuddies}
+              onClose={() => setShowFilter(false)}
             />
           )}
-          {filteredBuddies.map((buddy) => (
-            <BuddyCard
-              key={buddy.id}
-              username={buddy.username}
-              handle={buddy.handle}
-              description={buddy.shortDescription}
-              country={buddy.country}
-              learning={buddy.learning}
-            />
-          ))}{' '}
-          <div className="white-card"></div>
-          <div className="white-card"></div>
-          <div className="white-card"></div>
-        </div>
-      </div>
+          <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+            {!mobileView && (
+              <div>
+                <BuddyFilter
+                  country={country}
+                  setCountry={setCountry}
+                  language={language}
+                  setLanguage={setLanguage}
+                  learningCheckedIndex={learningCheckedIndex}
+                  setLearningCheckedIndex={setLearningCheckedIndex}
+                  skillsCheckedIndex={skillsCheckedIndex}
+                  setSkillsCheckedIndex={setSkillsCheckedIndex}
+                />
+              </div>
+            )}
+
+            <div className="flex">
+              {mobileView && (
+                <BtnCTA
+                  label="filter buddies"
+                  classname="btn-light-big"
+                  onCLickAction={() => setShowFilter(true)}
+                  icon={true}
+                  iconType="ci:filter-outline"
+                />
+              )}
+              {filteredBuddies.length > 0 ? (
+                filteredBuddies.map((buddy) => (
+                  <BuddyCard
+                    key={buddy._id}
+                    username={buddy.username}
+                    handle={buddy.handle}
+                    description={buddy.shortDescription}
+                    country={buddy.country}
+                    learning={buddy.learning}
+                    profilePic={buddy.profilePic}
+                  />
+                ))
+              ) : (
+                <p>
+                  No buddies found for the filters applied. Please select
+                  different search parameters.
+                </p>
+              )}{' '}
+              <div className="white-card"></div>
+              <div className="white-card"></div>
+              <div className="white-card"></div>
+            </div>
+          </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 }

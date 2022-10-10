@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 // own components
 import DropdownMenu from './DropdownMenu';
 import MobileMenu from './MobileMenu';
+import MobileProfileMenu from './MobileProfileMenu';
 // context
 import { useMainContext } from '../../context/Context';
 
 function MainHeader() {
-  const { mobileView, authState } = useMainContext();
+  const { mobileView, authState, currentUser } = useMainContext();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileProfileMenu, setShowMobileProfileMenu] = useState(false);
 
   const [expandedPeople, setExpandedPeople] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState(false);
@@ -64,12 +66,55 @@ function MainHeader() {
         </div>
       </div>
       {showMobileMenu && <MobileMenu setShowMobileMenu={setShowMobileMenu} />}
+      {showMobileProfileMenu && (
+        <MobileProfileMenu
+          setShowMobileProfileMenu={setShowMobileProfileMenu}
+        />
+      )}
       {mobileView ? (
-        <div
-          className={classes['mobile-icon']}
-          onClick={() => setShowMobileMenu(!showMobileMenu)}
-        >
-          <Icon icon="charm:menu-hamburger" />
+        <div className="flex">
+          <div
+            className={classes['mobile-icon']}
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            <Icon icon="charm:menu-hamburger" />
+          </div>
+          {isLoggedIn && (
+            <div
+              className={
+                currentUser && currentUser.hasNotifications
+                  ? classes['container-item-notified']
+                  : classes['container-item']
+              }
+              onClick={() => setShowMobileProfileMenu(!showMobileProfileMenu)}
+            >
+              {/* <Link href="/my-profile"> */}
+              <div>
+                <Icon icon="carbon:user-avatar-filled-alt" />
+                {currentUser && currentUser.hasNotifications && (
+                  <sup>
+                    <Icon icon="ci:notification" />
+                  </sup>
+                )}
+              </div>
+              {/* </Link> */}
+            </div>
+            // <div
+            //   className={
+            //     currentUser && currentUser.hasNotifications
+            //       ? classes['mobile-icon-notified']
+            //       : classes['mobile-icon']
+            //   }
+            //   onClick={() => setShowMobileProfileMenu(!showMobileProfileMenu)}
+            // >
+            //   <Icon icon="carbon:user-avatar-filled-alt" />{' '}
+            //   {currentUser && currentUser.hasNotifications && (
+            //     <sup>
+            //       <Icon icon="ci:notification" />
+            //     </sup>
+            //   )}
+            // </div>
+          )}
         </div>
       ) : (
         <div className={classes['container-item']}>
@@ -106,9 +151,22 @@ function MainHeader() {
             {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
           </div>
           {isLoggedIn ? (
-            <div className={classes['container-item']}>
+            <div
+              className={
+                currentUser && currentUser.hasNotifications
+                  ? classes['container-item-notified']
+                  : classes['container-item']
+              }
+            >
               <Link href="/my-profile">
-                <Icon icon="carbon:user-avatar-filled-alt" />
+                <div>
+                  <Icon icon="carbon:user-avatar-filled-alt" />
+                  {currentUser && currentUser.hasNotifications && (
+                    <sup>
+                      <Icon icon="ci:notification" />
+                    </sup>
+                  )}
+                </div>
               </Link>
             </div>
           ) : (

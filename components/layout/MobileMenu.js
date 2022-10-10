@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../../context/Context';
 
 function MobileMenu(props) {
-  const { mobileView, authState } = useMainContext();
+  const { mobileView, authState, currentUser } = useMainContext();
 
   const { setShowMobileMenu } = props;
 
@@ -40,13 +40,22 @@ function MobileMenu(props) {
         </div>
         <div className={classes['menu-items']}>
           <ul className={classes['menu-ul']}>
-            <li
+            {!isLoggedIn && (
+              <li
+                className={classes['menu-li']}
+                onClick={() => setShowMobileMenu(false)}
+              >
+                <Link href="/login">
+                  <a className={classes['main-nav-mob-link']}>LOGIN</a>
+                </Link>
+              </li>
+            )}
+            {/* <li
               className={classes['menu-li']}
               onClick={() => setShowMobileMenu(false)}
             >
               {isLoggedIn ? (
                 <Link href="/my-profile">
-                  {/* <a className={classes['main-nav-mob-link']}>LOGIN</a> */}
                   <a className={classes['main-nav-mob-link']}>
                     <Icon icon="carbon:user-avatar-filled-alt" /> MY PROFILE
                   </a>
@@ -56,7 +65,7 @@ function MobileMenu(props) {
                   <a className={classes['main-nav-mob-link']}>LOGIN</a>
                 </Link>
               )}
-            </li>
+            </li> */}
             <li
               className={classes['menu-li']}
               onClick={() => setShowMobileMenu(false)}
@@ -121,8 +130,6 @@ function MobileMenu(props) {
                 </li>
               </ul>
             )}
-
-            {/* <li className={classes['menu-li']}>LEARNING</li> */}
           </ul>
         </div>
       </div>

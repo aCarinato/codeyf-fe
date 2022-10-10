@@ -1,32 +1,19 @@
-import Modal from '../../UI/Modal';
-import BuddyFilterMobileOptions from './BuddyFilterMobileOptions';
-import BtnCTA from '../../UI/BtnCTA';
+import Modal from '../UI/Modal';
+import MentorFilter from './MentorFilter';
+import BtnCTA from '../UI/BtnCTA';
 
-function BuddyFilterMobile(props) {
+function MentorFilterMobile(props) {
   const {
     country,
     setCountry,
     language,
     setLanguage,
-    learningCheckedIndex,
-    setLearningCheckedIndex,
-    learningCheckedNames,
-    setLearningCheckedNames,
+    teachingCheckedIndex,
+    setTeachingCheckedIndex,
     skillsCheckedIndex,
     setSkillsCheckedIndex,
-    filterBuddies,
+    filterMentors,
     onClose,
-    // country,
-    // setCountry,
-    // language,
-    // setLanguage,
-    // learning,
-    // setLearning,
-    // skills,
-    // setSkills,
-
-    // buddies,
-    // setFilteredBuddies,
   } = props;
   return (
     <Modal onClose={onClose}>
@@ -36,7 +23,7 @@ function BuddyFilterMobile(props) {
             label="APPLY FILTERS"
             classname="btn-light-big"
             onCLickAction={() => {
-              filterBuddies();
+              filterMentors();
               onClose();
             }}
             icon={true}
@@ -46,25 +33,21 @@ function BuddyFilterMobile(props) {
             X
           </div>
         </div>
-
         <div>
-          <BuddyFilterMobileOptions
+          <MentorFilter
             country={country}
             setCountry={setCountry}
             language={language}
             setLanguage={setLanguage}
-            learningCheckedIndex={learningCheckedIndex}
-            setLearningCheckedIndex={setLearningCheckedIndex}
-            learningCheckedNames={learningCheckedNames}
-            setLearningCheckedNames={setLearningCheckedNames}
+            teachingCheckedIndex={teachingCheckedIndex}
+            setTeachingCheckedIndex={setTeachingCheckedIndex}
             skillsCheckedIndex={skillsCheckedIndex}
             setSkillsCheckedIndex={setSkillsCheckedIndex}
           />
         </div>
-        <div> </div>
       </div>
     </Modal>
   );
 }
 
-export default BuddyFilterMobile;
+export default MentorFilterMobile;

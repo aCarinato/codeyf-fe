@@ -44,6 +44,8 @@
 .card-img {
   width: 100%;
   border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   /* border: 1px solid var(--main-primary-color); */
 }
 
@@ -69,8 +71,8 @@
 }
 
 .card-description {
-  padding: 1.2rem 0;
-  font-size: 1.5rem;
+  padding: 1.2rem;
+  font-size: 1.3rem;
   font-style: italic;
 }
 

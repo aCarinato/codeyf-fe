@@ -3,12 +3,20 @@ import BtnCTA from '../UI/BtnCTA';
 import { Icon } from '@iconify/react';
 
 function MentorCard(props) {
-  const { username, handle, description, country, teaching } = props;
+  const { username, handle, description, country, teaching, profilePic } =
+    props;
   return (
     <div className="main-card-container">
       <div className="card-header">
         <div className="card-img-container">
-          <img className="card-img" src="/img/pizza.png" />
+          <img
+            className="card-img"
+            src={
+              profilePic && profilePic.url && profilePic.url !== ''
+                ? profilePic.url
+                : '/img/default-pic.png'
+            }
+          />
         </div>
         <div className="card-header-username-country">
           {/* <div> */}
@@ -22,9 +30,9 @@ function MentorCard(props) {
 
       <p className="card-learning">Teaching:</p>
       <div className="tech-span-box">
-        {teaching.slice(0, 6).map((item, index) => (
-          <span className={`tech-span tech-span---${item}`} key={index}>
-            {item}
+        {teaching.slice(0, 6).map((item) => (
+          <span className={`tech-span tech-span---${item._id}`} key={item._id}>
+            {item.label}
           </span>
         ))}
       </div>

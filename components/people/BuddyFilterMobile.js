@@ -1,20 +1,18 @@
-import Modal from '../../UI/Modal';
-import MentorFilterMobileOptions from './MentorFilterMobileOptions';
-import BtnCTA from '../../UI/BtnCTA';
+import Modal from '../UI/Modal';
+import BuddyFilter from './BuddyFilter';
+import BtnCTA from '../UI/BtnCTA';
 
-function MentorFilterMobile(props) {
+function BuddyFilterMobile(props) {
   const {
     country,
     setCountry,
     language,
     setLanguage,
-    teachingCheckedIndex,
-    setTeachingCheckedIndex,
-    teachingCheckedNames,
-    setTeachingCheckedNames,
+    learningCheckedIndex,
+    setLearningCheckedIndex,
     skillsCheckedIndex,
     setSkillsCheckedIndex,
-    filterMentors,
+    filterBuddies,
     onClose,
   } = props;
   return (
@@ -25,7 +23,7 @@ function MentorFilterMobile(props) {
             label="APPLY FILTERS"
             classname="btn-light-big"
             onCLickAction={() => {
-              filterMentors();
+              filterBuddies();
               onClose();
             }}
             icon={true}
@@ -35,25 +33,21 @@ function MentorFilterMobile(props) {
             X
           </div>
         </div>
-
         <div>
-          <MentorFilterMobileOptions
+          <BuddyFilter
             country={country}
             setCountry={setCountry}
             language={language}
             setLanguage={setLanguage}
-            teachingCheckedIndex={teachingCheckedIndex}
-            setTeachingCheckedIndex={setTeachingCheckedIndex}
-            teachingCheckedNames={teachingCheckedNames}
-            setTeachingCheckedNames={setTeachingCheckedNames}
+            learningCheckedIndex={learningCheckedIndex}
+            setLearningCheckedIndex={setLearningCheckedIndex}
             skillsCheckedIndex={skillsCheckedIndex}
             setSkillsCheckedIndex={setSkillsCheckedIndex}
           />
         </div>
-        <div> </div>
       </div>
     </Modal>
   );
 }
 
-export default MentorFilterMobile;
+export default BuddyFilterMobile;

@@ -1,7 +1,7 @@
 .container {
   display: flex;
   justify-content: space-between;
-  height: 5.2rem;
+  height: 5.8rem;
   font-size: 1.6rem;
   padding: 0 1.8rem;
   color: var(--main-primary-color);
@@ -13,9 +13,16 @@
   align-items: center;
 }
 
+.container-item-notified {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  color: var(--main-error-color);
+}
+
 .container-item-label {
   /* padding: 1rem; */
-  line-height: 5.2rem;
+  line-height: 5.8rem;
   text-align: center;
   padding: 0 1rem;
   cursor: pointer;
@@ -24,7 +31,7 @@
 }
 
 .container-item-label-border {
-  line-height: 5.2rem;
+  line-height: 5.8rem;
   text-align: center;
   padding: 0 1rem;
   cursor: pointer;
@@ -51,5 +58,17 @@
 }
 
 .mobile-icon {
-  line-height: 5.2rem;
+  line-height: 5.8rem;
+}
+
+.mobile-icon-notified {
+  line-height: 5.8rem;
+  color: var(--main-error-color);
+  position: relative;
+}
+
+.notification-bell {
+  height: 0.1rem;
+  font-size: 1rem;
+  transform: translateY(5rem);
 }

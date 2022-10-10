@@ -131,7 +131,7 @@ function BuddyPage() {
         <Fragment>
           {buddy && buddy.handle && (
             <Fragment>
-              <div>
+              <div className="right-text padding-2rem">
                 <BtnCTA
                   label="Message"
                   onCLickAction={() => {}}

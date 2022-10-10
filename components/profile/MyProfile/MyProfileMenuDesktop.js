@@ -14,12 +14,14 @@ function MyProfileMenuDesktop(props) {
           <div
             onClick={readNotifications}
             className={
-              currentUser.hasNotifications ? 'notification-link' : 'main-link'
+              currentUser && currentUser.hasNotifications
+                ? 'notification-link'
+                : 'main-link'
             }
           >
             notifications{' '}
             <span>
-              {currentUser.hasNotifications && (
+              {currentUser && currentUser.hasNotifications && (
                 <sup>
                   <Icon icon="ci:notification" />
                 </sup>
