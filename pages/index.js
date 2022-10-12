@@ -4,15 +4,15 @@ import Link from 'next/link';
 import { groups } from '../data/groups';
 import { assignements } from '../data/assignements';
 import MySlider from '../components/UI/MySlider';
-import { Icon } from '@iconify/react';
+import MessageForm from '../components/message/MessageForm';
 // context
-// import { useMainContext } from '../context/Context';
+import { useMainContext } from '../context/Context';
 // packages
 import axios from 'axios';
+import { Icon } from '@iconify/react';
 
 function HomePage() {
-  // const { peoples, setPeople, mobileView } = useMainContext();
-
+  const { authState } = useMainContext();
   // useEffect(() => {
   //   setPeople(people);
   // }, []);
@@ -40,6 +40,9 @@ function HomePage() {
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // MESSAGE FORM
+  const [showMsgForm, setShowMsgForm] = useState(false);
 
   const fetchMentors = async () => {
     try {
@@ -77,6 +80,10 @@ function HomePage() {
     fetchMentors();
   }, []);
 
+  const closeModal = () => {
+    setShowMsgForm(false);
+  };
+
   return (
     <Fragment>
       <h1>The Coding Community</h1>
@@ -97,7 +104,11 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider array={buddies} type="buddy" />
+        <MySlider
+          array={buddies}
+          type="buddy"
+          setShowMsgForm={setShowMsgForm}
+        />
       </div>
       <br></br>
       <br></br>
@@ -110,7 +121,11 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider array={mentors} type="mentor" />
+        <MySlider
+          array={mentors}
+          type="mentor"
+          setShowMsgForm={setShowMsgForm}
+        />
       </div>
       <br></br>
       <br></br>
@@ -138,6 +153,11 @@ function HomePage() {
       <div className="overflower">
         <MySlider array={assignements} type="assignement" />
       </div>
+
+      {/* msg forms */}
+      {showMsgForm && (
+        <MessageForm onClose={closeModal} setShowMsgForm={setShowMsgForm} />
+      )}
     </Fragment>
   );
 }

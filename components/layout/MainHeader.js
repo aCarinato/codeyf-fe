@@ -83,7 +83,7 @@ function MainHeader() {
           {
             currentUser && isLoggedIn && (
               <LoggedUserIcon
-                hasNotifications={currentUser.hasNotifications}
+                // nNotifications={currentUser.nNotifications}
                 showMobileProfileMenu={showMobileProfileMenu}
                 setShowMobileProfileMenu={setShowMobileProfileMenu}
               />
@@ -143,7 +143,7 @@ function MainHeader() {
           </div>
           {currentUser && isLoggedIn ? (
             <LoggedUserIcon
-              hasNotifications={currentUser.hasNotifications}
+              // hasNotifications={currentUser.hasNotifications}
               showMobileProfileMenu={showMobileProfileMenu}
               setShowMobileProfileMenu={setShowMobileProfileMenu}
             />

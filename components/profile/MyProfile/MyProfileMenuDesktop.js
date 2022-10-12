@@ -7,24 +7,28 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../../../context/Context';
 
 function MyProfileMenuDesktop(props) {
-  const { ctxHasNotifications, setCtxHasNotifications } = useMainContext();
-  const { currentUser, readNotifications } = props;
+  const { currentUser, ctxHasNotifications, currentUserNotifications } =
+    useMainContext();
+  // const { readNotifications } = props;
 
   return (
     <ul>
       <li className={classes['list-item']}>
         <Link href="/my-profile/notifications">
           <div
-            onClick={readNotifications}
+            // onClick={readNotifications}
             className={
-              currentUser && ctxHasNotifications
+              currentUser && currentUserNotifications > 0
                 ? 'notification-link'
                 : 'main-link'
             }
           >
+            {currentUserNotifications > 0 && (
+              <span>{currentUserNotifications}</span>
+            )}{' '}
             notifications{' '}
             <span>
-              {currentUser && ctxHasNotifications && (
+              {currentUser && currentUserNotifications > 0 && (
                 <sup>
                   <Icon icon="ci:notification" />
                 </sup>

@@ -8,13 +8,14 @@ import BuddyCard from '../../../components/people/BuddyCard';
 import SpinningLoader from '../../../components/UI/SpinningLoader';
 import BuddyFilter from '../../../components/people/BuddyFilter';
 import BuddyFilterMobile from '../../../components/people/BuddyFilterMobile';
+import MessageForm from '../../../components/message/MessageForm';
 // context
 import { useMainContext } from '../../../context/Context';
 // packages
 import axios from 'axios';
 
 function CodingBuddiesScreen() {
-  const { mobileView } = useMainContext();
+  const { mobileView, authState } = useMainContext();
   // const buddies = people.filter((buddy) => buddy.isBuddy);
   const [buddies, setBuddies] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
@@ -27,6 +28,12 @@ function CodingBuddiesScreen() {
   const [learningCheckedIndex, setLearningCheckedIndex] = useState([]);
   const [skillsCheckedIndex, setSkillsCheckedIndex] = useState([]);
 
+  // MESSAGING
+  const [showMsgForm, setShowMsgForm] = useState(false);
+  const [message, setMessage] = useState('');
+  const [recipient, setRecipient] = useState('');
+  const [successMsg, setSuccessMsg] = useState(false);
+
   //   tech stack
   const [learning, setLearning] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -37,9 +44,7 @@ function CodingBuddiesScreen() {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API}/people/buddies`
       );
-      console.log(res.data);
       if (res.data.success) {
-        // console.log('LI GHEMOOO');
         setBuddies(res.data.buddies);
         setFilteredBuddies(res.data.buddies);
         // setFilteredBuddies(res.data.buddies);
@@ -76,6 +81,40 @@ function CodingBuddiesScreen() {
       skillsCheckedIndex,
       setFilteredBuddies
     );
+  };
+
+  const closeModal = () => {
+    setShowMsgForm(false);
+  };
+
+  const handleStartConversation = async () => {
+    console.log(recipient);
+    console.log(message);
+    try {
+      // setLoading(true);
+      const newMsg = {
+        recipient,
+        message,
+      };
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
+        newMsg,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      console.log(res);
+      if (res.data.success) {
+        console.log('SULCESSO!');
+        setMessage('');
+        setSuccessMsg(true);
+      }
+      // setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -142,6 +181,9 @@ function CodingBuddiesScreen() {
                     country={buddy.country}
                     learning={buddy.learning}
                     profilePic={buddy.profilePic}
+                    setShowMsgForm={setShowMsgForm}
+                    setRecipient={setRecipient}
+                    setSuccessMsg={setSuccessMsg}
                   />
                 ))
               ) : (
@@ -155,6 +197,17 @@ function CodingBuddiesScreen() {
               <div className="white-card"></div>
             </div>
           </div>
+          {showMsgForm && (
+            <MessageForm
+              onClose={closeModal}
+              setShowMsgForm={setShowMsgForm}
+              message={message}
+              setMessage={setMessage}
+              setRecipient={setRecipient}
+              handleStartConversation={handleStartConversation}
+              successMsg={successMsg}
+            />
+          )}
         </Fragment>
       )}
     </Fragment>

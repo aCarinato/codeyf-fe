@@ -19,21 +19,20 @@ function MyProfile() {
 
   const router = useRouter();
 
-  const readNotifications = async () => {
-    setCtxHasNotifications(false);
-    const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${authState.token}`,
-        },
-      }
-    );
-  };
-
-  // if (currentUser && currentUser.registrationCompleted === false)
-  //   router.push('my-profile/complete-profile');
+  // const readNotifications = async () => {
+  //   setCtxHasNotifications(false);
+  //   const res = await axios.put(
+  //     `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
+  //     {},
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${authState.token}`,
+  //       },
+  //     }
+  //   );
+  // };
+  if (currentUser)
+    console.log('currentUser.nNotifications: ' + currentUser.nNotifications);
 
   return (
     <UserRoute>
@@ -46,8 +45,8 @@ function MyProfile() {
           {!mobileView && (
             <div>
               <MyProfileMenuDesktop
-                currentUser={currentUser}
-                readNotifications={readNotifications}
+              // currentUser={currentUser}
+              // readNotifications={readNotifications}
               />
             </div>
           )}
