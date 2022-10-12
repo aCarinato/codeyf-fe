@@ -14,6 +14,8 @@ export function ContextProvider({ children }) {
 
   const [ctxHasNotifications, setCtxHasNotifications] = useState(false);
 
+  const [currentUserNotifications, setCurrentUserNotifications] = useState(0);
+
   // current logged in user
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -63,7 +65,13 @@ export function ContextProvider({ children }) {
         // console.log(res);
         if (res.data.success) {
           setCurrentUser(res.data.user);
-          if (res.data.user.hasNotifications) {
+          setCurrentUserNotifications(res.data.user.nNotifications);
+          // if (res.data.user.hasNotifications) {
+          //   setCtxHasNotifications(true);
+          // } else {
+          //   setCtxHasNotifications(false);
+          // }
+          if (res.data.user.nNotifications > 0) {
             setCtxHasNotifications(true);
           } else {
             setCtxHasNotifications(false);
@@ -129,6 +137,8 @@ export function ContextProvider({ children }) {
     setCurrentUser,
     ctxHasNotifications,
     setCtxHasNotifications,
+    currentUserNotifications,
+    setCurrentUserNotifications,
   };
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>;

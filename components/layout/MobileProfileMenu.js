@@ -11,26 +11,21 @@ import axios from 'axios';
 import { useMainContext } from '../../context/Context';
 
 function MobileProfileMenu(props) {
-  const {
-    currentUser,
-    authState,
-    ctxHasNotifications,
-    setCtxHasNotifications,
-  } = useMainContext();
+  const { currentUser, currentUserNotifications } = useMainContext();
   const { setShowMobileProfileMenu } = props;
 
-  const readNotifications = async () => {
-    setCtxHasNotifications(false);
-    const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${authState.token}`,
-        },
-      }
-    );
-  };
+  // const readNotifications = async () => {
+  //   setCtxHasNotifications(false);
+  //   const res = await axios.put(
+  //     `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
+  //     {},
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${authState.token}`,
+  //       },
+  //     }
+  //   );
+  // };
 
   return (
     <Modal>
@@ -60,21 +55,23 @@ function MobileProfileMenu(props) {
               <Link href="/my-profile/notifications">
                 <a
                   className={
-                    ctxHasNotifications
+                    currentUserNotifications > 0
                       ? classes['main-nav-mob-link-notification']
                       : classes['main-nav-mob-link']
                   }
                   onClick={() => {
                     setShowMobileProfileMenu(false);
-                    if (ctxHasNotifications) {
-                      readNotifications();
-                      // fetchUser();
-                    }
+                    // if (currentUserNotifications > 0) {
+                    //   readNotifications();
+                    // }
                   }}
                 >
+                  {currentUserNotifications > 0 && (
+                    <span>{currentUserNotifications}</span>
+                  )}{' '}
                   NOTIFICATIONS{' '}
                   <span>
-                    {ctxHasNotifications && (
+                    {currentUserNotifications > 0 && (
                       <sup>
                         <Icon icon="ci:notification" />
                       </sup>

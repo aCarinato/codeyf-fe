@@ -8,7 +8,8 @@ import DMCard from '../../../components/message/direct-message/DMCard';
 import axios from 'axios';
 
 function NotificationPage() {
-  const { authState, currentUser } = useMainContext();
+  const { authState, currentUser, setCurrentUserNotifications } =
+    useMainContext();
 
   const [notifications, setNotifications] = useState([]);
   const [conversations, setConversations] = useState([]);
@@ -23,7 +24,7 @@ function NotificationPage() {
           },
         }
       );
-      console.log(res.data.conversations);
+      // console.log(res.data.conversations);
       if (res.data.success) {
         setConversations(res.data.conversations);
       }
@@ -57,11 +58,13 @@ function NotificationPage() {
           },
         }
       );
-    } else {
-      console.log('NO TE ME INCUIII');
+      console.log('nNotificcations:' + res.data.nNotifications);
+      setCurrentUserNotifications(res.data.nNotifications);
     }
+    // else {
+    //   console.log('NO TE ME INCUIII');
+    // }
 
-    // console.log(res);
     // fetchConversations();
   };
 
