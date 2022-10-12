@@ -1,0 +1,9 @@
+.container {
+  border: 1px solid var(--main-text-color);
+  cursor: pointer;
+}
+
+.containerUnread {
+  border: 2px solid var(--main-error-color);
+  cursor: pointer;
+}

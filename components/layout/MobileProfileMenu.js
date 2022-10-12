@@ -32,31 +32,6 @@ function MobileProfileMenu(props) {
     );
   };
 
-  // const fetchUser = async () => {
-  //   if (authState && authState.email.length > 0) {
-  //     const email = authState.email;
-  //     try {
-  //       const res = await axios.post(
-  //         `${process.env.NEXT_PUBLIC_API}/user/`,
-  //         {
-  //           email,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${authState.token}`,
-  //           },
-  //         }
-  //       );
-  //       // console.log(res);
-  //       if (res.data.success) {
-  //         setCurrentUser(res.data.user);
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  // };
-
   return (
     <Modal>
       <div className="mobile-filter-body">

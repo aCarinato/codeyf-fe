@@ -5,7 +5,7 @@ import MentorCard from '../people/MentorCard';
 import AssignementCard from '../assignements/AssignementCard';
 
 function MySlider(props) {
-  const { array, type } = props;
+  const { array, type, setShowMsgForm } = props;
   let items;
   if (type === 'buddy') {
     items = array.filter((item) => item.isBuddy);
@@ -44,6 +44,7 @@ function MySlider(props) {
             country={item.country}
             learning={item.learning}
             profilePic={item.profilePic}
+            setShowMsgForm={setShowMsgForm}
           />
         ))}
       {type === 'mentor' &&
