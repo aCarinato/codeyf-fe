@@ -16,7 +16,6 @@ import axios from 'axios';
 
 function CodingBuddiesScreen() {
   const { mobileView, authState } = useMainContext();
-  // const buddies = people.filter((buddy) => buddy.isBuddy);
   const [buddies, setBuddies] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -33,10 +32,6 @@ function CodingBuddiesScreen() {
   const [message, setMessage] = useState('');
   const [recipient, setRecipient] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
-
-  //   tech stack
-  const [learning, setLearning] = useState([]);
-  const [skills, setSkills] = useState([]);
 
   const fetchBuddies = async () => {
     try {
@@ -88,8 +83,8 @@ function CodingBuddiesScreen() {
   };
 
   const handleStartConversation = async () => {
-    console.log(recipient);
-    console.log(message);
+    // console.log(recipient);
+    // console.log(message);
     try {
       // setLoading(true);
       const newMsg = {
@@ -105,9 +100,9 @@ function CodingBuddiesScreen() {
           },
         }
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.success) {
-        console.log('SULCESSO!');
+        // console.log('SULCESSO!');
         setMessage('');
         setSuccessMsg(true);
       }

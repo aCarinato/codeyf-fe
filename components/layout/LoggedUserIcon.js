@@ -11,15 +11,10 @@ function LoggedUserIcon(props) {
 
   const { showMobileProfileMenu, setShowMobileProfileMenu } = props;
 
-  console.log('currentUserNotifications: ' + currentUserNotifications);
+  // console.log('currentUserNotifications: ' + currentUserNotifications);
 
   return (
     <div
-      // className={
-      //   ctxHasNotifications
-      //     ? classes['container-item-notified']
-      //     : classes['container-item']
-      // }
       className={
         currentUserNotifications > 0
           ? classes['container-item-notified']
@@ -34,11 +29,6 @@ function LoggedUserIcon(props) {
               <Icon icon="ci:notification" />
             </sup>
           )}
-          {/* {ctxHasNotifications && (
-            <sup>
-              <Icon icon="ci:notification" />
-            </sup>
-          )} */}
         </div>
       ) : (
         <Link href="/my-profile">
@@ -49,11 +39,6 @@ function LoggedUserIcon(props) {
                 <Icon icon="ci:notification" />
               </sup>
             )}
-            {/* {ctxHasNotifications && (
-              <sup>
-                <Icon icon="ci:notification" />
-              </sup>
-            )} */}
           </div>
         </Link>
       )}

@@ -5,7 +5,7 @@ import MentorCard from '../people/MentorCard';
 import AssignementCard from '../assignements/AssignementCard';
 
 function MySlider(props) {
-  const { array, type, setShowMsgForm } = props;
+  const { array, type, setShowMsgForm, setRecipient, setSuccessMsg } = props;
   let items;
   if (type === 'buddy') {
     items = array.filter((item) => item.isBuddy);
@@ -45,6 +45,8 @@ function MySlider(props) {
             learning={item.learning}
             profilePic={item.profilePic}
             setShowMsgForm={setShowMsgForm}
+            setRecipient={setRecipient}
+            setSuccessMsg={setSuccessMsg}
           />
         ))}
       {type === 'mentor' &&
@@ -57,6 +59,9 @@ function MySlider(props) {
             country={item.country}
             teaching={item.teaching}
             profilePic={item.profilePic}
+            setShowMsgForm={setShowMsgForm}
+            setRecipient={setRecipient}
+            setSuccessMsg={setSuccessMsg}
           />
         ))}
       {type === 'group' &&

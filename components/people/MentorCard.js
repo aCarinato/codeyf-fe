@@ -1,10 +1,40 @@
+// next / react
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+// own components
 import BtnCTA from '../UI/BtnCTA';
+// packages
 import { Icon } from '@iconify/react';
+// context
+import { useMainContext } from '../../context/Context';
 
 function MentorCard(props) {
-  const { username, handle, description, country, teaching, profilePic } =
-    props;
+  const {
+    username,
+    handle,
+    description,
+    country,
+    teaching,
+    profilePic,
+    setShowMsgForm,
+    setRecipient,
+    setSuccessMsg,
+  } = props;
+
+  const { authState } = useMainContext();
+
+  const router = useRouter();
+
+  const clickMessageHandler = () => {
+    if (authState && authState.email.length > 0) {
+      setShowMsgForm(true);
+      setRecipient(username);
+      setSuccessMsg(false);
+    } else {
+      router.push('/login');
+    }
+  };
+
   return (
     <div className="main-card-container">
       <div className="card-header">
@@ -46,8 +76,8 @@ function MentorCard(props) {
         </div>
         <div className="card-footer-message">
           <BtnCTA
-            label="Message"
-            onCLickAction={() => {}}
+            label="message"
+            onCLickAction={clickMessageHandler}
             icon={true}
             iconType="ant-design:message-outlined"
           />
