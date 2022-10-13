@@ -3,6 +3,8 @@ import Link from 'next/link';
 // import { people } from '../data/people';
 import { groups } from '../data/groups';
 import { assignements } from '../data/assignements';
+// own components
+import SpinningLoader from '../components/UI/SpinningLoader';
 import MySlider from '../components/UI/MySlider';
 import MessageForm from '../components/message/MessageForm';
 // context
@@ -124,13 +126,17 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider
-          array={buddies}
-          type="buddy"
-          setShowMsgForm={setShowMsgForm}
-          setRecipient={setRecipient}
-          setSuccessMsg={setSuccessMsg}
-        />
+        {loading ? (
+          <SpinningLoader />
+        ) : (
+          <MySlider
+            array={buddies}
+            type="buddy"
+            setShowMsgForm={setShowMsgForm}
+            setRecipient={setRecipient}
+            setSuccessMsg={setSuccessMsg}
+          />
+        )}
       </div>
       <br></br>
       <br></br>
@@ -143,13 +149,17 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider
-          array={mentors}
-          type="mentor"
-          setShowMsgForm={setShowMsgForm}
-          setRecipient={setRecipient}
-          setSuccessMsg={setSuccessMsg}
-        />
+        {loading ? (
+          <SpinningLoader />
+        ) : (
+          <MySlider
+            array={mentors}
+            type="mentor"
+            setShowMsgForm={setShowMsgForm}
+            setRecipient={setRecipient}
+            setSuccessMsg={setSuccessMsg}
+          />
+        )}
       </div>
       <br></br>
       <br></br>

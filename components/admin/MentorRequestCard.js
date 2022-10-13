@@ -58,10 +58,5 @@ function MentorRequestCard(props) {
     </div>
   );
 }
-// Capisco la tua buona fede e buone intenzioni, però facilitone e presuntuoso ai tuoi occhi che in quel momento si sentivano offesi, intendiamoci.
-// Senso di offesa a cui hai reagito con insulti. A cui non ho risposto perchè conosco le tue buone intenzioni e per l'importanza della nostra amicizia che dunque tratto con extra cautela.
-// Offesa che da parte mia non c'è mai stata. Anche perchè non ho detto di non voler MAI usare nessun tipo di protezione e scarponi.
-// Potrei addirittura dire che sei tu facilitone e presuntuoso a considerare me come tale.
-// Magari sarebbe utile spiegarsi a voce un giorno perchè penso ci sia qualcosa da chiarire, i messaggi hanno già fatto abbastanza danni.
-// Ovviamente anche da parte mia non vi è intenzione di  però le cose vanno anche dette
+
 export default MentorRequestCard;
