@@ -27,7 +27,10 @@ function HomePage() {
   const fetchMentors = async () => {
     try {
       setLoading(true);
-      const userEmail = authState.email;
+      let userEmail = '';
+      if (authState && authState.email && authState.email.length > 0) {
+        userEmail = authState.email;
+      }
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/people/mentors`,
         { userEmail }
@@ -45,7 +48,12 @@ function HomePage() {
   const fetchBuddies = async () => {
     try {
       setLoading(true);
-      const userEmail = authState.email;
+
+      let userEmail = '';
+      if (authState && authState.email && authState.email.length > 0) {
+        userEmail = authState.email;
+      }
+
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/people/buddies`,
         { userEmail }
@@ -62,7 +70,7 @@ function HomePage() {
   useEffect(() => {
     fetchBuddies();
     fetchMentors();
-  }, [authState && authState.email]);
+  }, []);
 
   const closeModal = () => {
     setShowMsgForm(false);
