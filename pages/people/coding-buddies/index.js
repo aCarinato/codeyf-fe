@@ -35,9 +35,13 @@ function CodingBuddiesScreen() {
 
   const fetchBuddies = async () => {
     try {
+      // if (authState && authState.email) {
       setLoading(true);
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/people/buddies`
+      const userEmail = authState.email;
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/people/buddies`,
+        { userEmail }
       );
       if (res.data.success) {
         setBuddies(res.data.buddies);
@@ -45,6 +49,7 @@ function CodingBuddiesScreen() {
         // setFilteredBuddies(res.data.buddies);
       }
       setLoading(false);
+      // }
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +57,7 @@ function CodingBuddiesScreen() {
 
   useEffect(() => {
     fetchBuddies();
-  }, []);
+  }, [authState && authState.email]);
 
   useEffect(() => {
     if (!mobileView) {
