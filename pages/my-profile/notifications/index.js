@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useMainContext } from '../../../context/Context';
 // own components
 import DMCard from '../../../components/message/direct-message/DMCard';
+import AdminNotificationCard from '../../../components/message/admin-notification/AdminNotificationCard';
 // packages
 import axios from 'axios';
 
@@ -13,6 +14,25 @@ function NotificationPage() {
 
   const [notifications, setNotifications] = useState([]);
   const [conversations, setConversations] = useState([]);
+
+  const fecthNotifications = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/message/render-notifications`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      // console.log(res.data);
+      if (res.data.success) {
+        setNotifications(res.data.notifications);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchConversations = async () => {
     try {
@@ -35,7 +55,8 @@ function NotificationPage() {
 
   useEffect(() => {
     if (currentUser) {
-      setNotifications(currentUser.notifications);
+      fecthNotifications();
+      // setNotifications(currentUser.notifications);
       fetchConversations();
     }
   }, [currentUser]);
@@ -58,14 +79,33 @@ function NotificationPage() {
           },
         }
       );
-      console.log('nNotificcations:' + res.data.nNotifications);
+      // console.log('nNotificcations:' + res.data.nNotifications);
       setCurrentUserNotifications(res.data.nNotifications);
     }
-    // else {
-    //   console.log('NO TE ME INCUIII');
-    // }
+  };
 
-    // fetchConversations();
+  const readAdminNotification = async (notificationId, isRead) => {
+    if (!isRead) {
+      try {
+        const res = await axios.put(
+          `${process.env.NEXT_PUBLIC_API}/message/read-notification`,
+          {
+            notificationId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+
+        setCurrentUserNotifications(res.data.nNotifications);
+        // console.log(res);
+        // fecthNotifications();
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
@@ -77,8 +117,15 @@ function NotificationPage() {
         <p>there are notification</p>
       )}
       <ul>
-        {notifications.map((notification, index) => (
-          <li key={index}>{notification}</li>
+        {notifications.map((notification) => (
+          <AdminNotificationCard
+            key={notification._id}
+            notificationId={notification._id}
+            createdAt={notification.createdAt}
+            isRead={notification.isRead}
+            message={notification.message}
+            readAdminNotification={readAdminNotification}
+          />
         ))}
       </ul>
       <br></br>

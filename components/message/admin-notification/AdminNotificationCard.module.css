@@ -1,0 +1,11 @@
+.container {
+  padding: 0.8rem;
+  border: 1px solid var(--main-text-color);
+  cursor: pointer;
+}
+
+.containerUnread {
+  padding: 0.8rem;
+  border: 2px solid var(--main-error-color);
+  cursor: pointer;
+}

@@ -1,38 +1,23 @@
 // react / next
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import Link from 'next/link';
 // own components
 import UserRoute from '../../components/routes/UserRoute';
-import BtnCTA from '../../components/UI/BtnCTA';
 import MyProfileMenuDesktop from '../../components/profile/MyProfile/MyProfileMenuDesktop';
 import MyProfileDetails from '../../components/profile/MyProfile/MyProfileDetails';
 // packages
 import { Icon } from '@iconify/react';
-import axios from 'axios';
 // context
 import { useMainContext } from '../../context/Context';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 function MyProfile() {
-  const { authState, currentUser, mobileView, setCtxHasNotifications } =
-    useMainContext();
+  const { authState, currentUser, mobileView } = useMainContext();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  // const readNotifications = async () => {
-  //   setCtxHasNotifications(false);
-  //   const res = await axios.put(
-  //     `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
-  //     {},
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${authState.token}`,
-  //       },
-  //     }
-  //   );
-  // };
-  if (currentUser)
-    console.log('currentUser.nNotifications: ' + currentUser.nNotifications);
+  // if (currentUser)
+  //   console.log('currentUser.nNotifications: ' + currentUser.nNotifications);
 
   return (
     <UserRoute>
@@ -44,10 +29,7 @@ function MyProfile() {
         <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
           {!mobileView && (
             <div>
-              <MyProfileMenuDesktop
-              // currentUser={currentUser}
-              // readNotifications={readNotifications}
-              />
+              <MyProfileMenuDesktop />
             </div>
           )}
           <div>

@@ -675,7 +675,7 @@ function CompleteProfileForm() {
                     id="experience"
                     name="experience"
                     type="number"
-                    // min="0"
+                    min="1"
                     value={yearsExperience}
                     onChange={(e) => {
                       setYearsExperience(Number(e.target.value));
