@@ -36,8 +36,10 @@ function MentorsPage() {
   const fetchMentors = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/people/mentors`
+      const userEmail = authState.email;
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/people/mentors`,
+        { userEmail }
       );
       //   console.log(res.data);
       if (res.data.success) {
@@ -52,7 +54,7 @@ function MentorsPage() {
 
   useEffect(() => {
     fetchMentors();
-  }, []);
+  }, [authState && authState.email]);
 
   useEffect(() => {
     if (!mobileView) {
