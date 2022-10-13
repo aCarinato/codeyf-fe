@@ -13,36 +13,16 @@ import { Icon } from '@iconify/react';
 
 function HomePage() {
   const { authState } = useMainContext();
-  // useEffect(() => {
-  //   setPeople(people);
-  // }, []);
-
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [messageFromServer, setMessageFromServer] = useState('');
-
-  // const fetchMessage = async () => {
-  //   let message;
-  //   try {
-  //     setIsLoading(true);
-  //     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/people`);
-  //     // const res = await axios.get(
-  //     //   'https://codeyful-be.herokuapp.com/api/people'
-  //     // );
-
-  //     message = res.data.message;
-  //     setMessageFromServer(message);
-  //     setIsLoading(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // MESSAGE FORM
+  // MESSAGING
   const [showMsgForm, setShowMsgForm] = useState(false);
+  const [message, setMessage] = useState('');
+  const [recipient, setRecipient] = useState('');
+  const [successMsg, setSuccessMsg] = useState(false);
 
   const fetchMentors = async () => {
     try {
@@ -84,6 +64,36 @@ function HomePage() {
     setShowMsgForm(false);
   };
 
+  const handleStartConversation = async () => {
+    // console.log(recipient);
+    // console.log(message);
+    try {
+      // setLoading(true);
+      const newMsg = {
+        recipient,
+        message,
+      };
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
+        newMsg,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      // console.log(res);
+      if (res.data.success) {
+        // console.log('SULCESSO!');
+        setMessage('');
+        setSuccessMsg(true);
+      }
+      // setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Fragment>
       <h1>The Coding Community</h1>
@@ -91,10 +101,8 @@ function HomePage() {
         Build your skill set. Find projects and people to code with, mentor and
         learn from
       </h4>
-      {/* <div>{JSON.stringify(peoples)}</div> */}
       <br></br>
       <br></br>
-      {/* <div>{isLoading ? <div>Loading</div> : messageFromServer}</div> */}
       <h3>
         Coding buddies{' '}
         <Link href={'/people/coding-buddies'}>
@@ -108,6 +116,8 @@ function HomePage() {
           array={buddies}
           type="buddy"
           setShowMsgForm={setShowMsgForm}
+          setRecipient={setRecipient}
+          setSuccessMsg={setSuccessMsg}
         />
       </div>
       <br></br>
@@ -125,6 +135,8 @@ function HomePage() {
           array={mentors}
           type="mentor"
           setShowMsgForm={setShowMsgForm}
+          setRecipient={setRecipient}
+          setSuccessMsg={setSuccessMsg}
         />
       </div>
       <br></br>
@@ -154,9 +166,16 @@ function HomePage() {
         <MySlider array={assignements} type="assignement" />
       </div>
 
-      {/* msg forms */}
       {showMsgForm && (
-        <MessageForm onClose={closeModal} setShowMsgForm={setShowMsgForm} />
+        <MessageForm
+          onClose={closeModal}
+          setShowMsgForm={setShowMsgForm}
+          message={message}
+          setMessage={setMessage}
+          setRecipient={setRecipient}
+          handleStartConversation={handleStartConversation}
+          successMsg={successMsg}
+        />
       )}
     </Fragment>
   );
