@@ -1,9 +1,16 @@
 .container {
+  width: 75%;
+  margin-top: 0.8rem;
+  padding: 0.8rem;
   border: 1px solid var(--main-text-color);
-  cursor: pointer;
 }
 
-.containerUnread {
-  border: 2px solid var(--main-error-color);
-  cursor: pointer;
+.sender {
+  text-align: right;
+  background-color: rgb(252, 240, 255);
+}
+
+.receiver {
+  text-align: left;
+  background-color: aliceblue;
 }
