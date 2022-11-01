@@ -146,9 +146,15 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     if (!socket.current) {
       socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
+      console.log('non ce la socketta');
+      console.log(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
+      console.log(`socket.id: ${socket.id}`);
     }
 
     if (socket.current) {
+      console.log('ce la socketta');
+      console.log(`socket.id: ${socket.id}`);
+      `${process.env.NEXT_PUBLIC_SOCKET_URL}`;
       if (currentUser && currentUser._id.length > 0) {
         socket.current.emit('join', { userId: currentUser._id });
 
