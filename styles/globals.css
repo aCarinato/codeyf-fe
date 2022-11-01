@@ -36,6 +36,7 @@ Spacing System (px)
 @import url('./layout.css');
 @import url('./utility.css');
 @import url('./card.css');
+@import url('./chats.css');
 
 * {
   padding: 0;

@@ -10,9 +10,15 @@ import Layout from '../components/layout/Layout';
 import * as ga from '../lib/ga';
 // context
 import { ContextProvider } from '../context/Context';
+// import { useMainContext } from '../context/Context';
+// packages
+import io from 'socket.io-client';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  // const { authState } = useMainContext();
+
+  // console.log(authState);
 
   useEffect(() => {
     const handleRouteChange = (url) => {

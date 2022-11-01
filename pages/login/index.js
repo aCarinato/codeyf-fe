@@ -132,6 +132,7 @@ function LoginPage() {
 
         if (res.data.success) {
           userLogin(
+            res.data.loginUser.userId,
             res.data.loginUser.username,
             res.data.loginUser.email,
             res.data.loginUser.token,

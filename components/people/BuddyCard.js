@@ -10,6 +10,7 @@ import { useMainContext } from '../../context/Context';
 
 function BuddyCard(props) {
   const {
+    userId,
     username,
     handle,
     description,
@@ -21,9 +22,45 @@ function BuddyCard(props) {
     setSuccessMsg,
   } = props;
 
-  const { authState } = useMainContext();
+  const { authState, socket, chats, setChats } = useMainContext();
 
   const router = useRouter();
+
+  const addChat = () => {
+    if (authState && authState.email.length > 0) {
+      // console.log(user);
+      const alreadyInChat =
+        chats.length > 0 &&
+        chats.filter((chat) => chat.messagesWith === userId).length > 0;
+
+      if (alreadyInChat) {
+        return router.push(`/my-profile/messages?message=${userId}`);
+      }
+      //
+      else {
+        const newChat = {
+          messagesWith: userId,
+          username: username,
+          lastMessage: '',
+          date: Date.now(),
+        };
+
+        setChats((prev) => [newChat, ...prev]);
+
+        return router.push(
+          `/my-profile/messages?message=${userId}`,
+          undefined,
+          {
+            shallow: true,
+          }
+        );
+
+        //   return router.push(`/messages?message=${user._id}`);
+      }
+    } else {
+      router.push('/login');
+    }
+  };
 
   const clickMessageHandler = () => {
     if (authState && authState.email.length > 0) {
@@ -80,7 +117,7 @@ function BuddyCard(props) {
         <div className="card-footer-message">
           <BtnCTA
             label="message"
-            onCLickAction={clickMessageHandler}
+            onCLickAction={addChat}
             icon={true}
             iconType="ant-design:message-outlined"
           />
