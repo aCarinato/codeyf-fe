@@ -1,42 +1,27 @@
-// next / react
-import Link from 'next/link';
-// context
-// import { useMainContext } from '../../../context/Context';
-// styles
 import classes from './DMCard.module.css';
-// packages
+// context
+import { useMainContext } from '../../../context/Context';
 
 function DMCard(props) {
-  const {
-    _id,
-    conversationUser,
-    messages,
-    lastMsgSender,
-    lastMsgText,
-    lastMessageIsRead,
-    readLastMsg,
-    toHighlight,
-  } = props;
-
-  //   const { currentUser } = useMainContext();
-
+  const { authState } = useMainContext();
+  const { from, text } = props;
+  //   console.log(authState.username === from);
   return (
-    <Link href={`/my-profile/notifications/conversations/${_id}`}>
+    <div className={classes.container}>
       <div
-        onClick={() => readLastMsg(_id, messages, lastMessageIsRead)}
-        className={toHighlight ? classes.containerUnread : classes.container}
+        className={
+          authState && authState.username === from
+            ? classes.sender
+            : classes.receiver
+        }
       >
         <p>
-          Conversation with: <span className="bold">{conversationUser}</span>
+          <span className="bold">{from}</span> wrote
         </p>
         <br></br>
-        <div>
-          <p>from: {lastMsgSender}</p>
-          <p>{lastMsgText}</p>
-          <p>...</p>
-        </div>
+        <p>{text}</p>
       </div>
-    </Link>
+    </div>
   );
 }
 

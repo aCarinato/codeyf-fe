@@ -1,9 +1,9 @@
 // next react
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 // context
 import { useMainContext } from '../../../context/Context';
 // own components
-import DMCard from '../../../components/message/direct-message/DMCard';
+import DMNotificationCard from '../../../components/message/direct-message/DMNotificationCard';
 import AdminNotificationCard from '../../../components/message/admin-notification/AdminNotificationCard';
 // packages
 import axios from 'axios';
@@ -131,10 +131,16 @@ function NotificationPage() {
       <br></br>
       <h4>Direct messages</h4>
       {currentUser &&
+        currentUser._id &&
         conversations &&
         conversations.length > 0 &&
         conversations.map((conversation) => (
-          <DMCard
+          // <Fragment key={conversation._id}>
+          //   <div>{JSON.stringify(conversation)}</div>
+          //   <br></br>
+          // </Fragment>
+
+          <DMNotificationCard
             key={conversation._id}
             _id={conversation._id}
             conversationUser={
@@ -143,8 +149,13 @@ function NotificationPage() {
                 : conversation.firstUser.username
             }
             messages={conversation.messages}
-            lastMsgSender={conversation.messages[0].from.username}
-            lastMsgText={conversation.messages[0].content}
+            lastMsgSender={
+              conversation.messages[conversation.messages.length - 1].from
+                .username
+            }
+            lastMsgText={
+              conversation.messages[conversation.messages.length - 1].content
+            }
             lastMessageIsRead={conversation.lastMessageIsRead}
             readLastMsg={readLastMsg}
             toHighlight={

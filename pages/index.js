@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 // import { people } from '../data/people';
 import { groups } from '../data/groups';
@@ -12,9 +12,26 @@ import { useMainContext } from '../context/Context';
 // packages
 import axios from 'axios';
 import { Icon } from '@iconify/react';
+import io from 'socket.io-client';
 
 function HomePage() {
   const { authState } = useMainContext();
+
+  //   SOCKET
+  // const socket = useRef();
+
+  // useEffect(() => {
+  //   if (!socket.current) {
+  //     socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
+  //   }
+
+  //   if (socket.current) {
+  //     // console.log(authState);
+  //     if (authState && authState.token.length > 0) {
+  //       socket.current.emit('join', { userId: authState.username });
+  //     }
+  //   }
+  // }, [authState && authState.token]);
 
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);

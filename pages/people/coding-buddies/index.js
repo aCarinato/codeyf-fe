@@ -15,7 +15,7 @@ import { useMainContext } from '../../../context/Context';
 import axios from 'axios';
 
 function CodingBuddiesScreen() {
-  const { mobileView, authState } = useMainContext();
+  const { mobileView, authState, socket } = useMainContext();
   const [buddies, setBuddies] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -178,6 +178,7 @@ function CodingBuddiesScreen() {
                 filteredBuddies.map((buddy) => (
                   <BuddyCard
                     key={buddy._id}
+                    userId={buddy._id}
                     username={buddy.username}
                     handle={buddy.handle}
                     description={buddy.shortDescription}
