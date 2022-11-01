@@ -14,11 +14,13 @@ export function useMainContext() {
 export function ContextProvider({ children }) {
   //   SOCKET
   const socket = useRef();
+  const openChatId = useRef();
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const openChatId = useRef();
-
+  // const [currentPath, setCurrentPath] = useState('');
+  // console.log(currentPath);
+  // console.log(openChatId);
   // SOCIAL
   const [peoples, setPeople] = useState([]);
   const [groups, setGroups] = useState([]);
@@ -146,14 +148,14 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     if (!socket.current) {
       socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
-      console.log('non ce la socketta');
-      console.log(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
-      console.log(`socket.id: ${socket.id}`);
+      // console.log('non ce la socketta');
+      // console.log(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
+      // console.log(`socket.id: ${socket.id}`);
     }
 
     if (socket.current) {
-      console.log('ce la socketta');
-      console.log(`socket.id: ${socket.id}`);
+      // console.log('ce la socketta');
+      // console.log(`socket.id: ${socket.id}`);
       `${process.env.NEXT_PUBLIC_SOCKET_URL}`;
       if (currentUser && currentUser._id.length > 0) {
         socket.current.emit('join', { userId: currentUser._id });

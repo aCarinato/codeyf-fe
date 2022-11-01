@@ -9,6 +9,7 @@ import Layout from '../components/layout/Layout';
 // own functions
 import * as ga from '../lib/ga';
 // context
+import { useMainContext } from '../context/Context';
 import { ContextProvider } from '../context/Context';
 // import { useMainContext } from '../context/Context';
 // packages
@@ -19,6 +20,23 @@ function MyApp({ Component, pageProps }) {
   // const { authState } = useMainContext();
 
   // console.log(authState);
+  // useEffect(() => {
+  //   const handleRouteChange = (url, { shallow }) => {
+  //     console.log(
+  //       `App is changing to ${url} ${
+  //         shallow ? 'with' : 'without'
+  //       } shallow routing`
+  //     );
+  //   };
+
+  //   router.events.on('routeChangeStart', handleRouteChange);
+
+  //   // If the component is unmounted, unsubscribe
+  //   // from the event with the `off` method:
+  //   return () => {
+  //     router.events.off('routeChangeStart', handleRouteChange);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const handleRouteChange = (url) => {

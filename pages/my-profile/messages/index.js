@@ -24,6 +24,25 @@ function MessagesPage() {
   // const openChatId = useRef(); // CONTEXT
 
   // const [messages, setMessages] = useState([]); // CONTEXT
+  useEffect(() => {
+    const handleRouteChange = (url, { shallow }) => {
+      // console.log(
+      //   `App is changing to ${url} ${
+      //     shallow ? 'with' : 'without'
+      //   } shallow routing`
+      // );
+
+      if (!url.includes('messages?message=')) openChatId.current = '';
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, []);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
@@ -75,7 +94,7 @@ function MessagesPage() {
   // READ A NOTIFICATION
   const readNotification = (msgFrom) => {
     router.push(`/my-profile/messages?message=${msgFrom}`, undefined, {
-      shallow: true,
+      // shallow: true,
     });
 
     // remove notifications from frontend
@@ -147,10 +166,10 @@ function MessagesPage() {
                   onClick={() =>
                     router.push(
                       `/my-profile/messages?message=${chat.messagesWith}`,
-                      undefined,
-                      {
-                        shallow: true,
-                      }
+                      undefined
+                      // {
+                      //   shallow: true,
+                      // }
                     )
                   }
                 >

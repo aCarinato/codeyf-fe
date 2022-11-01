@@ -17,9 +17,12 @@ import GroupFilterMobile from '../../../components/groups/mobile-filters/GroupFi
 import { useMainContext } from '../../../context/Context';
 
 function GroupsPage() {
-  const { mobileView } = useMainContext();
+  const { mobileView, setCurrentPath } = useMainContext();
 
   const router = useRouter();
+  useEffect(() => {
+    setCurrentPath(router.pathname);
+  }, []);
 
   const [filteredGroups, setFilteredGroups] = useState([]);
   // FILTER

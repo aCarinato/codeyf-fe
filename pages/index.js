@@ -12,7 +12,6 @@ import { useMainContext } from '../context/Context';
 // packages
 import axios from 'axios';
 import { Icon } from '@iconify/react';
-import io from 'socket.io-client';
 
 function HomePage() {
   const { authState } = useMainContext();

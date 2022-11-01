@@ -41,6 +41,11 @@ function MyProfileMenuDesktop(props) {
       <li className={classes['list-item']}>My Assignments</li>
       <li className={classes['list-item']}>My Groups</li>
       <li className={classes['list-item']}>
+        <Link href="/my-profile/messages">
+          <div className="main-link">Messages</div>
+        </Link>
+      </li>
+      <li className={classes['list-item']}>
         <Link href="/my-profile/settings">
           <div className="main-link">
             <Icon icon="bytesize:settings" /> settings
