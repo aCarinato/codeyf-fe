@@ -1,4 +1,5 @@
 // react / next
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 // own components
 import Modal from '../UI/Modal';
@@ -11,21 +12,16 @@ import axios from 'axios';
 import { useMainContext } from '../../context/Context';
 
 function MobileProfileMenu(props) {
-  const { currentUser, currentUserNotifications } = useMainContext();
+  const { authState, notifications } = useMainContext();
   const { setShowMobileProfileMenu } = props;
 
-  // const readNotifications = async () => {
-  //   setCtxHasNotifications(false);
-  //   const res = await axios.put(
-  //     `${process.env.NEXT_PUBLIC_API}/user/read-notifications`,
-  //     {},
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${authState.token}`,
-  //       },
-  //     }
-  //   );
-  // };
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+  useEffect(() => {
+    setUnreadNotifications(
+      notifications.filter((notification) => notification.isRead === false)
+    );
+  }, [notifications]);
 
   return (
     <Modal>
@@ -52,10 +48,10 @@ function MobileProfileMenu(props) {
               </Link>
             </li>
             <li className={classes['menu-li']}>
-              <Link href="/my-profile/notifications">
+              <Link href="/my-profile/messages">
                 <a
                   className={
-                    currentUserNotifications > 0
+                    unreadNotifications.length > 0
                       ? classes['main-nav-mob-link-notification']
                       : classes['main-nav-mob-link']
                   }
@@ -66,12 +62,12 @@ function MobileProfileMenu(props) {
                     // }
                   }}
                 >
-                  {currentUserNotifications > 0 && (
-                    <span>{currentUserNotifications}</span>
+                  {unreadNotifications.length > 0 && (
+                    <span>{unreadNotifications.length} NEW</span>
                   )}{' '}
-                  NOTIFICATIONS{' '}
+                  MESSAGES{' '}
                   <span>
-                    {currentUserNotifications > 0 && (
+                    {unreadNotifications.length > 0 && (
                       <sup>
                         <Icon icon="ci:notification" />
                       </sup>
@@ -90,7 +86,7 @@ function MobileProfileMenu(props) {
                 </a>
               </Link>
             </li>
-            {currentUser && currentUser.isAdmin && (
+            {authState.userId.length > 0 && authState.isAdmin && (
               <li className={classes['menu-li']}>
                 <Link href="/admin">
                   <a

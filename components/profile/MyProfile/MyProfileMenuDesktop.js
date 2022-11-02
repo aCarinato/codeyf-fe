@@ -33,7 +33,7 @@ function MyProfileMenuDesktop(props) {
             }
           >
             {unreadNotifications.length > 0 && (
-              <span>{unreadNotifications.length}</span>
+              <span>{unreadNotifications.length} new</span>
             )}{' '}
             messages{' '}
             <span>

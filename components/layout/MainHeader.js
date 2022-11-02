@@ -11,22 +11,12 @@ import LoggedUserIcon from './LoggedUserIcon';
 import { useMainContext } from '../../context/Context';
 
 function MainHeader() {
-  const { mobileView, authState, currentUser } = useMainContext();
+  const { mobileView, authState } = useMainContext();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMobileProfileMenu, setShowMobileProfileMenu] = useState(false);
 
   const [expandedPeople, setExpandedPeople] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState(false);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
-
-  useEffect(() => {
-    if (authState !== null && authState.username.length > 0) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [authState]);
 
   const peopleMenuItems = [
     {
@@ -80,9 +70,8 @@ function MainHeader() {
           >
             <Icon icon="charm:menu-hamburger" />
           </div>
-          {currentUser && isLoggedIn && (
+          {authState.userId.length > 0 && (
             <LoggedUserIcon
-              // nNotifications={currentUser.nNotifications}
               showMobileProfileMenu={showMobileProfileMenu}
               setShowMobileProfileMenu={setShowMobileProfileMenu}
             />
@@ -122,7 +111,7 @@ function MainHeader() {
             </div>
             {expandedProjects && <DropdownMenu menuItems={projectsMenuItems} />}
           </div>
-          {currentUser && isLoggedIn ? (
+          {authState.userId.length > 0 ? (
             <LoggedUserIcon
               // hasNotifications={currentUser.hasNotifications}
               showMobileProfileMenu={showMobileProfileMenu}
