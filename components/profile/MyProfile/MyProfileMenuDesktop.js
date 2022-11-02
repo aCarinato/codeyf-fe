@@ -1,3 +1,6 @@
+// rext /next
+import { useEffect, useState } from 'react';
+// styles
 import classes from './MyProfileMenuDesktop.module.css';
 // react / next
 import Link from 'next/link';
@@ -7,28 +10,34 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../../../context/Context';
 
 function MyProfileMenuDesktop(props) {
-  const { currentUser, ctxHasNotifications, currentUserNotifications } =
-    useMainContext();
+  const { authState, notifications } = useMainContext();
   // const { readNotifications } = props;
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+  useEffect(() => {
+    setUnreadNotifications(
+      notifications.filter((notification) => notification.isRead === false)
+    );
+  }, [notifications]);
 
   return (
     <ul>
       <li className={classes['list-item']}>
-        <Link href="/my-profile/notifications">
+        <Link href="/my-profile/messages">
           <div
             // onClick={readNotifications}
             className={
-              currentUser && currentUserNotifications > 0
+              authState.userId.length > 0 && unreadNotifications.length > 0
                 ? 'notification-link'
                 : 'main-link'
             }
           >
-            {currentUserNotifications > 0 && (
-              <span>{currentUserNotifications}</span>
+            {unreadNotifications.length > 0 && (
+              <span>{unreadNotifications.length} new</span>
             )}{' '}
-            notifications{' '}
+            messages{' '}
             <span>
-              {currentUser && currentUserNotifications > 0 && (
+              {authState.userId.length > 0 && unreadNotifications.length > 0 && (
                 <sup>
                   <Icon icon="ci:notification" />
                 </sup>
@@ -41,18 +50,13 @@ function MyProfileMenuDesktop(props) {
       <li className={classes['list-item']}>My Assignments</li>
       <li className={classes['list-item']}>My Groups</li>
       <li className={classes['list-item']}>
-        <Link href="/my-profile/messages">
-          <div className="main-link">Messages</div>
-        </Link>
-      </li>
-      <li className={classes['list-item']}>
         <Link href="/my-profile/settings">
           <div className="main-link">
             <Icon icon="bytesize:settings" /> settings
           </div>
         </Link>
       </li>
-      {currentUser && currentUser.isAdmin && (
+      {authState.userId.length > 0 && authState.isAdmin && (
         <li className={classes['list-item']}>
           <Link href="/admin">
             <div className="main-link">admin dashboard</div>

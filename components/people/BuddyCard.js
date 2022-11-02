@@ -17,9 +17,9 @@ function BuddyCard(props) {
     country,
     learning,
     profilePic,
-    setShowMsgForm,
-    setRecipient,
-    setSuccessMsg,
+    // setShowMsgForm,
+    // setRecipient,
+    // setSuccessMsg,
   } = props;
 
   const { authState, socket, chats, setChats } = useMainContext();
@@ -62,15 +62,15 @@ function BuddyCard(props) {
     }
   };
 
-  const clickMessageHandler = () => {
-    if (authState && authState.email.length > 0) {
-      setShowMsgForm(true);
-      setRecipient(username);
-      setSuccessMsg(false);
-    } else {
-      router.push('/login');
-    }
-  };
+  // const clickMessageHandler = () => {
+  //   if (authState && authState.email.length > 0) {
+  //     setShowMsgForm(true);
+  //     setRecipient(username);
+  //     setSuccessMsg(false);
+  //   } else {
+  //     router.push('/login');
+  //   }
+  // };
 
   return (
     <div className="main-card-container">

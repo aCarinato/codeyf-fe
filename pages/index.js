@@ -6,7 +6,7 @@ import { assignements } from '../data/assignements';
 // own components
 import SpinningLoader from '../components/UI/SpinningLoader';
 import MySlider from '../components/UI/MySlider';
-import MessageForm from '../components/message/MessageForm';
+// import MessageForm from '../components/message/MessageForm';
 // context
 import { useMainContext } from '../context/Context';
 // packages
@@ -21,22 +21,14 @@ function HomePage() {
   const [loading, setLoading] = useState(false);
 
   // MESSAGING
-  const [showMsgForm, setShowMsgForm] = useState(false);
-  const [message, setMessage] = useState('');
-  const [recipient, setRecipient] = useState('');
-  const [successMsg, setSuccessMsg] = useState(false);
+  // const [showMsgForm, setShowMsgForm] = useState(false);
+  // const [message, setMessage] = useState('');
+  // const [recipient, setRecipient] = useState('');
+  // const [successMsg, setSuccessMsg] = useState(false);
 
   const fetchMentors = async () => {
     try {
       setLoading(true);
-      // let userEmail = '';
-      // if (authState && authState.email && authState.email.length > 0) {
-      //   userEmail = authState.email;
-      // }
-      // const res = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_API}/people/mentors`,
-      //   { userEmail }
-      // );
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API}/people/mentors`
       );
@@ -64,16 +56,6 @@ function HomePage() {
   const fetchBuddies = async () => {
     try {
       setLoading(true);
-
-      // let userEmail = '';
-      // if (authState && authState.email && authState.email.length > 0) {
-      //   userEmail = authState.email;
-      // }
-
-      // const res = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_API}/people/buddies`,
-      //   { userEmail }
-      // );
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API}/people/buddies`
       );
@@ -102,39 +84,39 @@ function HomePage() {
     fetchMentors();
   }, [authState && authState.email]);
 
-  const closeModal = () => {
-    setShowMsgForm(false);
-  };
+  // const closeModal = () => {
+  //   setShowMsgForm(false);
+  // };
 
-  const handleStartConversation = async () => {
-    // console.log(recipient);
-    // console.log(message);
-    try {
-      // setLoading(true);
-      const newMsg = {
-        recipient,
-        message,
-      };
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
-        newMsg,
-        {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        }
-      );
-      // console.log(res);
-      if (res.data.success) {
-        // console.log('SULCESSO!');
-        setMessage('');
-        setSuccessMsg(true);
-      }
-      // setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleStartConversation = async () => {
+  //   // console.log(recipient);
+  //   // console.log(message);
+  //   try {
+  //     // setLoading(true);
+  //     const newMsg = {
+  //       recipient,
+  //       message,
+  //     };
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
+  //       newMsg,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authState.token}`,
+  //         },
+  //       }
+  //     );
+  //     // console.log(res);
+  //     if (res.data.success) {
+  //       // console.log('SULCESSO!');
+  //       setMessage('');
+  //       setSuccessMsg(true);
+  //     }
+  //     // setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <Fragment>
@@ -160,9 +142,9 @@ function HomePage() {
           <MySlider
             array={buddies}
             type="buddy"
-            setShowMsgForm={setShowMsgForm}
-            setRecipient={setRecipient}
-            setSuccessMsg={setSuccessMsg}
+            // setShowMsgForm={setShowMsgForm}
+            // setRecipient={setRecipient}
+            // setSuccessMsg={setSuccessMsg}
           />
         )}
       </div>
@@ -183,9 +165,9 @@ function HomePage() {
           <MySlider
             array={mentors}
             type="mentor"
-            setShowMsgForm={setShowMsgForm}
-            setRecipient={setRecipient}
-            setSuccessMsg={setSuccessMsg}
+            // setShowMsgForm={setShowMsgForm}
+            // setRecipient={setRecipient}
+            // setSuccessMsg={setSuccessMsg}
           />
         )}
       </div>
@@ -216,7 +198,7 @@ function HomePage() {
         <MySlider array={assignements} type="assignement" />
       </div>
 
-      {showMsgForm && (
+      {/* {showMsgForm && (
         <MessageForm
           onClose={closeModal}
           setShowMsgForm={setShowMsgForm}
@@ -226,7 +208,7 @@ function HomePage() {
           handleStartConversation={handleStartConversation}
           successMsg={successMsg}
         />
-      )}
+      )} */}
     </Fragment>
   );
 }
