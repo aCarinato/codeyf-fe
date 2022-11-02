@@ -35,22 +35,50 @@ function CodingBuddiesScreen() {
 
   // console.log(authState);
 
+  // const fetchBuddies = async () => {
+  //   try {
+  //     setLoading(true);
+  //     let userEmail = '';
+  //     if (authState && authState.email && authState.email.length > 0) {
+  //       userEmail = authState.email;
+  //     }
+
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API}/people/buddies`,
+  //       { userEmail }
+  //     );
+  //     if (res.data.success) {
+  //       setBuddies(res.data.buddies);
+  //       setFilteredBuddies(res.data.buddies);
+  //       // setFilteredBuddies(res.data.buddies);
+  //     }
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   const fetchBuddies = async () => {
     try {
       setLoading(true);
-      let userEmail = '';
-      if (authState && authState.email && authState.email.length > 0) {
-        userEmail = authState.email;
-      }
-
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/people/buddies`,
-        { userEmail }
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/buddies`
       );
+
       if (res.data.success) {
-        setBuddies(res.data.buddies);
-        setFilteredBuddies(res.data.buddies);
-        // setFilteredBuddies(res.data.buddies);
+        if (authState && authState.email.length > 0) {
+          // filter out current user
+          const userEmail = authState.email;
+          let allBuddies = res.data.buddies;
+          let filteredBuddies = allBuddies.filter(
+            (buddy) => buddy.email !== userEmail
+          );
+          setBuddies(filteredBuddies);
+          setFilteredBuddies(filteredBuddies);
+        } else {
+          setBuddies(res.data.buddies);
+          setFilteredBuddies(res.data.buddies);
+        }
       }
       setLoading(false);
     } catch (err) {
@@ -60,7 +88,7 @@ function CodingBuddiesScreen() {
 
   useEffect(() => {
     fetchBuddies();
-  }, []);
+  }, [authState && authState.email]);
 
   useEffect(() => {
     if (!mobileView) {
