@@ -6,7 +6,7 @@ import MentorCard from '../../../components/people/MentorCard';
 import MentorFilter from '../../../components/people/MentorFilter';
 import MentorFilterMobile from '../../../components/people/MentorFilterMobile';
 import BtnCTA from '../../../components/UI/BtnCTA';
-import MessageForm from '../../../components/message/MessageForm';
+// import MessageForm from '../../../components/message/MessageForm';
 // own functions
 import { filterMentors } from '../../../lib/helper/mentors/filterMentors';
 // context
@@ -28,34 +28,10 @@ function MentorsPage() {
   const [skillsCheckedIndex, setSkillsCheckedIndex] = useState([]);
 
   // MESSAGING
-  const [showMsgForm, setShowMsgForm] = useState(false);
-  const [message, setMessage] = useState('');
-  const [recipient, setRecipient] = useState('');
-  const [successMsg, setSuccessMsg] = useState(false);
-
-  // const fetchMentors = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     let userEmail = '';
-  //     if (authState && authState.email && authState.email.length > 0) {
-  //       userEmail = authState.email;
-  //     }
-
-  //     const res = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_API}/people/mentors`,
-  //       { userEmail }
-  //     );
-  //     //   console.log(res.data);
-  //     if (res.data.success) {
-  //       setMentors(res.data.mentors);
-  //       setFilteredMentors(res.data.mentors);
-  //     }
-  //     setLoading(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  // const [showMsgForm, setShowMsgForm] = useState(false);
+  // const [message, setMessage] = useState('');
+  // const [recipient, setRecipient] = useState('');
+  // const [successMsg, setSuccessMsg] = useState(false);
 
   const fetchMentors = async () => {
     try {
@@ -88,7 +64,7 @@ function MentorsPage() {
 
   useEffect(() => {
     fetchMentors();
-  }, []);
+  }, [authState && authState.email]);
 
   useEffect(() => {
     if (!mobileView) {
@@ -114,39 +90,39 @@ function MentorsPage() {
     );
   };
 
-  const closeModal = () => {
-    setShowMsgForm(false);
-  };
+  // const closeModal = () => {
+  //   setShowMsgForm(false);
+  // };
 
-  const handleStartConversation = async () => {
-    // console.log(recipient);
-    // console.log(message);
-    try {
-      // setLoading(true);
-      const newMsg = {
-        recipient,
-        message,
-      };
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
-        newMsg,
-        {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        }
-      );
-      // console.log(res);
-      if (res.data.success) {
-        // console.log('SULCESSO!');
-        setMessage('');
-        setSuccessMsg(true);
-      }
-      // setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleStartConversation = async () => {
+  //   // console.log(recipient);
+  //   // console.log(message);
+  //   try {
+  //     // setLoading(true);
+  //     const newMsg = {
+  //       recipient,
+  //       message,
+  //     };
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
+  //       newMsg,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authState.token}`,
+  //         },
+  //       }
+  //     );
+  //     // console.log(res);
+  //     if (res.data.success) {
+  //       // console.log('SULCESSO!');
+  //       setMessage('');
+  //       setSuccessMsg(true);
+  //     }
+  //     // setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <Fragment>
@@ -206,15 +182,16 @@ function MentorsPage() {
                 filteredMentors.map((mentor) => (
                   <MentorCard
                     key={mentor._id}
+                    userId={mentor._id}
                     username={mentor.username}
                     handle={mentor.handle}
                     description={mentor.shortDescription}
                     country={mentor.country}
                     teaching={mentor.teaching}
                     profilePic={mentor.profilePic}
-                    setShowMsgForm={setShowMsgForm}
-                    setRecipient={setRecipient}
-                    setSuccessMsg={setSuccessMsg}
+                    // setShowMsgForm={setShowMsgForm}
+                    // setRecipient={setRecipient}
+                    // setSuccessMsg={setSuccessMsg}
                   />
                 ))
               ) : (
@@ -228,7 +205,7 @@ function MentorsPage() {
               <div className="white-card"></div>
             </div>
           </div>
-          {showMsgForm && (
+          {/* {showMsgForm && (
             <MessageForm
               onClose={closeModal}
               setShowMsgForm={setShowMsgForm}
@@ -238,7 +215,7 @@ function MentorsPage() {
               handleStartConversation={handleStartConversation}
               successMsg={successMsg}
             />
-          )}
+          )} */}
         </Fragment>
       )}
     </Fragment>

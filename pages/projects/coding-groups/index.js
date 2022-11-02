@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 // data
 import { groups } from '../../../data/groups';
 import { allNumbersOfParticipants } from '../../../data/allNumbersOfParticipants';
@@ -17,12 +16,7 @@ import GroupFilterMobile from '../../../components/groups/mobile-filters/GroupFi
 import { useMainContext } from '../../../context/Context';
 
 function GroupsPage() {
-  const { mobileView, setCurrentPath } = useMainContext();
-
-  const router = useRouter();
-  useEffect(() => {
-    setCurrentPath(router.pathname);
-  }, []);
+  const { mobileView } = useMainContext();
 
   const [filteredGroups, setFilteredGroups] = useState([]);
   // FILTER

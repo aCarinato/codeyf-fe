@@ -45,24 +45,25 @@ function MySlider(props) {
             country={item.country}
             learning={item.learning}
             profilePic={item.profilePic}
-            setShowMsgForm={setShowMsgForm}
-            setRecipient={setRecipient}
-            setSuccessMsg={setSuccessMsg}
+            // setShowMsgForm={setShowMsgForm}
+            // setRecipient={setRecipient}
+            // setSuccessMsg={setSuccessMsg}
           />
         ))}
       {type === 'mentor' &&
         slicedItems.map((item) => (
           <MentorCard
             key={item._id}
+            userId={item._id}
             username={item.username}
             handle={item.handle}
             description={item.shortDescription}
             country={item.country}
             teaching={item.teaching}
             profilePic={item.profilePic}
-            setShowMsgForm={setShowMsgForm}
-            setRecipient={setRecipient}
-            setSuccessMsg={setSuccessMsg}
+            // setShowMsgForm={setShowMsgForm}
+            // setRecipient={setRecipient}
+            // setSuccessMsg={setSuccessMsg}
           />
         ))}
       {type === 'group' &&

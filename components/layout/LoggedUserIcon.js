@@ -1,5 +1,8 @@
 import Link from 'next/link';
 // pack
+// next / react
+import { useEffect, useState } from 'react';
+// packages
 import { Icon } from '@iconify/react';
 // styles
 import classes from './LoggedUserIcon.module.css';
@@ -7,16 +10,22 @@ import classes from './LoggedUserIcon.module.css';
 import { useMainContext } from '../../context/Context';
 
 function LoggedUserIcon(props) {
-  const { mobileView, currentUserNotifications } = useMainContext();
+  const { mobileView, notifications } = useMainContext();
 
   const { showMobileProfileMenu, setShowMobileProfileMenu } = props;
 
-  // console.log('currentUserNotifications: ' + currentUserNotifications);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+  useEffect(() => {
+    setUnreadNotifications(
+      notifications.filter((notification) => notification.isRead === false)
+    );
+  }, [notifications]);
 
   return (
     <div
       className={
-        currentUserNotifications > 0
+        unreadNotifications.length > 0
           ? classes['container-item-notified']
           : classes['container-item']
       }
@@ -24,7 +33,7 @@ function LoggedUserIcon(props) {
       {mobileView ? (
         <div onClick={() => setShowMobileProfileMenu(!showMobileProfileMenu)}>
           <Icon icon="carbon:user-avatar-filled-alt" />
-          {currentUserNotifications > 0 && (
+          {unreadNotifications.length > 0 && (
             <sup>
               <Icon icon="ci:notification" />
             </sup>
@@ -34,7 +43,7 @@ function LoggedUserIcon(props) {
         <Link href="/my-profile">
           <div>
             <Icon icon="carbon:user-avatar-filled-alt" />
-            {currentUserNotifications > 0 && (
+            {unreadNotifications.length > 0 && (
               <sup>
                 <Icon icon="ci:notification" />
               </sup>
