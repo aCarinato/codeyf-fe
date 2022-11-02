@@ -38,6 +38,7 @@ function MySlider(props) {
         slicedItems.map((item) => (
           <BuddyCard
             key={item._id}
+            userId={item._id}
             username={item.username}
             handle={item.handle}
             description={item.shortDescription}

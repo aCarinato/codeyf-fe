@@ -33,23 +33,52 @@ function MentorsPage() {
   const [recipient, setRecipient] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
 
+  // const fetchMentors = async () => {
+  //   try {
+  //     setLoading(true);
+
+  //     let userEmail = '';
+  //     if (authState && authState.email && authState.email.length > 0) {
+  //       userEmail = authState.email;
+  //     }
+
+  //     const res = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API}/people/mentors`,
+  //       { userEmail }
+  //     );
+  //     //   console.log(res.data);
+  //     if (res.data.success) {
+  //       setMentors(res.data.mentors);
+  //       setFilteredMentors(res.data.mentors);
+  //     }
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   const fetchMentors = async () => {
     try {
       setLoading(true);
-
-      let userEmail = '';
-      if (authState && authState.email && authState.email.length > 0) {
-        userEmail = authState.email;
-      }
-
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/people/mentors`,
-        { userEmail }
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/mentors`
       );
       //   console.log(res.data);
       if (res.data.success) {
-        setMentors(res.data.mentors);
-        setFilteredMentors(res.data.mentors);
+        // filter out current user
+        if (authState && authState.email.length > 0) {
+          // filter out current user
+          const userEmail = authState.email;
+          let allMentors = res.data.mentors;
+          let filteredMentors = allMentors.filter(
+            (mentor) => mentor.email !== userEmail
+          );
+          setMentors(filteredMentors);
+          setFilteredMentors(filteredMentors);
+        } else {
+          setMentors(res.data.mentors);
+          setFilteredMentors(res.data.mentors);
+        }
       }
       setLoading(false);
     } catch (err) {

@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 // OWN FUNCTS
 import getUserInfo from '../lib/helper/chats/getUserInfo';
 
-const mainContext = React.createContext({ people: [], groups: [] });
+const mainContext = React.createContext();
 
 export function useMainContext() {
   return useContext(mainContext);
@@ -18,9 +18,7 @@ export function ContextProvider({ children }) {
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  // const [currentPath, setCurrentPath] = useState('');
-  // console.log(currentPath);
-  // console.log(openChatId);
+
   // SOCIAL
   const [peoples, setPeople] = useState([]);
   const [groups, setGroups] = useState([]);
@@ -63,8 +61,9 @@ export function ContextProvider({ children }) {
     }
   }, []);
 
-  const fetchUser = async () => {
-    if (authState && authState.email.length > 0) {
+  useEffect(() => {
+    const fetchUser = async () => {
+      // if (authState && authState.email.length > 0) {
       const email = authState.email;
       try {
         const res = await axios.post(
@@ -82,27 +81,23 @@ export function ContextProvider({ children }) {
         if (res.data.success) {
           setCurrentUser(res.data.user);
           setCurrentUserNotifications(res.data.user.nNotifications);
-          // if (res.data.user.hasNotifications) {
+          // if (res.data.user.nNotifications > 0) {
           //   setCtxHasNotifications(true);
           // } else {
           //   setCtxHasNotifications(false);
           // }
-          if (res.data.user.nNotifications > 0) {
-            setCtxHasNotifications(true);
-          } else {
-            setCtxHasNotifications(false);
-          }
         }
       } catch (err) {
         console.log(err);
       }
-    }
-  };
+      // }
+    };
 
-  useEffect(() => {
     // current user
-    fetchUser();
-  }, [authState && authState.email]);
+    if (authState !== undefined && authState.userId.length > 0) {
+      fetchUser();
+    }
+  }, [authState]);
 
   // SOCKET
   const [chats, setChats] = useState([]);
@@ -113,13 +108,11 @@ export function ContextProvider({ children }) {
         // if (currentUser && currentUser._id.length > 0) {
         const userId = authState.userId;
 
+        // SHOULD BE A PRIVATE ROUTE !!!
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
         );
         setChats(res.data);
-        // }
-
-        // return { props: { chatsData: res.data } };
       } catch (err) {
         console.log(err);
         // return { props: { errorLoading: true } };
@@ -129,6 +122,7 @@ export function ContextProvider({ children }) {
     const fetchNotifications = async () => {
       try {
         const userId = authState.userId;
+        // SHOULD BE A PRIVATE ROUTE !!!
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API}/chats/notifications/${userId}`
         );
@@ -157,8 +151,9 @@ export function ContextProvider({ children }) {
       // console.log('ce la socketta');
       // console.log(`socket.id: ${socket.id}`);
       `${process.env.NEXT_PUBLIC_SOCKET_URL}`;
-      if (currentUser && currentUser._id.length > 0) {
-        socket.current.emit('join', { userId: currentUser._id });
+      // if (currentUser && currentUser._id.length > 0) {
+      if (authState !== undefined && authState.userId.length > 0) {
+        socket.current.emit('join', { userId: authState.userId });
 
         socket.current.on('connectedUsers', ({ users }) => {
           // users.length > 0 && setConnectedUsers(users);
@@ -166,7 +161,7 @@ export function ContextProvider({ children }) {
         });
       }
     }
-  }, [currentUser]);
+  }, [authState]);
   // console.log(connectedUsers);
   // console.log(currentUser);
 
@@ -206,6 +201,7 @@ export function ContextProvider({ children }) {
         }
         //  THE USER IS NOT CURRENTLY ON THE CHAT ONLINE
         else {
+          // THIS TYPICALLY DOESN'T WORK!! o maybe yess..
           const { username } = await getUserInfo(newMsg.sender);
           const newChat = {
             messagesWith: newMsg.sender,
