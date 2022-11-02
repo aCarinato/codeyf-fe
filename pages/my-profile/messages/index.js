@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 // context
 import { useMainContext } from '../../../context/Context';
 // own components
-// import UserRoute from '../../../components/routes/UserRoute';
+import UserRoute from '../../../components/routes/UserRoute';
 
 function MessagesPage() {
   const {
@@ -128,97 +128,97 @@ function MessagesPage() {
   };
 
   return (
-    // <UserRoute>
-    <div>
-      <h1>MessagesPage</h1>
+    <UserRoute>
+      <div>
+        <h1>MessagesPage</h1>
 
-      <>
-        {notifications && notifications.length > 0 && (
-          <>
-            <p>Notifications</p>
-            {notifications.map((notification) => (
-              <div
-                className={
-                  notification.isRead
-                    ? 'notification-card'
-                    : 'notification-card notification-unread'
-                }
-                key={notification._id}
-                onClick={() => readNotification(notification.from)}
-              >
-                {notification.text}
-              </div>
-            ))}
-            <br></br>
-          </>
-        )}
-      </>
-
-      {chats.length > 0 ? (
         <>
-          <div>CIAO ALE IL GENIO</div>
-          <div className="grid grid---2cols-15-85">
-            <div>
-              {chats.map((chat) => (
+          {notifications && notifications.length > 0 && (
+            <>
+              <p>Notifications</p>
+              {notifications.map((notification) => (
                 <div
-                  className="chat-card"
-                  key={chat.messagesWith}
-                  onClick={() =>
-                    router.push(
-                      `/my-profile/messages?message=${chat.messagesWith}`,
-                      undefined
-                      // {
-                      //   shallow: true,
-                      // }
-                    )
+                  className={
+                    notification.isRead
+                      ? 'notification-card'
+                      : 'notification-card notification-unread'
                   }
+                  key={notification._id}
+                  onClick={() => readNotification(notification.from)}
                 >
-                  <p>Chat with: {chat.username}</p>
-                  {connectedUsers
-                    .map((item) => item.userId)
-                    .includes(chat.messagesWith) ? (
-                    <p className="user-online">online</p>
-                  ) : (
-                    <p className="user-offline">offline</p>
-                  )}
+                  {notification.text}
                 </div>
               ))}
-            </div>
-            <div>
-              {router.query.message && (
-                <div>
-                  MESSAGGI
-                  {messages.map((msg) => (
-                    <div
-                      className={
-                        msg.sender === authState.userId ? 'own-msg' : 'msg'
-                      }
-                      key={msg._id}
-                    >
-                      {/* {JSON.stringify(msg)} */}
-                      <p className="p-msg">
-                        {msg.msg} <span onClick={() => {}}>X</span>
-                      </p>
-                    </div>
-                  ))}
-                  <div>
-                    <input
-                      type="text"
-                      value={msgToSend}
-                      onChange={(e) => setMsgToSend(e.target.value)}
-                    />
-                    <button onClick={sendMsg}>send</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+              <br></br>
+            </>
+          )}
         </>
-      ) : (
-        <p>No chats</p>
-      )}
-    </div>
-    // </UserRoute>
+
+        {chats.length > 0 ? (
+          <>
+            <div>CIAO ALE IL GENIO</div>
+            <div className="grid grid---2cols-15-85">
+              <div>
+                {chats.map((chat) => (
+                  <div
+                    className="chat-card"
+                    key={chat.messagesWith}
+                    onClick={() =>
+                      router.push(
+                        `/my-profile/messages?message=${chat.messagesWith}`,
+                        undefined
+                        // {
+                        //   shallow: true,
+                        // }
+                      )
+                    }
+                  >
+                    <p>Chat with: {chat.username}</p>
+                    {connectedUsers
+                      .map((item) => item.userId)
+                      .includes(chat.messagesWith) ? (
+                      <p className="user-online">online</p>
+                    ) : (
+                      <p className="user-offline">offline</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div>
+                {router.query.message && (
+                  <div>
+                    MESSAGGI
+                    {messages.map((msg) => (
+                      <div
+                        className={
+                          msg.sender === authState.userId ? 'own-msg' : 'msg'
+                        }
+                        key={msg._id}
+                      >
+                        {/* {JSON.stringify(msg)} */}
+                        <p className="p-msg">
+                          {msg.msg} <span onClick={() => {}}>X</span>
+                        </p>
+                      </div>
+                    ))}
+                    <div>
+                      <input
+                        type="text"
+                        value={msgToSend}
+                        onChange={(e) => setMsgToSend(e.target.value)}
+                      />
+                      <button onClick={sendMsg}>send</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <p>No chats</p>
+        )}
+      </div>
+    </UserRoute>
   );
 }
 

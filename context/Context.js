@@ -19,14 +19,6 @@ export function ContextProvider({ children }) {
   const [messages, setMessages] = useState([]);
   const [notifications, setNotifications] = useState([]);
 
-  // SOCIAL
-  const [peoples, setPeople] = useState([]);
-  const [groups, setGroups] = useState([]);
-
-  const [ctxHasNotifications, setCtxHasNotifications] = useState(false);
-
-  const [currentUserNotifications, setCurrentUserNotifications] = useState(0);
-
   // current logged in user
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -61,43 +53,43 @@ export function ContextProvider({ children }) {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      // if (authState && authState.email.length > 0) {
-      const email = authState.email;
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/user/`,
-          {
-            email,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          }
-        );
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     // if (authState && authState.email.length > 0) {
+  //     const email = authState.email;
+  //     try {
+  //       const res = await axios.post(
+  //         `${process.env.NEXT_PUBLIC_API}/user/`,
+  //         {
+  //           email,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${authState.token}`,
+  //           },
+  //         }
+  //       );
 
-        if (res.data.success) {
-          setCurrentUser(res.data.user);
-          setCurrentUserNotifications(res.data.user.nNotifications);
-          // if (res.data.user.nNotifications > 0) {
-          //   setCtxHasNotifications(true);
-          // } else {
-          //   setCtxHasNotifications(false);
-          // }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-      // }
-    };
+  //       if (res.data.success) {
+  //         setCurrentUser(res.data.user);
+  //         setCurrentUserNotifications(res.data.user.nNotifications);
+  //         // if (res.data.user.nNotifications > 0) {
+  //         //   setCtxHasNotifications(true);
+  //         // } else {
+  //         //   setCtxHasNotifications(false);
+  //         // }
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //     // }
+  //   };
 
-    // current user
-    if (authState !== undefined && authState.userId.length > 0) {
-      fetchUser();
-    }
-  }, [authState]);
+  //   // current user
+  //   if (authState !== undefined && authState.userId.length > 0) {
+  //     fetchUser();
+  //   }
+  // }, [authState]);
 
   // SOCKET
   const [chats, setChats] = useState([]);
@@ -106,12 +98,18 @@ export function ContextProvider({ children }) {
     const fetchChats = async () => {
       try {
         // if (currentUser && currentUser._id.length > 0) {
-        const userId = authState.userId;
+        // const userId = authState.userId;
 
-        // SHOULD BE A PRIVATE ROUTE !!!
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
-        );
+        // // SHOULD BE A PRIVATE ROUTE !!!
+        // const res = await axios.get(
+        //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
+        // );
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats/`, {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        });
+
         setChats(res.data);
       } catch (err) {
         console.log(err);
@@ -121,11 +119,21 @@ export function ContextProvider({ children }) {
 
     const fetchNotifications = async () => {
       try {
-        const userId = authState.userId;
+        // const userId = authState.userId;
         // SHOULD BE A PRIVATE ROUTE !!!
+        // const res = await axios.get(
+        //   `${process.env.NEXT_PUBLIC_API}/chats/notifications/${userId}`
+        // );
+
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API}/chats/notifications/${userId}`
+          `${process.env.NEXT_PUBLIC_API}/chats/notifications/`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
         );
+
         // console.log(res);
         setNotifications(res.data);
       } catch (err) {
@@ -140,32 +148,30 @@ export function ContextProvider({ children }) {
   }, [authState]);
 
   useEffect(() => {
-    if (authState !== undefined && authState.userId.length > 0) {
-      if (!socket.current) {
-        socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
-        // console.log('non ce la socketta');
-        // console.log(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
-        // console.log(`socket.id: ${socket.id}`);
-      }
+    // if (authState !== undefined && authState.userId.length > 0) {
+    if (!socket.current) {
+      socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
+      // console.log('non ce la socketta');
+      // console.log(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
+      // console.log(`socket.id: ${socket.id}`);
+    }
 
-      if (socket.current) {
-        // console.log('ce la socketta');
-        // console.log(`socket.id: ${socket.id}`);
-        `${process.env.NEXT_PUBLIC_SOCKET_URL}`;
-        // if (currentUser && currentUser._id.length > 0) {
-        if (authState !== undefined && authState.userId.length > 0) {
-          socket.current.emit('join', { userId: authState.userId });
+    if (socket.current) {
+      // console.log('ce la socketta');
+      // console.log(`socket.id: ${socket.id}`);
+      `${process.env.NEXT_PUBLIC_SOCKET_URL}`;
+      // if (currentUser && currentUser._id.length > 0) {
+      if (authState !== undefined && authState.userId.length > 0) {
+        socket.current.emit('join', { userId: authState.userId });
 
-          socket.current.on('connectedUsers', ({ users }) => {
-            // users.length > 0 && setConnectedUsers(users);
-            setConnectedUsers(users);
-          });
-        }
+        socket.current.on('connectedUsers', ({ users }) => {
+          // users.length > 0 && setConnectedUsers(users);
+          setConnectedUsers(users);
+        });
       }
     }
-  }, [authState && authState.userId]);
-  // console.log(connectedUsers);
-  // console.log(currentUser);
+  }, [authState]);
+  // }, [authState && authState.userId]);
 
   useEffect(() => {
     if (socket.current) {
@@ -204,7 +210,10 @@ export function ContextProvider({ children }) {
         //  THE USER IS NOT CURRENTLY ON THE CHAT ONLINE
         else {
           // THIS TYPICALLY DOESN'T WORK!! o maybe yess..
-          const { username } = await getUserInfo(newMsg.sender);
+          const { username } = await getUserInfo(
+            newMsg.sender
+            // `Bearer ${authState.token}`
+          );
           const newChat = {
             messagesWith: newMsg.sender,
             username,
@@ -315,11 +324,6 @@ export function ContextProvider({ children }) {
   const value = {
     mobileView,
     setMobileView,
-    peoples,
-    setPeople,
-    groups,
-    setGroups,
-    authState,
     // SOCKET
     socket,
     openChatId,
@@ -330,15 +334,12 @@ export function ContextProvider({ children }) {
     setMessages,
     notifications,
     setNotifications,
-    // LOGIN
+    // AUTH
+    authState,
     userLogin: loginHandler,
     userLogout: logoutHandler,
     currentUser,
     setCurrentUser,
-    ctxHasNotifications,
-    setCtxHasNotifications,
-    currentUserNotifications,
-    setCurrentUserNotifications,
   };
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>;

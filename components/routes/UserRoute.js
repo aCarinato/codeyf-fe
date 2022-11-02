@@ -16,6 +16,27 @@ const UserRoute = ({ children }) => {
 
   useEffect(() => {
     // let cancel = false;
+
+    const getCurrentUser = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        if (data.ok) {
+          setOk(true);
+          setCurrentUser(data.user);
+        }
+      } catch (err) {
+        //   router.push('/login');
+        console.log(err);
+      }
+    };
+
     if (authState && authState.token.length > 0) getCurrentUser();
 
     // REDIRECT USER IF ALREADY LOGGED IN
@@ -24,26 +45,6 @@ const UserRoute = ({ children }) => {
     //   cancel = true;
     // };
   }, [authState && authState.token]);
-
-  const getCurrentUser = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
-        {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        }
-      );
-      if (data.ok) {
-        setOk(true);
-        setCurrentUser(data.user);
-      }
-    } catch (err) {
-      //   router.push('/login');
-      console.log(err);
-    }
-  };
 
   //   process.browser &&
   //     authState === null &&
