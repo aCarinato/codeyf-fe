@@ -46,31 +46,31 @@ function MessagesPage() {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        // if (currentUser && currentUser._id.length > 0) {
-        // const userId = authState.userId;
+  // useEffect(() => {
+  //   const fetchChats = async () => {
+  //     try {
+  //       // if (currentUser && currentUser._id.length > 0) {
+  //       // const userId = authState.userId;
 
-        // // SHOULD BE A PRIVATE ROUTE !!!
-        // const res = await axios.get(
-        //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
-        // );
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        });
+  //       // // SHOULD BE A PRIVATE ROUTE !!!
+  //       // const res = await axios.get(
+  //       //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
+  //       // );
+  //       const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
+  //         headers: {
+  //           Authorization: `Bearer ${authState.token}`,
+  //         },
+  //       });
 
-        setChats(res.data);
-      } catch (err) {
-        console.log(err);
-        // return { props: { errorLoading: true } };
-      }
-    };
+  //       setChats(res.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //       // return { props: { errorLoading: true } };
+  //     }
+  //   };
 
-    fetchChats();
-  }, []);
+  //   fetchChats();
+  // }, []);
 
   console.log(chats);
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 // OWN FUNCTS
 import getUserInfo from '../lib/helper/chats/getUserInfo';
+import { useRouter } from 'next/router';
 
 const mainContext = React.createContext();
 
@@ -12,6 +13,7 @@ export function useMainContext() {
 }
 
 export function ContextProvider({ children }) {
+  const router = useRouter();
   //   SOCKET
   const socket = useRef();
   const openChatId = useRef();
@@ -53,69 +55,31 @@ export function ContextProvider({ children }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     // if (authState && authState.email.length > 0) {
-  //     const email = authState.email;
-  //     try {
-  //       const res = await axios.post(
-  //         `${process.env.NEXT_PUBLIC_API}/user/`,
-  //         {
-  //           email,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${authState.token}`,
-  //           },
-  //         }
-  //       );
-
-  //       if (res.data.success) {
-  //         setCurrentUser(res.data.user);
-  //         setCurrentUserNotifications(res.data.user.nNotifications);
-  //         // if (res.data.user.nNotifications > 0) {
-  //         //   setCtxHasNotifications(true);
-  //         // } else {
-  //         //   setCtxHasNotifications(false);
-  //         // }
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     // }
-  //   };
-
-  //   // current user
-  //   if (authState !== undefined && authState.userId.length > 0) {
-  //     fetchUser();
-  //   }
-  // }, [authState]);
-
   // SOCKET
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    // const fetchChats = async () => {
-    //   try {
-    //     // if (currentUser && currentUser._id.length > 0) {
-    //     // const userId = authState.userId;
+    const fetchChats = async () => {
+      try {
+        // if (currentUser && currentUser._id.length > 0) {
+        // const userId = authState.userId;
 
-    //     // // SHOULD BE A PRIVATE ROUTE !!!
-    //     // const res = await axios.get(
-    //     //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
-    //     // );
-    //     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
-    //       headers: {
-    //         Authorization: `Bearer ${authState.token}`,
-    //       },
-    //     });
+        // // SHOULD BE A PRIVATE ROUTE !!!
+        // const res = await axios.get(
+        //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
+        // );
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        });
 
-    //     setChats(res.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //     // return { props: { errorLoading: true } };
-    //   }
-    // };
+        setChats(res.data);
+      } catch (err) {
+        console.log(err);
+        // return { props: { errorLoading: true } };
+      }
+    };
 
     const fetchNotifications = async () => {
       try {
@@ -141,12 +105,48 @@ export function ContextProvider({ children }) {
       }
     };
 
-    if (authState !== undefined && authState.userId.length > 0) {
-      console.log(`Bearer ${authState.token}`);
-      // fetchChats();
+    if (authState !== undefined && authState.token.length > 0) {
+      fetchChats();
       fetchNotifications();
     }
-  }, [authState && authState.userId]);
+  }, [authState && authState.token]);
+
+  const addChat = (userId, username) => {
+    if (authState && authState.email.length > 0) {
+      // console.log(user);
+      const alreadyInChat =
+        chats.length > 0 &&
+        chats.filter((chat) => chat.messagesWith === userId).length > 0;
+
+      if (alreadyInChat) {
+        return router.push(`/my-profile/messages?message=${userId}`);
+      }
+      //
+      else {
+        const newChat = {
+          messagesWith: userId,
+          username: username,
+          lastMessage: '',
+          date: Date.now(),
+        };
+
+        setChats((prev) => [newChat, ...prev]);
+        // console.log('ho creato una nuova chat');
+        // console.log(chats);
+        return router.push(
+          `/my-profile/messages?message=${userId}`,
+          undefined,
+          {
+            shallow: true,
+          }
+        );
+
+        //   return router.push(`/messages?message=${user._id}`);
+      }
+    } else {
+      router.push('/login');
+    }
+  };
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {
@@ -331,6 +331,7 @@ export function ContextProvider({ children }) {
     connectedUsers,
     chats,
     setChats,
+    addChat,
     messages,
     setMessages,
     notifications,
