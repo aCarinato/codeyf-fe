@@ -95,27 +95,27 @@ export function ContextProvider({ children }) {
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        // if (currentUser && currentUser._id.length > 0) {
-        // const userId = authState.userId;
+    // const fetchChats = async () => {
+    //   try {
+    //     // if (currentUser && currentUser._id.length > 0) {
+    //     // const userId = authState.userId;
 
-        // // SHOULD BE A PRIVATE ROUTE !!!
-        // const res = await axios.get(
-        //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
-        // );
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        });
+    //     // // SHOULD BE A PRIVATE ROUTE !!!
+    //     // const res = await axios.get(
+    //     //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
+    //     // );
+    //     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
+    //       headers: {
+    //         Authorization: `Bearer ${authState.token}`,
+    //       },
+    //     });
 
-        setChats(res.data);
-      } catch (err) {
-        console.log(err);
-        // return { props: { errorLoading: true } };
-      }
-    };
+    //     setChats(res.data);
+    //   } catch (err) {
+    //     console.log(err);
+    //     // return { props: { errorLoading: true } };
+    //   }
+    // };
 
     const fetchNotifications = async () => {
       try {
@@ -143,12 +143,10 @@ export function ContextProvider({ children }) {
 
     if (authState !== undefined && authState.userId.length > 0) {
       console.log(`Bearer ${authState.token}`);
-      fetchChats();
+      // fetchChats();
       fetchNotifications();
     }
   }, [authState && authState.userId]);
-
-  console.log(chats);
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {

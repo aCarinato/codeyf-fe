@@ -5,6 +5,8 @@ import { useMainContext } from '../../../context/Context';
 // own components
 import UserRoute from '../../../components/routes/UserRoute';
 
+import axios from 'axios';
+
 function MessagesPage() {
   const {
     authState,
@@ -43,6 +45,34 @@ function MessagesPage() {
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        // if (currentUser && currentUser._id.length > 0) {
+        // const userId = authState.userId;
+
+        // // SHOULD BE A PRIVATE ROUTE !!!
+        // const res = await axios.get(
+        //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
+        // );
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        });
+
+        setChats(res.data);
+      } catch (err) {
+        console.log(err);
+        // return { props: { errorLoading: true } };
+      }
+    };
+
+    fetchChats();
+  }, []);
+
+  console.log(chats);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
