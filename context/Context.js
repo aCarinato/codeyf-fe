@@ -104,7 +104,7 @@ export function ContextProvider({ children }) {
         // const res = await axios.get(
         //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
         // );
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats/`, {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
           headers: {
             Authorization: `Bearer ${authState.token}`,
           },
@@ -142,6 +142,7 @@ export function ContextProvider({ children }) {
     };
 
     if (authState !== undefined && authState.userId.length > 0) {
+      console.log(`Bearer ${authState.token}`);
       fetchChats();
       fetchNotifications();
     }
