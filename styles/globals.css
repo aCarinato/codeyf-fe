@@ -50,19 +50,28 @@ Spacing System (px)
   https://coolors.co/palette/838992-355e99-a0cdf1-cbe3f7-fefcfd
   */
 
+  /* primary color */
   --main-primary-color: rgb(13, 0, 134);
-  /* --main-tints-color: rgb(88, 2, 150); */
-  /* --main-tints-color: rgb(74, 52, 216); */
-  /* --main-tints-color: rgb(51, 54, 204); */
+  --main-primary-color-tint: rgba(13, 0, 134, 0.611);
+
+  /* shades */
   --main-shades-color: rgb(51, 54, 204);
+  --main-shades-color-tint: rgba(51, 54, 204, 0.65);
+  /* tints */
   --main-tints-color: #4a34d8;
-  --main-btnlight-color: #cbe3f7;
+  --main-tints-color-tint: #4a34d88d;
+
   /* --main-btnlight-color: #aef8ec; */
   --main-error-color: rgb(199, 37, 137);
   --main-success-color: rgb(117, 179, 117);
+  /* text color */
   --main-text-color: rgb(63, 80, 110);
+  --main-text-color-tint: rgba(63, 80, 110, 0.8);
 
+  /* btn-light */
+  --main-btnlight-color: #cbe3f7;
   --main-cta-light-hover-color: #8dace5;
+  --main-btnlight-color-tint: rgba(204, 232, 255, 0.15);
 
   /* Radius */
   --main-border-radius: 1.2rem;
@@ -82,6 +91,7 @@ main {
   /* padding: 0 16.8rem; */
   padding: 4.8rem 10%;
   font-size: 1.6rem;
+  height: 100vh;
 }
 
 h1 {

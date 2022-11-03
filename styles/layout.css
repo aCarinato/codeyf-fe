@@ -1,7 +1,12 @@
+/* GENERAL */
+.gap-24 {
+  gap: 2.4rem;
+}
+
 /* GRID LAYOUT */
 .grid {
   display: grid;
-  gap: 2.4rem;
+  /* gap: 2.4rem; */
 }
 
 .grid--2cols {

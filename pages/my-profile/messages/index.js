@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useMainContext } from '../../../context/Context';
 // own components
 import UserRoute from '../../../components/routes/UserRoute';
+import MsgInput from '../../../components/message/chat/MsgInput';
+import ChatName from '../../../components/message/chat/ChatName';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 function MessagesPage() {
   const {
@@ -45,34 +47,6 @@ function MessagesPage() {
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, []);
-
-  // useEffect(() => {
-  //   const fetchChats = async () => {
-  //     try {
-  //       // if (currentUser && currentUser._id.length > 0) {
-  //       // const userId = authState.userId;
-
-  //       // // SHOULD BE A PRIVATE ROUTE !!!
-  //       // const res = await axios.get(
-  //       //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
-  //       // );
-  //       const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
-  //         headers: {
-  //           Authorization: `Bearer ${authState.token}`,
-  //         },
-  //       });
-
-  //       setChats(res.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //       // return { props: { errorLoading: true } };
-  //     }
-  //   };
-
-  //   fetchChats();
-  // }, []);
-
-  console.log(chats);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
@@ -160,9 +134,9 @@ function MessagesPage() {
   return (
     <UserRoute>
       <div>
-        <h1>MessagesPage</h1>
-
-        <>
+        <h1>Messages</h1>
+        <br></br>
+        {/* <>
           {notifications && notifications.length > 0 && (
             <>
               <p>Notifications</p>
@@ -182,63 +156,54 @@ function MessagesPage() {
               <br></br>
             </>
           )}
-        </>
+        </> */}
 
         {chats.length > 0 ? (
           <>
-            <div>CIAO ALE IL GENIO</div>
+            {/* <div>CIAO ALE IL GENIO</div> */}
             <div className="grid grid---2cols-15-85">
-              <div>
+              <div className="chat-conversation-list-div">
                 {chats.map((chat) => (
-                  <div
-                    className="chat-card"
+                  <ChatName
                     key={chat.messagesWith}
-                    onClick={() =>
-                      router.push(
-                        `/my-profile/messages?message=${chat.messagesWith}`,
-                        undefined
-                        // {
-                        //   shallow: true,
-                        // }
-                      )
-                    }
-                  >
-                    <p>Chat with: {chat.username}</p>
-                    {connectedUsers
-                      .map((item) => item.userId)
-                      .includes(chat.messagesWith) ? (
-                      <p className="user-online">online</p>
-                    ) : (
-                      <p className="user-offline">offline</p>
-                    )}
-                  </div>
+                    chat={chat}
+                    connectedUsers={connectedUsers}
+                    notifications={notifications}
+                    readNotification={readNotification}
+                  />
                 ))}
               </div>
               <div>
                 {router.query.message && (
-                  <div>
-                    MESSAGGI
-                    {messages.map((msg) => (
-                      <div
-                        className={
-                          msg.sender === authState.userId ? 'own-msg' : 'msg'
-                        }
-                        key={msg._id}
-                      >
-                        {/* {JSON.stringify(msg)} */}
-                        <p className="p-msg">
-                          {msg.msg} <span onClick={() => {}}>X</span>
-                        </p>
-                      </div>
-                    ))}
-                    <div>
-                      <input
-                        type="text"
-                        value={msgToSend}
-                        onChange={(e) => setMsgToSend(e.target.value)}
-                      />
-                      <button onClick={sendMsg}>send</button>
+                  <div className="chat-conversation-div">
+                    <div className="chat-conversation-msgs-div">
+                      {messages.map((msg) => (
+                        <div
+                          className={
+                            msg.sender === authState.userId
+                              ? 'own-msg-div'
+                              : 'msg-div'
+                          }
+                          key={msg._id}
+                        >
+                          <p
+                            className={
+                              msg.sender === authState.userId
+                                ? 'p-msg-own'
+                                : 'p-msg'
+                            }
+                          >
+                            {msg.msg}
+                            {/* <span onClick={() => {}}>X</span> */}
+                          </p>
+                        </div>
+                      ))}
                     </div>
+                    <MsgInput
+                      msgToSend={msgToSend}
+                      setMsgToSend={setMsgToSend}
+                      sendMsg={sendMsg}
+                    />
                   </div>
                 )}
               </div>

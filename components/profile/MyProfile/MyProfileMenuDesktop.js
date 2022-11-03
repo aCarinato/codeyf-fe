@@ -32,14 +32,15 @@ function MyProfileMenuDesktop(props) {
                 : 'main-link'
             }
           >
-            {unreadNotifications.length > 0 && (
+            {/* {unreadNotifications.length > 0 && (
               <span>{unreadNotifications.length} new</span>
-            )}{' '}
+            )}{' '} */}
             messages{' '}
             <span>
               {authState.userId.length > 0 && unreadNotifications.length > 0 && (
                 <sup>
-                  <Icon icon="ci:notification" />
+                  {unreadNotifications.length}{' '}
+                  <Icon icon="eva:message-circle-fill" />
                 </sup>
               )}
             </span>

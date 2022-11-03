@@ -35,7 +35,8 @@ function LoggedUserIcon(props) {
           <Icon icon="carbon:user-avatar-filled-alt" />
           {unreadNotifications.length > 0 && (
             <sup>
-              <Icon icon="ci:notification" />
+              {/* <Icon icon="ci:notification" /> */}
+              <Icon icon="eva:message-circle-fill" />
             </sup>
           )}
         </div>
@@ -45,7 +46,8 @@ function LoggedUserIcon(props) {
             <Icon icon="carbon:user-avatar-filled-alt" />
             {unreadNotifications.length > 0 && (
               <sup>
-                <Icon icon="ci:notification" />
+                {/* <Icon icon="ci:notification" /> */}
+                <Icon icon="eva:message-circle-fill" />
               </sup>
             )}
           </div>

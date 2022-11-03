@@ -111,42 +111,42 @@ export function ContextProvider({ children }) {
     }
   }, [authState && authState.token]);
 
-  const addChat = (userId, username) => {
-    if (authState && authState.email.length > 0) {
-      // console.log(user);
-      const alreadyInChat =
-        chats.length > 0 &&
-        chats.filter((chat) => chat.messagesWith === userId).length > 0;
+  // const addChat = (userId, username) => {
+  //   if (authState && authState.email.length > 0) {
+  //     // console.log(user);
+  //     const alreadyInChat =
+  //       chats.length > 0 &&
+  //       chats.filter((chat) => chat.messagesWith === userId).length > 0;
 
-      if (alreadyInChat) {
-        return router.push(`/my-profile/messages?message=${userId}`);
-      }
-      //
-      else {
-        const newChat = {
-          messagesWith: userId,
-          username: username,
-          lastMessage: '',
-          date: Date.now(),
-        };
+  //     if (alreadyInChat) {
+  //       return router.push(`/my-profile/messages?message=${userId}`);
+  //     }
+  //     //
+  //     else {
+  //       const newChat = {
+  //         messagesWith: userId,
+  //         username: username,
+  //         lastMessage: '',
+  //         date: Date.now(),
+  //       };
 
-        setChats((prev) => [newChat, ...prev]);
-        // console.log('ho creato una nuova chat');
-        // console.log(chats);
-        return router.push(
-          `/my-profile/messages?message=${userId}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
+  //       setChats((prev) => [newChat, ...prev]);
+  //       // console.log('ho creato una nuova chat');
+  //       // console.log(chats);
+  //       return router.push(
+  //         `/my-profile/messages?message=${userId}`,
+  //         undefined,
+  //         {
+  //           shallow: true,
+  //         }
+  //       );
 
-        //   return router.push(`/messages?message=${user._id}`);
-      }
-    } else {
-      router.push('/login');
-    }
-  };
+  //       //   return router.push(`/messages?message=${user._id}`);
+  //     }
+  //   } else {
+  //     router.push('/login');
+  //   }
+  // };
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {
@@ -331,7 +331,7 @@ export function ContextProvider({ children }) {
     connectedUsers,
     chats,
     setChats,
-    addChat,
+    // addChat,
     messages,
     setMessages,
     notifications,
