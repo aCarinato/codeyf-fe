@@ -5,6 +5,7 @@ import Link from 'next/link';
 import BtnCTA from '../UI/BtnCTA';
 // packages
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 // context
 import { useMainContext } from '../../context/Context';
 
@@ -22,46 +23,67 @@ function BuddyCard(props) {
     // setSuccessMsg,
   } = props;
 
-  const { authState, socket, addChat, chats, setChats } = useMainContext();
+  const { authState, chats, setChats } = useMainContext();
 
-  // const router = useRouter();
+  const router = useRouter();
 
-  // const addChat = () => {
+  const addChat = async () => {
+    if (authState && authState.email.length > 0) {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        if (data.ok) {
+          // console.log('registration completed:');
+          // console.log(data.user.registrationCompleted);
+          // HERE THE LOGIC OF CREATING A NEW CHAT WILL BE HANDLED
+          // if (data.user.registrationCompleted) {} else {
+          // create a modal that tells the user to complete profile
+          // }
+        }
+      } catch (err) {
+        //   router.push('/login');
+        console.log(err);
+      }
 
-  //   if (authState && authState.email.length > 0) {
-  //     // console.log(user);
-  //     const alreadyInChat =
-  //       chats.length > 0 &&
-  //       chats.filter((chat) => chat.messagesWith === userId).length > 0;
+      // console.log(user);
+      const alreadyInChat =
+        chats.length > 0 &&
+        chats.filter((chat) => chat.messagesWith === userId).length > 0;
 
-  //     if (alreadyInChat) {
-  //       return router.push(`/my-profile/messages?message=${userId}`);
-  //     }
-  //     //
-  //     else {
-  //       const newChat = {
-  //         messagesWith: userId,
-  //         username: username,
-  //         lastMessage: '',
-  //         date: Date.now(),
-  //       };
+      if (alreadyInChat) {
+        return router.push(`/my-profile/messages?message=${userId}`);
+      }
+      //
+      else {
+        const newChat = {
+          messagesWith: userId,
+          username: username,
+          lastMessage: '',
+          date: Date.now(),
+        };
 
-  //       setChats((prev) => [newChat, ...prev]);
+        setChats((prev) => [newChat, ...prev]);
 
-  //       return router.push(
-  //         `/my-profile/messages?message=${userId}`,
-  //         undefined,
-  //         {
-  //           shallow: true,
-  //         }
-  //       );
+        return router.push(
+          `/my-profile/messages?message=${userId}`,
+          undefined,
+          {
+            shallow: true,
+          }
+        );
 
-  //       //   return router.push(`/messages?message=${user._id}`);
-  //     }
-  //   } else {
-  //     router.push('/login');
-  //   }
-  // };
+        //   return router.push(`/messages?message=${user._id}`);
+      }
+    } else {
+      router.push('/login');
+    }
+  };
 
   return (
     <div className="main-card-container">
@@ -108,7 +130,8 @@ function BuddyCard(props) {
         <div className="card-footer-message">
           <BtnCTA
             label="message"
-            onCLickAction={() => addChat(userId, username)}
+            // onCLickAction={() => addChat(userId, username)}
+            onCLickAction={addChat}
             icon={true}
             iconType="ant-design:message-outlined"
           />

@@ -175,6 +175,7 @@ function CompleteProfileForm() {
 
         if (res.data.success) {
           setSuccess(true);
+          // emit event 'registrationCompleted'
         }
       } catch (err) {
         console.log(err);
