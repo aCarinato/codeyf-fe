@@ -145,7 +145,9 @@ export function ContextProvider({ children }) {
       fetchChats();
       fetchNotifications();
     }
-  }, [authState]);
+  }, [authState && authState.userId]);
+
+  console.log(chats);
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {
