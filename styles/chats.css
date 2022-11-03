@@ -7,6 +7,8 @@
 .chat-conversation-div {
   display: flex;
   flex-direction: column;
+  width: 80%;
+  margin: auto;
 }
 
 .chat-conversation-msgs-div {
