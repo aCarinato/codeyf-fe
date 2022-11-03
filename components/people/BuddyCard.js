@@ -22,51 +22,42 @@ function BuddyCard(props) {
     // setSuccessMsg,
   } = props;
 
-  const { authState, socket, chats, setChats } = useMainContext();
+  const { authState, socket, addChat, chats, setChats } = useMainContext();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const addChat = () => {
-    if (authState && authState.email.length > 0) {
-      // console.log(user);
-      const alreadyInChat =
-        chats.length > 0 &&
-        chats.filter((chat) => chat.messagesWith === userId).length > 0;
+  // const addChat = () => {
 
-      if (alreadyInChat) {
-        return router.push(`/my-profile/messages?message=${userId}`);
-      }
-      //
-      else {
-        const newChat = {
-          messagesWith: userId,
-          username: username,
-          lastMessage: '',
-          date: Date.now(),
-        };
-
-        setChats((prev) => [newChat, ...prev]);
-
-        return router.push(
-          `/my-profile/messages?message=${userId}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
-
-        //   return router.push(`/messages?message=${user._id}`);
-      }
-    } else {
-      router.push('/login');
-    }
-  };
-
-  // const clickMessageHandler = () => {
   //   if (authState && authState.email.length > 0) {
-  //     setShowMsgForm(true);
-  //     setRecipient(username);
-  //     setSuccessMsg(false);
+  //     // console.log(user);
+  //     const alreadyInChat =
+  //       chats.length > 0 &&
+  //       chats.filter((chat) => chat.messagesWith === userId).length > 0;
+
+  //     if (alreadyInChat) {
+  //       return router.push(`/my-profile/messages?message=${userId}`);
+  //     }
+  //     //
+  //     else {
+  //       const newChat = {
+  //         messagesWith: userId,
+  //         username: username,
+  //         lastMessage: '',
+  //         date: Date.now(),
+  //       };
+
+  //       setChats((prev) => [newChat, ...prev]);
+
+  //       return router.push(
+  //         `/my-profile/messages?message=${userId}`,
+  //         undefined,
+  //         {
+  //           shallow: true,
+  //         }
+  //       );
+
+  //       //   return router.push(`/messages?message=${user._id}`);
+  //     }
   //   } else {
   //     router.push('/login');
   //   }
@@ -117,7 +108,7 @@ function BuddyCard(props) {
         <div className="card-footer-message">
           <BtnCTA
             label="message"
-            onCLickAction={addChat}
+            onCLickAction={() => addChat(userId, username)}
             icon={true}
             iconType="ant-design:message-outlined"
           />
