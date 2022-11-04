@@ -45,7 +45,7 @@ function ChatName(props) {
 
   //   console.log(router.query.message);
 
-  //   console.log(chat.messagesWith);
+  console.log(chat);
 
   return (
     <div
