@@ -18,50 +18,6 @@
   background-color: var(--main-btnlight-color-tint);
 }
 
-.msg-div {
-  display: flex;
-  width: 90%;
-  /* border: 1px solid rgb(0, 0, 0); */
-  padding: 1rem;
-  margin: 1rem auto;
-  /* cursor: pointer; */
-}
-
-.own-msg-div {
-  display: flex;
-  width: 90%;
-
-  /* border: 1px solid rgb(0, 0, 0); */
-  padding: 1rem;
-  margin: 1rem auto;
-  justify-content: flex-end;
-
-  text-align: right;
-  /* cursor: pointer; */
-}
-
-.p-msg-own {
-  /* width: fit-content; */
-  max-width: 60%;
-
-  padding: 1rem;
-  color: #fff;
-  background-color: var(--main-text-color-tint);
-  border-radius: 0.7rem;
-  /* margin: 1rem; */
-}
-
-.p-msg {
-  max-width: 60%;
-
-  /* border: 1px solid rgb(0, 0, 0); */
-  padding: 1rem;
-  color: #fff;
-  background-color: var(--main-primary-color-tint);
-  border-radius: 0.7rem;
-  /* margin: 1rem; */
-}
-
 .notification-card {
   margin: 1rem 0;
   padding: 1rem;
