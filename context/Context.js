@@ -4,7 +4,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 // OWN FUNCTS
 import getUserInfo from '../lib/helper/chats/getUserInfo';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 const mainContext = React.createContext();
 
@@ -13,7 +13,7 @@ export function useMainContext() {
 }
 
 export function ContextProvider({ children }) {
-  const router = useRouter();
+  // const router = useRouter();
   //   SOCKET
   const socket = useRef();
   const openChatId = useRef();
@@ -110,43 +110,6 @@ export function ContextProvider({ children }) {
       fetchNotifications();
     }
   }, [authState && authState.token]);
-
-  // const addChat = (userId, username) => {
-  //   if (authState && authState.email.length > 0) {
-  //     // console.log(user);
-  //     const alreadyInChat =
-  //       chats.length > 0 &&
-  //       chats.filter((chat) => chat.messagesWith === userId).length > 0;
-
-  //     if (alreadyInChat) {
-  //       return router.push(`/my-profile/messages?message=${userId}`);
-  //     }
-  //     //
-  //     else {
-  //       const newChat = {
-  //         messagesWith: userId,
-  //         username: username,
-  //         lastMessage: '',
-  //         date: Date.now(),
-  //       };
-
-  //       setChats((prev) => [newChat, ...prev]);
-  //       // console.log('ho creato una nuova chat');
-  //       // console.log(chats);
-  //       return router.push(
-  //         `/my-profile/messages?message=${userId}`,
-  //         undefined,
-  //         {
-  //           shallow: true,
-  //         }
-  //       );
-
-  //       //   return router.push(`/messages?message=${user._id}`);
-  //     }
-  //   } else {
-  //     router.push('/login');
-  //   }
-  // };
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {

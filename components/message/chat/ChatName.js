@@ -46,7 +46,6 @@ function ChatName(props) {
   //   console.log(router.query.message);
 
   //   console.log(chat.messagesWith);
-  //   console.log(notificationFromSender);
 
   return (
     <div
@@ -79,35 +78,49 @@ function ChatName(props) {
       }}
     >
       <div className={classes['flex-item']}>
+        <div className={classes['chat-img-container']}>
+          <img
+            className={classes['chat-img']}
+            src={
+              chat.profilePic &&
+              chat.profilePic.url &&
+              chat.profilePic.url !== ''
+                ? chat.profilePic.url
+                : '/img/default-pic.png'
+            }
+          />
+        </div>
+        <div>
+          {notificationFromSender &&
+          notificationFromSender.length > 0 &&
+          !notificationFromSender[0].isRead ? (
+            <p className={classes['p-username-notified']}>
+              {chat.username}{' '}
+              <sup>
+                {/* <Icon icon="ci:notification" /> */}
+                <Icon icon="eva:message-circle-fill" />
+              </sup>
+            </p>
+          ) : (
+            <p className={classes['p-username']}>{chat.username} </p>
+          )}
+
+          <div className={classes['p-user-status']}>
+            {connectedUsers
+              .map((item) => item.userId)
+              .includes(chat.messagesWith) ? (
+              <>
+                <p className={classes['div-online']}></p> online
+              </>
+            ) : (
+              <>
+                <p className={classes['div-offline']}></p> offline
+              </>
+            )}
+          </div>
+        </div>
         {/* <p className={classes['p-username']}>
           {chat.username}{' '} */}
-        {notificationFromSender &&
-        notificationFromSender.length > 0 &&
-        !notificationFromSender[0].isRead ? (
-          <p className={classes['p-username-notified']}>
-            {chat.username}{' '}
-            <sup>
-              {/* <Icon icon="ci:notification" /> */}
-              <Icon icon="eva:message-circle-fill" />
-            </sup>
-          </p>
-        ) : (
-          <p className={classes['p-username']}>{chat.username} </p>
-        )}
-
-        <div className={classes['p-user-status']}>
-          {connectedUsers
-            .map((item) => item.userId)
-            .includes(chat.messagesWith) ? (
-            <>
-              <p className={classes['div-online']}></p> online
-            </>
-          ) : (
-            <>
-              <p className={classes['div-offline']}></p> offline
-            </>
-          )}
-        </div>
       </div>
     </div>
   );

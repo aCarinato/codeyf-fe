@@ -60,3 +60,8 @@
 .test-newline {
   white-space: pre-wrap;
 }
+
+/* BORDER */
+.border-top-primary {
+  border-top: 1px solid var(--main-primary-color);
+}

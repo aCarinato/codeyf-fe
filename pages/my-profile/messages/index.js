@@ -6,8 +6,13 @@ import { useMainContext } from '../../../context/Context';
 import UserRoute from '../../../components/routes/UserRoute';
 import MsgInput from '../../../components/message/chat/MsgInput';
 import ChatName from '../../../components/message/chat/ChatName';
+import ChatMsg from '../../../components/message/chat/ChatMsg';
 
 // import axios from 'axios';
+const scrollDivToBottom = (divRef) =>
+  divRef &&
+  divRef.current !== null &&
+  divRef.current.scrollIntoView({ behaviour: 'smooth' });
 
 function MessagesPage() {
   const {
@@ -26,6 +31,7 @@ function MessagesPage() {
   const router = useRouter();
   // This ref is for persisting the state of query string in url throughout re-renders. This ref is the value of query string inside url
   // const openChatId = useRef(); // CONTEXT
+  const divRef = useRef();
 
   // const [messages, setMessages] = useState([]); // CONTEXT
   useEffect(() => {
@@ -58,13 +64,8 @@ function MessagesPage() {
 
       socket.current.on('messagesLoaded', async ({ chat }) => {
         setMessages(chat.messages);
-        // setBannerData({
-        //   name: chat.messagesWith.name,
-        //   profilePicUrl: chat.messagesWith.profilePicUrl,
-        // });
-
         openChatId.current = chat.messagesWith._id;
-        // divRef.current && scrollDivToBottom(divRef);
+        // divRef && divRef.current && scrollDivToBottom(divRef);
       });
 
       socket.current.on('noChatFound', async () => {
@@ -131,37 +132,24 @@ function MessagesPage() {
     });
   };
 
+  useEffect(() => {
+    console.log(divRef);
+    console.log(divRef.current !== undefined);
+    divRef.current !== undefined &&
+      messages.length > 0 &&
+      scrollDivToBottom(divRef);
+  }, [messages]);
+
   return (
     <UserRoute>
       <div>
         <h1>Messages</h1>
         <br></br>
-        {/* <>
-          {notifications && notifications.length > 0 && (
-            <>
-              <p>Notifications</p>
-              {notifications.map((notification) => (
-                <div
-                  className={
-                    notification.isRead
-                      ? 'notification-card'
-                      : 'notification-card notification-unread'
-                  }
-                  key={notification._id}
-                  onClick={() => readNotification(notification.from)}
-                >
-                  {notification.text}
-                </div>
-              ))}
-              <br></br>
-            </>
-          )}
-        </> */}
 
         {chats.length > 0 ? (
           <>
             {/* <div>CIAO ALE IL GENIO</div> */}
-            <div className="grid grid---2cols-15-85">
+            <div className="grid grid---2cols-20-80 border-top-primary">
               <div className="chat-conversation-list-div">
                 {chats.map((chat) => (
                   <ChatName
@@ -178,25 +166,12 @@ function MessagesPage() {
                   <div className="chat-conversation-div">
                     <div className="chat-conversation-msgs-div">
                       {messages.map((msg) => (
-                        <div
-                          className={
-                            msg.sender === authState.userId
-                              ? 'own-msg-div'
-                              : 'msg-div'
-                          }
+                        <ChatMsg
                           key={msg._id}
-                        >
-                          <p
-                            className={
-                              msg.sender === authState.userId
-                                ? 'p-msg-own'
-                                : 'p-msg'
-                            }
-                          >
-                            {msg.msg}
-                            {/* <span onClick={() => {}}>X</span> */}
-                          </p>
-                        </div>
+                          divRef={divRef}
+                          msg={msg}
+                          userId={authState.userId}
+                        />
                       ))}
                     </div>
                     <MsgInput

@@ -64,6 +64,10 @@ function BuddyCard(props) {
         const newChat = {
           messagesWith: userId,
           username: username,
+          profilePicUrl:
+            profilePic && profilePic.url && profilePic.url !== ''
+              ? profilePic.url
+              : '/img/default-pic.png',
           lastMessage: '',
           date: Date.now(),
         };
