@@ -133,8 +133,6 @@ function MessagesPage() {
   };
 
   useEffect(() => {
-    console.log(divRef);
-    console.log(divRef.current !== undefined);
     divRef.current !== undefined &&
       messages.length > 0 &&
       scrollDivToBottom(divRef);

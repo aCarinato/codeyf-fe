@@ -16,6 +16,8 @@ function ChatName(props) {
   useEffect(() => {
     if (router.query.message === chat.messagesWith) {
       setIsActive(true);
+    } else {
+      setIsActive(false);
     }
   }, [router.query.message]);
 
@@ -42,10 +44,6 @@ function ChatName(props) {
       )
     );
   }, [notifications]);
-
-  //   console.log(router.query.message);
-
-  console.log(chat);
 
   return (
     <div
