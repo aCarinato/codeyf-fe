@@ -82,10 +82,10 @@ function ChatName(props) {
           <img
             className={classes['chat-img']}
             src={
-              chat.profilePic &&
-              chat.profilePic.url &&
-              chat.profilePic.url !== ''
-                ? chat.profilePic.url
+              chat.profilePicUrl &&
+              chat.profilePicUrl.url &&
+              chat.profilePicUrl.url !== ''
+                ? chat.profilePicUrl.url
                 : '/img/default-pic.png'
             }
           />
