@@ -53,8 +53,8 @@ function ChatHeader(props) {
             src={
               user.profilePic &&
               user.profilePic.url &&
-              chat.profilePic.url !== ''
-                ? chat.profilePic.url
+              user.profilePic.url !== ''
+                ? user.profilePic.url
                 : '/img/default-pic.png'
             }
           />
