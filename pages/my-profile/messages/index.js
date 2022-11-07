@@ -58,7 +58,7 @@ function MessagesPage() {
     };
   }, []);
 
-  console.log(chats);
+  // console.log(chats);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
