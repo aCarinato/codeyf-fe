@@ -11,11 +11,20 @@
   margin: auto;
 }
 
+.chat-conversation-div-mobile {
+  display: flex;
+  flex-direction: column;
+  /* width: 80%; */
+  margin: auto;
+}
+
 .chat-conversation-msgs-div {
   /* flex-grow: 2; */
   height: 75vh;
   overflow-y: auto;
   background-color: var(--main-btnlight-color-tint);
+  box-shadow: 0 1px 4px rgba(13, 0, 134, 0.05) inset,
+    0 1px 12px 1px rgba(13, 0, 134, 0.05) inset;
 }
 
 .notification-card {

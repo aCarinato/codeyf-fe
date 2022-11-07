@@ -5,6 +5,7 @@ import { useMainContext } from '../../../context/Context';
 // own components
 import UserRoute from '../../../components/routes/UserRoute';
 import MsgInput from '../../../components/message/chat/MsgInput';
+import ChatHeader from '../../../components/message/chat/ChatHeader';
 import ChatName from '../../../components/message/chat/ChatName';
 import ChatMsg from '../../../components/message/chat/ChatMsg';
 
@@ -26,7 +27,10 @@ function MessagesPage() {
     setChats,
     notifications,
     setNotifications,
+    mobileView,
   } = useMainContext();
+
+  const [chatActive, setChatActive] = useState(false);
 
   const router = useRouter();
   // This ref is for persisting the state of query string in url throughout re-renders. This ref is the value of query string inside url
@@ -146,8 +150,7 @@ function MessagesPage() {
 
         {chats.length > 0 ? (
           <>
-            {/* <div>CIAO ALE IL GENIO</div> */}
-            <div className="grid grid---2cols-20-80 border-top-primary">
+            {mobileView && openChatId.current === '' ? (
               <div className="chat-conversation-list-div">
                 {chats.map((chat) => (
                   <ChatName
@@ -159,9 +162,11 @@ function MessagesPage() {
                   />
                 ))}
               </div>
+            ) : (
               <div>
-                {router.query.message && (
-                  <div className="chat-conversation-div">
+                {mobileView && router.query.message && (
+                  <div className="chat-conversation-div-mobile">
+                    <ChatHeader userId={router.query.message} />
                     <div className="chat-conversation-msgs-div">
                       {messages.map((msg) => (
                         <ChatMsg
@@ -180,7 +185,46 @@ function MessagesPage() {
                   </div>
                 )}
               </div>
-            </div>
+            )}
+
+            {/* <div>CIAO ALE IL GENIO</div> */}
+            {!mobileView && (
+              <div className="grid grid---2cols-20-80 border-top-primary">
+                <div className="chat-conversation-list-div">
+                  {chats.map((chat) => (
+                    <ChatName
+                      key={chat.messagesWith}
+                      chat={chat}
+                      connectedUsers={connectedUsers}
+                      notifications={notifications}
+                      readNotification={readNotification}
+                    />
+                  ))}
+                </div>
+                <div>
+                  {router.query.message && (
+                    <div className="chat-conversation-div">
+                      <ChatHeader userId={router.query.message} />
+                      <div className="chat-conversation-msgs-div">
+                        {messages.map((msg) => (
+                          <ChatMsg
+                            key={msg._id}
+                            divRef={divRef}
+                            msg={msg}
+                            userId={authState.userId}
+                          />
+                        ))}
+                      </div>
+                      <MsgInput
+                        msgToSend={msgToSend}
+                        setMsgToSend={setMsgToSend}
+                        sendMsg={sendMsg}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <p>No chats</p>
