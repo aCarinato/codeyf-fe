@@ -5,6 +5,12 @@ import classes from './MsgInput.module.css';
 
 function MsgInput(props) {
   const { msgToSend, setMsgToSend, sendMsg } = props;
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      sendMsg();
+    }
+  };
   return (
     <div className={classes['box-0']}>
       <input
@@ -14,6 +20,7 @@ function MsgInput(props) {
         autoFocus
         value={msgToSend}
         onChange={(e) => setMsgToSend(e.target.value)}
+        onKeyDown={(e) => handleKeyDown(e)}
       />
 
       <button className={classes.btn} onClick={sendMsg}>

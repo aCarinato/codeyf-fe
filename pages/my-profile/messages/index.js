@@ -5,6 +5,7 @@ import { useMainContext } from '../../../context/Context';
 // own components
 import UserRoute from '../../../components/routes/UserRoute';
 import MsgInput from '../../../components/message/chat/MsgInput';
+import ChatHeader from '../../../components/message/chat/ChatHeader';
 import ChatName from '../../../components/message/chat/ChatName';
 import ChatMsg from '../../../components/message/chat/ChatMsg';
 
@@ -26,6 +27,7 @@ function MessagesPage() {
     setChats,
     notifications,
     setNotifications,
+    mobileView,
   } = useMainContext();
 
   const router = useRouter();
@@ -162,6 +164,7 @@ function MessagesPage() {
               <div>
                 {router.query.message && (
                   <div className="chat-conversation-div">
+                    <ChatHeader userId={router.query.message} />
                     <div className="chat-conversation-msgs-div">
                       {messages.map((msg) => (
                         <ChatMsg
