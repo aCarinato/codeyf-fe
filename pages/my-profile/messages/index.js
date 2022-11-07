@@ -37,6 +37,8 @@ function MessagesPage() {
   // const openChatId = useRef(); // CONTEXT
   const divRef = useRef();
 
+  console.log(`openChatId: ${openChatId.current}`);
+
   // const [messages, setMessages] = useState([]); // CONTEXT
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
@@ -58,7 +60,7 @@ function MessagesPage() {
     };
   }, []);
 
-  // console.log(chats);
+  console.log(chats);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
@@ -69,8 +71,8 @@ function MessagesPage() {
       });
 
       socket.current.on('messagesLoaded', async ({ chat }) => {
-        console.log('from messagesLoaded - chat:');
-        console.log(chat);
+        // console.log('from messagesLoaded - chat:');
+        // console.log(chat);
         setMessages(chat.messages);
         openChatId.current = chat.messagesWith._id;
         // divRef && divRef.current && scrollDivToBottom(divRef);
@@ -154,7 +156,8 @@ function MessagesPage() {
 
         {chats.length > 0 ? (
           <>
-            {mobileView && openChatId.current === '' ? (
+            {mobileView &&
+            (openChatId.current === undefined || openChatId.current === '') ? (
               <div className="chat-conversation-list-div">
                 {chats.map((chat) => (
                   <ChatName
