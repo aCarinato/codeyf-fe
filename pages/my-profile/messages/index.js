@@ -37,8 +37,6 @@ function MessagesPage() {
   // const openChatId = useRef(); // CONTEXT
   const divRef = useRef();
 
-  console.log(`openChatId: ${openChatId.current}`);
-
   // const [messages, setMessages] = useState([]); // CONTEXT
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
@@ -59,8 +57,6 @@ function MessagesPage() {
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, []);
-
-  console.log(chats);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
