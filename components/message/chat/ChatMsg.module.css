@@ -46,3 +46,31 @@
   margin-top: 1rem;
   font-size: 1rem;
 }
+
+/* MOBILE */
+
+.p-msg-own-mobile {
+  /* width: fit-content; */
+  max-width: 85%;
+
+  padding: 1rem;
+  color: #fff;
+  background-color: var(--main-primary-color-tint);
+
+  border-radius: 0.7rem;
+}
+
+.p-msg-mobile {
+  max-width: 85%;
+
+  /* border: 1px solid rgb(0, 0, 0); */
+  padding: 1rem;
+  color: #fff;
+  background-color: var(--main-text-color-tint);
+  border-radius: 0.7rem;
+}
+
+.msg-text-mobile {
+  overflow-wrap: break-word;
+  font-size: 1.2rem;
+}

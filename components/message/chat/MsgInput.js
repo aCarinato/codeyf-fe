@@ -2,9 +2,12 @@
 import { Icon } from '@iconify/react';
 // style
 import classes from './MsgInput.module.css';
+// context
+// import { useMainContext } from '../../../context/Context';
 
 function MsgInput(props) {
   const { msgToSend, setMsgToSend, sendMsg } = props;
+  // const { mobileView } = useMainContext();
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

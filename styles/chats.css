@@ -11,6 +11,13 @@
   margin: auto;
 }
 
+.chat-conversation-div-mobile {
+  display: flex;
+  flex-direction: column;
+  /* width: 80%; */
+  margin: auto;
+}
+
 .chat-conversation-msgs-div {
   /* flex-grow: 2; */
   height: 75vh;

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import classes from './ChatMsg.module.css';
+// context
+import { useMainContext } from '../../../context/Context';
 
 function ChatMsg(props) {
   const { divRef, msg, userId } = props;
+  const { mobileView } = useMainContext();
 
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
@@ -35,10 +38,25 @@ function ChatMsg(props) {
     >
       <div
         className={
-          msg.sender === userId ? classes['p-msg-own'] : classes['p-msg']
+          msg.sender === userId
+            ? mobileView
+              ? classes['p-msg-own-mobile']
+              : classes['p-msg-own']
+            : mobileView
+            ? classes['p-msg-mobile']
+            : classes['p-msg']
+          // msg.sender === userId && mobileView
+          //   ? classes['p-msg-own-mobile']
+          //   : classes['p-msg']
         }
       >
-        <div className={classes['msg-text']}>{msg.msg}</div>
+        <div
+          className={
+            mobileView ? classes['msg-text-mobile'] : classes['msg-text']
+          }
+        >
+          {msg.msg}
+        </div>
         {/* <span onClick={() => {}}>X</span> */}
         <p className={classes['msg-time']}>
           {day}/{month}/{year} {hours}:{minutes}
