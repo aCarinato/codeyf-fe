@@ -72,9 +72,9 @@ function MessagesPage() {
         // divRef && divRef.current && scrollDivToBottom(divRef);
       });
 
-      socket.current.on('noChatFound', async () => {
+      socket.current.on('noChatFound', async ({ error }) => {
         //   const { name, profilePicUrl } = await getUserInfo(router.query.message);
-
+        console.log(`No chat has been found. Error: ${error}`);
         //   setBannerData({ name, profilePicUrl });
         setMessages([]);
 
