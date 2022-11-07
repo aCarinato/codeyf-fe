@@ -69,6 +69,8 @@ function MessagesPage() {
       });
 
       socket.current.on('messagesLoaded', async ({ chat }) => {
+        console.log('from messagesLoaded - chat:');
+        console.log(chat);
         setMessages(chat.messages);
         openChatId.current = chat.messagesWith._id;
         // divRef && divRef.current && scrollDivToBottom(divRef);

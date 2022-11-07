@@ -109,7 +109,7 @@ export function ContextProvider({ children }) {
       fetchChats();
       fetchNotifications();
     }
-  }, [authState && authState.token]);
+  }, [mobileView, authState && authState.token]);
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {
