@@ -30,7 +30,7 @@ function MessagesPage() {
     mobileView,
   } = useMainContext();
 
-  const [chatActive, setChatActive] = useState(false);
+  // const [chatActive, setChatActive] = useState(false);
 
   const router = useRouter();
   // This ref is for persisting the state of query string in url throughout re-renders. This ref is the value of query string inside url
@@ -57,6 +57,8 @@ function MessagesPage() {
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, []);
+
+  console.log(chats);
 
   // LOAD MESSAGES useEffect
   useEffect(() => {
