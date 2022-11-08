@@ -70,3 +70,8 @@
 .bottom-shadow {
   box-shadow: 0px 5px 10px -6px rgba(13, 0, 134, 0.05);
 }
+
+/* CURSOR */
+.pointer {
+  cursor: pointer;
+}

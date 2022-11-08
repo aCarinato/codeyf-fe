@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 // data
 import { groups } from '../../../data/groups';
 import { allNumbersOfParticipants } from '../../../data/allNumbersOfParticipants';
@@ -17,6 +18,8 @@ import { useMainContext } from '../../../context/Context';
 
 function GroupsPage() {
   const { mobileView } = useMainContext();
+
+  const router = useRouter();
 
   const [filteredGroups, setFilteredGroups] = useState([]);
   // FILTER
@@ -190,9 +193,7 @@ function GroupsPage() {
             <BtnCTA
               label="Create New Group"
               classname="btn-dark"
-              onCLickAction={() =>
-                router.push('/projects/coding-groups/create-group')
-              }
+              onCLickAction={() => router.push('/projects/coding-groups/new')}
             />
           </div>
           <br></br>

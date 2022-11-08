@@ -197,18 +197,6 @@ function HomePage() {
       <div className="overflower">
         <MySlider array={assignements} type="assignement" />
       </div>
-
-      {/* {showMsgForm && (
-        <MessageForm
-          onClose={closeModal}
-          setShowMsgForm={setShowMsgForm}
-          message={message}
-          setMessage={setMessage}
-          setRecipient={setRecipient}
-          handleStartConversation={handleStartConversation}
-          successMsg={successMsg}
-        />
-      )} */}
     </Fragment>
   );
 }
