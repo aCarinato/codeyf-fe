@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+// import { useRouter } from 'next/router';
 // own components
 import TextInput from '../../../../components/UI/form/TextInput';
 import NumberInput from '../../../../components/UI/form/NumberInput';
@@ -21,6 +22,8 @@ import { useMainContext } from '../../../../context/Context';
 function SelfAssignmentPage() {
   const { authState } = useMainContext();
 
+  //   const router = useRouter()
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [nBuddies, setNBuddies] = useState('');
@@ -28,6 +31,14 @@ function SelfAssignmentPage() {
   const [topics, setTopics] = useState([]);
   const [learning, setLearning] = useState([]);
   const [picture, setPicture] = useState({});
+
+  //   new group
+  const [success, setSuccess] = useState(false);
+  const [newGroupId, setNewGrouId] = useState('');
+
+  //   useEffect(() => {
+  //     if (success) router.push()
+  //   }, [success])
 
   // toggle functions
   const mentorRequiredOptions = [
@@ -95,107 +106,130 @@ function SelfAssignmentPage() {
           },
         }
       );
-
       console.log(res.data.success);
+      if (res.data.success) {
+        setSuccess(true);
+        setNewGrouId(res.data.newGroupId);
+      } else {
+        setSuccess(false);
+        console.log('An error occurred');
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
+  const successMsg = (
+    <div>
+      <p>New group successfully created!</p>
+      <Link href={`/projects/coding-groups/${newGroupId}`}>
+        Go to the group page
+      </Link>
+    </div>
+  );
+
   return (
     <UserRoute>
-      <div className="flex">
-        <h2>Self Assignment</h2>
-        <Link href="/projects/coding-groups/new/">go back</Link>
-      </div>
-      <br></br>
-      <TextInput
-        required={true}
-        label="Name (max 40 characters)"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <br></br>
-      <TextArea
-        required={true}
-        label="short description (max 80 characters)"
-        maxLength="79"
-        nRows="2"
-        nCols="50"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <br></br>
-      <ImgUploader img={picture} uploadImg={uploadPicture} />
-      <br></br>
-      <NumberInput
-        required={true}
-        label="Number of buddies"
-        min="0"
-        value={nBuddies}
-        onChange={(e) => setNBuddies(e.target.value)}
-      />
-      <br></br>
-      <br></br>
-      <RadioBox
-        required={true}
-        label="Mentor required?"
-        options={mentorRequiredOptions}
-        name="mentor-required"
-        onChange={toggleMentorRequired}
-      />
-      <br></br>
-      <Select
-        required={true}
-        label="Topics"
-        name="topics"
-        options={allTopics}
-        onChange={(e) =>
-          setTopics((prev) => {
-            let idx = topics.map((topic) => topic._id).indexOf(e.target.value);
-            if (idx === -1) {
-              let newTopic = allTopics.filter(
-                (topic) => topic._id === e.target.value
-              )[0];
-              return [...prev, newTopic];
-            } else {
-              return prev;
+      {success ? (
+        successMsg
+      ) : (
+        <>
+          <div className="flex">
+            <h2>Self Assignment</h2>
+            <Link href="/projects/coding-groups/new/">go back</Link>
+          </div>
+          <br></br>
+          <TextInput
+            required={true}
+            label="Name (max 40 characters)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <br></br>
+          <TextArea
+            required={true}
+            label="short description (max 80 characters)"
+            maxLength="79"
+            nRows="2"
+            nCols="50"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <br></br>
+          <ImgUploader img={picture} uploadImg={uploadPicture} />
+          <br></br>
+          <NumberInput
+            required={true}
+            label="Number of buddies"
+            min="0"
+            value={nBuddies}
+            onChange={(e) => setNBuddies(e.target.value)}
+          />
+          <br></br>
+          <br></br>
+          <RadioBox
+            required={true}
+            label="Mentor required?"
+            options={mentorRequiredOptions}
+            name="mentor-required"
+            onChange={toggleMentorRequired}
+          />
+          <br></br>
+          <Select
+            required={true}
+            label="Topics"
+            name="topics"
+            options={allTopics}
+            onChange={(e) =>
+              setTopics((prev) => {
+                let idx = topics
+                  .map((topic) => topic._id)
+                  .indexOf(e.target.value);
+                if (idx === -1) {
+                  let newTopic = allTopics.filter(
+                    (topic) => topic._id === e.target.value
+                  )[0];
+                  return [...prev, newTopic];
+                } else {
+                  return prev;
+                }
+              })
             }
-          })
-        }
-      />
-      <Selections selections={topics} setSelections={setTopics} />
-      <br></br>
-      <Select
-        required={true}
-        label="Techs involved"
-        name="techs"
-        options={allTechStacks}
-        onChange={(e) =>
-          setLearning((prev) => {
-            let idx = learning
-              .map((learn) => learn._id)
-              .indexOf(e.target.value);
-            if (idx === -1) {
-              let newLearn = allTechStacks.filter(
-                (learn) => learn._id === e.target.value
-              )[0];
-              return [...prev, newLearn];
-            } else {
-              return prev;
+          />
+          <Selections selections={topics} setSelections={setTopics} />
+          <br></br>
+          <Select
+            required={true}
+            label="Techs involved"
+            name="techs"
+            options={allTechStacks}
+            onChange={(e) =>
+              setLearning((prev) => {
+                let idx = learning
+                  .map((learn) => learn._id)
+                  .indexOf(e.target.value);
+                if (idx === -1) {
+                  let newLearn = allTechStacks.filter(
+                    (learn) => learn._id === e.target.value
+                  )[0];
+                  return [...prev, newLearn];
+                } else {
+                  return prev;
+                }
+              })
             }
-          })
-        }
-      />
-      <Selections selections={learning} setSelections={setLearning} />
-      <br></br>
-      <div>
-        <BtnCTA
-          classname="btn-dark"
-          label="create group"
-          onCLickAction={createGroup}
-        />
-      </div>
+          />
+          <Selections selections={learning} setSelections={setLearning} />
+          <br></br>
+          <div>
+            <BtnCTA
+              classname="btn-dark"
+              label="create group"
+              onCLickAction={createGroup}
+            />
+          </div>
+        </>
+      )}
     </UserRoute>
   );
 }
