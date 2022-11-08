@@ -115,13 +115,11 @@ export function ContextProvider({ children }) {
     // if (authState !== undefined && authState.userId.length > 0) {
     if (!socket.current) {
       socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
-      // console.log('non ce la socketta');
       // console.log(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
       // console.log(`socket.id: ${socket.id}`);
     }
 
     if (socket.current) {
-      // console.log('ce la socketta');
       // console.log(`socket.id: ${socket.id}`);
       `${process.env.NEXT_PUBLIC_SOCKET_URL}`;
       // if (currentUser && currentUser._id.length > 0) {

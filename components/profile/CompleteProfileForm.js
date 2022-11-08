@@ -187,7 +187,7 @@ function CompleteProfileForm() {
     const file = e.target.files[0];
     let formData = new FormData();
     formData.append('image', file);
-    console.log([...formData]);
+    // console.log([...formData]);
     try {
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/user/upload-image`,
