@@ -94,8 +94,6 @@ function SelfAssignmentPage() {
       picture,
     };
 
-    // console.log(newGroup);
-
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/groups/new`,

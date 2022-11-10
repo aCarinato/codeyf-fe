@@ -29,27 +29,28 @@ function BuddyCard(props) {
 
   const addChat = async () => {
     if (authState && authState.email.length > 0) {
-      try {
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          }
-        );
-        if (data.ok) {
-          // console.log('registration completed:');
-          // console.log(data.user.registrationCompleted);
-          // HERE THE LOGIC OF CREATING A NEW CHAT WILL BE HANDLED
-          // if (data.user.registrationCompleted) {} else {
-          // create a modal that tells the user to complete profile
-          // }
-        }
-      } catch (err) {
-        //   router.push('/login');
-        console.log(err);
-      }
+      // try {
+      //   const { data } = await axios.get(
+      //     `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${authState.token}`,
+      //       },
+      //     }
+      //   );
+      //   if (data.ok) {
+      //     console.log(data);
+      //     // console.log('registration completed:');
+      //     // console.log(data.user.registrationCompleted);
+      //     // HERE THE LOGIC OF CREATING A NEW CHAT WILL BE HANDLED
+      //     // if (data.user.registrationCompleted) {} else {
+      //     // create a modal that tells the user to complete profile
+      //     // }
+      //   }
+      // } catch (err) {
+      //   //   router.push('/login');
+      //   console.log(err);
+      // }
 
       // console.log(user);
       const alreadyInChat =
@@ -57,7 +58,7 @@ function BuddyCard(props) {
         chats.filter((chat) => chat.messagesWith === userId).length > 0;
 
       if (alreadyInChat) {
-        return router.push(`/my-profile/messages?message=${userId}`);
+        return router.push(`/my-profile/chats?message=${userId}`);
       }
       //
       else {
@@ -74,13 +75,9 @@ function BuddyCard(props) {
 
         setChats((prev) => [newChat, ...prev]);
 
-        return router.push(
-          `/my-profile/messages?message=${userId}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
+        return router.push(`/my-profile/chats?message=${userId}`, undefined, {
+          shallow: true,
+        });
 
         //   return router.push(`/messages?message=${user._id}`);
       }

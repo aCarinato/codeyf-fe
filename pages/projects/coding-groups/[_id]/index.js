@@ -6,11 +6,17 @@ import axios from 'axios';
 // own components
 import SpinningLoader from '../../../../components/UI/SpinningLoader';
 import BuddyCard from '../../../../components/people/BuddyCard';
+import MentorCard from '../../../../components/people/MentorCard';
 import BtnCTA from '../../../../components/UI/BtnCTA';
 // helper funcs
 import getUserInfo from '../../../../lib/helper/chats/getUserInfo';
+// context
+import { useMainContext } from '../../../../context/Context';
+import Link from 'next/link';
 
 function GroupPage() {
+  const { authState, chats, setChats } = useMainContext();
+
   const router = useRouter();
   const { query } = router;
   const groupId = query._id;
@@ -20,6 +26,7 @@ function GroupPage() {
 
   //   people
   const [organiser, setOrganiser] = useState({});
+  const [mentor, setMentor] = useState({});
 
   const fetchGroup = async () => {
     try {
@@ -40,6 +47,11 @@ function GroupPage() {
     setOrganiser(fetchedOrganiser);
   };
 
+  const fetchMentor = async () => {
+    const fetchedMentor = await getUserInfo(group.mentors[0]);
+    setMentor(fetchedMentor);
+  };
+
   useEffect(() => {
     if (groupId !== undefined && groupId.length > 0) {
       fetchGroup();
@@ -50,9 +62,71 @@ function GroupPage() {
     if (group !== {} && group.organiser && group.organiser.length > 0) {
       fetchOrganiser();
     }
+
+    if (group !== {} && group.organiser && group.mentors.length > 0) {
+      fetchMentor();
+    }
   }, [group]);
 
   //   console.log(group);
+
+  const addChat = async () => {
+    if (authState && authState.email.length > 0) {
+      //   try {
+      //     const { data } = await axios.get(
+      //       `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+      //       {
+      //         headers: {
+      //           Authorization: `Bearer ${authState.token}`,
+      //         },
+      //       }
+      //     );
+      //     if (data.ok) {
+      //       console.log(data);
+      //     }
+      //   } catch (err) {
+      //     //   router.push('/login');
+      //     console.log(err);
+      //   }
+
+      // console.log(user);
+      const alreadyInChat =
+        chats.length > 0 &&
+        chats.filter((chat) => chat.messagesWith === group.organiser).length >
+          0;
+
+      if (alreadyInChat) {
+        return router.push(`/my-profile/messages?message=${group.organiser}`);
+      }
+      //
+      else {
+        const newChat = {
+          messagesWith: group.organiser,
+          username: organiser.username,
+          profilePicUrl:
+            profilePic && profilePic.url && profilePic.url !== ''
+              ? profilePic.url
+              : '/img/default-pic.png',
+          lastMessage: '',
+          date: Date.now(),
+        };
+
+        setChats((prev) => [newChat, ...prev]);
+
+        return router.push(
+          `/my-profile/messages?message=${group.organiser}`,
+          undefined,
+          {
+            shallow: true,
+          }
+        );
+
+        //   return router.push(`/messages?message=${user._id}`);
+      }
+    } else {
+      router.push('/login');
+    }
+  };
 
   let availabilityStatus;
   let availableSpots;
@@ -60,12 +134,23 @@ function GroupPage() {
     availableSpots = group.nBuddies - group.buddies.length - 1;
 
     if (availableSpots > 0) {
+      //   console.log(`availableSpots: ${availableSpots}`);
       availabilityStatus = (
         <div>
           <p className="card-group-available">
             {availableSpots} more spots available!
           </p>
-          <BtnCTA classname="btn-dark" label="Join Group" />
+          {group.organiser !== authState.userId && (
+            <>
+              {' '}
+              <p>Message the organiser to enquire or for a join request</p>
+              <BtnCTA
+                classname="btn-dark"
+                label="Message"
+                onCLickAction={addChat}
+              />
+            </>
+          )}
         </div>
       );
       //   console.log(availabilityStatus);
@@ -85,11 +170,8 @@ function GroupPage() {
           <div className="flex flex-justify-space-between">
             <h2>{group.name}</h2>
             <div className="flex">
-              {availableSpots > 0 ? (
-                <BtnCTA classname="btn-dark" label="Join Group" />
-              ) : (
-                availabilityStatus
-              )}
+              {availableSpots > 0 && availabilityStatus}
+
               {group.mentorRequired === 'yes' && group.mentors.length === 0 && (
                 <BtnCTA classname="btn-light-big" label="Mentor Group" />
               )}
@@ -108,39 +190,54 @@ function GroupPage() {
 
           <br></br>
 
+          <h4>Organiser:</h4>
+          <br></br>
+          {group.organiser && organiser !== {} && organiser.username && (
+            <div className="grid grid--2cols">
+              <div>
+                <BuddyCard
+                  key={organiser._id}
+                  userId={organiser._id}
+                  username={organiser.username}
+                  handle={organiser.handle}
+                  description={organiser.shortDescription}
+                  country={organiser.country}
+                  learning={organiser.learning}
+                  profilePic={organiser.profilePic}
+                />
+              </div>
+              <div>
+                {group.organiser === authState.userId && (
+                  <p>
+                    <Link href={`/projects/coding-groups/${groupId}/manage`}>
+                      Manage group
+                    </Link>
+                  </p>
+                )}
+              </div>
+              {/* {JSON.stringify(organiser)} */}
+            </div>
+          )}
+
           <div className="grid grid---2cols-20-80">
             <div>
-              <h4>Organiser:</h4>
               <br></br>
-              {group.organiser && organiser !== {} && organiser.username && (
-                <div className="grid grid---4cols">
-                  {/* {JSON.stringify(organiser)} */}
-                  <BuddyCard
-                    key={organiser._id}
-                    userId={organiser._id}
-                    username={organiser.username}
-                    handle={organiser.handle}
-                    description={organiser.shortDescription}
-                    country={organiser.country}
-                    learning={organiser.learning}
-                    profilePic={organiser.profilePic}
-                  />
-                </div>
-              )}
-              <br></br>
-              {/* {group.mentorRequired === 'yes' && (
+              {group.mentorRequired === 'yes' && (
                 <div>
                   <h4>Mentor</h4>
                   <br></br>
-                  {mentors && mentors.length > 0 ? (
+                  {group.mentors && group.mentors.length > 0 ? (
                     <div>
-                      {mentors.map((mentor, index) => (
+                      {group.mentors.map((mentor) => (
                         <MentorCard
-                          key={index}
+                          key={mentor._id}
+                          userId={mentor._id}
                           username={mentor.username}
+                          handle={mentor.handle}
                           description={mentor.shortDescription}
                           country={mentor.country}
                           teaching={mentor.teaching}
+                          profilePic={mentor.profilePic}
                         />
                       ))}
                       <br></br>
@@ -158,7 +255,7 @@ function GroupPage() {
                     </div>
                   )}
                 </div>
-              )} */}
+              )}
             </div>
             {/* <div>
               {participants && participants.length > 0 && (
@@ -207,3 +304,5 @@ function GroupPage() {
 }
 
 export default GroupPage;
+
+// http://localhost:3000/projects/coding-groups/636b5bf80f7fa60c9716fa6e

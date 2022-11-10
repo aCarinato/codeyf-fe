@@ -14,16 +14,21 @@ function MyProfileMenuDesktop(props) {
   // const { readNotifications } = props;
   const [unreadNotifications, setUnreadNotifications] = useState([]);
 
+  const [openProjectMenu, setOpenProjectMenu] = useState(false);
+
   useEffect(() => {
     setUnreadNotifications(
-      notifications.filter((notification) => notification.isRead === false)
+      notifications.filter(
+        (notification) =>
+          notification.type === 'newChatMsg' && notification.isRead === false
+      )
     );
   }, [notifications]);
 
   return (
     <ul>
       <li className={classes['list-item']}>
-        <Link href="/my-profile/messages">
+        <Link href="/my-profile/chats">
           <div
             // onClick={readNotifications}
             className={
@@ -35,7 +40,7 @@ function MyProfileMenuDesktop(props) {
             {/* {unreadNotifications.length > 0 && (
               <span>{unreadNotifications.length} new</span>
             )}{' '} */}
-            messages{' '}
+            chats{' '}
             <span>
               {authState.userId.length > 0 && unreadNotifications.length > 0 && (
                 <sup>
@@ -47,9 +52,21 @@ function MyProfileMenuDesktop(props) {
           </div>
         </Link>
       </li>
-      <li className={classes['list-item']}>My Groups</li>
-      <li className={classes['list-item']}>My Assignments</li>
-      <li className={classes['list-item']}>My Groups</li>
+      <li
+        className={classes['list-item']}
+        onClick={() => setOpenProjectMenu((prev) => !prev)}
+      >
+        projects
+      </li>
+      {openProjectMenu && (
+        <>
+          <li className={classes['list-subitem']}>
+            <Link href="/my-profile/projects/notifications">notifications</Link>
+          </li>
+          <li className={classes['list-subitem']}>groups</li>
+          <li className={classes['list-subitem']}>individual</li>
+        </>
+      )}
       <li className={classes['list-item']}>
         <Link href="/my-profile/settings">
           <div className="main-link">

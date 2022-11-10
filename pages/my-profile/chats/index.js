@@ -46,7 +46,7 @@ function MessagesPage() {
       //   } shallow routing`
       // );
 
-      if (!url.includes('messages?message=')) openChatId.current = '';
+      if (!url.includes('chats?message=')) openChatId.current = '';
     };
 
     router.events.on('routeChangeStart', handleRouteChange);
@@ -92,7 +92,7 @@ function MessagesPage() {
   const sendMsg = () => {
     if (socket.current) {
       if (authState && authState.email.length > 0) {
-        socket.current.emit('sendNewMsg', {
+        socket.current.emit('sendNewChatMsg', {
           userId: authState.userId,
           receiverId: openChatId.current,
           msg: msgToSend,
@@ -104,7 +104,7 @@ function MessagesPage() {
 
   // READ A NOTIFICATION
   const readNotification = (msgFrom) => {
-    router.push(`/my-profile/messages?message=${msgFrom}`, undefined, {
+    router.push(`/my-profile/chats?message=${msgFrom}`, undefined, {
       // shallow: true,
     });
 
@@ -147,7 +147,7 @@ function MessagesPage() {
   return (
     <UserRoute>
       <div>
-        <h1>Messages</h1>
+        <h1>Chats</h1>
         <br></br>
 
         {chats.length > 0 ? (
