@@ -12,16 +12,36 @@ import axios from 'axios';
 import { useMainContext } from '../../context/Context';
 
 function MobileProfileMenu(props) {
-  const { authState, notifications } = useMainContext();
+  const { authState, notifications, groupNotificationsFrom } = useMainContext();
   const { setShowMobileProfileMenu } = props;
 
   const [unreadNotifications, setUnreadNotifications] = useState([]);
+  const [unreadChatNotifications, setUnreadChatNotifications] = useState([]);
+  const [unreadGroupNotifications, setUnreadGroupNotifications] = useState([]);
+
+  const [openProjectMenu, setOpenProjectMenu] = useState(false);
 
   useEffect(() => {
-    setUnreadNotifications(
-      notifications.filter((notification) => notification.isRead === false)
+    setUnreadChatNotifications(
+      notifications.filter(
+        (notification) =>
+          notification.type === 'newChatMsg' && notification.isRead === false
+      )
     );
-  }, [notifications]);
+
+    setUnreadGroupNotifications(
+      groupNotificationsFrom.filter(
+        (notification) => notification.isRead === false
+      )
+    );
+
+    // setUnreadNotifications(
+    //   notifications.filter(
+    //     (notification) =>
+    //       notification.type === 'newChatMsg' && notification.isRead === false
+    //   )
+    // );
+  }, [notifications, groupNotificationsFrom]);
 
   return (
     <Modal>
@@ -51,7 +71,7 @@ function MobileProfileMenu(props) {
               <Link href="/my-profile/messages">
                 <a
                   className={
-                    unreadNotifications.length > 0
+                    unreadChatNotifications.length > 0
                       ? classes['main-nav-mob-link-notification']
                       : classes['main-nav-mob-link']
                   }
@@ -62,12 +82,12 @@ function MobileProfileMenu(props) {
                     // }
                   }}
                 >
-                  {unreadNotifications.length > 0 && (
-                    <span>{unreadNotifications.length} NEW</span>
+                  {unreadChatNotifications.length > 0 && (
+                    <span>{unreadChatNotifications.length} NEW</span>
                   )}{' '}
                   MESSAGES{' '}
                   <span>
-                    {unreadNotifications.length > 0 && (
+                    {unreadChatNotifications.length > 0 && (
                       <sup>
                         <Icon icon="ci:notification" />
                       </sup>
@@ -76,6 +96,54 @@ function MobileProfileMenu(props) {
                 </a>
               </Link>
             </li>
+            <li
+              className={classes['menu-li']}
+              onClick={() => setOpenProjectMenu((prev) => !prev)}
+            >
+              <div
+                className={
+                  authState.userId.length > 0 &&
+                  unreadGroupNotifications.length > 0
+                    ? 'notification-link'
+                    : 'main-link'
+                }
+              >
+                PROJECTS{' '}
+                <span>
+                  {authState.userId.length > 0 &&
+                    unreadGroupNotifications.length > 0 && (
+                      <sup>
+                        {unreadGroupNotifications.length}{' '}
+                        <Icon icon="eva:message-circle-fill" />
+                      </sup>
+                    )}
+                </span>
+              </div>
+            </li>
+            {openProjectMenu && (
+              <>
+                <li className={classes['list-subitem']}>
+                  <Link href="/my-profile/projects/notifications">
+                    <div
+                      className={
+                        authState.userId.length > 0 &&
+                        unreadGroupNotifications.length > 0
+                          ? 'notification-link'
+                          : 'main-link'
+                      }
+                    >
+                      notifications
+                    </div>
+                  </Link>
+                </li>
+                <li className={classes['list-subitem']}>
+                  <Link href="/my-profile/projects/teams">teams</Link>
+                </li>
+                <li className={classes['list-subitem']}>
+                  <Link href="/my-profile/projects/individual">individual</Link>
+                </li>
+              </>
+            )}
             <li className={classes['menu-li']}>
               <Link href="/my-profile/settings">
                 <a

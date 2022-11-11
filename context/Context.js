@@ -343,6 +343,9 @@ export function ContextProvider({ children }) {
     setMessages,
     notifications,
     setNotifications,
+    // groups
+    groupNotificationsFrom,
+    setGroupNotificationsFrom,
     // AUTH
     authState,
     userLogin: loginHandler,
