@@ -66,7 +66,7 @@ function ChatName(props) {
           readNotification(chat.messagesWith);
         } else {
           router.push(
-            `/my-profile/messages?message=${chat.messagesWith}`,
+            `/my-profile/chats?message=${chat.messagesWith}`,
             undefined,
             {
               shallow: true,

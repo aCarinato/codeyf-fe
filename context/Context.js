@@ -20,6 +20,9 @@ export function ContextProvider({ children }) {
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [groupNotifications, setGroupNotifications] = useState([]);
+  const [groupNotificationsFrom, setGroupNotificationsFrom] = useState([]);
+  const [groupNotificationsTo, setGroupNotificationsTo] = useState([]);
 
   // current logged in user
   const [currentUser, setCurrentUser] = useState(null);
@@ -81,14 +84,8 @@ export function ContextProvider({ children }) {
       }
     };
 
-    const fetchNotifications = async () => {
+    const fetchChatNotifications = async () => {
       try {
-        // const userId = authState.userId;
-        // SHOULD BE A PRIVATE ROUTE !!!
-        // const res = await axios.get(
-        //   `${process.env.NEXT_PUBLIC_API}/chats/notifications/${userId}`
-        // );
-
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API}/chats/notifications/`,
           {
@@ -105,9 +102,29 @@ export function ContextProvider({ children }) {
       }
     };
 
+    const fetchGroupNotifications = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API}/groups/notifications/${authState.userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        setGroupNotificationsFrom(res.data.notificationsFrom);
+        setGroupNotificationsTo(res.data.notificationsTo);
+        // console.log(res.data);
+        // setGroupNotifications(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     if (authState !== undefined && authState.token.length > 0) {
       fetchChats();
-      fetchNotifications();
+      fetchChatNotifications();
+      fetchGroupNotifications();
     }
   }, [mobileView, authState && authState.token]);
 
@@ -228,7 +245,7 @@ export function ContextProvider({ children }) {
 
           //   and then emit an event to the backend to tell to add a new notification
           //   console.log(newMsg.receiver);
-          socket.current.emit('sendNotification', {
+          socket.current.emit('sendChatNotification', {
             senderId: newMsg.sender,
             receiverId: newMsg.receiver,
           });
@@ -236,6 +253,35 @@ export function ContextProvider({ children }) {
       });
     }
   }, []);
+
+  // GROUP NOTIFICATIONS
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on(
+        'joinReqNotification',
+        async ({ senderId, receiverId, groupId }) => {
+          const newNotificationFrom = {
+            type: 'joinReq',
+            groupId: groupId,
+            from: senderId,
+            text: 'You have a new request to join a team. Would you like you to?',
+            isRead: false,
+            date: Date.now(),
+          };
+          console.log(newNotificationFrom);
+          setGroupNotificationsFrom((prev) => [newNotificationFrom, ...prev]);
+          // emit event to tell the backend to save the new notification on the database
+          socket.current.emit('saveJoinReqNotification', {
+            senderId,
+            receiverId,
+            groupId,
+          });
+        }
+      );
+    }
+  }, []);
+  console.log(groupNotificationsFrom);
+  console.log(groupNotificationsTo);
 
   // AUTH
 
@@ -297,6 +343,9 @@ export function ContextProvider({ children }) {
     setMessages,
     notifications,
     setNotifications,
+    // groups
+    groupNotificationsFrom,
+    setGroupNotificationsFrom,
     // AUTH
     authState,
     userLogin: loginHandler,

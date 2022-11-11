@@ -1,0 +1,11 @@
+.box-0 {
+  border: 1px solid black;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.box-0-unread {
+  border: 1px solid var(--main-error-color);
+  padding: 1rem;
+  cursor: pointer;
+}

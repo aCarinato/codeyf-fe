@@ -10,24 +10,44 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../../../context/Context';
 
 function MyProfileMenuDesktop(props) {
-  const { authState, notifications } = useMainContext();
+  const { authState, notifications, groupNotificationsFrom } = useMainContext();
   // const { readNotifications } = props;
   const [unreadNotifications, setUnreadNotifications] = useState([]);
+  const [unreadChatNotifications, setUnreadChatNotifications] = useState([]);
+  const [unreadGroupNotifications, setUnreadGroupNotifications] = useState([]);
+
+  const [openProjectMenu, setOpenProjectMenu] = useState(false);
 
   useEffect(() => {
-    setUnreadNotifications(
-      notifications.filter((notification) => notification.isRead === false)
+    setUnreadChatNotifications(
+      notifications.filter(
+        (notification) =>
+          notification.type === 'newChatMsg' && notification.isRead === false
+      )
     );
-  }, [notifications]);
+
+    setUnreadGroupNotifications(
+      groupNotificationsFrom.filter(
+        (notification) => notification.isRead === false
+      )
+    );
+
+    // setUnreadNotifications(
+    //   notifications.filter(
+    //     (notification) =>
+    //       notification.type === 'newChatMsg' && notification.isRead === false
+    //   )
+    // );
+  }, [notifications, groupNotificationsFrom]);
 
   return (
     <ul>
       <li className={classes['list-item']}>
-        <Link href="/my-profile/messages">
+        <Link href="/my-profile/chats">
           <div
             // onClick={readNotifications}
             className={
-              authState.userId.length > 0 && unreadNotifications.length > 0
+              authState.userId.length > 0 && unreadChatNotifications.length > 0
                 ? 'notification-link'
                 : 'main-link'
             }
@@ -35,21 +55,66 @@ function MyProfileMenuDesktop(props) {
             {/* {unreadNotifications.length > 0 && (
               <span>{unreadNotifications.length} new</span>
             )}{' '} */}
-            messages{' '}
+            chats{' '}
             <span>
-              {authState.userId.length > 0 && unreadNotifications.length > 0 && (
-                <sup>
-                  {unreadNotifications.length}{' '}
-                  <Icon icon="eva:message-circle-fill" />
-                </sup>
-              )}
+              {authState.userId.length > 0 &&
+                unreadChatNotifications.length > 0 && (
+                  <sup>
+                    {unreadChatNotifications.length}{' '}
+                    <Icon icon="eva:message-circle-fill" />
+                  </sup>
+                )}
             </span>
           </div>
         </Link>
       </li>
-      <li className={classes['list-item']}>My Groups</li>
-      <li className={classes['list-item']}>My Assignments</li>
-      <li className={classes['list-item']}>My Groups</li>
+      <li
+        className={classes['list-item']}
+        onClick={() => setOpenProjectMenu((prev) => !prev)}
+      >
+        <div
+          className={
+            authState.userId.length > 0 && unreadGroupNotifications.length > 0
+              ? 'notification-link'
+              : 'main-link'
+          }
+        >
+          projects{' '}
+          <span>
+            {authState.userId.length > 0 &&
+              unreadGroupNotifications.length > 0 && (
+                <sup>
+                  {unreadGroupNotifications.length}{' '}
+                  <Icon icon="eva:message-circle-fill" />
+                </sup>
+              )}
+          </span>
+        </div>
+      </li>
+      {openProjectMenu && (
+        <>
+          <li className={classes['list-subitem']}>
+            <Link href="/my-profile/projects/notifications">
+              <div
+                className={
+                  authState.userId.length > 0 &&
+                  unreadGroupNotifications.length > 0
+                    ? 'notification-link'
+                    : 'main-link'
+                }
+              >
+                notifications
+              </div>
+            </Link>
+          </li>
+          <li className={classes['list-subitem']}>
+            <Link href="/my-profile/projects/teams">teams</Link>
+          </li>
+          <li className={classes['list-subitem']}>
+            <Link href="/my-profile/projects/individual">individual</Link>
+          </li>
+        </>
+      )}
       <li className={classes['list-item']}>
         <Link href="/my-profile/settings">
           <div className="main-link">

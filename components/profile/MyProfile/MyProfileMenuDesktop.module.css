@@ -1,9 +1,17 @@
 .list-item {
   list-style: none;
   padding: 0.6rem 0.4rem;
+  cursor: pointer;
 }
 
 .list-item:hover {
   /* border-bottom: 1px solid #eff8ff; */
   background-color: #eff8ff;
+}
+
+.list-subitem {
+  list-style: none;
+  margin-left: 1rem;
+  padding: 0.6rem 0.4rem;
+  cursor: pointer;
 }

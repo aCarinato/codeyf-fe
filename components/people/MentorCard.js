@@ -34,7 +34,7 @@ function MentorCard(props) {
         chats.filter((chat) => chat.messagesWith === userId).length > 0;
 
       if (alreadyInChat) {
-        return router.push(`/my-profile/messages?message=${userId}`);
+        return router.push(`/my-profile/chats?message=${userId}`);
       }
       //
       else {
@@ -47,13 +47,9 @@ function MentorCard(props) {
 
         setChats((prev) => [newChat, ...prev]);
 
-        return router.push(
-          `/my-profile/messages?message=${userId}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
+        return router.push(`/my-profile/chats?message=${userId}`, undefined, {
+          shallow: true,
+        });
 
         //   return router.push(`/messages?message=${user._id}`);
       }

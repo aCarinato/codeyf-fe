@@ -1,0 +1,36 @@
+.outline {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  /* align-content: space-between; */
+  /* align-items: stretch; */
+  border: 1px solid black;
+  /* padding: 1rem 0 4rem; */
+}
+
+.addbuddy-footer {
+  /* align-self: center; */
+  display: flex;
+  height: 5rem;
+  flex-grow: 2;
+  width: 100%;
+  text-align: center;
+  line-height: 5rem;
+}
+
+.addbuddy-check-div {
+  width: 5rem;
+}
+
+.addbuddy-check {
+  width: 2rem;
+  height: 2rem;
+  margin: auto;
+  border: 1px solid var(--main-primary-color);
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.addbuddy-action {
+  flex-grow: 2;
+}
