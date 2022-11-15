@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // data
-import { groups } from '../../../data/groups';
+// import { groups } from '../../../data/groups';
 import { allNumbersOfParticipants } from '../../../data/allNumbersOfParticipants';
 import { allMentorFoundSelections } from '../../../data/allMentorFound';
 import { allMentorWantedSelections } from '../../../data/allMentorWanted';
@@ -15,13 +15,32 @@ import GroupFilter from '../../../components/groups/GroupFilter';
 import GroupFilterMobile from '../../../components/groups/mobile-filters/GroupFilterMobile';
 // context
 import { useMainContext } from '../../../context/Context';
+// libs
+import axios from 'axios';
 
 function GroupsPage() {
   const { mobileView } = useMainContext();
 
   const router = useRouter();
 
+  const [groups, setGroups] = useState([]);
   const [filteredGroups, setFilteredGroups] = useState([]);
+
+  const fetchGroups = async () => {
+    try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/groups/`);
+      setGroups(res.data.groups);
+      setFilteredGroups(res.data.groups);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchGroups();
+  }, []);
+
   // FILTER
   const [showFilter, setShowFilter] = useState(false);
 
@@ -62,9 +81,9 @@ function GroupsPage() {
   const [learningCheckedIndex, setLearningCheckedIndex] = useState([]);
   const [learningCheckedValues, setLearningCheckedValues] = useState([]);
 
-  useEffect(() => {
-    setFilteredGroups(groups);
-  }, []);
+  // useEffect(() => {
+  //   setFilteredGroups(groups);
+  // }, []);
 
   useEffect(() => {
     // THIS IS TO MAP THE CHECKED INDECES TO THEIR NAMES
@@ -135,32 +154,33 @@ function GroupsPage() {
       </div>
       <br></br>
       {showFilter && (
-        <GroupFilterMobile
-          // setFilteredGroups={setFilteredGroups}
-          allNumbersOfParticipants={allNumbersOfParticipants}
-          nParticipantsCheckedIndex={nParticipantsCheckedIndex}
-          setNParticipantsCheckedIndex={setNParticipantsCheckedIndex}
-          //
-          allMentorWantedSelections={allMentorWantedSelections}
-          mentorCheckedIndex={mentorCheckedIndex}
-          setMentorCheckedIndex={setMentorCheckedIndex}
-          //
-          allMentorFoundSelections={allMentorFoundSelections}
-          mentorFoundCheckedIndex={mentorFoundCheckedIndex}
-          setMentorFoundCheckedIndex={setMentorFoundCheckedIndex}
-          //
-          learningCheckedIndex={learningCheckedIndex}
-          setLearningCheckedIndex={setLearningCheckedIndex}
-          allLearning={allLearning}
-          //
-          filterGroups={filterGroups}
-          onClose={() => setShowFilter(false)}
-        />
+        <></>
+        // <GroupFilterMobile
+        //   // setFilteredGroups={setFilteredGroups}
+        //   allNumbersOfParticipants={allNumbersOfParticipants}
+        //   nParticipantsCheckedIndex={nParticipantsCheckedIndex}
+        //   setNParticipantsCheckedIndex={setNParticipantsCheckedIndex}
+        //   //
+        //   allMentorWantedSelections={allMentorWantedSelections}
+        //   mentorCheckedIndex={mentorCheckedIndex}
+        //   setMentorCheckedIndex={setMentorCheckedIndex}
+        //   //
+        //   allMentorFoundSelections={allMentorFoundSelections}
+        //   mentorFoundCheckedIndex={mentorFoundCheckedIndex}
+        //   setMentorFoundCheckedIndex={setMentorFoundCheckedIndex}
+        //   //
+        //   learningCheckedIndex={learningCheckedIndex}
+        //   setLearningCheckedIndex={setLearningCheckedIndex}
+        //   allLearning={allLearning}
+        //   //
+        //   filterGroups={filterGroups}
+        //   onClose={() => setShowFilter(false)}
+        // />
       )}
       <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
         {!mobileView && (
           <div>
-            <GroupFilter
+            {/* <GroupFilter
               groups={groups}
               setFilteredGroups={setFilteredGroups}
               allNumbersOfParticipants={allNumbersOfParticipants}
@@ -178,7 +198,7 @@ function GroupsPage() {
               allLearningNames={allLearningNames}
               allMentorFoundSelections={allMentorFoundSelections}
               allLearning={allLearning}
-            />
+            /> */}
           </div>
         )}
         <div>
@@ -216,7 +236,7 @@ function GroupsPage() {
                 techStack={group.learning}
                 nBuddies={group.nBuddies}
                 buddies={group.buddies}
-                proposedProject={group.proposedProject}
+                // proposedProject={group.proposedProject}
               />
             ))}{' '}
             <div className="white-card"></div>

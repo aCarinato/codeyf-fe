@@ -1,4 +1,5 @@
 // next react
+import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // own compoentns
@@ -22,6 +23,7 @@ function AddBuddyPage() {
   const [filteredBuddies, setFilteredBuddies] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const [selectedId, setSelectedId] = useState('');
 
@@ -53,19 +55,19 @@ function AddBuddyPage() {
     }
   };
 
-  const fetchGroup = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
-      );
-      //   console.log(res);
-      setGroup(res.data.group);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const fetchGroup = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const res = await axios.get(
+  //       `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
+  //     );
+  //     //   console.log(res);
+  //     setGroup(res.data.group);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     fetchBuddies();
@@ -80,7 +82,7 @@ function AddBuddyPage() {
         receiverId: selectedId,
         groupId: groupId,
       });
-
+      setSuccess(true);
       // here i need to save in my array (context) of notifications to the new notification
       // meanwhile it will be saved also in the backend
     }
@@ -98,10 +100,45 @@ function AddBuddyPage() {
     // }
   };
 
+  const addBuddy = () => {
+    if (socket.current) {
+      socket.current.emit('addBuddyToGroup', {
+        // senderId: authState.userId,
+        organiserId: authState.userId,
+        groupId: groupId,
+        buddyId: selectedId,
+      });
+      // setSuccess(true);
+      // here i need to save in my array (context) of notifications to the new notification
+      // meanwhile it will be saved also in the backend
+    }
+  };
+
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on('buddyAlreadyJoined', ({ msg }) => {
+        console.log(msg);
+        // open a modal that inform the user is already in the group
+      });
+    }
+  }, []);
+
+  const successMsg = (
+    <div>
+      <p>Your request has been sent!</p>
+      <br></br>
+      <Link href={`/projects/coding-groups/${groupId}`}>
+        Back to the group page
+      </Link>
+    </div>
+  );
+
   return (
     <UserRoute>
       {loading ? (
         <SpinningLoader />
+      ) : success ? (
+        successMsg
       ) : (
         <>
           <h3>Request new buddy</h3>
@@ -125,7 +162,7 @@ function AddBuddyPage() {
                         <BtnCTA
                           classname="btn-light-big"
                           label="Send request"
-                          onCLickAction={sendRequest}
+                          onCLickAction={addBuddy}
                         />
                       )}
                     </div>

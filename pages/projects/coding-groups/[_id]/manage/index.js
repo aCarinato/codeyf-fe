@@ -45,9 +45,18 @@ function ManageGroupPage() {
       ) : (
         <div>
           <h2>Manage Group - {group.name}</h2>
+          <br></br>
           <p>
             <Link href={`/projects/coding-groups/${groupId}/manage/add-buddy`}>
               Add buddy
+            </Link>
+          </p>
+          <br></br>
+          <p>
+            <Link
+              href={`/projects/coding-groups/${groupId}/manage/pending-join-reqs`}
+            >
+              Pending join requests
             </Link>
           </p>
         </div>

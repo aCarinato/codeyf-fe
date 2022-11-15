@@ -12,7 +12,12 @@ import axios from 'axios';
 import { useMainContext } from '../../context/Context';
 
 function MobileProfileMenu(props) {
-  const { authState, notifications, groupNotificationsFrom } = useMainContext();
+  const {
+    authState,
+    notifications,
+    groupNotifications,
+    groupNotificationsFrom,
+  } = useMainContext();
   const { setShowMobileProfileMenu } = props;
 
   const [unreadNotifications, setUnreadNotifications] = useState([]);
@@ -30,9 +35,7 @@ function MobileProfileMenu(props) {
     );
 
     setUnreadGroupNotifications(
-      groupNotificationsFrom.filter(
-        (notification) => notification.isRead === false
-      )
+      groupNotifications.filter((notification) => notification.isRead === false)
     );
 
     // setUnreadNotifications(
@@ -41,7 +44,7 @@ function MobileProfileMenu(props) {
     //       notification.type === 'newChatMsg' && notification.isRead === false
     //   )
     // );
-  }, [notifications, groupNotificationsFrom]);
+  }, [notifications, groupNotifications]);
 
   return (
     <Modal>
@@ -68,7 +71,7 @@ function MobileProfileMenu(props) {
               </Link>
             </li>
             <li className={classes['menu-li']}>
-              <Link href="/my-profile/messages">
+              <Link href="/my-profile/chats">
                 <a
                   className={
                     unreadChatNotifications.length > 0

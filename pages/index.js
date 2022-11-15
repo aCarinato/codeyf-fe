@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 // import { people } from '../data/people';
-import { groups } from '../data/groups';
+// import { groups } from '../data/groups';
 import { assignements } from '../data/assignements';
 // own components
 import SpinningLoader from '../components/UI/SpinningLoader';
@@ -18,6 +18,7 @@ function HomePage() {
 
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // MESSAGING
@@ -83,6 +84,20 @@ function HomePage() {
     fetchBuddies();
     fetchMentors();
   }, [authState && authState.email]);
+
+  const fetchGroups = async () => {
+    try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/groups/`);
+      setGroups(res.data.groups);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchGroups();
+  }, []);
 
   // const closeModal = () => {
   //   setShowMsgForm(false);
