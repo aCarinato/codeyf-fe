@@ -112,8 +112,11 @@ export function ContextProvider({ children }) {
             },
           }
         );
-        setGroupNotificationsFrom(res.data.notificationsFrom);
-        setGroupNotificationsTo(res.data.notificationsTo);
+        // console.log(res.data);
+        // here I need to filter out notifications sent to myself (maybe)
+        setGroupNotifications(res.data.notifications);
+        // setGroupNotificationsFrom(res.data.notificationsFrom);
+        // setGroupNotificationsTo(res.data.notificationsTo);
         // console.log(res.data);
         // setGroupNotifications(res.data);
       } catch (err) {
@@ -127,6 +130,9 @@ export function ContextProvider({ children }) {
       fetchGroupNotifications();
     }
   }, [mobileView, authState && authState.token]);
+
+  // console.log('groupNotifications from Context.js');
+  // console.log(groupNotifications);
 
   useEffect(() => {
     // if (authState !== undefined && authState.userId.length > 0) {
@@ -258,30 +264,63 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     if (socket.current) {
       socket.current.on(
-        'joinReqNotification',
-        async ({ senderId, receiverId, groupId }) => {
-          const newNotificationFrom = {
-            type: 'joinReq',
+        'joinedGroupNotification',
+        async ({ organiserId, buddyId, groupId }) => {
+          // console.log(`4) from Context.js - 'joinedGroupNotification'`);
+          const newNotification = {
+            _id: Math.random() * 10,
+            type: 'groupJoined',
+            from: organiserId,
+            text: `You have been added to a new team`,
             groupId: groupId,
-            from: senderId,
-            text: 'You have a new request to join a team. Would you like you to?',
             isRead: false,
             date: Date.now(),
           };
-          console.log(newNotificationFrom);
-          setGroupNotificationsFrom((prev) => [newNotificationFrom, ...prev]);
-          // emit event to tell the backend to save the new notification on the database
-          socket.current.emit('saveJoinReqNotification', {
-            senderId,
-            receiverId,
+          setGroupNotifications((prev) => [newNotification, ...prev]);
+          // emit event to save notifications in the backend
+          // console.log(
+          //   `5) from Context.js - I received a notification I am going to emit 'saveGroupJoinedNotification' con is seguenti parametri:
+          //   organiserId: ${organiserId},
+          //   buddyId: ${buddyId},
+          //   groupId: ${groupId},
+
+          //   `
+          // );
+          socket.current.emit('saveGroupJoinedNotification', {
+            organiserId,
+            buddyId,
             groupId,
           });
         }
+        // setNotifications()
       );
+
+      // OLD
+      // socket.current.on(
+      //   'joinReqNotification',
+      //   async ({ senderId, receiverId, groupId }) => {
+      //     const newNotificationFrom = {
+      //       type: 'joinReq',
+      //       groupId: groupId,
+      //       from: senderId,
+      //       text: 'You have a new request to join a team. Would you like you to?',
+      //       isRead: false,
+      //       date: Date.now(),
+      //     };
+      //     console.log(newNotificationFrom);
+      //     setGroupNotificationsFrom((prev) => [newNotificationFrom, ...prev]);
+      //     // emit event to tell the backend to save the new notification on the database
+      //     socket.current.emit('saveJoinReqNotification', {
+      //       senderId,
+      //       receiverId,
+      //       groupId,
+      //     });
+      //   }
+      // );
     }
   }, []);
-  console.log(groupNotificationsFrom);
-  console.log(groupNotificationsTo);
+  // console.log(groupNotificationsFrom);
+  // console.log(groupNotificationsTo);
 
   // AUTH
 
@@ -344,6 +383,8 @@ export function ContextProvider({ children }) {
     notifications,
     setNotifications,
     // groups
+    groupNotifications,
+    setGroupNotifications,
     groupNotificationsFrom,
     setGroupNotificationsFrom,
     // AUTH

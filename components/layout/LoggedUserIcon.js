@@ -10,8 +10,12 @@ import classes from './LoggedUserIcon.module.css';
 import { useMainContext } from '../../context/Context';
 
 function LoggedUserIcon(props) {
-  const { mobileView, notifications, groupNotificationsFrom } =
-    useMainContext();
+  const {
+    mobileView,
+    notifications,
+    groupNotifications,
+    groupNotificationsFrom,
+  } = useMainContext();
 
   const { showMobileProfileMenu, setShowMobileProfileMenu } = props;
 
@@ -20,7 +24,7 @@ function LoggedUserIcon(props) {
   const [nUnreadNotifications, setNUnreadNotifications] = useState('');
 
   useEffect(() => {
-    const nGroupNotificationsFrom = groupNotificationsFrom.filter(
+    const nGroupNotifications = groupNotifications.filter(
       (notification) => notification.isRead === false
     ).length;
 
@@ -29,13 +33,13 @@ function LoggedUserIcon(props) {
     ).length;
 
     setNUnreadNotifications(
-      Number(nGroupNotificationsFrom) + Number(nNotifications)
+      Number(nGroupNotifications) + Number(nNotifications)
     );
 
     setUnreadNotifications(
       notifications.filter((notification) => notification.isRead === false)
     );
-  }, [notifications, groupNotificationsFrom]);
+  }, [notifications, groupNotifications]);
   // console.log(nUnreadNotifications);
   return (
     <div

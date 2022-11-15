@@ -37,9 +37,9 @@ function GroupCard(props) {
       {/* <p>{description}</p> */}
       <p className="card-learning">Group topics:</p>
       <div className="tech-span-box">
-        {techStack.slice(0, 7).map((item, index) => (
-          <span key={index} className={`tech-span tech-span---${item}`}>
-            {item}
+        {techStack.slice(0, 7).map((item) => (
+          <span key={item._id} className={`tech-span tech-span---${item}`}>
+            {item.label}
           </span>
         ))}
       </div>
@@ -55,14 +55,14 @@ function GroupCard(props) {
                 </a>
               </Link>
             </div>
-            <div className="card-footer-message">
+            {/* <div className="card-footer-message">
               <BtnCTA
                 label="Message"
                 onCLickAction={() => {}}
                 icon={true}
                 iconType="ant-design:message-outlined"
               />
-            </div>
+            </div> */}
           </>
         ) : (
           <>

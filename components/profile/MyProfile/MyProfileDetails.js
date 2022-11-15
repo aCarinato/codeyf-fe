@@ -51,7 +51,7 @@ function MyProfileDetails(props) {
         </div>
       </div>
       <div>
-        {longDescription.length > 0 && (
+        {longDescription && longDescription.length > 0 && (
           <Fragment>
             <br></br>
             <h5>More about me</h5>
@@ -59,7 +59,7 @@ function MyProfileDetails(props) {
           </Fragment>
         )}
       </div>
-      {github.length > 0 && (
+      {github && github.length > 0 && (
         <Fragment>
           <br></br>
           <h5>

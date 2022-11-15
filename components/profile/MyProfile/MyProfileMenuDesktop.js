@@ -10,7 +10,12 @@ import { Icon } from '@iconify/react';
 import { useMainContext } from '../../../context/Context';
 
 function MyProfileMenuDesktop(props) {
-  const { authState, notifications, groupNotificationsFrom } = useMainContext();
+  const {
+    authState,
+    notifications,
+    groupNotifications,
+    groupNotificationsFrom,
+  } = useMainContext();
   // const { readNotifications } = props;
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [unreadChatNotifications, setUnreadChatNotifications] = useState([]);
@@ -27,9 +32,7 @@ function MyProfileMenuDesktop(props) {
     );
 
     setUnreadGroupNotifications(
-      groupNotificationsFrom.filter(
-        (notification) => notification.isRead === false
-      )
+      groupNotifications.filter((notification) => notification.isRead === false)
     );
 
     // setUnreadNotifications(
@@ -38,7 +41,7 @@ function MyProfileMenuDesktop(props) {
     //       notification.type === 'newChatMsg' && notification.isRead === false
     //   )
     // );
-  }, [notifications, groupNotificationsFrom]);
+  }, [notifications, groupNotifications]);
 
   return (
     <ul>

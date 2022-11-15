@@ -158,8 +158,8 @@ function SelfAssignmentPage() {
           <br></br>
           <NumberInput
             required={true}
-            label="Number of buddies"
-            min="0"
+            label="Total number of buddies (including yourself)"
+            min="1"
             value={nBuddies}
             onChange={(e) => setNBuddies(e.target.value)}
           />
