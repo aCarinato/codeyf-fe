@@ -15,7 +15,7 @@ import { useMainContext } from '../../../../context/Context';
 import Link from 'next/link';
 
 function GroupPage() {
-  const { authState, chats, setChats } = useMainContext();
+  const { authState } = useMainContext();
 
   const router = useRouter();
   const { query } = router;
@@ -93,35 +93,154 @@ function GroupPage() {
     }
   };
 
-  let availabilityStatus;
-  let availableSpots;
-  if (group && group !== {} && group.buddies) {
-    availableSpots = group.nBuddies - group.buddies.length;
+  // let availabilityStatus;
+  // let availableBuddySpots;
 
-    if (availableSpots > 0) {
-      //   console.log(`availableSpots: ${availableSpots}`);
-      availabilityStatus = (
-        <div>
-          <p className="card-group-available">
-            {availableSpots} more spots available!
-          </p>
-          {organiser._id !== authState.userId && (
-            <>
-              {' '}
-              <p>Message the organiser to enquire or for a join request</p>
-              <BtnCTA
-                classname="btn-dark"
-                label="Message"
-                onCLickAction={addChat}
-              />
-            </>
-          )}
-        </div>
+  // if (group && group !== {} && group.buddies) {
+  //   availableBuddySpots = group.nBuddies - group.buddies.length;
+
+  //   if (availableBuddySpots > 0) {
+  //     //   console.log(`availableSpots: ${availableSpots}`);
+  //     availabilityStatus = (
+  //       <div>
+  //         <p className="card-group-available">
+  //           {availableBuddySpots} spot
+  //           {availableBuddySpots > 1 && <span>s</span>} available for students!
+  //         </p>
+  //         {organiser._id !== authState.userId && (
+  //           <>
+  //             {' '}
+  //             <p>
+  //               Message the organiser to enquire or to request joining as a
+  //               student
+  //             </p>
+  //             <BtnCTA
+  //               classname="btn-dark"
+  //               label="Message"
+  //               onCLickAction={addChat}
+  //             />
+  //           </>
+  //         )}
+  //       </div>
+  //     );
+  //     //   console.log(availabilityStatus);
+  //   } else {
+  //     availabilityStatus = (
+  //       <p className="card-group-unavailable">Group filled for students</p>
+  //     );
+  //   }
+  // }
+
+  // buddies availability
+  let availableBuddySpots;
+  let buddyAvailbilityStatus;
+  let buddyAvailbilityDisplay;
+  if (group && group !== {} && group.buddiesFilled) {
+    buddyAvailbilityStatus = 'filled';
+    buddyAvailbilityDisplay = (
+      <p className="card-group-unavailable">Buddy positions filled</p>
+    );
+  } else if (group && group !== {} && !group.buddiesFilled) {
+    buddyAvailbilityStatus = 'available';
+    // console.log(group.nBuddies);
+    // console.log(group.buddies);
+    if (group.buddies) {
+      availableBuddySpots = group.nBuddies - group.buddies.length;
+
+      buddyAvailbilityDisplay = (
+        <p className="card-group-available">
+          {availableBuddySpots} buddy position
+          {availableBuddySpots > 1 && <span>s</span>} available!
+        </p>
       );
-      //   console.log(availabilityStatus);
-    } else {
-      availabilityStatus = (
-        <p className="card-group-unavailable">Group filled</p>
+    }
+  }
+  // console.log(buddyAvailbilityStatus);
+  // console.log(group);
+
+  // mentor availability
+  let availableMentorSpots;
+  let mentorAvailbilityStatus;
+  let mentorAvailbilityDisplay;
+  if (group && group !== {} && group.mentorsFilled) {
+    mentorAvailbilityStatus = 'filled';
+    mentorAvailbilityDisplay = (
+      <p className="card-group-unavailable">Mentor position filled</p>
+    );
+  } else if (
+    group &&
+    group !== {} &&
+    group.mentorRequired &&
+    !group.mentorsFilled
+  ) {
+    mentorAvailbilityStatus = 'available';
+    if (group.mentors) {
+      availableMentorSpots = group.nMentorsRequired - group.mentors.length;
+
+      mentorAvailbilityDisplay = (
+        <p className="card-group-available">
+          {availableMentorSpots} mentor position
+          {availableMentorSpots > 1 && <span>s</span>} available!
+        </p>
+      );
+    }
+  } else if (group && group !== {} && !group.mentorRequired) {
+    mentorAvailbilityStatus = 'unrequired';
+    mentorAvailbilityDisplay = <p>No mentor required for this team</p>;
+  }
+
+  // CTA
+  let sectionCTA;
+  if (organiser._id !== authState.userId) {
+    if (
+      buddyAvailbilityStatus === 'filled' &&
+      mentorAvailbilityStatus === 'available'
+    ) {
+      sectionCTA = (
+        <>
+          <p>
+            Message the organiser to enquire or to request joining as a mentor
+          </p>
+          <BtnCTA
+            classname="btn-dark"
+            label="Message"
+            onCLickAction={addChat}
+          />
+        </>
+      );
+    } else if (
+      buddyAvailbilityStatus === 'available' &&
+      (mentorAvailbilityStatus === 'filled' ||
+        mentorAvailbilityStatus === 'unrequired')
+    ) {
+      sectionCTA = (
+        <>
+          <p>
+            Message the organiser to enquire or to request joining as a buddy
+          </p>
+          <BtnCTA
+            classname="btn-dark"
+            label="Message"
+            onCLickAction={addChat}
+          />
+        </>
+      );
+    } else if (
+      buddyAvailbilityStatus === 'available' &&
+      mentorAvailbilityStatus === 'available'
+    ) {
+      sectionCTA = (
+        <>
+          <p>
+            Message the organiser to enquire or to request joining as a mentor
+            or buddy (yes, you can be both!)
+          </p>
+          <BtnCTA
+            classname="btn-dark"
+            label="Message"
+            onCLickAction={addChat}
+          />
+        </>
       );
     }
   }
@@ -135,7 +254,11 @@ function GroupPage() {
           <div className="flex flex-justify-space-between">
             <h2>{group.name}</h2>
             <div className="flex">
-              {availableSpots > 0 && availabilityStatus}
+              <div>
+                {buddyAvailbilityDisplay}
+                {mentorAvailbilityDisplay}
+                {sectionCTA}
+              </div>
 
               {group.mentorRequired === 'yes' && group.mentors.length === 0 && (
                 <BtnCTA classname="btn-light-big" label="Mentor Group" />
@@ -202,7 +325,6 @@ function GroupPage() {
                     profilePic={buddy.profilePic}
                   />
                 ))}
-                {/* <div>{availabilityStatus}</div> */}
               </div>
             ) : (
               <div>
@@ -214,7 +336,7 @@ function GroupPage() {
 
           <h4>Mentor</h4>
           <br></br>
-          {group.mentorRequired && mentor && mentor !== {} ? (
+          {mentorAvailbilityStatus === 'filled' ? (
             <div>
               <MentorCard
                 key={mentor._id}
@@ -227,49 +349,14 @@ function GroupPage() {
                 profilePic={mentor.profilePic}
               />
             </div>
+          ) : mentorAvailbilityStatus === 'available' ? (
+            <div className="card-group-available">
+              Mentor position available!
+            </div>
           ) : (
             <div>No mentor required for this team</div>
           )}
 
-          <div className="grid grid---2cols-20-80">
-            <div>
-              <br></br>
-              {group.mentorRequired === 'yes' && (
-                <div>
-                  <h4>Mentor</h4>
-                  <br></br>
-                  {group.mentors && group.mentors.length > 0 ? (
-                    <div>
-                      {group.mentors.map((mentor) => (
-                        <MentorCard
-                          key={mentor._id}
-                          userId={mentor._id}
-                          username={mentor.username}
-                          handle={mentor.handle}
-                          description={mentor.shortDescription}
-                          country={mentor.country}
-                          teaching={mentor.teaching}
-                          profilePic={mentor.profilePic}
-                        />
-                      ))}
-                      <br></br>
-                      <p className="card-group-unavailable">
-                        Mentor position filled
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="card-group-available">
-                        Mentor position available!
-                      </p>
-                      <br></br>
-                      <BtnCTA classname="btn-light-big" label="Mentor Group" />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
           {/* <div>
         {assignement && (
           <>

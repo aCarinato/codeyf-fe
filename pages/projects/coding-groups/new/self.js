@@ -120,6 +120,7 @@ function SelfAssignmentPage() {
     } else {
       inputIsValid = true;
     }
+    // the total number of people should be > 1 ie at least 2! It can be 2 buddies or 1 buddy 1 mentor. CHECK THAT TOO
     // THE ABOVE IS JUST A BASIC INPUT VALIDATION !! - MUST BE IMPROVED
     console.log(inputIsValid);
     if (inputIsValid) {
