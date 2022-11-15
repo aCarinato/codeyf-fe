@@ -11,6 +11,7 @@ function Select(props) {
         {label} {required && <sup>*</sup>}
       </label>
       <select name={name} onChange={onChange}>
+        <option value="null-value">-- SELECT --</option>
         {options.map((option) => (
           <option key={option._id} value={option._id}>
             {option.label}

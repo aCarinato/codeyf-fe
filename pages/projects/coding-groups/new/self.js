@@ -178,21 +178,24 @@ function SelfAssignmentPage() {
             label="Topics"
             name="topics"
             options={allTopics}
-            onChange={(e) =>
-              setTopics((prev) => {
-                let idx = topics
-                  .map((topic) => topic._id)
-                  .indexOf(e.target.value);
-                if (idx === -1) {
-                  let newTopic = allTopics.filter(
-                    (topic) => topic._id === e.target.value
-                  )[0];
-                  return [...prev, newTopic];
-                } else {
-                  return prev;
-                }
-              })
-            }
+            onChange={(e) => {
+              if (e.target.value !== 'null-value') {
+                console.log(e.target.value);
+                setTopics((prev) => {
+                  let idx = topics
+                    .map((topic) => topic._id)
+                    .indexOf(e.target.value);
+                  if (idx === -1) {
+                    let newTopic = allTopics.filter(
+                      (topic) => topic._id === e.target.value
+                    )[0];
+                    return [...prev, newTopic];
+                  } else {
+                    return prev;
+                  }
+                });
+              }
+            }}
           />
           <Selections selections={topics} setSelections={setTopics} />
           <br></br>
@@ -201,21 +204,23 @@ function SelfAssignmentPage() {
             label="Techs involved"
             name="techs"
             options={allTechStacks}
-            onChange={(e) =>
-              setLearning((prev) => {
-                let idx = learning
-                  .map((learn) => learn._id)
-                  .indexOf(e.target.value);
-                if (idx === -1) {
-                  let newLearn = allTechStacks.filter(
-                    (learn) => learn._id === e.target.value
-                  )[0];
-                  return [...prev, newLearn];
-                } else {
-                  return prev;
-                }
-              })
-            }
+            onChange={(e) => {
+              if (e.target.value !== 'null-value') {
+                setLearning((prev) => {
+                  let idx = learning
+                    .map((learn) => learn._id)
+                    .indexOf(e.target.value);
+                  if (idx === -1) {
+                    let newLearn = allTechStacks.filter(
+                      (learn) => learn._id === e.target.value
+                    )[0];
+                    return [...prev, newLearn];
+                  } else {
+                    return prev;
+                  }
+                });
+              }
+            }}
           />
           <Selections selections={learning} setSelections={setLearning} />
           <br></br>
@@ -233,13 +238,3 @@ function SelfAssignmentPage() {
 }
 
 export default SelfAssignmentPage;
-
-// This is the paradox working perfectly: lot of time spent reading human design and
-// this and that, standing and preaching about rights, equality and this and that.
-// At the end you are just a moody narcissistic maybe insecure maybe traumatised unable or
-// unwilling to have a normal conversation with another human being.
-// And this is basic education that somebody should have thought you: then you either feel entitled or are lazy.
-// Both are not good and you should be aware of it.
-// And no, don't try to even think this is not appropriate.
-// It is a reflection of your behaviour so you are responsible for this. Garbage out garbage back in.
-// Now you can let go of this too if you want
