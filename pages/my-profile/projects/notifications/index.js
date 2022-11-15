@@ -44,11 +44,20 @@ function ProjectNotificationsPage() {
   // FILTER OUT NOTIFICATION FROM MYSELF!!!
   // console.log(groupNotifications);
   return (
-    <div>
-      {groupNotifications.map((notification) => (
-        <TeamNotification key={notification._id} notification={notification} />
-      ))}
-    </div>
+    <>
+      {loading ? (
+        <SpinningLoader />
+      ) : (
+        <UserRoute>
+          {groupNotifications.map((notification) => (
+            <TeamNotification
+              key={notification._id}
+              notification={notification}
+            />
+          ))}
+        </UserRoute>
+      )}
+    </>
   );
 }
 
