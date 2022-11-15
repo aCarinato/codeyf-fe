@@ -1,6 +1,7 @@
 // react / next
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
+import Link from 'next/link';
 // libs
 import axios from 'axios';
 // own components
@@ -8,11 +9,8 @@ import SpinningLoader from '../../../../components/UI/SpinningLoader';
 import BuddyCard from '../../../../components/people/BuddyCard';
 import MentorCard from '../../../../components/people/MentorCard';
 import BtnCTA from '../../../../components/UI/BtnCTA';
-// helper funcs
-// import getUserInfo from '../../../../lib/helper/chats/getUserInfo';
 // context
 import { useMainContext } from '../../../../context/Context';
-import Link from 'next/link';
 
 function GroupPage() {
   const { authState } = useMainContext();
@@ -93,44 +91,6 @@ function GroupPage() {
     }
   };
 
-  // let availabilityStatus;
-  // let availableBuddySpots;
-
-  // if (group && group !== {} && group.buddies) {
-  //   availableBuddySpots = group.nBuddies - group.buddies.length;
-
-  //   if (availableBuddySpots > 0) {
-  //     //   console.log(`availableSpots: ${availableSpots}`);
-  //     availabilityStatus = (
-  //       <div>
-  //         <p className="card-group-available">
-  //           {availableBuddySpots} spot
-  //           {availableBuddySpots > 1 && <span>s</span>} available for students!
-  //         </p>
-  //         {organiser._id !== authState.userId && (
-  //           <>
-  //             {' '}
-  //             <p>
-  //               Message the organiser to enquire or to request joining as a
-  //               student
-  //             </p>
-  //             <BtnCTA
-  //               classname="btn-dark"
-  //               label="Message"
-  //               onCLickAction={addChat}
-  //             />
-  //           </>
-  //         )}
-  //       </div>
-  //     );
-  //     //   console.log(availabilityStatus);
-  //   } else {
-  //     availabilityStatus = (
-  //       <p className="card-group-unavailable">Group filled for students</p>
-  //     );
-  //   }
-  // }
-
   // buddies availability
   let availableBuddySpots;
   let buddyAvailbilityStatus;
@@ -142,8 +102,6 @@ function GroupPage() {
     );
   } else if (group && group !== {} && !group.buddiesFilled) {
     buddyAvailbilityStatus = 'available';
-    // console.log(group.nBuddies);
-    // console.log(group.buddies);
     if (group.buddies) {
       availableBuddySpots = group.nBuddies - group.buddies.length;
 
