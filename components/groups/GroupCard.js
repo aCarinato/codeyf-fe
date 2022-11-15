@@ -16,7 +16,7 @@ function GroupCard(props) {
   //   const techStack = group.techStack;
   let availabilityStatus;
 
-  const availableSpots = nBuddies - buddies.length - 1;
+  const availableSpots = nBuddies - buddies.length;
 
   if (availableSpots > 0) {
     availabilityStatus = (

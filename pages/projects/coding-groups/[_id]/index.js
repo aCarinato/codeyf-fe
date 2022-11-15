@@ -9,7 +9,7 @@ import BuddyCard from '../../../../components/people/BuddyCard';
 import MentorCard from '../../../../components/people/MentorCard';
 import BtnCTA from '../../../../components/UI/BtnCTA';
 // helper funcs
-import getUserInfo from '../../../../lib/helper/chats/getUserInfo';
+// import getUserInfo from '../../../../lib/helper/chats/getUserInfo';
 // context
 import { useMainContext } from '../../../../context/Context';
 import Link from 'next/link';
@@ -26,6 +26,7 @@ function GroupPage() {
 
   //   people
   const [organiser, setOrganiser] = useState({});
+  const [buddies, setBuddies] = useState([]);
   const [mentor, setMentor] = useState({});
 
   const fetchGroup = async () => {
@@ -34,22 +35,15 @@ function GroupPage() {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
       );
-      //   console.log(res);
+      // console.log(res);
       setGroup(res.data.group);
+      setOrganiser(res.data.group.organiser);
+      setBuddies(res.data.group.buddies);
+      setMentor(res.data.group.mentors[0]);
       setLoading(false);
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const fetchOrganiser = async () => {
-    const fetchedOrganiser = await getUserInfo(group.organiser);
-    setOrganiser(fetchedOrganiser);
-  };
-
-  const fetchMentor = async () => {
-    const fetchedMentor = await getUserInfo(group.mentors[0]);
-    setMentor(fetchedMentor);
   };
 
   useEffect(() => {
@@ -57,18 +51,6 @@ function GroupPage() {
       fetchGroup();
     }
   }, [groupId]);
-
-  useEffect(() => {
-    if (group !== {} && group.organiser && group.organiser.length > 0) {
-      fetchOrganiser();
-    }
-
-    if (group !== {} && group.organiser && group.mentors.length > 0) {
-      fetchMentor();
-    }
-  }, [group]);
-
-  //   console.log(group);
 
   const addChat = async () => {
     if (authState && authState.email.length > 0) {
@@ -114,7 +96,7 @@ function GroupPage() {
   let availabilityStatus;
   let availableSpots;
   if (group && group !== {} && group.buddies) {
-    availableSpots = group.nBuddies - group.buddies.length - 1;
+    availableSpots = group.nBuddies - group.buddies.length;
 
     if (availableSpots > 0) {
       //   console.log(`availableSpots: ${availableSpots}`);
@@ -123,7 +105,7 @@ function GroupPage() {
           <p className="card-group-available">
             {availableSpots} more spots available!
           </p>
-          {group.organiser !== authState.userId && (
+          {organiser._id !== authState.userId && (
             <>
               {' '}
               <p>Message the organiser to enquire or for a join request</p>
@@ -190,7 +172,7 @@ function GroupPage() {
                 />
               </div>
               <div>
-                {group.organiser === authState.userId && (
+                {organiser._id === authState.userId && (
                   <p>
                     <Link href={`/projects/coding-groups/${groupId}/manage`}>
                       Manage group
@@ -198,8 +180,55 @@ function GroupPage() {
                   </p>
                 )}
               </div>
-              {/* {JSON.stringify(organiser)} */}
             </div>
+          )}
+
+          <div>
+            <br></br>
+            <h4>Coding buddies</h4>
+            <br></br>
+            {buddies && buddies.length > 0 ? (
+              <div className="flex flex-justify-flex-start">
+                {' '}
+                {buddies.map((buddy) => (
+                  <BuddyCard
+                    key={buddy._id}
+                    userId={buddy._id}
+                    username={buddy.username}
+                    handle={buddy.handle}
+                    description={buddy.shortDescription}
+                    country={buddy.country}
+                    learning={buddy.learning}
+                    profilePic={buddy.profilePic}
+                  />
+                ))}
+                {/* <div>{availabilityStatus}</div> */}
+              </div>
+            ) : (
+              <div>
+                <p>No buddies yet</p>
+              </div>
+            )}
+          </div>
+          <br></br>
+
+          <h4>Mentor</h4>
+          <br></br>
+          {group.mentorRequired && mentor && mentor !== {} ? (
+            <div>
+              <MentorCard
+                key={mentor._id}
+                userId={mentor._id}
+                username={mentor.username}
+                handle={mentor.handle}
+                description={mentor.shortDescription}
+                country={mentor.country}
+                teaching={mentor.teaching}
+                profilePic={mentor.profilePic}
+              />
+            </div>
+          ) : (
+            <div>No mentor required for this team</div>
           )}
 
           <div className="grid grid---2cols-20-80">
@@ -240,27 +269,6 @@ function GroupPage() {
                 </div>
               )}
             </div>
-            {/* <div>
-              {participants && participants.length > 0 && (
-                <div>
-                  <h4>Coding buddies</h4>
-                  <br></br>
-                  <div className="flex flex-justify-flex-start">
-                    {' '}
-                    {participants.map((participant, index) => (
-                      <BuddyCard
-                        key={index}
-                        username={participant.username}
-                        description={participant.shortDescription}
-                        country={participant.country}
-                        learning={participant.learning}
-                      />
-                    ))}
-                    <div>{availabilityStatus}</div>
-                  </div>
-                </div>
-              )}
-            </div> */}
           </div>
           {/* <div>
         {assignement && (
