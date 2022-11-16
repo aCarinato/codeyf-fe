@@ -20,12 +20,33 @@ function AddBuddyPage() {
   const groupId = query._id;
 
   const [buddies, setBuddies] = useState([]);
+  const [teamBuddies, setTeamBuddies] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(null);
 
   const [selectedId, setSelectedId] = useState('');
+
+  const fetchGroup = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
+      );
+      // console.log(res);
+      // setGroup(res.data.group);
+      // setOrganiser(res.data.group.organiser);
+      setTeamBuddies(res.data.group.buddies);
+
+      // setMentor(res.data.group.mentors[0]);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // console.log(teamBuddies);
 
   const fetchBuddies = async () => {
     try {
@@ -39,9 +60,20 @@ function AddBuddyPage() {
           // filter out current user
           const userEmail = authState.email;
           let allBuddies = res.data.buddies;
-          let filteredBuddies = allBuddies.filter(
-            (buddy) => buddy.email !== userEmail
-          );
+          let filteredBuddies = allBuddies.filter((buddy) => {
+            // exclude organiser
+            let isNotOrganiserCondition;
+            isNotOrganiserCondition = buddy.email !== userEmail;
+
+            // exclude users already in the group
+            let alreadyBuddyCondition;
+            // check if in allBuddies is included some teamBuddies
+            alreadyBuddyCondition = teamBuddies
+              .map((item) => item._id)
+              .includes(buddy._id);
+            // console.log(!alreadyBuddyCondition);
+            return !alreadyBuddyCondition;
+          });
           setBuddies(filteredBuddies);
           setFilteredBuddies(filteredBuddies);
         } else {
@@ -55,50 +87,30 @@ function AddBuddyPage() {
     }
   };
 
-  // const fetchGroup = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const res = await axios.get(
-  //       `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
-  //     );
-  //     //   console.log(res);
-  //     setGroup(res.data.group);
-  //     setLoading(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  useEffect(() => {
+    if (groupId !== undefined && groupId.length > 0) {
+      fetchGroup();
+    }
+  }, [groupId]);
 
   useEffect(() => {
     fetchBuddies();
-  }, [authState && authState.email]);
+  }, [teamBuddies, authState && authState.email]);
 
-  const sendRequest = async () => {
-    // console.log(selectedId);
+  // const sendRequest = async () => {
+  //   // console.log(selectedId);
 
-    if (socket.current) {
-      socket.current.emit('joinGroupReq', {
-        senderId: authState.userId,
-        receiverId: selectedId,
-        groupId: groupId,
-      });
-      setSuccess(true);
-      // here i need to save in my array (context) of notifications to the new notification
-      // meanwhile it will be saved also in the backend
-    }
-
-    // try {
-    //   setLoading(true);
-    //   const res = await axios.get(
-    //     `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
-    //   );
-    //   //   console.log(res);
-    //   setGroup(res.data.group);
-    //   setLoading(false);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-  };
+  //   if (socket.current) {
+  //     socket.current.emit('joinGroupReq', {
+  //       senderId: authState.userId,
+  //       receiverId: selectedId,
+  //       groupId: groupId,
+  //     });
+  //     setSuccess(true);
+  //     // here i need to save in my array (context) of notifications to the new notification
+  //     // meanwhile it will be saved also in the backend
+  //   }
+  // };
 
   const addBuddy = () => {
     if (socket.current) {
@@ -108,7 +120,7 @@ function AddBuddyPage() {
         groupId: groupId,
         buddyId: selectedId,
       });
-      // setSuccess(true);
+      setSuccess(true);
       // here i need to save in my array (context) of notifications to the new notification
       // meanwhile it will be saved also in the backend
     }
@@ -117,7 +129,8 @@ function AddBuddyPage() {
   useEffect(() => {
     if (socket.current) {
       socket.current.on('buddyAlreadyJoined', ({ msg }) => {
-        console.log(msg);
+        // console.log(msg);
+        setSuccess(false);
         // open a modal that inform the user is already in the group
       });
     }
@@ -133,12 +146,24 @@ function AddBuddyPage() {
     </div>
   );
 
+  const unSuccessMsg = (
+    <div>
+      <p>The user is already in the group</p>
+      <br></br>
+      <Link href={`/projects/coding-groups/${groupId}/manage`}>
+        Back to the group page
+      </Link>
+    </div>
+  );
+
   return (
     <UserRoute>
       {loading ? (
         <SpinningLoader />
       ) : success ? (
         successMsg
+      ) : success === false ? (
+        unSuccessMsg
       ) : (
         <>
           <h3>Request new buddy</h3>

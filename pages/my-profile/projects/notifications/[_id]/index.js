@@ -54,6 +54,8 @@ function ProjectNotificationPage() {
       fetchNotification();
   }, [notificationId, userId]);
 
+  console.log(notification);
+
   return (
     <>
       {loading ? (
@@ -79,25 +81,8 @@ function ProjectNotificationPage() {
               <br></br>
               <GroupCard
                 id={notification.groupId._id}
-                name={notification.groupId.name}
-                description={notification.groupId.description}
-                techStack={notification.groupId.learning}
-                nBuddies={notification.groupId.nBuddies}
-                buddies={notification.groupId.buddies}
+                group={notification.groupId}
               />
-              {/* <br></br>
-              <p>Would you like to participate in the group?</p>
-              <div className="flex">
-                <div>
-                  <BtnCTA
-                    label="Yes"
-                    onCLickAction={() => sendJoinRes('yes')}
-                  />
-                </div>
-                <div>
-                  <BtnCTA label="No" onCLickAction={() => sendJoinRes('no')} />
-                </div>
-              </div> */}
             </div>
           )}
         </>

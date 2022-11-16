@@ -98,7 +98,7 @@ function GroupCard(props) {
           </span>
         ))}
       </div>
-      <p>Max {group.nBuddies} participants</p>
+      <p>Max {group.nBuddies} buddies</p>
       {buddyAvailbilityDisplay}
       {mentorAvailbilityDisplay}
       <div className="card-footer">

@@ -46,19 +46,28 @@ function ManageGroupPage() {
         <div>
           <h2>Manage Group - {group.name}</h2>
           <br></br>
-          <p>
-            <Link href={`/projects/coding-groups/${groupId}/manage/add-buddy`}>
-              Add buddy
-            </Link>
-          </p>
+          {!group.buddiesFilled ? (
+            <p>
+              <Link
+                href={`/projects/coding-groups/${groupId}/manage/add-buddy`}
+              >
+                Add buddy
+              </Link>
+            </p>
+          ) : (
+            <p>Buddy positions filled</p>
+          )}
           <br></br>
-          <p>
+          <p>Join the group as a buddy</p>
+          <br></br>
+          <p>Join the group as a mentor</p>
+          {/* <p>
             <Link
               href={`/projects/coding-groups/${groupId}/manage/pending-join-reqs`}
             >
               Pending join requests
             </Link>
-          </p>
+          </p> */}
         </div>
       )}
     </UserRoute>
