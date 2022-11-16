@@ -97,28 +97,14 @@ function AddBuddyPage() {
     fetchBuddies();
   }, [teamBuddies, authState && authState.email]);
 
-  // const sendRequest = async () => {
-  //   // console.log(selectedId);
-
-  //   if (socket.current) {
-  //     socket.current.emit('joinGroupReq', {
-  //       senderId: authState.userId,
-  //       receiverId: selectedId,
-  //       groupId: groupId,
-  //     });
-  //     setSuccess(true);
-  //     // here i need to save in my array (context) of notifications to the new notification
-  //     // meanwhile it will be saved also in the backend
-  //   }
-  // };
-
   const addBuddy = () => {
     if (socket.current) {
-      socket.current.emit('addBuddyToGroup', {
+      socket.current.emit('addUserToGroup', {
         // senderId: authState.userId,
         organiserId: authState.userId,
         groupId: groupId,
-        buddyId: selectedId,
+        userToAddId: selectedId,
+        type: 'buddy',
       });
       setSuccess(true);
       // here i need to save in my array (context) of notifications to the new notification
@@ -128,7 +114,7 @@ function AddBuddyPage() {
 
   useEffect(() => {
     if (socket.current) {
-      socket.current.on('buddyAlreadyJoined', ({ msg }) => {
+      socket.current.on('userToAddAlreadyJoined', ({ msg }) => {
         // console.log(msg);
         setSuccess(false);
         // open a modal that inform the user is already in the group

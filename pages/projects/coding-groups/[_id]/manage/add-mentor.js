@@ -88,17 +88,27 @@ function AddMentorPage() {
 
   const addMentor = () => {
     if (socket.current) {
-      socket.current.emit('addMentorToGroup', {
-        // senderId: authState.userId,
+      //   socket.current.emit('addMentorToGroup', {
+      socket.current.emit('addUserToGroup', {
         organiserId: authState.userId,
         groupId: groupId,
-        mentorId: selectedId,
+        userToAddId: selectedId,
+        // mentorId: selectedId,
+        type: 'mentor',
       });
       setSuccess(true);
-      // here i need to save in my array (context) of notifications to the new notification
-      // meanwhile it will be saved also in the backend
     }
   };
+
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on('userToAddAlreadyJoined', ({ msg }) => {
+        // console.log(msg);
+        setSuccess(false);
+        // open a modal that inform the user is already in the group
+      });
+    }
+  }, []);
 
   const successMsg = (
     <div>

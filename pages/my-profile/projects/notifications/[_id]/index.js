@@ -72,6 +72,16 @@ function ProjectNotificationPage() {
               />
             </div>
           )}
+          {notification.type === 'groupJoinedAsMentor' && (
+            <div>
+              <h3>You joined a new team as a mentor!</h3>
+              <br></br>
+              <GroupCard
+                id={notification.groupId._id}
+                group={notification.groupId}
+              />
+            </div>
+          )}
         </>
       )}
     </>

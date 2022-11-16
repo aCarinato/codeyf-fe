@@ -44,20 +44,20 @@ function TeamNotification(props) {
     if (notification.type === 'groupJoinedAsBuddy') {
       // emit event to remove notification from backend
       const buddyId = authState.userId;
-      socket.current.emit('readGroupJoinedAsBuddyNotification', {
-        organiserId: notification.from,
-        buddyId,
+      socket.current.emit('readGroupJoinedNotification', {
+        userToAddId: buddyId,
         groupId: notification.groupId,
+        type: 'buddy',
       });
     }
 
     if (notification.type === 'groupJoinedAsMentor') {
       // emit event to remove notification from backend
       const mentorId = authState.userId;
-      socket.current.emit('readGroupJoinedAsMentorNotification', {
-        organiserId: notification.from,
-        mentorId,
+      socket.current.emit('readGroupJoinedNotification', {
+        userToAddId: mentorId,
         groupId: notification.groupId,
+        type: 'mentor',
       });
     }
   };
