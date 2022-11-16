@@ -62,22 +62,9 @@ function ProjectNotificationPage() {
         <SpinningLoader />
       ) : (
         <>
-          {notification.type === 'groupJoined' && (
+          {notification.type === 'groupJoinedAsBuddy' && (
             <div>
-              <h3>You joined a new team!</h3>
-              {/* <br></br>
-              <h4>Request from</h4>
-              <br></br>
-              <BuddyCard
-                userId={notification.from._id}
-                username={notification.from.username}
-                handle={notification.from.handle}
-                description={notification.from.shortDescription}
-                country={notification.from.country}
-                learning={notification.from.learning}
-                profilePic={notification.from.profilePic}
-              /> */}
-
+              <h3>You joined a new team as a buddy!</h3>
               <br></br>
               <GroupCard
                 id={notification.groupId._id}

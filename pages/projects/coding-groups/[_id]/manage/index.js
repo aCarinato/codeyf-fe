@@ -58,6 +58,18 @@ function ManageGroupPage() {
             <p>Buddy positions filled</p>
           )}
           <br></br>
+          {!group.mentorsFilled ? (
+            <p>
+              <Link
+                href={`/projects/coding-groups/${groupId}/manage/add-mentor`}
+              >
+                Add mentor
+              </Link>
+            </p>
+          ) : (
+            <p>Mentor position filled</p>
+          )}
+          <br></br>
           <p>Join the group as a buddy</p>
           <br></br>
           <p>Join the group as a mentor</p>

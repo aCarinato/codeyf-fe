@@ -5,27 +5,24 @@ import { useRouter } from 'next/router';
 // own compoentns
 import UserRoute from '../../../../../components/routes/UserRoute';
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
-import BuddyCard from '../../../../../components/people/BuddyCard';
+import MentorCard from '../../../../../components/people/MentorCard';
 import BtnCTA from '../../../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
 // context
 import { useMainContext } from '../../../../../context/Context';
 
-function AddBuddyPage() {
+function AddMentorPage() {
   const { mobileView, authState, socket } = useMainContext();
 
   const router = useRouter();
   const { query } = router;
   const groupId = query._id;
 
-  // const [buddies, setBuddies] = useState([]);
-  const [teamBuddies, setTeamBuddies] = useState([]);
-  const [filteredBuddies, setFilteredBuddies] = useState([]);
-  const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
-
+  const [teamMentors, setTeamMentors] = useState([]);
+  const [filteredMentors, setFilteredMentors] = useState([]);
   const [selectedId, setSelectedId] = useState('');
 
   const fetchGroup = async () => {
@@ -34,53 +31,8 @@ function AddBuddyPage() {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API}/groups/${groupId}`
       );
-      // console.log(res);
-      // setGroup(res.data.group);
-      // setOrganiser(res.data.group.organiser);
-      setTeamBuddies(res.data.group.buddies);
-
-      // setMentor(res.data.group.mentors[0]);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // console.log(teamBuddies);
-
-  const fetchBuddies = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/people/buddies`
-      );
-
-      if (res.data.success) {
-        if (authState && authState.email.length > 0) {
-          // filter out current user
-          const userEmail = authState.email;
-          let allBuddies = res.data.buddies;
-          let filteredBuddies = allBuddies.filter((buddy) => {
-            // exclude organiser
-            let isNotOrganiserCondition;
-            isNotOrganiserCondition = buddy.email !== userEmail;
-
-            // exclude users already in the group
-            let alreadyBuddyCondition;
-            // check if in allBuddies is included some teamBuddies
-            alreadyBuddyCondition = teamBuddies
-              .map((item) => item._id)
-              .includes(buddy._id);
-            // console.log(!alreadyBuddyCondition);
-            return !alreadyBuddyCondition;
-          });
-          // setBuddies(filteredBuddies);
-          setFilteredBuddies(filteredBuddies);
-        } else {
-          // setBuddies(res.data.buddies);
-          setFilteredBuddies(res.data.buddies);
-        }
-      }
+      //   console.log(res);
+      setTeamMentors(res.data.group.mentors);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -93,48 +45,60 @@ function AddBuddyPage() {
     }
   }, [groupId]);
 
+  const fetchMentors = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/people/mentors`
+      );
+
+      if (res.data.success) {
+        if (authState && authState.email.length > 0) {
+          // filter out current user
+          //   const userEmail = authState.email;
+          let allMentors = res.data.mentors;
+          let filteredMentors = allMentors.filter((mentor) => {
+            // exclude organiser
+            // let isNotOrganiserCondition;
+            // isNotOrganiserCondition = buddy.email !== userEmail;
+
+            // exclude users already in the group
+            let alreadyMentorCondition;
+            // check if in allBuddies is included some teamBuddies
+            alreadyMentorCondition = teamMentors
+              .map((item) => item._id)
+              .includes(mentor._id);
+            // console.log(!alreadyBuddyCondition);
+            return !alreadyMentorCondition;
+          });
+          setFilteredMentors(filteredMentors);
+        } else {
+          setFilteredMentors(res.data.buddies);
+        }
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    fetchBuddies();
-  }, [teamBuddies, authState && authState.email]);
+    fetchMentors();
+  }, [teamMentors, authState && authState.email]);
 
-  // const sendRequest = async () => {
-  //   // console.log(selectedId);
-
-  //   if (socket.current) {
-  //     socket.current.emit('joinGroupReq', {
-  //       senderId: authState.userId,
-  //       receiverId: selectedId,
-  //       groupId: groupId,
-  //     });
-  //     setSuccess(true);
-  //     // here i need to save in my array (context) of notifications to the new notification
-  //     // meanwhile it will be saved also in the backend
-  //   }
-  // };
-
-  const addBuddy = () => {
+  const addMentor = () => {
     if (socket.current) {
-      socket.current.emit('addBuddyToGroup', {
+      socket.current.emit('addMentorToGroup', {
         // senderId: authState.userId,
         organiserId: authState.userId,
         groupId: groupId,
-        buddyId: selectedId,
+        mentorId: selectedId,
       });
       setSuccess(true);
       // here i need to save in my array (context) of notifications to the new notification
       // meanwhile it will be saved also in the backend
     }
   };
-
-  useEffect(() => {
-    if (socket.current) {
-      socket.current.on('buddyAlreadyJoined', ({ msg }) => {
-        // console.log(msg);
-        setSuccess(false);
-        // open a modal that inform the user is already in the group
-      });
-    }
-  }, []);
 
   const successMsg = (
     <div>
@@ -166,38 +130,38 @@ function AddBuddyPage() {
         unSuccessMsg
       ) : (
         <>
-          <h3>Request new buddy</h3>
+          <h3>Request new mentor</h3>
           <div className="flex">
-            {filteredBuddies.length > 0 ? (
-              filteredBuddies.map((buddy) => (
-                <div key={buddy._id} className="outline">
-                  <BuddyCard
-                    // key={buddy._id}
-                    userId={buddy._id}
-                    username={buddy.username}
-                    handle={buddy.handle}
-                    description={buddy.shortDescription}
-                    country={buddy.country}
-                    learning={buddy.learning}
-                    profilePic={buddy.profilePic}
+            {filteredMentors && filteredMentors.length > 0 ? (
+              filteredMentors.map((mentor) => (
+                <div key={mentor._id} className="outline">
+                  <MentorCard
+                    // key={mentor._id}
+                    userId={mentor._id}
+                    username={mentor.username}
+                    handle={mentor.handle}
+                    description={mentor.shortDescription}
+                    country={mentor.country}
+                    teaching={mentor.teaching}
+                    profilePic={mentor.profilePic}
                   />
                   <div className="addbuddy-footer">
                     <div className="addbuddy-action">
-                      {buddy._id === selectedId && (
+                      {mentor._id === selectedId && (
                         <BtnCTA
                           classname="btn-light-big"
-                          label="Send request"
-                          onCLickAction={addBuddy}
+                          label="Add mentor"
+                          onCLickAction={addMentor}
                         />
                       )}
                     </div>
                     <div className="addbuddy-check-div">
                       <div
                         onClick={() => {
-                          if (buddy._id === selectedId) {
+                          if (mentor._id === selectedId) {
                             setSelectedId('');
                           } else {
-                            setSelectedId(buddy._id);
+                            setSelectedId(mentor._id);
                           }
                         }}
                         className="addbuddy-check"
@@ -219,6 +183,4 @@ function AddBuddyPage() {
   );
 }
 
-export default AddBuddyPage;
-
-// http://localhost:3000/projects/coding-groups/636b5bf80f7fa60c9716fa6e
+export default AddMentorPage;
