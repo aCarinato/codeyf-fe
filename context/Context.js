@@ -265,17 +265,32 @@ export function ContextProvider({ children }) {
     if (socket.current) {
       socket.current.on(
         'joinedGroupNotification',
-        async ({ organiserId, buddyId, groupId }) => {
-          // console.log(`4) from Context.js - 'joinedGroupNotification'`);
-          const newNotification = {
-            _id: Math.random() * 10,
-            type: 'groupJoined',
-            from: organiserId,
-            text: `You have been added to a new team`,
-            groupId: groupId,
-            isRead: false,
-            date: Date.now(),
-          };
+        async ({ organiserId, userToAddId, groupId, type }) => {
+          console.log(`4) from Context.js - 'joinedGroupAsBuddyNotification`);
+
+          let newNotification;
+          if (type === 'buddy') {
+            newNotification = {
+              _id: Math.random() * 10,
+              type: 'groupJoinedAsBuddy',
+              from: organiserId,
+              text: `You have been added to a new team as a buddy`,
+              groupId: groupId,
+              isRead: false,
+              date: Date.now(),
+            };
+          } else if (type === 'mentor') {
+            newNotification = {
+              _id: Math.random() * 10,
+              type: 'groupJoinedAsMentor',
+              from: organiserId,
+              text: `You have been added to a new team as a mentor`,
+              groupId: groupId,
+              isRead: false,
+              date: Date.now(),
+            };
+          }
+
           setGroupNotifications((prev) => [newNotification, ...prev]);
           // emit event to save notifications in the backend
           // console.log(
@@ -288,37 +303,88 @@ export function ContextProvider({ children }) {
           // );
           socket.current.emit('saveGroupJoinedNotification', {
             organiserId,
-            buddyId,
+            userToAddId,
             groupId,
+            type,
           });
         }
         // setNotifications()
       );
-
-      // OLD
-      // socket.current.on(
-      //   'joinReqNotification',
-      //   async ({ senderId, receiverId, groupId }) => {
-      //     const newNotificationFrom = {
-      //       type: 'joinReq',
-      //       groupId: groupId,
-      //       from: senderId,
-      //       text: 'You have a new request to join a team. Would you like you to?',
-      //       isRead: false,
-      //       date: Date.now(),
-      //     };
-      //     console.log(newNotificationFrom);
-      //     setGroupNotificationsFrom((prev) => [newNotificationFrom, ...prev]);
-      //     // emit event to tell the backend to save the new notification on the database
-      //     socket.current.emit('saveJoinReqNotification', {
-      //       senderId,
-      //       receiverId,
-      //       groupId,
-      //     });
-      //   }
-      // );
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (socket.current) {
+  //     socket.current.on(
+  //       'joinedGroupAsBuddyNotification',
+  //       async ({ organiserId, buddyId, groupId }) => {
+  //         console.log(`4) from Context.js - 'joinedGroupAsBuddyNotification`);
+  //         const newNotification = {
+  //           _id: Math.random() * 10,
+  //           type: 'groupJoinedAsBuddy',
+  //           from: organiserId,
+  //           text: `You have been added to a new team`,
+  //           groupId: groupId,
+  //           isRead: false,
+  //           date: Date.now(),
+  //         };
+  //         setGroupNotifications((prev) => [newNotification, ...prev]);
+  //         // emit event to save notifications in the backend
+  //         // console.log(
+  //         //   `5) from Context.js - I received a notification I am going to emit 'saveGroupJoinedNotification' con is seguenti parametri:
+  //         //   organiserId: ${organiserId},
+  //         //   buddyId: ${buddyId},
+  //         //   groupId: ${groupId},
+
+  //         //   `
+  //         // );
+  //         socket.current.emit('saveGroupJoinedAsBuddyNotification', {
+  //           organiserId,
+  //           buddyId,
+  //           groupId,
+  //         });
+  //       }
+  //       // setNotifications()
+  //     );
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (socket.current) {
+  //     socket.current.on(
+  //       'joinedGroupAsMentorNotification',
+  //       async ({ organiserId, mentorId, groupId }) => {
+  //         console.log(`4) from Context.js - 'joinedGroupAsMentorNotification`);
+  //         const newNotification = {
+  //           _id: Math.random() * 10,
+  //           type: 'groupJoinedAsMentor',
+  //           from: organiserId,
+  //           text: `You have been added to a new team`,
+  //           groupId: groupId,
+  //           isRead: false,
+  //           date: Date.now(),
+  //         };
+  //         setGroupNotifications((prev) => [newNotification, ...prev]);
+  //         // emit event to save notifications in the backend
+  //         // console.log(
+  //         //   `5) from Context.js - I received a notification I am going to emit 'saveGroupJoinedNotification' con is seguenti parametri:
+  //         //   organiserId: ${organiserId},
+  //         //   buddyId: ${buddyId},
+  //         //   groupId: ${groupId},
+
+  //         //   `
+  //         // );
+  //         socket.current.emit('saveGroupJoinedAsMentorNotification', {
+  //           organiserId,
+  //           mentorId,
+  //           groupId,
+  //         });
+  //       }
+  //       // setNotifications()
+  //     );
+  //   }
+  // }, []);
+
   // console.log(groupNotificationsFrom);
   // console.log(groupNotificationsTo);
 

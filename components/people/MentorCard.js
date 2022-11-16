@@ -107,14 +107,16 @@ function MentorCard(props) {
             </a>
           </Link>
         </div>
-        <div className="card-footer-message">
-          <BtnCTA
-            label="message"
-            onCLickAction={addChat}
-            icon={true}
-            iconType="ant-design:message-outlined"
-          />
-        </div>
+        {authState.userId !== userId && (
+          <div className="card-footer-message">
+            <BtnCTA
+              label="message"
+              onCLickAction={addChat}
+              icon={true}
+              iconType="ant-design:message-outlined"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

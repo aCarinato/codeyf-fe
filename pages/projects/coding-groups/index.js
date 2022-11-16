@@ -230,12 +230,13 @@ function GroupsPage() {
             {filteredGroups.map((group) => (
               <GroupCard
                 key={group._id}
-                id={group._id}
-                name={group.name}
-                description={group.description}
-                techStack={group.learning}
-                nBuddies={group.nBuddies}
-                buddies={group.buddies}
+                group={group}
+                // id={group._id}
+                // name={group.name}
+                // description={group.description}
+                // techStack={group.learning}
+                // nBuddies={group.nBuddies}
+                // buddies={group.buddies}
                 // proposedProject={group.proposedProject}
               />
             ))}{' '}

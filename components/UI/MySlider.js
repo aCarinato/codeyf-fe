@@ -70,13 +70,14 @@ function MySlider(props) {
         slicedItems.map((group) => (
           <GroupCard
             key={group._id}
-            id={group._id}
-            name={group.name}
-            description={group.description}
-            techStack={group.learning}
-            nBuddies={group.nBuddies}
-            buddies={group.buddies}
-            proposedProject={group.proposedProject}
+            group={group}
+            // id={group._id}
+            // name={group.name}
+            // description={group.description}
+            // techStack={group.learning}
+            // nBuddies={group.nBuddies}
+            // buddies={group.buddies}
+            // proposedProject={group.proposedProject}
           />
         ))}
       {type === 'assignement' &&

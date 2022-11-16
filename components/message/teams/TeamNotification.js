@@ -28,7 +28,7 @@ function TeamNotification(props) {
       .map((item) => item._id)
       .indexOf(notification._id);
 
-    console.log(index);
+    // console.log(index);
     if (index !== -1) {
       // READ NOTIFICATION
       setGroupNotifications((prev) => {
@@ -41,14 +41,27 @@ function TeamNotification(props) {
       });
     }
 
-    // emit event to remove notification from backend
-    const buddyId = authState.userId;
-    socket.current.emit('readGroupJoinedNotification', {
-      organiserId: notification.from,
-      buddyId,
-      groupId: notification.groupId,
-    });
+    if (notification.type === 'groupJoinedAsBuddy') {
+      // emit event to remove notification from backend
+      const buddyId = authState.userId;
+      socket.current.emit('readGroupJoinedNotification', {
+        userToAddId: buddyId,
+        groupId: notification.groupId,
+        type: 'buddy',
+      });
+    }
+
+    if (notification.type === 'groupJoinedAsMentor') {
+      // emit event to remove notification from backend
+      const mentorId = authState.userId;
+      socket.current.emit('readGroupJoinedNotification', {
+        userToAddId: mentorId,
+        groupId: notification.groupId,
+        type: 'mentor',
+      });
+    }
   };
+
   // const readNotification = () => {
   //   // router.push(`/my-profile/chats?message=${msgFrom}`, undefined, {
   //   //   // shallow: true,

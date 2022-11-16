@@ -54,50 +54,32 @@ function ProjectNotificationPage() {
       fetchNotification();
   }, [notificationId, userId]);
 
+  console.log(notification);
+
   return (
     <>
       {loading ? (
         <SpinningLoader />
       ) : (
         <>
-          {notification.type === 'groupJoined' && (
+          {notification.type === 'groupJoinedAsBuddy' && (
             <div>
-              <h3>You joined a new team!</h3>
-              {/* <br></br>
-              <h4>Request from</h4>
-              <br></br>
-              <BuddyCard
-                userId={notification.from._id}
-                username={notification.from.username}
-                handle={notification.from.handle}
-                description={notification.from.shortDescription}
-                country={notification.from.country}
-                learning={notification.from.learning}
-                profilePic={notification.from.profilePic}
-              /> */}
-
+              <h3>You joined a new team as a buddy!</h3>
               <br></br>
               <GroupCard
                 id={notification.groupId._id}
-                name={notification.groupId.name}
-                description={notification.groupId.description}
-                techStack={notification.groupId.learning}
-                nBuddies={notification.groupId.nBuddies}
-                buddies={notification.groupId.buddies}
+                group={notification.groupId}
               />
-              {/* <br></br>
-              <p>Would you like to participate in the group?</p>
-              <div className="flex">
-                <div>
-                  <BtnCTA
-                    label="Yes"
-                    onCLickAction={() => sendJoinRes('yes')}
-                  />
-                </div>
-                <div>
-                  <BtnCTA label="No" onCLickAction={() => sendJoinRes('no')} />
-                </div>
-              </div> */}
+            </div>
+          )}
+          {notification.type === 'groupJoinedAsMentor' && (
+            <div>
+              <h3>You joined a new team as a mentor!</h3>
+              <br></br>
+              <GroupCard
+                id={notification.groupId._id}
+                group={notification.groupId}
+              />
             </div>
           )}
         </>
