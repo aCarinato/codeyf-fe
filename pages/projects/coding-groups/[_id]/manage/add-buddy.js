@@ -1,13 +1,13 @@
 // next react
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // own compoentns
 import UserRoute from '../../../../../components/routes/UserRoute';
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import BuddyCard from '../../../../../components/people/BuddyCard';
 import BtnCTA from '../../../../../components/UI/BtnCTA';
-import ItemSelectorChild from '../../../../../components/UI/ItemSelectorChild';
+import CardSelector from '../../../../../components/UI/CardSelector';
 // libs
 import axios from 'axios';
 // context
@@ -158,7 +158,7 @@ function AddBuddyPage() {
           <div className="flex">
             {filteredBuddies.length > 0 ? (
               filteredBuddies.map((buddy) => (
-                <ItemSelectorChild
+                <CardSelector
                   key={buddy._id}
                   card={
                     <BuddyCard
@@ -179,7 +179,7 @@ function AddBuddyPage() {
                       onCLickAction={addBuddy}
                     />
                   }
-                  userId={buddy._id}
+                  itemId={buddy._id}
                   selectedId={selectedId}
                   setSelectedId={setSelectedId}
                 />

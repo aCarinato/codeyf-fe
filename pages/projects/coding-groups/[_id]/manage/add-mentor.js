@@ -7,7 +7,7 @@ import UserRoute from '../../../../../components/routes/UserRoute';
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import MentorCard from '../../../../../components/people/MentorCard';
 import BtnCTA from '../../../../../components/UI/BtnCTA';
-import ItemSelector from '../../../../../components/UI/ItemSelector';
+import CardSelector from '../../../../../components/UI/CardSelector';
 // libs
 import axios from 'axios';
 // context
@@ -141,49 +141,30 @@ function AddMentorPage() {
           <div className="flex">
             {filteredMentors && filteredMentors.length > 0 ? (
               filteredMentors.map((mentor) => (
-                <ItemSelector
+                <CardSelector
                   key={mentor._id}
-                  type="mentor"
-                  user={mentor}
+                  card={
+                    <MentorCard
+                      userId={mentor._id}
+                      username={mentor.username}
+                      handle={mentor.handle}
+                      description={mentor.shortDescription}
+                      country={mentor.country}
+                      teaching={mentor.teaching}
+                      profilePic={mentor.profilePic}
+                    />
+                  }
+                  btn={
+                    <BtnCTA
+                      classname="btn-light-big"
+                      label="Send request"
+                      onCLickAction={addMentor}
+                    />
+                  }
+                  itemId={mentor._id}
                   selectedId={selectedId}
                   setSelectedId={setSelectedId}
-                  addUser={addMentor}
                 />
-                // <div key={mentor._id} className="outline">
-                //   <MentorCard
-                //     // key={mentor._id}
-                //     userId={mentor._id}
-                //     username={mentor.username}
-                //     handle={mentor.handle}
-                //     description={mentor.shortDescription}
-                //     country={mentor.country}
-                //     teaching={mentor.teaching}
-                //     profilePic={mentor.profilePic}
-                //   />
-                //   <div className="addbuddy-footer">
-                //     <div className="addbuddy-action">
-                //       {mentor._id === selectedId && (
-                //         <BtnCTA
-                //           classname="btn-light-big"
-                //           label="Add mentor"
-                //           onCLickAction={addMentor}
-                //         />
-                //       )}
-                //     </div>
-                //     <div className="addbuddy-check-div">
-                //       <div
-                //         onClick={() => {
-                //           if (mentor._id === selectedId) {
-                //             setSelectedId('');
-                //           } else {
-                //             setSelectedId(mentor._id);
-                //           }
-                //         }}
-                //         className="addbuddy-check"
-                //       ></div>
-                //     </div>
-                //   </div>
-                // </div>
               ))
             ) : (
               <p>
