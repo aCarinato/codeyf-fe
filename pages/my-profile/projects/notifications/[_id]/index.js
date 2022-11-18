@@ -54,7 +54,7 @@ function ProjectNotificationPage() {
       fetchNotification();
   }, [notificationId, userId]);
 
-  console.log(notification);
+  // console.log(notification);
 
   return (
     <>

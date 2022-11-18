@@ -15,6 +15,8 @@ function ProjectNotificationsPage() {
 
   const [loading, setLoading] = useState(false);
 
+  const [localNotifications, setLocalNotifications] = useState([]);
+
   // Fetch the notifications
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -31,6 +33,7 @@ function ProjectNotificationsPage() {
           }
         );
         setGroupNotifications(res.data.notifications);
+        setLocalNotifications(res.data.notifications);
       } catch (err) {
         console.log(err);
       }
@@ -42,14 +45,14 @@ function ProjectNotificationsPage() {
   }, [authState]);
 
   // FILTER OUT NOTIFICATION FROM MYSELF!!!
-  // console.log(groupNotifications);
+  console.log(localNotifications);
   return (
     <>
       {loading ? (
         <SpinningLoader />
       ) : (
         <UserRoute>
-          {groupNotifications.map((notification) => (
+          {localNotifications.map((notification) => (
             <TeamNotification
               key={notification._id}
               notification={notification}

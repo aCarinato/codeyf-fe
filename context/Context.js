@@ -266,12 +266,13 @@ export function ContextProvider({ children }) {
       socket.current.on(
         'joinedGroupNotification',
         async ({ organiserId, userToAddId, groupId, type }) => {
-          console.log(`4) from Context.js - 'joinedGroupAsBuddyNotification`);
+          console.log(
+            `4) from Context.js - 'joinedGroupNotification' - organiserId: ${organiserId}, userToAddId: $, groupId, type: ${type}`
+          );
 
-          let newNotification;
           if (type === 'buddy') {
-            newNotification = {
-              _id: Math.random() * 10,
+            const newNotification = {
+              _id: Math.floor(Math.random() * 10),
               type: 'groupJoinedAsBuddy',
               from: organiserId,
               text: `You have been added to a new team as a buddy`,
@@ -279,9 +280,10 @@ export function ContextProvider({ children }) {
               isRead: false,
               date: Date.now(),
             };
+            setGroupNotifications((prev) => [newNotification, ...prev]);
           } else if (type === 'mentor') {
-            newNotification = {
-              _id: Math.random() * 10,
+            const newNotification = {
+              _id: Math.floor(Math.random() * 10),
               type: 'groupJoinedAsMentor',
               from: organiserId,
               text: `You have been added to a new team as a mentor`,
@@ -289,18 +291,9 @@ export function ContextProvider({ children }) {
               isRead: false,
               date: Date.now(),
             };
+            setGroupNotifications((prev) => [newNotification, ...prev]);
           }
 
-          setGroupNotifications((prev) => [newNotification, ...prev]);
-          // emit event to save notifications in the backend
-          // console.log(
-          //   `5) from Context.js - I received a notification I am going to emit 'saveGroupJoinedNotification' con is seguenti parametri:
-          //   organiserId: ${organiserId},
-          //   buddyId: ${buddyId},
-          //   groupId: ${groupId},
-
-          //   `
-          // );
           socket.current.emit('saveGroupJoinedNotification', {
             organiserId,
             userToAddId,
@@ -308,7 +301,6 @@ export function ContextProvider({ children }) {
             type,
           });
         }
-        // setNotifications()
       );
     }
   }, []);
