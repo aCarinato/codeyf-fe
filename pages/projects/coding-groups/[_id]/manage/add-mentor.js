@@ -83,6 +83,21 @@ function AddMentorPage() {
     fetchMentors();
   }, [teamMentors, authState && authState.email]);
 
+  const sendReq = () => {
+    if (socket.current) {
+      socket.current.emit('joinGroupReq', {
+        // senderId: authState.userId,
+        organiserId: authState.userId,
+        groupId: groupId,
+        userToAddId: selectedId,
+        type: 'mentor',
+      });
+      setSuccess(true);
+      // here i need to save in my array (context) of notifications to the new notification
+      // meanwhile it will be saved also in the backend
+    }
+  };
+
   const addMentor = () => {
     if (socket.current) {
       //   socket.current.emit('addMentorToGroup', {

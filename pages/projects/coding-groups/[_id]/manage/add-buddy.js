@@ -98,6 +98,21 @@ function AddBuddyPage() {
     fetchBuddies();
   }, [teamBuddies, authState && authState.email]);
 
+  const sendReq = () => {
+    if (socket.current) {
+      socket.current.emit('joinGroupReq', {
+        // senderId: authState.userId,
+        organiserId: authState.userId,
+        groupId: groupId,
+        userToAddId: selectedId,
+        type: 'buddy',
+      });
+      setSuccess(true);
+      // here i need to save in my array (context) of notifications to the new notification
+      // meanwhile it will be saved also in the backend
+    }
+  };
+
   const addBuddy = () => {
     if (socket.current) {
       socket.current.emit('addUserToGroup', {
