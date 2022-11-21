@@ -1,12 +1,13 @@
 // next react
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // own compoentns
 import UserRoute from '../../../../../components/routes/UserRoute';
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import BuddyCard from '../../../../../components/people/BuddyCard';
 import BtnCTA from '../../../../../components/UI/BtnCTA';
+import CardSelector from '../../../../../components/UI/CardSelector';
 // libs
 import axios from 'axios';
 // context
@@ -97,6 +98,21 @@ function AddBuddyPage() {
     fetchBuddies();
   }, [teamBuddies, authState && authState.email]);
 
+  const sendReq = () => {
+    if (socket.current) {
+      socket.current.emit('joinGroupReq', {
+        // senderId: authState.userId,
+        organiserId: authState.userId,
+        groupId: groupId,
+        userToAddId: selectedId,
+        type: 'buddy',
+      });
+      setSuccess(true);
+      // here i need to save in my array (context) of notifications to the new notification
+      // meanwhile it will be saved also in the backend
+    }
+  };
+
   const addBuddy = () => {
     if (socket.current) {
       socket.current.emit('addUserToGroup', {
@@ -112,6 +128,7 @@ function AddBuddyPage() {
     }
   };
 
+  // in theory this shouldn't occur because the page doesn't show users already in the group
   useEffect(() => {
     if (socket.current) {
       socket.current.on('userToAddAlreadyJoined', ({ msg }) => {
@@ -124,7 +141,7 @@ function AddBuddyPage() {
 
   const successMsg = (
     <div>
-      <p>Your request has been sent!</p>
+      <p>Your successfully added a new buddy!</p>
       <br></br>
       <Link href={`/projects/coding-groups/${groupId}`}>
         Back to the group page
@@ -156,41 +173,31 @@ function AddBuddyPage() {
           <div className="flex">
             {filteredBuddies.length > 0 ? (
               filteredBuddies.map((buddy) => (
-                <div key={buddy._id} className="outline">
-                  <BuddyCard
-                    // key={buddy._id}
-                    userId={buddy._id}
-                    username={buddy.username}
-                    handle={buddy.handle}
-                    description={buddy.shortDescription}
-                    country={buddy.country}
-                    learning={buddy.learning}
-                    profilePic={buddy.profilePic}
-                  />
-                  <div className="addbuddy-footer">
-                    <div className="addbuddy-action">
-                      {buddy._id === selectedId && (
-                        <BtnCTA
-                          classname="btn-light-big"
-                          label="Send request"
-                          onCLickAction={addBuddy}
-                        />
-                      )}
-                    </div>
-                    <div className="addbuddy-check-div">
-                      <div
-                        onClick={() => {
-                          if (buddy._id === selectedId) {
-                            setSelectedId('');
-                          } else {
-                            setSelectedId(buddy._id);
-                          }
-                        }}
-                        className="addbuddy-check"
-                      ></div>
-                    </div>
-                  </div>
-                </div>
+                <CardSelector
+                  key={buddy._id}
+                  card={
+                    <BuddyCard
+                      // key={buddy._id}
+                      userId={buddy._id}
+                      username={buddy.username}
+                      handle={buddy.handle}
+                      description={buddy.shortDescription}
+                      country={buddy.country}
+                      learning={buddy.learning}
+                      profilePic={buddy.profilePic}
+                    />
+                  }
+                  btn={
+                    <BtnCTA
+                      classname="btn-light-big"
+                      label="Send request"
+                      onCLickAction={addBuddy}
+                    />
+                  }
+                  itemId={buddy._id}
+                  selectedId={selectedId}
+                  setSelectedId={setSelectedId}
+                />
               ))
             ) : (
               <p>

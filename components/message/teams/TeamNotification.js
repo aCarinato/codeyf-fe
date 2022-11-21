@@ -41,10 +41,22 @@ function TeamNotification(props) {
       });
     }
 
+    // const userToAddId = authState.userId;
+    socket.current.emit('readGroupJoinedNotification', {
+      notificationId: notification._id,
+      // userToAddId: userToAddId,
+      // groupId: notification.groupId,
+      // type: 'buddy',
+    });
+
     if (notification.type === 'groupJoinedAsBuddy') {
+      console.log(
+        `FROM TeamNotification.js => (notification.type === 'groupJoinedAsBuddy')`
+      );
       // emit event to remove notification from backend
       const buddyId = authState.userId;
       socket.current.emit('readGroupJoinedNotification', {
+        notificationId: notification._id,
         userToAddId: buddyId,
         groupId: notification.groupId,
         type: 'buddy',
@@ -52,9 +64,13 @@ function TeamNotification(props) {
     }
 
     if (notification.type === 'groupJoinedAsMentor') {
+      console.log(
+        `FROM TeamNotification.js => (notification.type === 'groupJoinedAsMentor')`
+      );
       // emit event to remove notification from backend
       const mentorId = authState.userId;
       socket.current.emit('readGroupJoinedNotification', {
+        notificationId: notification._id,
         userToAddId: mentorId,
         groupId: notification.groupId,
         type: 'mentor',

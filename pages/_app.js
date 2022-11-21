@@ -9,7 +9,6 @@ import Layout from '../components/layout/Layout';
 // own functions
 import * as ga from '../lib/ga';
 // context
-import { useMainContext } from '../context/Context';
 import { ContextProvider } from '../context/Context';
 // import { useMainContext } from '../context/Context';
 // packages

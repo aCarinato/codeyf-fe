@@ -1,12 +1,13 @@
 // next react
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // own compoentns
 import UserRoute from '../../../../../components/routes/UserRoute';
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import MentorCard from '../../../../../components/people/MentorCard';
 import BtnCTA from '../../../../../components/UI/BtnCTA';
+import CardSelector from '../../../../../components/UI/CardSelector';
 // libs
 import axios from 'axios';
 // context
@@ -58,10 +59,6 @@ function AddMentorPage() {
           //   const userEmail = authState.email;
           let allMentors = res.data.mentors;
           let filteredMentors = allMentors.filter((mentor) => {
-            // exclude organiser
-            // let isNotOrganiserCondition;
-            // isNotOrganiserCondition = buddy.email !== userEmail;
-
             // exclude users already in the group
             let alreadyMentorCondition;
             // check if in allBuddies is included some teamBuddies
@@ -86,6 +83,21 @@ function AddMentorPage() {
     fetchMentors();
   }, [teamMentors, authState && authState.email]);
 
+  const sendReq = () => {
+    if (socket.current) {
+      socket.current.emit('joinGroupReq', {
+        // senderId: authState.userId,
+        organiserId: authState.userId,
+        groupId: groupId,
+        userToAddId: selectedId,
+        type: 'mentor',
+      });
+      setSuccess(true);
+      // here i need to save in my array (context) of notifications to the new notification
+      // meanwhile it will be saved also in the backend
+    }
+  };
+
   const addMentor = () => {
     if (socket.current) {
       //   socket.current.emit('addMentorToGroup', {
@@ -93,13 +105,13 @@ function AddMentorPage() {
         organiserId: authState.userId,
         groupId: groupId,
         userToAddId: selectedId,
-        // mentorId: selectedId,
         type: 'mentor',
       });
       setSuccess(true);
     }
   };
 
+  // in theory this shouldn't occur because the page doesn't show users already in the group
   useEffect(() => {
     if (socket.current) {
       socket.current.on('userToAddAlreadyJoined', ({ msg }) => {
@@ -112,7 +124,7 @@ function AddMentorPage() {
 
   const successMsg = (
     <div>
-      <p>Your request has been sent!</p>
+      <p>You successfully added a new mentor!</p>
       <br></br>
       <Link href={`/projects/coding-groups/${groupId}`}>
         Back to the group page
@@ -144,41 +156,30 @@ function AddMentorPage() {
           <div className="flex">
             {filteredMentors && filteredMentors.length > 0 ? (
               filteredMentors.map((mentor) => (
-                <div key={mentor._id} className="outline">
-                  <MentorCard
-                    // key={mentor._id}
-                    userId={mentor._id}
-                    username={mentor.username}
-                    handle={mentor.handle}
-                    description={mentor.shortDescription}
-                    country={mentor.country}
-                    teaching={mentor.teaching}
-                    profilePic={mentor.profilePic}
-                  />
-                  <div className="addbuddy-footer">
-                    <div className="addbuddy-action">
-                      {mentor._id === selectedId && (
-                        <BtnCTA
-                          classname="btn-light-big"
-                          label="Add mentor"
-                          onCLickAction={addMentor}
-                        />
-                      )}
-                    </div>
-                    <div className="addbuddy-check-div">
-                      <div
-                        onClick={() => {
-                          if (mentor._id === selectedId) {
-                            setSelectedId('');
-                          } else {
-                            setSelectedId(mentor._id);
-                          }
-                        }}
-                        className="addbuddy-check"
-                      ></div>
-                    </div>
-                  </div>
-                </div>
+                <CardSelector
+                  key={mentor._id}
+                  card={
+                    <MentorCard
+                      userId={mentor._id}
+                      username={mentor.username}
+                      handle={mentor.handle}
+                      description={mentor.shortDescription}
+                      country={mentor.country}
+                      teaching={mentor.teaching}
+                      profilePic={mentor.profilePic}
+                    />
+                  }
+                  btn={
+                    <BtnCTA
+                      classname="btn-light-big"
+                      label="Send request"
+                      onCLickAction={addMentor}
+                    />
+                  }
+                  itemId={mentor._id}
+                  selectedId={selectedId}
+                  setSelectedId={setSelectedId}
+                />
               ))
             ) : (
               <p>
