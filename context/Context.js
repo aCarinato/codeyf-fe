@@ -266,9 +266,9 @@ export function ContextProvider({ children }) {
       socket.current.on(
         'joinedGroupNotification',
         async ({ organiserId, userToAddId, groupId, type }) => {
-          console.log(
-            `4) from Context.js - 'joinedGroupNotification' - organiserId: ${organiserId}, userToAddId: $, groupId, type: ${type}`
-          );
+          // console.log(
+          //   `4) from Context.js - 'joinedGroupNotification' - organiserId: ${organiserId}, userToAddId: $, groupId, type: ${type}`
+          // );
 
           if (type === 'buddy') {
             const newNotification = {
