@@ -83,7 +83,7 @@ function SelfAssignmentPage() {
     const file = e.target.files[0];
     let formData = new FormData();
     formData.append('image', file);
-    console.log([...formData]);
+    // console.log([...formData]);
     try {
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/user/upload-image`,
@@ -122,7 +122,7 @@ function SelfAssignmentPage() {
     }
     // the total number of people should be > 1 ie at least 2! It can be 2 buddies or 1 buddy 1 mentor. CHECK THAT TOO
     // THE ABOVE IS JUST A BASIC INPUT VALIDATION !! - MUST BE IMPROVED
-    console.log(inputIsValid);
+    // console.log(inputIsValid);
     if (inputIsValid) {
       const newGroup = {
         organiser: '',
@@ -150,7 +150,7 @@ function SelfAssignmentPage() {
             },
           }
         );
-        console.log(res.data.success);
+        // console.log(res.data.success);
         if (res.data.success) {
           setSuccess(true);
           setNewGroupId(res.data.newGroupId);
@@ -247,7 +247,7 @@ function SelfAssignmentPage() {
             options={allTopics}
             onChange={(e) => {
               if (e.target.value !== 'null-value') {
-                console.log(e.target.value);
+                // console.log(e.target.value);
                 setTopics((prev) => {
                   let idx = topics
                     .map((topic) => topic._id)
