@@ -16,27 +16,23 @@ function AddStepsFields(props) {
       //   );
       if (prev[stepIndex].tasks.length === 0) {
         prev[stepIndex].tasks.push({
-          participantId: roleID,
-          names: e.target.value,
+          roleId: roleID,
+          roleTasks: e.target.value,
         });
-        // return [...prev];
       } else {
         const roleIndex = prev[stepIndex].tasks
-          .map((item) => item.participantId)
+          .map((item) => item.roleId)
           .indexOf(roleID);
 
         if (roleIndex === -1) {
           // console.log('The array wasn not empty but this roleID was not present');
           prev[stepIndex].tasks.push({
-            participantId: roleID,
-            names: e.target.value,
+            roleId: roleID,
+            roleTasks: e.target.value,
           });
-          //   return [...prev];
         } else {
           // console.log(tempInputStep[stepIndex].tasks[roleID]);
-          prev[stepIndex].tasks[roleID].names = e.target.value;
-          //   return [...prev];
-          // console.log(tempInputStep);
+          prev[stepIndex].tasks[roleID].roleTasks = e.target.value;
         }
       }
       return [...prev];

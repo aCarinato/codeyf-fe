@@ -117,10 +117,10 @@ function AddIdealTeamFields(props) {
 
                     setSteps((prev) => {
                       prev.map((elem) => {
-                        const participantIndex = elem.tasks
-                          .map((task) => task.participantId)
+                        const roleIndex = elem.tasks
+                          .map((task) => task.roleId)
                           .indexOf(item.idx);
-                        elem.tasks.splice(participantIndex, 1);
+                        elem.tasks.splice(roleIndex, 1);
                       });
                       return [...prev];
                     });
