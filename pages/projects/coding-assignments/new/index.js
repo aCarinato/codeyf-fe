@@ -4,7 +4,10 @@ import { useState } from 'react';
 import TextInput from '../../../../components/UI/form/TextInput';
 import TextArea from '../../../../components/UI/form/TextArea';
 import OneColAddField from '../../../../components/UI/form/OneColAddField';
-import UserRoute from '../../../../components/routes/UserRoute';
+import AddMockupFields from '../../../../components/assignements/NewAssignment/AddMockupFields';
+import AddIdealTeamFields from '../../../../components/assignements/NewAssignment/AddIdealTeamFields';
+import AddStepsFields from '../../../../components/assignements/NewAssignment/AddStepsFields';
+// import UserRoute from '../../../../components/routes/UserRoute';
 
 function CreateNewAssignmentPage() {
   const [name, setName] = useState('');
@@ -14,10 +17,14 @@ function CreateNewAssignmentPage() {
   const [mockups, setMockups] = useState([
     { idx: '0', caption: '', img_url: '' },
   ]);
+  const [idealTeam, setIdealTeam] = useState([
+    { idx: '0', nPeople: 0, role: '' },
+  ]);
+  const [steps, setSteps] = useState([{ idx: '1', n: '1', tasks: [] }]);
   //   new assignment
   const [success, setSuccess] = useState(false);
 
-  //   console.log(requirements);
+  //   console.log(mockups);
 
   return (
     <>
@@ -47,41 +54,21 @@ function CreateNewAssignmentPage() {
         onChange={(e) => setDescription(e.target.value)}
       />
       <br></br>
+      <AddMockupFields mockups={mockups} setMockups={setMockups} />
+      <br></br>
       <OneColAddField
         label="requirements"
         values={requirements}
         setValues={setRequirements}
       />
       <br></br>
-      <div>
-        <p className="form-label">Mockups</p>
-        <div className="flex">
-          <div className="center-text">#</div>
-          <div className="center-text">Caption</div>
-          <div className="center-text">image</div>
-          <div className="center-text">
-            <button
-              className="btn-circle"
-              onClick={() =>
-                setMockups((prev) => {
-                  let currentID = prev.length;
-                  const ids = prev.map((item) => Number(item.idx));
-                  if (ids.includes(currentID))
-                    currentID = (Math.max(...ids) + 1).toString();
-                  const newMockup = {
-                    idx: currentID.toString(),
-                    caption: '',
-                    img_url: '',
-                  };
-                  return [...prev, newMockup];
-                })
-              }
-            >
-              +
-            </button>
-          </div>
-        </div>
-      </div>
+      <AddIdealTeamFields
+        idealTeam={idealTeam}
+        setIdealTeam={setIdealTeam}
+        setSteps={setSteps}
+      />
+      <br></br>
+      <AddStepsFields steps={steps} setSteps={setSteps} idealTeam={idealTeam} />
     </>
   );
 }
