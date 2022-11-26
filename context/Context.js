@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 // packages
 import axios from 'axios';
 import io from 'socket.io-client';
+import { isJwtExpired } from 'jwt-check-expiration';
 // OWN FUNCTS
 import getUserInfo from '../lib/helper/chats/getUserInfo';
 // import { useRouter } from 'next/router';
@@ -57,6 +58,20 @@ export function ContextProvider({ children }) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (authState.token.length > 0) {
+      // console.log('isExpired is:', isJwtExpired(authState.token));
+      localStorage.removeItem('codeyful-user-auth');
+      setAuthState({
+        userId: '',
+        username: '',
+        email: '',
+        token: '',
+        isAdmin: '',
+      });
+    }
+  }, [authState]);
 
   // SOCKET
   const [chats, setChats] = useState([]);

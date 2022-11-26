@@ -79,7 +79,7 @@ function AddStepsFields(props) {
               <textarea
                 className="width-80"
                 type="text"
-                rows="2"
+                rows="3"
                 // cols="25"
                 onChange={(e) => handleChangeSteps(e, item.idx, '1')}
               />
@@ -110,7 +110,7 @@ function AddStepsFields(props) {
                     <div className="center-text">
                       <textarea
                         type="text"
-                        rows="2"
+                        rows="3"
                         className="width-80"
                         // cols="25"
                         onChange={(e) =>

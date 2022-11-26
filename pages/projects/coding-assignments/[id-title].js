@@ -7,26 +7,36 @@ import { assignements } from '../../../data/assignements';
 import { people } from '../../../data/people';
 // own components
 import Rating from '../../../components/UI/Rating';
+// libs
+import axios from 'axios';
 
 function AssignementScreen() {
   const router = useRouter();
   const { query } = router;
 
   const queryVal = query['id-title'];
-  let postID;
+  let assignmentID;
   if (queryVal) {
-    postID = queryVal.split('-')[0];
+    assignmentID = queryVal.split('-')[0];
   }
 
   const [assignement, setAssignement] = useState({});
   const [creator, setCreator] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // console.log(query['id-title']);
-  const fetchAssignement = () => {
-    const selectedAssignement = assignements.filter(
-      (assignement) => assignement._id === postID
-    )[0];
-    setAssignement(selectedAssignement);
+  const fetchAssignement = async () => {
+    setLoading(true);
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API}/assignments/${assignmentID}`
+    );
+    console.log(res);
+    setAssignement(res.data.assignment);
+    setLoading(false);
+    // const selectedAssignement = assignements.filter(
+    //   (assignement) => assignement._id === assignmentID
+    // )[0];
+    // setAssignement(selectedAssignement);
   };
 
   const fetchCreator = () => {
@@ -39,8 +49,12 @@ function AssignementScreen() {
   };
 
   useEffect(() => {
-    fetchAssignement();
-  }, [postID]);
+    if (assignmentID !== undefined && assignmentID.length > 0) {
+      fetchAssignement();
+    }
+  }, [assignmentID]);
+
+  // console.log(assignement);
 
   useEffect(() => {
     fetchCreator();
@@ -48,10 +62,10 @@ function AssignementScreen() {
 
   return (
     assignement &&
-    assignement.title && (
+    assignement.name && (
       <Fragment>
         <div className="flex flex-justify-space-between">
-          <h2>{assignement.title}</h2>
+          <h2>{assignement.name}</h2>
           {creator && creator.username && (
             <p>
               posted by:{' '}
@@ -65,33 +79,39 @@ function AssignementScreen() {
         <div className="flex flex-justify-space-between">
           <div>
             <h4>Description:</h4>
-            <p>{assignement.shortDescription}</p>
+            <p>{assignement.headline}</p>
           </div>
           <div>
             <h4>Difficulty:</h4>
-            <p>{assignement.difficulty.label}</p>
+            <p>
+              {assignement.difficulty === '0'
+                ? 'Beginner'
+                : assignement.difficulty === '1'
+                ? 'Intermediate'
+                : 'Advanced'}
+            </p>
           </div>
           <div>
             <h4>Max. number of participants:</h4>
-            <p>{assignement.maxParticipants.label}</p>
+            <p>{assignement.maxTeamMemebers}</p>
           </div>
         </div>
         <br></br>
         <div>
           <h4>Details</h4>
-          <p>{assignement.fullDescription}</p>
+          <p>{assignement.description}</p>
         </div>
         <br></br>
         <h4>Functionalities required for successful completion</h4>
         <ul>
-          {assignement.goals.map((item) => (
-            <li key={item._id}>{item.label}</li>
+          {assignement.requirements.map((item) => (
+            <li key={item._id}>{item.requirement}</li>
           ))}
         </ul>
         <br></br>
         <h4>Tech stack:</h4>
         <div className="flex flex-justify-flex-start">
-          {assignement.stack.map((item) => (
+          {assignement.learning.map((item) => (
             <span key={item._id} className={`tech-span`}>
               {item.label}
             </span>
@@ -118,10 +138,10 @@ function AssignementScreen() {
             </tr>
           </thead>
           <tbody>
-            {assignement.idealConfig.map((item) => (
+            {assignement.idealTeam.map((item) => (
               <tr key={item._id}>
-                <td>{item._id}</td>
-                <td>{item.n}</td>
+                <td>{item.idx}</td>
+                <td>{item.nPeople}</td>
                 <td>{item.role}</td>
               </tr>
             ))}
@@ -138,27 +158,28 @@ function AssignementScreen() {
             </tr>
           </thead>
           <tbody>
-            {assignement.steps.map((item) =>
-              item.tasks.map((task) => (
-                <tr key={task.participantId}>
-                  {item.tasks.indexOf(task) === 0 && (
+            {assignement.steps.map((step) =>
+              step.tasks.map((task) => (
+                <tr key={task.roleId}>
+                  {step.tasks.indexOf(task) === 0 && (
                     // <td rowSpan={assignement.maxParticipants.toString()}>
-                    <td rowSpan={assignement.idealConfig.length}>{item.n}</td>
+                    <td rowSpan={step.tasks.length}>{step.n}</td>
                   )}
-                  <td>{task.participantId}</td>
+                  <td>{task.roleId}</td>
                   <td>
-                    <ul>
-                      {task.names.map((taskName, index) => (
+                    {task.roleTasks}
+                    {/* <ul>
+                      {task.roleTasks.map((taskName, index) => (
                         <li key={index}>{taskName}</li>
                       ))}
-                    </ul>
+                    </ul> */}
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
-        <br></br>
+        {/* <br></br>
         <div>
           <h4>GitHub repo (completed code):</h4>
           <p>
@@ -171,7 +192,6 @@ function AssignementScreen() {
           <table>
             <thead>
               <tr>
-                {/* <th>Name</th> */}
                 <th>Type</th>
                 <th>Link</th>
               </tr>
@@ -179,7 +199,6 @@ function AssignementScreen() {
             <tbody>
               {assignement.resources.map((resource) => (
                 <tr key={resource._id}>
-                  {/* <td>{resource.name}</td> */}
                   <td>{resource.type}</td>
                   <td>
                     <a href={`${resource.link}`}>{resource.name}</a>
@@ -189,8 +208,8 @@ function AssignementScreen() {
             </tbody>
           </table>
         </div>
-        <br></br>
-        <div>
+        <br></br> */}
+        {/* <div>
           <h4>Reviews</h4>
           {assignement.reviews.map((review) => (
             <div key={review._id}>
@@ -205,7 +224,7 @@ function AssignementScreen() {
               <br></br>
             </div>
           ))}
-        </div>
+        </div> */}
         <br></br>
       </Fragment>
     )

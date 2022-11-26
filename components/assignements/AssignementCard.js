@@ -15,7 +15,7 @@ function AssignementCard(props) {
     reviews,
   } = props;
 
-  const average = averageRate(reviews);
+  // const average = averageRate(reviews);
 
   return (
     <div className="main-card-container">
@@ -50,9 +50,9 @@ function AssignementCard(props) {
             </a>
           </Link>
         </div>
-        <div>
+        {/* <div>
           {average} <Icon icon="ant-design:star-filled" />
-        </div>
+        </div> */}
       </div>
     </div>
   );

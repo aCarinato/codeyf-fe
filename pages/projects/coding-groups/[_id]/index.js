@@ -13,7 +13,7 @@ import BtnCTA from '../../../../components/UI/BtnCTA';
 import { useMainContext } from '../../../../context/Context';
 
 function GroupPage() {
-  const { authState } = useMainContext();
+  const { authState, chats, setChats } = useMainContext();
 
   const router = useRouter();
   const { query } = router;
@@ -23,7 +23,7 @@ function GroupPage() {
   const [loading, setLoading] = useState(false);
 
   //   people
-  const [organiser, setOrganiser] = useState({});
+  // const [organiser, setOrganiser] = useState({});
   const [buddies, setBuddies] = useState([]);
   const [mentor, setMentor] = useState({});
 
@@ -35,7 +35,7 @@ function GroupPage() {
       );
       // console.log(res);
       setGroup(res.data.group);
-      setOrganiser(res.data.group.organiser);
+      // setOrganiser(res.data.group.organiser);
       setBuddies(res.data.group.buddies);
       setMentor(res.data.group.mentors[0]);
       setLoading(false);
@@ -55,20 +55,22 @@ function GroupPage() {
       // console.log(user);
       const alreadyInChat =
         chats.length > 0 &&
-        chats.filter((chat) => chat.messagesWith === group.organiser).length >
-          0;
+        chats.filter((chat) => chat.messagesWith === group.organiser._id)
+          .length > 0;
 
       if (alreadyInChat) {
-        return router.push(`/my-profile/chats?message=${group.organiser}`);
+        return router.push(`/my-profile/chats?message=${group.organiser._id}`);
       }
       //
       else {
         const newChat = {
-          messagesWith: group.organiser,
-          username: organiser.username,
+          messagesWith: group.organiser._id,
+          username: group.organiser.username,
           profilePicUrl:
-            profilePic && profilePic.url && profilePic.url !== ''
-              ? profilePic.url
+            group.organiser.profilePic &&
+            group.organiser.profilePic.url &&
+            group.organiser.profilePic.url !== ''
+              ? group.organiser.profilePic.url
               : '/img/default-pic.png',
           lastMessage: '',
           date: Date.now(),
@@ -77,7 +79,7 @@ function GroupPage() {
         setChats((prev) => [newChat, ...prev]);
 
         return router.push(
-          `/my-profile/chats?message=${group.organiser}`,
+          `/my-profile/chats?message=${group.organiser._id}`,
           undefined,
           {
             shallow: true,
@@ -149,7 +151,7 @@ function GroupPage() {
 
   // CTA
   let sectionCTA;
-  if (organiser._id !== authState.userId) {
+  if (group && group.organiser && group.organiser._id !== authState.userId) {
     if (
       buddyAvailbilityStatus === 'filled' &&
       mentorAvailbilityStatus === 'available'
@@ -238,22 +240,22 @@ function GroupPage() {
 
           <h4>Organiser:</h4>
           <br></br>
-          {group.organiser && organiser !== {} && organiser.username && (
+          {group.organiser && group.organiser.username && (
             <div className="grid grid--2cols">
               <div>
                 <BuddyCard
-                  key={organiser._id}
-                  userId={organiser._id}
-                  username={organiser.username}
-                  handle={organiser.handle}
-                  description={organiser.shortDescription}
-                  country={organiser.country}
-                  learning={organiser.learning}
-                  profilePic={organiser.profilePic}
+                  key={group.organiser._id}
+                  userId={group.organiser._id}
+                  username={group.organiser.username}
+                  handle={group.organiser.handle}
+                  description={group.organiser.shortDescription}
+                  country={group.organiser.country}
+                  learning={group.organiser.learning}
+                  profilePic={group.organiser.profilePic}
                 />
               </div>
               <div>
-                {organiser._id === authState.userId && (
+                {group.organiser._id === authState.userId && (
                   <p>
                     <Link href={`/projects/coding-groups/${groupId}/manage`}>
                       Manage group

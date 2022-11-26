@@ -1,0 +1,26 @@
+.box-0 {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.number-col {
+  width: 10%;
+  text-align: center;
+  /* align-content: center; */
+}
+
+.text-input-col {
+  width: 70%;
+}
+
+.text-input {
+  width: 100%;
+}
+
+.btn-col {
+  width: 10%;
+  text-align: center;
+}

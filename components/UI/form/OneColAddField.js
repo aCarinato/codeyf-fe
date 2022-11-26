@@ -1,12 +1,14 @@
+import classes from './OneColAddField.module.css';
+
 function OneColAddField(props) {
   const { label, values, setValues } = props;
   return (
     <div>
       <p className="form-label">Requirements for successful completion</p>
-      <div className="flex">
-        <div className="center-text">#</div>
-        <div className="center-text">{label}</div>
-        <div className="center-text">
+      <div className={classes['box-0']}>
+        <div className={classes['number-col']}>#</div>
+        <div className={classes['text-input-col']}>{label}</div>
+        <div className={classes['btn-col']}>
           <button
             className="btn-circle"
             onClick={() =>
@@ -28,11 +30,11 @@ function OneColAddField(props) {
         </div>
       </div>
 
-      <div className="flex">
-        <div className="center-text">1</div>
-        <div className="center-text ">
+      <div className={classes['box-0']}>
+        <div className={classes['number-col']}>1</div>
+        <div className={classes['text-input-col']}>
           <input
-            className="width-80"
+            className={classes['text-input']}
             type="text"
             id="0"
             onChange={(e) =>
@@ -46,17 +48,17 @@ function OneColAddField(props) {
             }
           />
         </div>
-        <div className="center-text"></div>
+        <div className={classes['btn-col']}></div>
       </div>
 
       {values.map(
         (item, index) =>
           item.idx !== '0' && (
-            <div className="flex" key={item.idx}>
-              <div className="center-text">{index + 1}</div>
-              <div className="center-text ">
+            <div className={classes['box-0']} key={item.idx}>
+              <div className={classes['number-col']}>{index + 1}</div>
+              <div className={classes['text-input-col']}>
                 <input
-                  className="width-80"
+                  className={classes['text-input']}
                   type="text"
                   // ------------------------- //
                   // CHECK CAREFULLY THIS ID!!
@@ -75,7 +77,7 @@ function OneColAddField(props) {
                   }
                 />
               </div>
-              <div className="center-text">
+              <div className={classes['btn-col']}>
                 <button
                   className="btn-circle"
                   onClick={() =>

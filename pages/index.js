@@ -19,6 +19,7 @@ function HomePage() {
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [assignements, setAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // MESSAGING
@@ -99,39 +100,21 @@ function HomePage() {
     fetchGroups();
   }, []);
 
-  // const closeModal = () => {
-  //   setShowMsgForm(false);
-  // };
+  const fetchAssignments = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/assignments/`
+      );
+      setAssignments(res.data.assignments);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // const handleStartConversation = async () => {
-  //   // console.log(recipient);
-  //   // console.log(message);
-  //   try {
-  //     // setLoading(true);
-  //     const newMsg = {
-  //       recipient,
-  //       message,
-  //     };
-  //     const res = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_API}/message/start-conversation`,
-  //       newMsg,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authState.token}`,
-  //         },
-  //       }
-  //     );
-  //     // console.log(res);
-  //     if (res.data.success) {
-  //       // console.log('SULCESSO!');
-  //       setMessage('');
-  //       setSuccessMsg(true);
-  //     }
-  //     // setLoading(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   return (
     <Fragment>

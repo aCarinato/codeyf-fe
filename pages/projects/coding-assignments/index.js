@@ -10,16 +10,19 @@ import AssignementFilterMobile from '../../../components/assignements/Assignemen
 import { functFilterAssignements } from '../../../lib/helper/assignements/filterFunction';
 // import { averageRate } from '../../../lib/helper/reviewFunctions';
 // data
-import { assignements } from '../../../data/assignements';
+// import { assignements } from '../../../data/assignements';
 import { allDifficulty } from '../../../data/assignements/allDifficulty';
 import { allParticipants } from '../../../data/assignements/allParticipants';
 import { allStack } from '../../../data/assignements/allStack';
 // context
 import { useMainContext } from '../../../context/Context';
+// libs
+import axios from 'axios';
 
 function AssignmentsScreen() {
   const { mobileView } = useMainContext();
   const router = useRouter();
+  const [assignments, setAssignments] = useState([]);
   const [filteredAssignements, setFilteredAssignements] = useState([]);
 
   // FILTER
@@ -29,14 +32,30 @@ function AssignmentsScreen() {
   // mobile filter
   const [showFilter, setShowFilter] = useState(false);
 
+  const fetchAssignments = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/assignments/`
+      );
+      setFilteredAssignements(res.data.assignments);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    setFilteredAssignements(assignements);
+    fetchAssignments();
   }, []);
+
+  // useEffect(() => {
+  //   setFilteredAssignements(assignments);
+  // }, []);
 
   useEffect(() => {
     if (!mobileView) {
       functFilterAssignements(
-        assignements,
+        assignments,
         difficultyCheckedIndex,
         participantsCheckedIndex,
         stackCheckedIndex,
@@ -47,7 +66,7 @@ function AssignmentsScreen() {
 
   const mobileFilterAssignements = () => {
     functFilterAssignements(
-      assignements,
+      assignments,
       difficultyCheckedIndex,
       participantsCheckedIndex,
       stackCheckedIndex,
@@ -107,7 +126,7 @@ function AssignmentsScreen() {
               label="Add New Assignment"
               classname="btn-dark"
               onCLickAction={() =>
-                router.push('/projects/coding-assignments/create-assignment')
+                router.push('/projects/coding-assignments/new')
               }
             />
           </div>
@@ -126,11 +145,11 @@ function AssignmentsScreen() {
               <AssignementCard
                 key={assignement._id}
                 id={assignement._id}
-                title={assignement.title}
-                description={assignement.shortDescription}
+                title={assignement.name}
+                description={assignement.headline}
                 difficulty={assignement.difficulty.label}
-                maxParticipants={assignement.maxParticipants.label}
-                stack={assignement.stack}
+                maxParticipants={assignement.maxTeamMemebers}
+                stack={assignement.learning}
                 reviews={assignement.reviews}
               />
             ))}{' '}
