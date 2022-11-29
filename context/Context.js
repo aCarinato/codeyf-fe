@@ -87,7 +87,7 @@ export function ContextProvider({ children }) {
       console.log(difference + ' days');
       console.log(difference > -4);
     }
-  }, []);
+  }, [authState.token.length]);
 
   useEffect(() => {
     if (authState.token.length > 0) {
@@ -103,7 +103,7 @@ export function ContextProvider({ children }) {
         });
       }
     }
-  }, []);
+  }, [authState.token.length]);
 
   // SOCKET
   const [chats, setChats] = useState([]);
