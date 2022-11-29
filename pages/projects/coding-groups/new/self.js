@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 // own components
 import TextInput from '../../../../components/UI/form/TextInput';
 import NumberInput from '../../../../components/UI/form/NumberInput';
+import DateInput from '../../../../components/UI/form/DateInput';
 import TextArea from '../../../../components/UI/form/TextArea';
 import ImgUploader from '../../../../components/UI/form/ImgUploader';
 import RadioBox from '../../../../components/UI/form/RadioBox';
@@ -27,6 +28,7 @@ function SelfAssignmentPage() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [nBuddies, setNBuddies] = useState('');
+  const [deadline, setDeadline] = useState('');
   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
   const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
   const [mentorRequired, setMentorRequired] = useState(null);
@@ -128,6 +130,7 @@ function SelfAssignmentPage() {
         organiser: '',
         name,
         description,
+        deadline,
         nBuddies,
         buddies: [],
         //   buddiesFilled: { type: Boolean, default: false },
@@ -175,6 +178,16 @@ function SelfAssignmentPage() {
     </div>
   );
 
+  // date setting
+  const today = new Date();
+  // const todayISO = today.toISOString().split('T')[0];
+  const nDaysToAdd = 1;
+  const newDateTimestamp = today.setDate(today.getDate() + nDaysToAdd); //takes care of changing month if necessary
+  const minDate = new Date(newDateTimestamp);
+  const minDateISO = minDate.toISOString().split('T')[0];
+  // console.log(`today.getDate(): ${today.getDate()}`);
+  // console.log(minDateISO);
+
   return (
     <UserRoute>
       {success ? (
@@ -213,6 +226,16 @@ function SelfAssignmentPage() {
             onChange={(e) => setNBuddies(e.target.value)}
           />
           <br></br>
+          <DateInput
+            required={true}
+            label="Deadline"
+            min={minDateISO}
+            value={deadline}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setDeadline(e.target.value);
+            }}
+          />
           <br></br>
           <RadioBox
             required={true}

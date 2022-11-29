@@ -30,7 +30,7 @@ function AssignementScreen() {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_API}/assignments/${assignmentID}`
     );
-    console.log(res);
+    // console.log(res);
     setAssignement(res.data.assignment);
     setLoading(false);
   };
@@ -87,6 +87,16 @@ function AssignementScreen() {
                 : 'Advanced'}
             </p>
           </div>
+          {assignement.completionTime && (
+            <div>
+              <h4>Approx. completion time (couple hours a day)</h4>
+              <p>
+                {assignement.completionTime < 7
+                  ? `${assignement.completionTime} days`
+                  : `${Math.ceil(assignement.completionTime / 7)} weeks`}
+              </p>
+            </div>
+          )}
           <div>
             <h4>Max. number of participants:</h4>
             <p>{assignement.maxTeamMemebers}</p>

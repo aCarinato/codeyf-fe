@@ -65,7 +65,7 @@ export function ContextProvider({ children }) {
     // Discard the time and time-zone information.
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
+    // can be used Math.round
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
   }
 
@@ -84,15 +84,15 @@ export function ContextProvider({ children }) {
         b = new Date(),
         difference = dateDiffInDays(a, b);
 
-      console.log(difference + ' days');
-      console.log(difference > -4);
+      // console.log(difference + ' days');
+      // console.log(difference > -4);
     }
   }, [authState.token.length]);
 
   useEffect(() => {
     if (authState.token.length > 0) {
       if (isJwtExpired(authState.token)) {
-        console.log('isExpired is:', isJwtExpired(authState.token));
+        // console.log('isExpired is:', isJwtExpired(authState.token));
         localStorage.removeItem('codeyful-user-auth');
         setAuthState({
           userId: '',

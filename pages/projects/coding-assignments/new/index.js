@@ -4,6 +4,7 @@ import { useState } from 'react';
 import TextInput from '../../../../components/UI/form/TextInput';
 import TextArea from '../../../../components/UI/form/TextArea';
 import RadioBox from '../../../../components/UI/form/RadioBox';
+import CompletionTime from '../../../../components/assignements/NewAssignment/CompletionTime';
 import Select from '../../../../components/UI/form/Select';
 import Selections from '../../../../components/UI/form/Selections';
 import OneColAddField from '../../../../components/UI/form/OneColAddField';
@@ -29,6 +30,7 @@ function CreateNewAssignmentPage() {
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState('');
+  const [completionTime, setCompletionTime] = useState('');
   const [repo, setRepo] = useState('');
   const [topics, setTopics] = useState([]);
   const [learning, setLearning] = useState([]);
@@ -53,7 +55,7 @@ function CreateNewAssignmentPage() {
   //   new assignment
   const [success, setSuccess] = useState(false);
 
-  //   console.log(topics);
+  // console.log(completionTime);
 
   const createAssignment = async () => {
     // VALIDATIONS
@@ -64,6 +66,7 @@ function CreateNewAssignmentPage() {
       headline,
       description,
       difficulty,
+      completionTime,
       repo,
       topics,
       learning,
@@ -149,7 +152,8 @@ function CreateNewAssignmentPage() {
             name="difficulty"
             onChange={(e) => setDifficulty(e.target.value)}
           />
-
+          <br></br>
+          <CompletionTime setCompletionTime={setCompletionTime} />
           <br></br>
           <Select
             required={true}
