@@ -87,7 +87,7 @@ export function ContextProvider({ children }) {
       // console.log(difference + ' days');
       // console.log(difference > -4);
     }
-  }, [authState]);
+  }, []);
 
   useEffect(() => {
     if (authState.token.length > 0) {
