@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import { isJwtExpired } from 'jwt-check-expiration';
+import jwt from 'jsonwebtoken';
 // OWN FUNCTS
 import getUserInfo from '../lib/helper/chats/getUserInfo';
 // import { useRouter } from 'next/router';
@@ -22,8 +23,7 @@ export function ContextProvider({ children }) {
   const [messages, setMessages] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [groupNotifications, setGroupNotifications] = useState([]);
-  const [groupNotificationsFrom, setGroupNotificationsFrom] = useState([]);
-  const [groupNotificationsTo, setGroupNotificationsTo] = useState([]);
+  // const [groupNotificationsFrom, setGroupNotificationsFrom] = useState([]);
 
   // current logged in user
   const [currentUser, setCurrentUser] = useState(null);
@@ -59,17 +59,49 @@ export function ContextProvider({ children }) {
     }
   }, []);
 
+  // a and b are javascript Date objects
+  function dateDiffInDays(a, b) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+
+  // DECODE TOKEN
+  useEffect(() => {
+    if (authState.token !== '' && authState.token.length > 0) {
+      const decodedToken = jwt.verify(
+        authState.token,
+        process.env.NEXT_PUBLIC_JWT_SECRET
+      );
+      // console.log(`decodedToken.exp: ${decodedToken.iat * 1000}`);
+      const exp = new Date(decodedToken.exp * 1000);
+      // const currTimeStamp = new Date().getTime();
+      // test it
+      const a = new Date(decodedToken.exp * 1000),
+        b = new Date(),
+        difference = dateDiffInDays(a, b);
+
+      // console.log(difference + ' days');
+      // console.log(difference > -4);
+    }
+  }, [authState]);
+
   useEffect(() => {
     if (authState.token.length > 0) {
-      // console.log('isExpired is:', isJwtExpired(authState.token));
-      localStorage.removeItem('codeyful-user-auth');
-      setAuthState({
-        userId: '',
-        username: '',
-        email: '',
-        token: '',
-        isAdmin: '',
-      });
+      if (isJwtExpired(authState.token)) {
+        // console.log('isExpired is:', isJwtExpired(authState.token));
+        localStorage.removeItem('codeyful-user-auth');
+        setAuthState({
+          userId: '',
+          username: '',
+          email: '',
+          token: '',
+          isAdmin: '',
+        });
+      }
     }
   }, [authState]);
 
@@ -82,10 +114,6 @@ export function ContextProvider({ children }) {
         // if (currentUser && currentUser._id.length > 0) {
         // const userId = authState.userId;
 
-        // // SHOULD BE A PRIVATE ROUTE !!!
-        // const res = await axios.get(
-        //   `${process.env.NEXT_PUBLIC_API}/chats/${userId}`
-        // );
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/chats`, {
           headers: {
             Authorization: `Bearer ${authState.token}`,
@@ -320,81 +348,6 @@ export function ContextProvider({ children }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (socket.current) {
-  //     socket.current.on(
-  //       'joinedGroupAsBuddyNotification',
-  //       async ({ organiserId, buddyId, groupId }) => {
-  //         console.log(`4) from Context.js - 'joinedGroupAsBuddyNotification`);
-  //         const newNotification = {
-  //           _id: Math.random() * 10,
-  //           type: 'groupJoinedAsBuddy',
-  //           from: organiserId,
-  //           text: `You have been added to a new team`,
-  //           groupId: groupId,
-  //           isRead: false,
-  //           date: Date.now(),
-  //         };
-  //         setGroupNotifications((prev) => [newNotification, ...prev]);
-  //         // emit event to save notifications in the backend
-  //         // console.log(
-  //         //   `5) from Context.js - I received a notification I am going to emit 'saveGroupJoinedNotification' con is seguenti parametri:
-  //         //   organiserId: ${organiserId},
-  //         //   buddyId: ${buddyId},
-  //         //   groupId: ${groupId},
-
-  //         //   `
-  //         // );
-  //         socket.current.emit('saveGroupJoinedAsBuddyNotification', {
-  //           organiserId,
-  //           buddyId,
-  //           groupId,
-  //         });
-  //       }
-  //       // setNotifications()
-  //     );
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (socket.current) {
-  //     socket.current.on(
-  //       'joinedGroupAsMentorNotification',
-  //       async ({ organiserId, mentorId, groupId }) => {
-  //         console.log(`4) from Context.js - 'joinedGroupAsMentorNotification`);
-  //         const newNotification = {
-  //           _id: Math.random() * 10,
-  //           type: 'groupJoinedAsMentor',
-  //           from: organiserId,
-  //           text: `You have been added to a new team`,
-  //           groupId: groupId,
-  //           isRead: false,
-  //           date: Date.now(),
-  //         };
-  //         setGroupNotifications((prev) => [newNotification, ...prev]);
-  //         // emit event to save notifications in the backend
-  //         // console.log(
-  //         //   `5) from Context.js - I received a notification I am going to emit 'saveGroupJoinedNotification' con is seguenti parametri:
-  //         //   organiserId: ${organiserId},
-  //         //   buddyId: ${buddyId},
-  //         //   groupId: ${groupId},
-
-  //         //   `
-  //         // );
-  //         socket.current.emit('saveGroupJoinedAsMentorNotification', {
-  //           organiserId,
-  //           mentorId,
-  //           groupId,
-  //         });
-  //       }
-  //       // setNotifications()
-  //     );
-  //   }
-  // }, []);
-
-  // console.log(groupNotificationsFrom);
-  // console.log(groupNotificationsTo);
-
   // AUTH
 
   const loginHandler = (userId, username, email, token, isAdmin) => {
@@ -458,8 +411,8 @@ export function ContextProvider({ children }) {
     // groups
     groupNotifications,
     setGroupNotifications,
-    groupNotificationsFrom,
-    setGroupNotificationsFrom,
+    // groupNotificationsFrom,
+    // setGroupNotificationsFrom,
     // AUTH
     authState,
     userLogin: loginHandler,

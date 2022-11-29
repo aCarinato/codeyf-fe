@@ -33,10 +33,6 @@ function AssignementScreen() {
     console.log(res);
     setAssignement(res.data.assignment);
     setLoading(false);
-    // const selectedAssignement = assignements.filter(
-    //   (assignement) => assignement._id === assignmentID
-    // )[0];
-    // setAssignement(selectedAssignement);
   };
 
   const fetchCreator = () => {
@@ -99,13 +95,13 @@ function AssignementScreen() {
         <br></br>
         <div>
           <h4>Details</h4>
-          <p>{assignement.description}</p>
+          <p className="text-newline">{assignement.description}</p>
         </div>
         <br></br>
         <h4>Functionalities required for successful completion</h4>
         <ul>
           {assignement.requirements.map((item) => (
-            <li key={item._id}>{item.requirement}</li>
+            <li key={item._id}>{item.label}</li>
           ))}
         </ul>
         <br></br>
@@ -126,8 +122,21 @@ function AssignementScreen() {
             </span>
           ))}
         </div>
-        <br></br>
+        {assignement.repo && assignement.repo.length > 0 && (
+          <>
+            <br></br>
+            <div>
+              <h4>Source code</h4>
+              <p>
+                <a href={assignement.repo} target="_blank">
+                  link
+                </a>
+              </p>
+            </div>
+          </>
+        )}
 
+        <br></br>
         <h4>Possible team configuration (not mandatory)</h4>
         <table>
           <thead>
@@ -167,7 +176,7 @@ function AssignementScreen() {
                   )}
                   <td>{task.roleId}</td>
                   <td>
-                    {task.roleTasks}
+                    <p className="text-newline">{task.roleTasks}</p>
                     {/* <ul>
                       {task.roleTasks.map((taskName, index) => (
                         <li key={index}>{taskName}</li>

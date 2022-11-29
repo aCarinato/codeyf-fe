@@ -29,6 +29,7 @@ function CreateNewAssignmentPage() {
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState('');
+  const [repo, setRepo] = useState('');
   const [topics, setTopics] = useState([]);
   const [learning, setLearning] = useState([]);
   const [requirements, setRequirements] = useState([{ idx: '0', label: '' }]);
@@ -63,6 +64,7 @@ function CreateNewAssignmentPage() {
       headline,
       description,
       difficulty,
+      repo,
       topics,
       learning,
       requirements,
@@ -131,6 +133,13 @@ function CreateNewAssignmentPage() {
             nCols="100"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          />
+          <br></br>
+          <TextInput
+            required={true}
+            label="Source code (link to repository)"
+            value={repo}
+            onChange={(e) => setRepo(e.target.value)}
           />
           <br></br>
           <RadioBox
