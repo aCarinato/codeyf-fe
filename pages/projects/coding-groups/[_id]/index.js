@@ -27,6 +27,8 @@ function GroupPage() {
   const [buddies, setBuddies] = useState([]);
   const [mentor, setMentor] = useState({});
 
+  // console.log(group);
+
   const fetchGroup = async () => {
     try {
       setLoading(true);
@@ -226,16 +228,30 @@ function GroupPage() {
             </div>
           </div>
           <br></br>
-          <div>
-            <h4>Description:</h4>
-            <p>{group.description}</p>
-          </div>
+          {group.description && (
+            <div>
+              <h4>Description:</h4>
+              <p>{group.description}</p>
+            </div>
+          )}
           <br></br>
           <div>
             <h4>Maximum number of participants (buddies):</h4>
             <p>{group.nBuddies}</p>
           </div>
-
+          <br></br>
+          {group.deadline && (
+            <div>
+              <h4>Deadline</h4>
+              <p>
+                {new Date(group.deadline).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </p>
+            </div>
+          )}
           <br></br>
 
           <h4>Organiser:</h4>

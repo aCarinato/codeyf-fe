@@ -130,6 +130,7 @@ function SelfAssignmentPage() {
         organiser: '',
         name,
         description,
+        deadline,
         nBuddies,
         buddies: [],
         //   buddiesFilled: { type: Boolean, default: false },
@@ -178,10 +179,10 @@ function SelfAssignmentPage() {
   );
 
   // date setting
-  // const today = new Date();
+  const today = new Date();
   // const todayISO = today.toISOString().split('T')[0];
   const nDaysToAdd = 1;
-  const newDateTimestamp = new Date().setDate(today.getDate() + nDaysToAdd); //takes care of changing month if necessary
+  const newDateTimestamp = today.setDate(today.getDate() + nDaysToAdd); //takes care of changing month if necessary
   const minDate = new Date(newDateTimestamp);
   const minDateISO = minDate.toISOString().split('T')[0];
   // console.log(`today.getDate(): ${today.getDate()}`);
