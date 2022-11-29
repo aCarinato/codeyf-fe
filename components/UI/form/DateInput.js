@@ -1,4 +1,4 @@
-function NumberInput(props) {
+function DateInput(props) {
   const { required, label, value, onChange, min, max } = props;
   return (
     <div>
@@ -6,7 +6,7 @@ function NumberInput(props) {
         {label} {required && <sup>*</sup>}
       </label>
       <input
-        type="number"
+        type="date"
         value={value}
         min={min && min}
         max={max && max}
@@ -17,4 +17,4 @@ function NumberInput(props) {
   );
 }
 
-export default NumberInput;
+export default DateInput;
