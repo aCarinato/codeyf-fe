@@ -103,7 +103,7 @@ export function ContextProvider({ children }) {
         });
       }
     }
-  }, [authState]);
+  }, []);
 
   // SOCKET
   const [chats, setChats] = useState([]);
