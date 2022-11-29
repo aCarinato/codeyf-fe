@@ -85,11 +85,11 @@ function MySlider(props) {
           <AssignementCard
             key={assignement._id}
             id={assignement._id}
-            title={assignement.title}
-            description={assignement.shortDescription}
+            title={assignement.name}
+            description={assignement.headline}
             difficulty={assignement.difficulty.label}
-            maxParticipants={assignement.maxParticipants.label}
-            stack={assignement.stack}
+            maxParticipants={assignement.maxTeamMemebers}
+            stack={assignement.learning}
             reviews={assignement.reviews}
           />
         ))}

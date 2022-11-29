@@ -3,7 +3,7 @@ import React from 'react';
 function TextInput(props) {
   const { required, label, value, onChange } = props;
   return (
-    <>
+    <div>
       <label className="myform-label bold" htmlFor="short-description">
         {label} {required && <sup>*</sup>}
       </label>
@@ -33,7 +33,7 @@ function TextInput(props) {
       {field.inputIsInvalid && (
         <p className="input-error-msg">{field.inputErrorMsg}</p>
       )} */}
-    </>
+    </div>
   );
 }
 

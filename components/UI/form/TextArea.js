@@ -12,7 +12,7 @@ function TextArea(props) {
     placeholder,
   } = props;
   return (
-    <>
+    <div>
       <label className="myform-label bold">
         {label} {required && <sup>*</sup>}
       </label>
@@ -26,7 +26,7 @@ function TextArea(props) {
         // onBlur={() => setShortDescriptionTouched(true)}
         placeholder={placeholder ? placeholder : ''}
       />
-    </>
+    </div>
   );
 }
 

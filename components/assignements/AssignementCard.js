@@ -15,7 +15,7 @@ function AssignementCard(props) {
     reviews,
   } = props;
 
-  const average = averageRate(reviews);
+  // const average = averageRate(reviews);
 
   return (
     <div className="main-card-container">
@@ -38,9 +38,15 @@ function AssignementCard(props) {
       </div>
       <div className="flex">
         <div className={classes['div-45']}>
-          Max {maxParticipants} participants
+          Up to {maxParticipants} participants
         </div>
-        <div className={classes['div-45']}>{difficulty}</div>
+        <div className={classes['div-45']}>
+          {difficulty === '0'
+            ? 'Beginner'
+            : difficulty === '1'
+            ? 'Intermediate'
+            : 'Advanced'}
+        </div>
       </div>
       <div className="card-footer">
         <div className="card-footer-profile">
@@ -50,9 +56,9 @@ function AssignementCard(props) {
             </a>
           </Link>
         </div>
-        <div>
+        {/* <div>
           {average} <Icon icon="ant-design:star-filled" />
-        </div>
+        </div> */}
       </div>
     </div>
   );

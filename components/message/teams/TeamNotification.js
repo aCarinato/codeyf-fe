@@ -50,9 +50,9 @@ function TeamNotification(props) {
     });
 
     if (notification.type === 'groupJoinedAsBuddy') {
-      console.log(
-        `FROM TeamNotification.js => (notification.type === 'groupJoinedAsBuddy')`
-      );
+      // console.log(
+      //   `FROM TeamNotification.js => (notification.type === 'groupJoinedAsBuddy')`
+      // );
       // emit event to remove notification from backend
       const buddyId = authState.userId;
       socket.current.emit('readGroupJoinedNotification', {
@@ -64,9 +64,9 @@ function TeamNotification(props) {
     }
 
     if (notification.type === 'groupJoinedAsMentor') {
-      console.log(
-        `FROM TeamNotification.js => (notification.type === 'groupJoinedAsMentor')`
-      );
+      // console.log(
+      //   `FROM TeamNotification.js => (notification.type === 'groupJoinedAsMentor')`
+      // );
       // emit event to remove notification from backend
       const mentorId = authState.userId;
       socket.current.emit('readGroupJoinedNotification', {

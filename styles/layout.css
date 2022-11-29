@@ -88,8 +88,8 @@
   flex-direction: column;
 }
 
-.flex-item-grow-1 {
-  flex-grow: 1;
+.flex-item-grow-2 {
+  flex-grow: 2;
 }
 
 /* .test-column {
