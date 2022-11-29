@@ -1,0 +1,7 @@
+.box-0 {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 1rem 0;
+}
