@@ -84,15 +84,15 @@ export function ContextProvider({ children }) {
         b = new Date(),
         difference = dateDiffInDays(a, b);
 
-      // console.log(difference + ' days');
-      // console.log(difference > -4);
+      console.log(difference + ' days');
+      console.log(difference > -4);
     }
   }, []);
 
   useEffect(() => {
     if (authState.token.length > 0) {
       if (isJwtExpired(authState.token)) {
-        // console.log('isExpired is:', isJwtExpired(authState.token));
+        console.log('isExpired is:', isJwtExpired(authState.token));
         localStorage.removeItem('codeyful-user-auth');
         setAuthState({
           userId: '',
