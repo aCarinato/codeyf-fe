@@ -7,11 +7,11 @@ export function useAssignmentContext() {
 }
 
 export function AssignmentContextProvider({ children }) {
-  const [pickedAssignment, setPickedAssignment] = useState('');
-  console.log(`pickedAssignment: ${pickedAssignment}`);
+  const [pickedAssignmentId, setPickedAssignmentId] = useState('');
+  // console.log(`pickedAssignment: ${pickedAssignment}`);
   const value = {
-    pickedAssignment,
-    setPickedAssignment,
+    pickedAssignmentId,
+    setPickedAssignmentId,
   };
 
   return (

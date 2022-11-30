@@ -1,5 +1,6 @@
 // react / next
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 // own components
 import UserRoute from '../../../../components/routes/UserRoute';
 import SpinningLoader from '../../../../components/UI/SpinningLoader';
@@ -8,11 +9,9 @@ import AssignementCard from '../../../../components/assignements/AssignementCard
 import BtnCTA from '../../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
-// context
-import { useAssignmentContext } from '../../../../context/PickAssignment';
 
 function SelectAssignmentPage() {
-  const { setPickedAssignment } = useAssignmentContext();
+  const router = useRouter();
 
   const [assignements, setAssignments] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,7 +39,12 @@ function SelectAssignmentPage() {
   }, []);
 
   const selectAssignment = async () => {
-    setPickedAssignment(selectedId);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selected-assignment', selectedId);
+    }
+
+    // setPickedAssignmentId(selectedId);
+    router.push('/projects/coding-groups/new/create');
   };
 
   return (
@@ -80,7 +84,7 @@ function SelectAssignmentPage() {
               ))
             ) : (
               <p>
-                No buddies found for the filters applied. Please select
+                No assignments found for the filters applied. Please select
                 different search parameters.
               </p>
             )}

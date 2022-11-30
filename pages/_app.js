@@ -10,8 +10,6 @@ import Layout from '../components/layout/Layout';
 import * as ga from '../lib/ga';
 // context
 import { ContextProvider } from '../context/Context';
-import { AssignmentContextProvider } from '../context/PickAssignment';
-// import { useMainContext } from '../context/Context';
 // packages
 import io from 'socket.io-client';
 
@@ -51,31 +49,29 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ContextProvider>
-      <AssignmentContextProvider>
-        <Layout>
-          <Head>
-            <title>Codeyful</title>
-            <meta
-              name="description"
-              content="Connect with the coding community"
-            />
-          </Head>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
-            strategy="afterInteractive"
+      <Layout>
+        <Head>
+          <title>Codeyful</title>
+          <meta
+            name="description"
+            content="Connect with the coding community"
           />
-          <Script id="google-analytics-script" strategy="afterInteractive">
-            {`
+        </Head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics-script" strategy="afterInteractive">
+          {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
           
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');
           `}
-          </Script>
-          <Component {...pageProps} />
-        </Layout>
-      </AssignmentContextProvider>
+        </Script>
+        <Component {...pageProps} />
+      </Layout>
     </ContextProvider>
   );
 }

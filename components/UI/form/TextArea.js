@@ -3,6 +3,7 @@ import React from 'react';
 function TextArea(props) {
   const {
     required,
+    disabled = false,
     label,
     value,
     onChange,
@@ -18,6 +19,7 @@ function TextArea(props) {
       </label>
       <textarea
         type="text"
+        disabled={disabled}
         maxLength={maxLength}
         rows={nRows}
         cols={nCols}

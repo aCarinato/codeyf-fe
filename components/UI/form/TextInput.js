@@ -1,7 +1,7 @@
 import React from 'react';
 
 function TextInput(props) {
-  const { required, label, value, onChange } = props;
+  const { required, label, value, onChange, disabled = false } = props;
   return (
     <div>
       <label className="myform-label bold" htmlFor="short-description">
@@ -10,6 +10,7 @@ function TextInput(props) {
       <input
         type="text"
         value={value}
+        disabled={disabled}
         //   onChange={(e) => setName(e.target.value)}
         onChange={onChange}
       />

@@ -1,48 +1,86 @@
+// react / next
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-// import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 // own components
+import UserRoute from '../../../../components/routes/UserRoute';
+import SpinningLoader from '../../../../components/UI/SpinningLoader';
 import TextInput from '../../../../components/UI/form/TextInput';
-import NumberInput from '../../../../components/UI/form/NumberInput';
-import DateInput from '../../../../components/UI/form/DateInput';
 import TextArea from '../../../../components/UI/form/TextArea';
-import ImgUploader from '../../../../components/UI/form/ImgUploader';
+import NumberInput from '../../../../components/UI/form/NumberInput';
 import RadioBox from '../../../../components/UI/form/RadioBox';
-import Select from '../../../../components/UI/form/Select';
 import Selections from '../../../../components/UI/form/Selections';
 import BtnCTA from '../../../../components/UI/BtnCTA';
-import UserRoute from '../../../../components/routes/UserRoute';
-// data
-import { allTopics } from '../../../../data/allTopics';
-import { allTechStacks } from '../../../../data/allTechStacks';
 // libs
 import axios from 'axios';
 // context
 import { useMainContext } from '../../../../context/Context';
 
-function SelfAssignmentPage() {
+function CreateGroupPage() {
   const { authState } = useMainContext();
-
-  //   const router = useRouter()
-
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  // clear the assignment when group created
+  const [pickedAssignmentId, setPickedAssignmentId] = useState('');
+  const [assignment, setAssignment] = useState({});
+  const [loading, setLoading] = useState(false);
   const [nBuddies, setNBuddies] = useState('');
   const [deadline, setDeadline] = useState('');
   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
   const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
   const [mentorRequired, setMentorRequired] = useState(null);
-  const [topics, setTopics] = useState([]);
-  const [learning, setLearning] = useState([]);
   const [picture, setPicture] = useState({});
 
   //   new group
   const [success, setSuccess] = useState(false);
   const [newGroupId, setNewGroupId] = useState('');
 
-  //   useEffect(() => {
-  //     if (success) router.push()
-  //   }, [success])
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('selected-assignment') !== null) {
+        setPickedAssignmentId(localStorage.getItem('selected-assignment'));
+      }
+    }
+  }, []);
+
+  const fetchAssignement = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/assignments/${pickedAssignmentId}`
+      );
+      // console.log(res);
+      if (res.data.success) {
+        setAssignment(res.data.assignment);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (pickedAssignmentId !== undefined && pickedAssignmentId.length > 0) {
+      fetchAssignement();
+    }
+  }, [pickedAssignmentId]);
+
+  console.log(assignment);
+
+  // date setting
+  useEffect(() => {
+    if (assignment.completionTime && assignment.completionTime > 0) {
+      const today = new Date();
+      const nDaysToAdd = assignment.completionTime;
+      const newDateTimestamp = today.setDate(today.getDate() + nDaysToAdd); //takes care of changing month if necessary
+      //   const minDate = new Date(newDateTimestamp);
+      //   setDeadline(minDate.toISOString().split('T')[0]);
+
+      const minDate = new Date(newDateTimestamp).toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+      setDeadline(minDate);
+    }
+  }, [assignment.completionTime]);
 
   // toggle functions
   const yesOrNoOptions = [
@@ -81,26 +119,7 @@ function SelfAssignmentPage() {
     }
   };
 
-  const uploadPicture = async (e) => {
-    const file = e.target.files[0];
-    let formData = new FormData();
-    formData.append('image', file);
-    // console.log([...formData]);
-    try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/user/upload-image`,
-        formData
-      );
-      // console.log('uploaded image => ', data);
-      setPicture({
-        url: data.url,
-        public_id: data.public_id,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  //   THIS SHOULD BECOME A HELPER FUNCTION
   const createGroup = async () => {
     // verify correct inputs
     let inputIsValid = false;
@@ -128,8 +147,8 @@ function SelfAssignmentPage() {
     if (inputIsValid) {
       const newGroup = {
         organiser: '',
-        name,
-        description,
+        name: assignment.name,
+        description: assignment.headline,
         deadline,
         nBuddies,
         buddies: [],
@@ -138,8 +157,8 @@ function SelfAssignmentPage() {
         //   nMentorsRequired: { type: Number, default: 1 },
         mentors: [],
         //   mentorsFilled: { type: Boolean, default: false },
-        topics,
-        learning,
+        topics: assignment.topics,
+        learning: assignment.learning,
         picture,
       };
 
@@ -178,63 +197,70 @@ function SelfAssignmentPage() {
     </div>
   );
 
-  // date setting
-  const today = new Date();
-  // const todayISO = today.toISOString().split('T')[0];
-  const nDaysToAdd = 1;
-  const newDateTimestamp = today.setDate(today.getDate() + nDaysToAdd); //takes care of changing month if necessary
-  const minDate = new Date(newDateTimestamp);
-  const minDateISO = minDate.toISOString().split('T')[0];
-  // console.log(`today.getDate(): ${today.getDate()}`);
-  // console.log(minDateISO);
-
   return (
-    <UserRoute>
-      {success ? (
+    <>
+      {loading ? (
+        <SpinningLoader />
+      ) : success ? (
         successMsg
       ) : (
         <>
           <div className="flex">
-            <h2>Self Assignment</h2>
-            <Link href="/projects/coding-groups/new/">go back</Link>
+            <h2>Group based on {assignment.name}</h2>
+            <Link href="/projects/coding-groups/new/select-assignment">
+              go back
+            </Link>
           </div>
           <br></br>
           <TextInput
-            required={true}
-            label="Name (max 40 characters)"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            required={false}
+            label="Name"
+            value={assignment.name}
+            onChange={() => {}}
+            disabled={true}
+          />
+          <br></br>
+          <TextInput
+            required={false}
+            label="Description"
+            value={assignment.headline}
+            onChange={() => {}}
+            disabled={true}
           />
           <br></br>
           <TextArea
-            required={true}
-            label="short description (max 80 characters)"
+            required={false}
+            label="Details"
             maxLength="79"
             nRows="2"
             nCols="50"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={assignment.description}
+            disabled={true}
+            onChange={() => {}}
           />
-          <br></br>
-          <ImgUploader img={picture} uploadImg={uploadPicture} />
           <br></br>
           <NumberInput
             required={true}
-            label="Max number of buddies"
+            label={`Max number of buddies (this assignment allows for max ${assignment.maxTeamMemebers} but it's possible to choose less)`}
             min="1"
+            placeholder={assignment.maxTeamMemebers}
+            max={assignment.maxTeamMemebers}
             value={nBuddies}
             onChange={(e) => setNBuddies(e.target.value)}
           />
           <br></br>
-          <DateInput
-            required={true}
-            label="Deadline"
-            min={minDateISO}
-            value={deadline}
-            onChange={(e) => {
-              setDeadline(e.target.value);
-            }}
-          />
+          {assignment.completionTime && assignment.completionTime > 0 && (
+            <>
+              <TextInput
+                required={false}
+                label="Deadline (assuming couple of hours a day, every day)"
+                value={deadline}
+                onChange={() => {}}
+                disabled={true}
+              />
+              <br></br>
+            </>
+          )}
           <br></br>
           <RadioBox
             required={true}
@@ -262,56 +288,19 @@ function SelfAssignmentPage() {
             />
           )}
           <br></br>
-          <Select
-            required={true}
-            label="Topics"
-            name="topics"
-            options={allTopics}
-            onChange={(e) => {
-              if (e.target.value !== 'null-value') {
-                // console.log(e.target.value);
-                setTopics((prev) => {
-                  let idx = topics
-                    .map((topic) => topic._id)
-                    .indexOf(e.target.value);
-                  if (idx === -1) {
-                    let newTopic = allTopics.filter(
-                      (topic) => topic._id === e.target.value
-                    )[0];
-                    return [...prev, newTopic];
-                  } else {
-                    return prev;
-                  }
-                });
-              }
-            }}
-          />
-          <Selections selections={topics} setSelections={setTopics} />
+          {assignment.topics && assignment.topics.length > 0 && (
+            <div>
+              <label className="myform-label bold">Topics</label>
+              <Selections selections={assignment.topics} disabled={true} />
+            </div>
+          )}
           <br></br>
-          <Select
-            required={true}
-            label="Techs involved"
-            name="techs"
-            options={allTechStacks}
-            onChange={(e) => {
-              if (e.target.value !== 'null-value') {
-                setLearning((prev) => {
-                  let idx = learning
-                    .map((learn) => learn._id)
-                    .indexOf(e.target.value);
-                  if (idx === -1) {
-                    let newLearn = allTechStacks.filter(
-                      (learn) => learn._id === e.target.value
-                    )[0];
-                    return [...prev, newLearn];
-                  } else {
-                    return prev;
-                  }
-                });
-              }
-            }}
-          />
-          <Selections selections={learning} setSelections={setLearning} />
+          {assignment.learning && assignment.learning.length > 0 && (
+            <div>
+              <label className="myform-label bold">Tech stack</label>
+              <Selections selections={assignment.learning} disabled={true} />
+            </div>
+          )}
           <br></br>
           <div>
             <BtnCTA
@@ -325,8 +314,8 @@ function SelfAssignmentPage() {
           <br></br>
         </>
       )}
-    </UserRoute>
+    </>
   );
 }
 
-export default SelfAssignmentPage;
+export default CreateGroupPage;
