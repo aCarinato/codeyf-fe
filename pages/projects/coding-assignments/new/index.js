@@ -1,6 +1,7 @@
 // react / next
 import { useState } from 'react';
-// own compoentns
+// own components
+import UserRoute from '../../../../components/routes/UserRoute';
 import TextInput from '../../../../components/UI/form/TextInput';
 import TextArea from '../../../../components/UI/form/TextArea';
 import RadioBox from '../../../../components/UI/form/RadioBox';
@@ -105,7 +106,7 @@ function CreateNewAssignmentPage() {
   );
 
   return (
-    <>
+    <UserRoute>
       {success ? (
         successMsg
       ) : (
@@ -235,7 +236,7 @@ function CreateNewAssignmentPage() {
           />
         </>
       )}
-    </>
+    </UserRoute>
   );
 }
 
