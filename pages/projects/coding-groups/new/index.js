@@ -10,7 +10,7 @@ function NewGroupPage() {
       <br></br>
       <div className="flex">
         <div>
-          <Link href="/projects/coding-groups/new/assignment">
+          <Link href="/projects/coding-groups/new/select-assignment">
             Yes, check out assignments
           </Link>
         </div>

@@ -31,7 +31,10 @@ function AssignementScreen() {
       `${process.env.NEXT_PUBLIC_API}/assignments/${assignmentID}`
     );
     // console.log(res);
-    setAssignement(res.data.assignment);
+    if (res.data.success) {
+      setAssignement(res.data.assignment);
+    }
+
     setLoading(false);
   };
 

@@ -1,5 +1,5 @@
 function NumberInput(props) {
-  const { required, label, value, onChange, min, max } = props;
+  const { required, label, value, onChange, min, max, placeholder } = props;
   return (
     <div>
       <label className="myform-label bold">
@@ -8,6 +8,7 @@ function NumberInput(props) {
       <input
         type="number"
         value={value}
+        placeholder={placeholder && placeholder}
         min={min && min}
         max={max && max}
         //   onChange={(e) => setName(e.target.value)}

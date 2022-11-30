@@ -13,6 +13,10 @@ import axios from 'axios';
 // context
 import { useMainContext } from '../../../../../context/Context';
 
+// !!!!!!!!!!!!!!!!!!!!!!!
+// SHOULD SHOW ONLY BUDDIES THAT WANT TO LEARN WHAT THE GROUP / ASSIGNMENT IS ABOUT
+// ALREADY FILTERED
+
 function AddBuddyPage() {
   const { mobileView, authState, socket } = useMainContext();
 
