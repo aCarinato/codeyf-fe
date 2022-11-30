@@ -62,7 +62,7 @@ function CreateGroupPage() {
     }
   }, [pickedAssignmentId]);
 
-  console.log(assignment);
+  //   console.log(assignment);
 
   // date setting
   useEffect(() => {
@@ -160,6 +160,8 @@ function CreateGroupPage() {
         topics: assignment.topics,
         learning: assignment.learning,
         picture,
+        hasProposedAssignment: true,
+        proposedAssignment: pickedAssignmentId,
       };
 
       try {
@@ -206,7 +208,7 @@ function CreateGroupPage() {
       ) : (
         <>
           <div className="flex">
-            <h2>Group based on {assignment.name}</h2>
+            <h2>Project based on "{assignment.name}"</h2>
             <Link href="/projects/coding-groups/new/select-assignment">
               go back
             </Link>
@@ -238,6 +240,13 @@ function CreateGroupPage() {
             disabled={true}
             onChange={() => {}}
           />
+          <br></br>
+          <h4>Functionalities required for successful completion</h4>
+          <ul>
+            {assignment.requirements.map((item) => (
+              <li key={item._id}>{item.label}</li>
+            ))}
+          </ul>
           <br></br>
           <NumberInput
             required={true}

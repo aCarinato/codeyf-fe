@@ -6,6 +6,7 @@ import Link from 'next/link';
 import axios from 'axios';
 // own components
 import SpinningLoader from '../../../../components/UI/SpinningLoader';
+import AssignementCard from '../../../../components/assignements/AssignementCard';
 import BuddyCard from '../../../../components/people/BuddyCard';
 import MentorCard from '../../../../components/people/MentorCard';
 import BtnCTA from '../../../../components/UI/BtnCTA';
@@ -27,7 +28,7 @@ function GroupPage() {
   const [buddies, setBuddies] = useState([]);
   const [mentor, setMentor] = useState({});
 
-  // console.log(group);
+  console.log(group);
 
   const fetchGroup = async () => {
     try {
@@ -148,7 +149,7 @@ function GroupPage() {
     }
   } else if (group && group !== {} && !group.mentorRequired) {
     mentorAvailbilityStatus = 'unrequired';
-    mentorAvailbilityDisplay = <p>No mentor required for this team</p>;
+    mentorAvailbilityDisplay = <p>No mentor required for this project</p>;
   }
 
   // CTA
@@ -254,6 +255,23 @@ function GroupPage() {
           )}
           <br></br>
 
+          {group.hasProposedAssignment && (
+            <>
+              <h4>Assignment:</h4>
+              <br></br>
+              <AssignementCard
+                key={group.proposedAssignment._id}
+                id={group.proposedAssignment._id}
+                title={group.proposedAssignment.name}
+                description={group.proposedAssignment.headline}
+                difficulty={group.proposedAssignment.difficulty}
+                maxParticipants={group.proposedAssignment.maxTeamMemebers}
+                stack={group.proposedAssignment.learning}
+                reviews={group.proposedAssignment.reviews}
+              />
+            </>
+          )}
+          <br></br>
           <h4>Organiser:</h4>
           <br></br>
           {group.organiser && group.organiser.username && (
@@ -330,7 +348,7 @@ function GroupPage() {
               Mentor position available!
             </div>
           ) : (
-            <div>No mentor required for this team</div>
+            <div>No mentor required for this project</div>
           )}
 
           {/* <div>
