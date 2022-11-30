@@ -241,13 +241,18 @@ function CreateGroupPage() {
             onChange={() => {}}
           />
           <br></br>
-          <h4>Functionalities required for successful completion</h4>
-          <ul>
-            {assignment.requirements.map((item) => (
-              <li key={item._id}>{item.label}</li>
-            ))}
-          </ul>
-          <br></br>
+          {assignment.requirements && (
+            <>
+              <h4>Functionalities required for successful completion</h4>
+              <ul>
+                {assignment.requirements.map((item) => (
+                  <li key={item._id}>{item.label}</li>
+                ))}
+              </ul>
+              <br></br>
+            </>
+          )}
+
           <NumberInput
             required={true}
             label={`Max number of buddies (this assignment allows for max ${assignment.maxTeamMemebers} but it's possible to choose less)`}
