@@ -28,7 +28,7 @@ function GroupPage() {
   const [buddies, setBuddies] = useState([]);
   const [mentor, setMentor] = useState({});
 
-  console.log(group);
+  // console.log(group);
 
   const fetchGroup = async () => {
     try {

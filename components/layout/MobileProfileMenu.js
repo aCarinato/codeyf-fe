@@ -125,7 +125,10 @@ function MobileProfileMenu(props) {
             </li>
             {openProjectMenu && (
               <>
-                <li className={classes['list-subitem']}>
+                <li
+                  className={classes['list-subitem']}
+                  onClick={() => setShowMobileProfileMenu(false)}
+                >
                   <Link href="/my-profile/projects/notifications">
                     <div
                       className={
@@ -139,10 +142,16 @@ function MobileProfileMenu(props) {
                     </div>
                   </Link>
                 </li>
-                <li className={classes['list-subitem']}>
+                <li
+                  className={classes['list-subitem']}
+                  onClick={() => setShowMobileProfileMenu(false)}
+                >
                   <Link href="/my-profile/projects/teams">teams</Link>
                 </li>
-                <li className={classes['list-subitem']}>
+                <li
+                  className={classes['list-subitem']}
+                  onClick={() => setShowMobileProfileMenu(false)}
+                >
                   <Link href="/my-profile/projects/individual">individual</Link>
                 </li>
               </>

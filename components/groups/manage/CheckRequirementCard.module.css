@@ -1,0 +1,40 @@
+.box-0 {
+  display: flex;
+  padding: 1.2rem;
+  margin: 0.8rem auto;
+  box-shadow: 0 1px 4px rgba(13, 0, 134, 0.1),
+    0 1px 12px 1px rgba(13, 0, 134, 0.1);
+  border-radius: var(--main-border-radius);
+  align-items: center;
+  /* justify-content: space-between; */
+}
+
+.requirement-label {
+  /* flex-grow: 2; */
+  width: 90%;
+}
+
+.check-box {
+  /* width: 5rem; */
+  flex-grow: 2;
+}
+
+.requirement-check {
+  width: 2rem;
+  height: 2rem;
+  margin: auto;
+  border: 1px solid var(--main-primary-color);
+  cursor: pointer;
+}
+
+.selected {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-top: 0.2rem;
+  margin-left: 0.2rem;
+  background-color: var(--main-primary-color);
+}
+
+.tick-invisible {
+  visibility: hidden;
+}

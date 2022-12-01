@@ -69,30 +69,32 @@ export function ContextProvider({ children }) {
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
   }
 
-  // DECODE TOKEN
-  useEffect(() => {
-    if (authState.token !== '' && authState.token.length > 0) {
-      const decodedToken = jwt.verify(
-        authState.token,
-        process.env.NEXT_PUBLIC_JWT_SECRET
-      );
-      // console.log(`decodedToken.exp: ${decodedToken.iat * 1000}`);
-      const exp = new Date(decodedToken.exp * 1000);
-      // const currTimeStamp = new Date().getTime();
-      // test it
-      const a = new Date(decodedToken.exp * 1000),
-        b = new Date(),
-        difference = dateDiffInDays(a, b);
+  // // DECODE TOKEN
+  // useEffect(() => {
+  //   if (authState.token !== '' && authState.token.length > 0) {
+  //     if (isJwtExpired(authState.token) === false) {
+  //       const decodedToken = jwt.verify(
+  //         authState.token,
+  //         process.env.NEXT_PUBLIC_JWT_SECRET
+  //       );
+  //       // console.log(`decodedToken.exp: ${decodedToken.iat * 1000}`);
+  //       const exp = new Date(decodedToken.exp * 1000);
+  //       // const currTimeStamp = new Date().getTime();
+  //       // test it
+  //       const a = new Date(decodedToken.exp * 1000),
+  //         b = new Date(),
+  //         difference = dateDiffInDays(a, b);
 
-      // console.log(difference + ' days');
-      // console.log(difference > -4);
-    }
-  }, [authState.token.length]);
+  //       // console.log(difference + ' days');
+  //       // console.log(difference > -4);
+  //     }
+  //   }
+  // }, [authState.token.length]);
 
   useEffect(() => {
     if (authState.token.length > 0) {
       if (isJwtExpired(authState.token)) {
-        // console.log('isExpired is:', isJwtExpired(authState.token));
+        console.log('isExpired is:', isJwtExpired(authState.token));
         localStorage.removeItem('codeyful-user-auth');
         setAuthState({
           userId: '',
