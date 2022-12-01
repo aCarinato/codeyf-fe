@@ -254,6 +254,12 @@ function GroupPage() {
             </div>
           )}
           <br></br>
+          <div>
+            <Link href={`/projects/coding-groups/${groupId}/status`}>
+              View completion status
+            </Link>
+          </div>
+          <br></br>
 
           {group.hasProposedAssignment && (
             <>
