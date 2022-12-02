@@ -165,7 +165,7 @@ function StatusPage() {
             )}
           {success && <div>Approved!</div>}
           {success === false && <div>Some error occurred</div>}
-          {hasAlreadyApproved && <div>Already approved</div>}
+          {!group.isClosed && hasAlreadyApproved && <div>Already approved</div>}
         </div>
       )}
     </>
