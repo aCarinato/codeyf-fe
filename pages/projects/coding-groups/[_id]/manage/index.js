@@ -70,6 +70,12 @@ function ManageGroupPage() {
             <p>Mentor position filled</p>
           )}
           <br></br>
+          <p>
+            <Link href={`/projects/coding-groups/${groupId}/manage/completion`}>
+              Mark completion
+            </Link>
+          </p>
+          <br></br>
           <p>Join the group as a buddy</p>
           <br></br>
           <p>Join the group as a mentor</p>

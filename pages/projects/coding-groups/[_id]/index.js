@@ -28,7 +28,7 @@ function GroupPage() {
   const [buddies, setBuddies] = useState([]);
   const [mentor, setMentor] = useState({});
 
-  console.log(group);
+  // console.log(group);
 
   const fetchGroup = async () => {
     try {
@@ -216,17 +216,20 @@ function GroupPage() {
         <Fragment>
           <div className="flex flex-justify-space-between">
             <h2>{group.name}</h2>
-            <div className="flex">
-              <div>
-                {buddyAvailbilityDisplay}
-                {mentorAvailbilityDisplay}
-                {sectionCTA}
-              </div>
+            {!group.isClosed && (
+              <div className="flex">
+                <div>
+                  {buddyAvailbilityDisplay}
+                  {mentorAvailbilityDisplay}
+                  {sectionCTA}
+                </div>
 
-              {group.mentorRequired === 'yes' && group.mentors.length === 0 && (
-                <BtnCTA classname="btn-light-big" label="Mentor Group" />
-              )}
-            </div>
+                {group.mentorRequired === 'yes' &&
+                  group.mentors.length === 0 && (
+                    <BtnCTA classname="btn-light-big" label="Mentor Group" />
+                  )}
+              </div>
+            )}
           </div>
           <br></br>
           {group.description && (
@@ -241,7 +244,7 @@ function GroupPage() {
             <p>{group.nBuddies}</p>
           </div>
           <br></br>
-          {group.deadline && (
+          {!group.isClosed && group.deadline && (
             <div>
               <h4>Deadline</h4>
               <p>
@@ -251,6 +254,20 @@ function GroupPage() {
                   year: 'numeric',
                 })}
               </p>
+            </div>
+          )}
+          <br></br>
+          {group.isClosed ? (
+            <div>
+              <Link href={`/projects/coding-groups/${groupId}/status`}>
+                Achieved project goals
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <Link href={`/projects/coding-groups/${groupId}/status`}>
+                View completion status
+              </Link>
             </div>
           )}
           <br></br>
@@ -288,15 +305,16 @@ function GroupPage() {
                   profilePic={group.organiser.profilePic}
                 />
               </div>
-              <div>
-                {group.organiser._id === authState.userId && (
+
+              {!group.isClosed && group.organiser._id === authState.userId && (
+                <div>
                   <p>
                     <Link href={`/projects/coding-groups/${groupId}/manage`}>
                       Manage group
                     </Link>
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -330,45 +348,59 @@ function GroupPage() {
 
           <h4>Mentor</h4>
           <br></br>
-          {mentorAvailbilityStatus === 'filled' ? (
-            <div>
-              <MentorCard
-                key={mentor._id}
-                userId={mentor._id}
-                username={mentor.username}
-                handle={mentor.handle}
-                description={mentor.shortDescription}
-                country={mentor.country}
-                teaching={mentor.teaching}
-                profilePic={mentor.profilePic}
-              />
-            </div>
-          ) : mentorAvailbilityStatus === 'available' ? (
-            <div className="card-group-available">
-              Mentor position available!
-            </div>
+          {group.isClosed ? (
+            group.mentorRequired ? (
+              mentorAvailbilityStatus === 'filled' ? (
+                <div>
+                  <MentorCard
+                    key={mentor._id}
+                    userId={mentor._id}
+                    username={mentor.username}
+                    handle={mentor.handle}
+                    description={mentor.shortDescription}
+                    country={mentor.country}
+                    teaching={mentor.teaching}
+                    profilePic={mentor.profilePic}
+                  />
+                </div>
+              ) : (
+                <div>No mentor for this team project</div>
+              )
+            ) : (
+              ''
+            )
           ) : (
-            <div>No mentor required for this project</div>
+            ''
           )}
 
-          {/* <div>
-        {assignement && (
-          <>
-            <h4>Assignment</h4>
-            <br></br>
-            <AssignementCard
-              key={assignement._id}
-              id={assignement._id}
-              title={assignement.title}
-              description={assignement.description}
-              difficulty={assignement.difficulty.label}
-              maxParticipants={assignement.maxParticipants.label}
-              stack={assignement.stack}
-              reviews={assignement.reviews}
-            />
-          </>
-        )}
-      </div> */}
+          {!group.isClosed ? (
+            group.mentorRequired ? (
+              mentorAvailbilityStatus === 'filled' ? (
+                <div>
+                  <MentorCard
+                    key={mentor._id}
+                    userId={mentor._id}
+                    username={mentor.username}
+                    handle={mentor.handle}
+                    description={mentor.shortDescription}
+                    country={mentor.country}
+                    teaching={mentor.teaching}
+                    profilePic={mentor.profilePic}
+                  />
+                </div>
+              ) : mentorAvailbilityStatus === 'available' ? (
+                <div className="card-group-available">
+                  Mentor position available!
+                </div>
+              ) : (
+                <div>No mentor required for this project</div>
+              )
+            ) : (
+              ''
+            )
+          ) : (
+            ''
+          )}
         </Fragment>
       )}
     </>

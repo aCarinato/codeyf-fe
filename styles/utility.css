@@ -75,3 +75,8 @@
 .pointer {
   cursor: pointer;
 }
+
+/* LISTS */
+.no-bullets {
+  list-style-type: none;
+}

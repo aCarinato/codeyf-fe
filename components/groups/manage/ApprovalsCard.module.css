@@ -1,0 +1,23 @@
+.box-0 {
+  display: flex;
+  padding: 1.2rem;
+  margin: 0.8rem auto;
+  box-shadow: 0 1px 4px rgba(13, 0, 134, 0.1),
+    0 1px 12px 1px rgba(13, 0, 134, 0.1);
+  border-radius: var(--main-border-radius);
+  align-items: center;
+  /* justify-content: space-between; */
+}
+
+.username {
+  width: 50%;
+}
+
+.status {
+  width: 25%;
+  padding: 0 0.8rem;
+}
+
+.message {
+  width: 25%;
+}

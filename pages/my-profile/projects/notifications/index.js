@@ -45,7 +45,7 @@ function ProjectNotificationsPage() {
   }, [authState]);
 
   // FILTER OUT NOTIFICATION FROM MYSELF!!!
-  console.log(localNotifications);
+  // console.log(localNotifications);
   return (
     <>
       {loading ? (

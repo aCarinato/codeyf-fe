@@ -141,6 +141,12 @@ function CreateGroupPage() {
     } else {
       inputIsValid = true;
     }
+    // add field to each requirement
+    // const requirements =assignment.requirements.map(item => ({...item, met:false}))
+    const requirements = assignment.requirements.map((element) => {
+      return { ...element, met: false };
+    });
+
     // the total number of people should be > 1 ie at least 2! It can be 2 buddies or 1 buddy 1 mentor. CHECK THAT TOO
     // THE ABOVE IS JUST A BASIC INPUT VALIDATION !! - MUST BE IMPROVED
     // console.log(inputIsValid);
@@ -162,8 +168,10 @@ function CreateGroupPage() {
         picture,
         hasProposedAssignment: true,
         proposedAssignment: pickedAssignmentId,
+        requirements,
+        approvals: [],
       };
-
+      // console.log(newGroup);
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API}/groups/new`,
