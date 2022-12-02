@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import UserRoute from '../../../../../components/routes/UserRoute';
 import CheckRequirementCard from '../../../../../components/groups/manage/CheckRequirementCard';
+import ApprovalsCard from '../../../../../components/groups/manage/ApprovalsCard';
 // libs
 import axios from 'axios';
 // context
@@ -20,7 +21,7 @@ function CompletionPage() {
   const [group, setGroup] = useState({});
   const [allRequirementsMet, setAllRequirementsMet] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log(group);
+  // console.log(group);
   const fetchGroup = async () => {
     try {
       setLoading(true);
@@ -74,9 +75,6 @@ function CompletionPage() {
         .map((requirement) => requirement.met)
         .every((val) => val === true)
     );
-    // const completed = group.requirements
-    //   .map((requirement) => requirement.met)
-    //   .every((val) => val === true);
   };
 
   useEffect(() => {
@@ -110,9 +108,15 @@ function CompletionPage() {
           {allRequirementsMet && (
             <>
               <h4>Confirmation from other team members</h4>
-              {/* <ul>
-
-              </ul> */}
+              <ul>
+                {group.approvals.map((approval) => (
+                  <ApprovalsCard
+                    key={approval.participant._id}
+                    participant={approval.participant}
+                    approved={approval.approved}
+                  />
+                ))}
+              </ul>
             </>
           )}
         </>

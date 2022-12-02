@@ -12,6 +12,8 @@ function MyGroupsPage() {
   const { authState } = useMainContext();
 
   const [groups, setGroups] = useState([]);
+  const [buddyPartakenGroups, setBuddyPartakenGroups] = useState([]);
+  const [mentorPartakenGroups, setMentorPartakenGroups] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchMyGroups = async () => {
@@ -34,11 +36,55 @@ function MyGroupsPage() {
     }
   };
 
+  const fetchBuddyPartakenGroups = async () => {
+    try {
+      setLoading(true);
+      const userId = authState.userId;
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/groups/user/buddy-partaken/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      // console.log(res);
+      setBuddyPartakenGroups(res.data.groups);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchMentorPartakenGroups = async () => {
+    try {
+      setLoading(true);
+      const userId = authState.userId;
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/groups/user/mentor-partaken/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      // console.log(res);
+      setMentorPartakenGroups(res.data.groups);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (authState && authState.token && authState.token.length > 0) {
       fetchMyGroups();
+      fetchBuddyPartakenGroups();
+      fetchMentorPartakenGroups();
     }
   }, [authState]);
+
+  // console.log(partakenGroups);
 
   return (
     <>
@@ -48,24 +94,39 @@ function MyGroupsPage() {
         <>
           <h4>Organised by me</h4>
           <br></br>
-          <div className="flex">
-            {groups.map((group) => (
-              <GroupCard
-                key={group._id}
-                group={group}
-                // id={group._id}
-                // name={group.name}
-                // description={group.description}
-                // techStack={group.learning}
-                // nBuddies={group.nBuddies}
-                // buddies={group.buddies}
-                // proposedProject={group.proposedProject}
-              />
-            ))}
-          </div>
+          {groups.length > 0 ? (
+            <div className="flex">
+              {groups.map((group) => (
+                <GroupCard key={group._id} group={group} />
+              ))}
+            </div>
+          ) : (
+            <div>No teams organised by you</div>
+          )}
           <br></br>
-          <h4>Groups I'm working on</h4>
+          <h4>Teams I'm working with as a buddy</h4>
           <br></br>
+          {buddyPartakenGroups.length > 0 ? (
+            <div className="flex">
+              {buddyPartakenGroups.map((group) => (
+                <GroupCard key={group._id} group={group} />
+              ))}
+            </div>
+          ) : (
+            <div>Currently not participating as a buddy to any team</div>
+          )}
+          <br></br>
+          <h4>Teams I'm working with as a mentor</h4>
+          <br></br>
+          {mentorPartakenGroups.length > 0 ? (
+            <div className="flex">
+              {mentorPartakenGroups.map((group) => (
+                <GroupCard key={group._id} group={group} />
+              ))}
+            </div>
+          ) : (
+            <div>Currently not participating as a mentor to any team</div>
+          )}
         </>
       )}
     </>
