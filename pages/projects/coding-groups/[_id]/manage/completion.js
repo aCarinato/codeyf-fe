@@ -6,6 +6,7 @@ import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import UserRoute from '../../../../../components/routes/UserRoute';
 import CheckRequirementCard from '../../../../../components/groups/manage/CheckRequirementCard';
 import ApprovalsCard from '../../../../../components/groups/manage/ApprovalsCard';
+import BtnCTA from '../../../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
 // context
@@ -20,7 +21,9 @@ function CompletionPage() {
 
   const [group, setGroup] = useState({});
   const [allRequirementsMet, setAllRequirementsMet] = useState(null);
+  const [allMemebersApproved, setAllMemebersApproved] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
   // console.log(group);
   const fetchGroup = async () => {
     try {
@@ -77,10 +80,43 @@ function CompletionPage() {
     );
   };
 
+  //   check if all team members have approved
+  const checkApprovals = () => {
+    setAllMemebersApproved(
+      group.approvals
+        .map((approval) => approval.approved)
+        .every((val) => val === true)
+    );
+  };
+
   useEffect(() => {
-    if (group && group.requirements && group.requirements.length > 0)
+    if (group && group.requirements && group.requirements.length > 0) {
       checkCompletion();
+      checkApprovals();
+    }
   }, [group.requirements]);
+
+  const closeGroup = async () => {
+    try {
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API}/groups/group/close`,
+        { groupId },
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+
+      if (res.data.success) {
+        setSuccess(true);
+      } else {
+        setSuccess(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <UserRoute>
@@ -118,6 +154,17 @@ function CompletionPage() {
                 ))}
               </ul>
             </>
+          )}
+          {allMemebersApproved && !group.isClosed && !success && (
+            <div>
+              <p>All members approved! You can close the project</p>
+
+              <BtnCTA label="close team" onCLickAction={closeGroup} />
+            </div>
+          )}
+          {success && <div>Team successfully closed</div>}
+          {success === false && (
+            <div>Something went wrong when closing the team</div>
           )}
         </>
       )}

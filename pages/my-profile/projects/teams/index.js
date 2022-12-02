@@ -11,10 +11,34 @@ import axios from 'axios';
 function MyGroupsPage() {
   const { authState } = useMainContext();
 
-  const [groups, setGroups] = useState([]);
+  const [groupsCompleted, setGroupsCompleted] = useState([]);
+  const [groupsOrganised, setGroupsOrganised] = useState([]);
   const [buddyPartakenGroups, setBuddyPartakenGroups] = useState([]);
   const [mentorPartakenGroups, setMentorPartakenGroups] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const fetchCompletedGroups = async () => {
+    try {
+      setLoading(true);
+      const userId = authState.userId;
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/groups/user/completed/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      // console.log(res);
+      if (res.data.success) {
+        setGroupsCompleted(res.data.groups);
+      }
+
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchMyGroups = async () => {
     try {
@@ -29,7 +53,7 @@ function MyGroupsPage() {
         }
       );
       // console.log(res);
-      setGroups(res.data.groups);
+      setGroupsOrganised(res.data.groups);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -79,6 +103,7 @@ function MyGroupsPage() {
   useEffect(() => {
     if (authState && authState.token && authState.token.length > 0) {
       fetchMyGroups();
+      fetchCompletedGroups();
       fetchBuddyPartakenGroups();
       fetchMentorPartakenGroups();
     }
@@ -92,11 +117,11 @@ function MyGroupsPage() {
         <SpinningLoader />
       ) : (
         <>
-          <h4>Organised by me</h4>
+          <h4>Team projects organised and managed by me</h4>
           <br></br>
-          {groups.length > 0 ? (
+          {groupsOrganised.length > 0 ? (
             <div className="flex">
-              {groups.map((group) => (
+              {groupsOrganised.map((group) => (
                 <GroupCard key={group._id} group={group} />
               ))}
             </div>
@@ -104,7 +129,7 @@ function MyGroupsPage() {
             <div>No teams organised by you</div>
           )}
           <br></br>
-          <h4>Teams I'm working with as a buddy</h4>
+          <h4>Team projects I'm working on as a buddy</h4>
           <br></br>
           {buddyPartakenGroups.length > 0 ? (
             <div className="flex">
@@ -116,7 +141,7 @@ function MyGroupsPage() {
             <div>Currently not participating as a buddy to any team</div>
           )}
           <br></br>
-          <h4>Teams I'm working with as a mentor</h4>
+          <h4>Team projects I'm working on as a mentor</h4>
           <br></br>
           {mentorPartakenGroups.length > 0 ? (
             <div className="flex">
@@ -126,6 +151,18 @@ function MyGroupsPage() {
             </div>
           ) : (
             <div>Currently not participating as a mentor to any team</div>
+          )}
+          <br></br>
+          <h4>Team projects completed</h4>
+          <br></br>
+          {groupsCompleted.length > 0 ? (
+            <div className="flex">
+              {groupsCompleted.map((group) => (
+                <GroupCard key={group._id} group={group} />
+              ))}
+            </div>
+          ) : (
+            <div>Not yet completed any team project</div>
           )}
         </>
       )}

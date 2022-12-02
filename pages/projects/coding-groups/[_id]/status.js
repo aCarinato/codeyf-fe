@@ -142,7 +142,8 @@ function StatusPage() {
             )}
           {group &&
             group.organiser &&
-            group.organiser._id === authState.userId && (
+            group.organiser._id === authState.userId &&
+            !group.isClosed && (
               <p>
                 <Link
                   href={`/projects/coding-groups/${groupId}/manage/completion`}
