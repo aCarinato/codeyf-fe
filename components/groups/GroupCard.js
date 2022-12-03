@@ -78,10 +78,11 @@ function GroupCard(props) {
         </p>
       );
     }
-  } else if (group && group !== {} && !group.mentorRequired) {
-    mentorAvailbilityStatus = 'unrequired';
-    mentorAvailbilityDisplay = <p>No mentor required for this team</p>;
   }
+  // else if (group && group !== {} && !group.mentorRequired) {
+  //   mentorAvailbilityStatus = 'unrequired';
+  //   mentorAvailbilityDisplay = <p>No mentor required for this team</p>;
+  // }
 
   return (
     <div className="main-card-container">

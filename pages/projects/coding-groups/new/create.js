@@ -16,7 +16,7 @@ import axios from 'axios';
 import { useMainContext } from '../../../../context/Context';
 
 function CreateGroupPage() {
-  const { authState } = useMainContext();
+  const { authState, currentUser } = useMainContext();
   // clear the assignment when group created
   const [pickedAssignmentId, setPickedAssignmentId] = useState('');
   const [assignment, setAssignment] = useState({});
@@ -24,7 +24,7 @@ function CreateGroupPage() {
   const [nBuddies, setNBuddies] = useState('');
   const [deadline, setDeadline] = useState('');
   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
-  const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
+  const [organiserIsMentor, setOrganiserIsMentor] = useState(false);
   const [mentorRequired, setMentorRequired] = useState(null);
   const [picture, setPicture] = useState({});
 
@@ -300,7 +300,7 @@ function CreateGroupPage() {
             onChange={toggleMentorRequired}
           />
           <br></br>
-          {mentorRequired && (
+          {mentorRequired && currentUser.isMentor && (
             <RadioBox
               required={true}
               label="Do you want to mentor the group? (you can participate as a buddy, as a mentor or both)"
@@ -327,7 +327,7 @@ function CreateGroupPage() {
           <div>
             <BtnCTA
               classname="btn-dark"
-              label="create group"
+              label="create"
               onCLickAction={createGroup}
             />
           </div>

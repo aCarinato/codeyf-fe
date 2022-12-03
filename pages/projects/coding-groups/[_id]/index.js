@@ -147,10 +147,11 @@ function GroupPage() {
         </p>
       );
     }
-  } else if (group && group !== {} && !group.mentorRequired) {
-    mentorAvailbilityStatus = 'unrequired';
-    mentorAvailbilityDisplay = <p>No mentor required for this project</p>;
   }
+  // else if (group && group !== {} && !group.mentorRequired) {
+  //   mentorAvailbilityStatus = 'unrequired';
+  //   mentorAvailbilityDisplay = <p>No mentor required for this project</p>;
+  // }
 
   // CTA
   let sectionCTA;
@@ -346,6 +347,12 @@ function GroupPage() {
           </div>
           <br></br>
 
+          {/* {group.mentorRequired && (
+            <>
+              <h4>Mentor</h4>
+              <br></br>
+            </>
+          )} */}
           <h4>Mentor</h4>
           <br></br>
           {group.isClosed ? (
@@ -373,34 +380,55 @@ function GroupPage() {
             ''
           )}
 
-          {!group.isClosed ? (
-            group.mentorRequired ? (
-              mentorAvailbilityStatus === 'filled' ? (
-                <div>
-                  <MentorCard
-                    key={mentor._id}
-                    userId={mentor._id}
-                    username={mentor.username}
-                    handle={mentor.handle}
-                    description={mentor.shortDescription}
-                    country={mentor.country}
-                    teaching={mentor.teaching}
-                    profilePic={mentor.profilePic}
-                  />
-                </div>
-              ) : mentorAvailbilityStatus === 'available' ? (
-                <div className="card-group-available">
-                  Mentor position available!
-                </div>
+          {
+            !group.isClosed &&
+              (group.mentorRequired ? (
+                mentorAvailbilityStatus === 'filled' ? (
+                  <div>
+                    <MentorCard
+                      key={mentor._id}
+                      userId={mentor._id}
+                      username={mentor.username}
+                      handle={mentor.handle}
+                      description={mentor.shortDescription}
+                      country={mentor.country}
+                      teaching={mentor.teaching}
+                      profilePic={mentor.profilePic}
+                    />
+                  </div>
+                ) : (
+                  <div className="card-group-available">
+                    Mentor position available!
+                  </div>
+                )
               ) : (
                 <div>No mentor required for this project</div>
-              )
-            ) : (
-              ''
-            )
-          ) : (
-            ''
-          )}
+              ))
+            // (group.mentorRequired ? (
+            //   mentorAvailbilityStatus === 'filled' ? (
+            //     <div>
+            //       <MentorCard
+            //         key={mentor._id}
+            //         userId={mentor._id}
+            //         username={mentor.username}
+            //         handle={mentor.handle}
+            //         description={mentor.shortDescription}
+            //         country={mentor.country}
+            //         teaching={mentor.teaching}
+            //         profilePic={mentor.profilePic}
+            //       />
+            //     </div>
+            //   ) : mentorAvailbilityStatus === 'available' ? (
+            //     <div className="card-group-available">
+            //       Mentor position available!
+            //     </div>
+            //   ) : (
+            //     <div>No mentor required for this project</div>
+            //   )
+            // ) : (
+            //   ''
+            // ))
+          }
         </Fragment>
       )}
     </>

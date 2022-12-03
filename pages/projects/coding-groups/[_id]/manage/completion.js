@@ -1,6 +1,7 @@
 // react / next
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 // components
 import SpinningLoader from '../../../../../components/UI/SpinningLoader';
 import UserRoute from '../../../../../components/routes/UserRoute';
@@ -82,11 +83,16 @@ function CompletionPage() {
 
   //   check if all team members have approved
   const checkApprovals = () => {
-    setAllMemebersApproved(
-      group.approvals
-        .map((approval) => approval.approved)
-        .every((val) => val === true)
-    );
+    if (group.approvals.length > 0) {
+      // in theory this means in the group there is not only the organiser
+      setAllMemebersApproved(
+        group.approvals
+          .map((approval) => approval.approved)
+          .every((val) => val === true)
+      );
+    } else {
+      setAllMemebersApproved(false);
+    }
   };
 
   useEffect(() => {
@@ -127,42 +133,71 @@ function CompletionPage() {
           <h2>Project Completion</h2>
           <br></br>
           <h4>Check the tasks completed</h4>
-          {group.proposedAssignment &&
-            group.proposedAssignment.requirements.length > 0 && (
-              <ul className="no-bullets">
-                {group.requirements.map((requirement) => (
-                  <li key={requirement.idx}>
-                    <CheckRequirementCard
-                      requirement={requirement}
-                      checkCompletion={() => markCompletion(requirement.idx)}
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
+          {group.requirements && group.requirements.length > 0 && (
+            <ul className="no-bullets">
+              {group.requirements.map((requirement) => (
+                <li key={requirement.idx}>
+                  <CheckRequirementCard
+                    requirement={requirement}
+                    checkCompletion={() => markCompletion(requirement.idx)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
           <br></br>
           {allRequirementsMet && (
             <>
-              <h4>Confirmation from other team members</h4>
-              <ul>
-                {group.approvals.map((approval) => (
-                  <ApprovalsCard
-                    key={approval.participant._id}
-                    participant={approval.participant}
-                    approved={approval.approved}
-                  />
-                ))}
-              </ul>
+              {group.approvals.length > 0 ? (
+                <>
+                  <h4>Confirmation from other team members</h4>
+                  <ul>
+                    {group.approvals.map((approval) => (
+                      <ApprovalsCard
+                        key={approval.participant._id}
+                        participant={approval.participant}
+                        approved={approval.approved}
+                      />
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <>
+                  <h4>No other participants in this team project yet</h4>
+                  <p>
+                    To close the group you need confirmation of successful
+                    completion from at least another participant (a buddy or a
+                    mentor).
+                  </p>
+                  <br></br>
+                  <p>
+                    To add a participant, go to{' '}
+                    <span>
+                      <Link href={`/projects/coding-groups/${groupId}/manage/`}>
+                        manage team project
+                      </Link>
+                    </span>
+                  </p>
+                </>
+              )}
             </>
           )}
-          {allMemebersApproved && !group.isClosed && !success && (
-            <div>
-              <p>All members approved! You can close the project</p>
+          {allRequirementsMet &&
+            allMemebersApproved &&
+            !group.isClosed &&
+            !success && (
+              <div>
+                <p>All members approved! You can close the project</p>
 
-              <BtnCTA label="close team" onCLickAction={closeGroup} />
+                <BtnCTA label="close team" onCLickAction={closeGroup} />
+              </div>
+            )}
+          {success && (
+            <div>
+              Team successfully closed! You can now find it in your{' '}
+              <Link href="/my-profile/projects/teams">team projects page</Link>
             </div>
           )}
-          {success && <div>Team successfully closed</div>}
           {success === false && (
             <div>Something went wrong when closing the team</div>
           )}

@@ -127,19 +127,18 @@ function StatusPage() {
       ) : (
         <div>
           <h2>Completion</h2>
-          {group.proposedAssignment &&
-            group.proposedAssignment.requirements.length > 0 && (
-              <ul className="no-bullets">
-                {group.requirements.map((requirement) => (
-                  <li key={requirement.idx}>
-                    <CheckRequirementCard
-                      requirement={requirement}
-                      checkCompletion={() => {}}
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
+          {group.requirements && group.requirements.length > 0 && (
+            <ul className="no-bullets">
+              {group.requirements.map((requirement) => (
+                <li key={requirement.idx}>
+                  <CheckRequirementCard
+                    requirement={requirement}
+                    checkCompletion={() => {}}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
           {group &&
             group.organiser &&
             group.organiser._id === authState.userId &&

@@ -58,27 +58,38 @@ function ManageGroupPage() {
             <p>Buddy positions filled</p>
           )}
           <br></br>
-          {!group.mentorsFilled ? (
+          {group.mentorRequired ? (
+            !group.mentorsFilled ? (
+              <p>
+                <Link
+                  href={`/projects/coding-groups/${groupId}/manage/add-mentor`}
+                >
+                  Add mentor
+                </Link>
+              </p>
+            ) : (
+              <p>Mentor position filled</p>
+            )
+          ) : (
+            ''
+          )}
+          {/* <br></br> */}
+          {!group.isClosed && (
             <p>
               <Link
-                href={`/projects/coding-groups/${groupId}/manage/add-mentor`}
+                href={`/projects/coding-groups/${groupId}/manage/completion`}
               >
-                Add mentor
+                Mark completion
               </Link>
             </p>
-          ) : (
-            <p>Mentor position filled</p>
           )}
           <br></br>
-          <p>
-            <Link href={`/projects/coding-groups/${groupId}/manage/completion`}>
-              Mark completion
-            </Link>
-          </p>
+          {!group.buddiesFilled && <p>Join the team as a buddy</p>}
           <br></br>
-          <p>Join the group as a buddy</p>
-          <br></br>
-          <p>Join the group as a mentor</p>
+          {group.mentorRequired && !group.mentorsFilled && (
+            <p>Join the team as a mentor</p>
+          )}
+          <p>Delete project team</p>
           {/* <p>
             <Link
               href={`/projects/coding-groups/${groupId}/manage/pending-join-reqs`}

@@ -26,7 +26,7 @@ function TextArea(props) {
         value={value}
         onChange={onChange}
         // onBlur={() => setShortDescriptionTouched(true)}
-        placeholder={placeholder ? placeholder : ''}
+        placeholder={placeholder && placeholder}
       />
     </div>
   );
