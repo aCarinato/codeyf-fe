@@ -21,6 +21,8 @@ function CompletionPage() {
   const groupId = query._id;
 
   const [group, setGroup] = useState({});
+
+  const [organiserOnly, setOrganiserOnly] = useState(null);
   const [allRequirementsMet, setAllRequirementsMet] = useState(null);
   const [allMemebersApproved, setAllMemebersApproved] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -45,6 +47,25 @@ function CompletionPage() {
       fetchGroup();
     }
   }, [groupId]);
+
+  // check if there is only the organiser in the team
+  const isOrganiserOnly = () => {
+    // check the buddies
+    const buddies = group.buddies.filter(
+      (buddy) => buddy._id !== group.organiser._id
+    );
+    const mentors = group.mentors.filter(
+      (mentor) => mentor._id !== group.organiser._id
+    );
+
+    setOrganiserOnly(!(buddies.length > 0 || mentors.length > 0));
+  };
+
+  useEffect(() => {
+    if (group && group.buddies && group.mentors) isOrganiserOnly();
+  }, [group]);
+
+  // console.log(`organiserOnly: ${organiserOnly}`);
 
   //   Fetch the completion status for the current project
   const markCompletion = async (idx) => {
@@ -128,6 +149,21 @@ function CompletionPage() {
     <UserRoute>
       {loading ? (
         <SpinningLoader />
+      ) : organiserOnly ? (
+        <div>
+          <p>
+            Still no other participants in this team: it will be possible to
+            mark the criteria for completion once there are other participants
+            who can review and approve
+          </p>
+          <br></br>
+          <p>
+            To add other participants go to{' '}
+            <Link href={`/projects/coding-groups/${groupId}/manage/`}>
+              manage team project
+            </Link>{' '}
+          </p>
+        </div>
       ) : (
         <>
           <h2>Project Completion</h2>
