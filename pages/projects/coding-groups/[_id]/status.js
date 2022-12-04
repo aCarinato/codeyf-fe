@@ -21,6 +21,7 @@ function StatusPage() {
   const [group, setGroup] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const [organiserOnly, setOrganiserOnly] = useState(null);
   const [eitherBuddyOrMentor, setEitherBuddyOrMentor] = useState(null);
   const [allRequirementsMet, setAllRequirementsMet] = useState(null);
   const [hasAlreadyApproved, setHasAlreadyApproved] = useState(null);
@@ -89,17 +90,37 @@ function StatusPage() {
 
   //   check if all tasks are marked as completed
   const checkCompletion = () => {
-    setAllRequirementsMet(
-      group.requirements
-        .map((requirement) => requirement.met)
-        .every((val) => val === true)
-    );
+    if (group.requirements.length === 0) {
+      setAllRequirementsMet(true);
+    } else {
+      setAllRequirementsMet(
+        group.requirements
+          .map((requirement) => requirement.met)
+          .every((val) => val === true)
+      );
+    }
   };
 
   useEffect(() => {
-    if (group && group.requirements && group.requirements.length > 0)
-      checkCompletion();
+    if (group && group.requirements) checkCompletion();
   }, [group.requirements]);
+
+  // check if there is only the organiser in the team
+  const isOrganiserOnly = () => {
+    // check the buddies
+    const buddies = group.buddies.filter(
+      (buddy) => buddy._id !== group.organiser._id
+    );
+    const mentors = group.mentors.filter(
+      (mentor) => mentor._id !== group.organiser._id
+    );
+
+    setOrganiserOnly(!(buddies.length > 0 || mentors.length > 0));
+  };
+
+  useEffect(() => {
+    if (group && group.buddies && group.mentors) isOrganiserOnly();
+  }, [group]);
 
   const approveCompletion = async () => {
     try {
@@ -132,6 +153,40 @@ function StatusPage() {
       ) : (
         <div>
           <h2>Completion</h2>
+          {group.requirements && group.requirements.length === 0 && (
+            <div>
+              <br></br>
+              <p>
+                There are no requirements to be fulfilled prior to closing this
+                project.
+              </p>
+              <p>
+                The project can be closed and added to the project history upon
+                agreement by all team members.
+              </p>
+              {group.organiser._id === authState.userId && (
+                <>
+                  <br></br>
+                  <p>
+                    To close the project and get it in your project history you
+                    still need the approval from other team members
+                  </p>
+                  <br></br>
+                  <p>
+                    If you want to do an individual project, go to the relevant
+                    section.
+                  </p>
+                  <br></br>
+                  <p>
+                    To add other team members go to{' '}
+                    <Link href={`/projects/coding-groups/${groupId}/manage/`}>
+                      manage team project
+                    </Link>{' '}
+                  </p>
+                </>
+              )}
+            </div>
+          )}
           {group.requirements && group.requirements.length > 0 && (
             <ul className="no-bullets">
               {group.requirements.map((requirement) => (
@@ -147,20 +202,29 @@ function StatusPage() {
           {group &&
             group.organiser &&
             group.organiser._id === authState.userId &&
+            !organiserOnly &&
             !group.isClosed && (
-              <p>
-                <Link
-                  href={`/projects/coding-groups/${groupId}/manage/completion`}
-                >
-                  Manage completion status
-                </Link>
-              </p>
+              <>
+                <br></br>
+                <p>
+                  <Link
+                    href={`/projects/coding-groups/${groupId}/manage/completion`}
+                  >
+                    Manage completion status
+                  </Link>
+                </p>
+              </>
             )}
           {eitherBuddyOrMentor &&
             allRequirementsMet &&
             !success &&
             !hasAlreadyApproved && (
               <div>
+                <br></br>
+                <p>
+                  Click here if you want to give your approval for project
+                  completion
+                </p>
                 <br></br>
                 <div>
                   <BtnCTA label={'Approve'} onCLickAction={approveCompletion} />

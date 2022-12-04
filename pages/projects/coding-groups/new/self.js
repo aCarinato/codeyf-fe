@@ -37,6 +37,7 @@ function SelfAssignmentPage() {
   const [learning, setLearning] = useState([]);
   const [picture, setPicture] = useState({});
   const [requirements, setRequirements] = useState([{ idx: '0', label: '' }]);
+  // const [requirements, setRequirements] = useState([]);
 
   //   new group
   const [success, setSuccess] = useState(false);
@@ -99,7 +100,7 @@ function SelfAssignmentPage() {
       console.log(err);
     }
   };
-
+  console.log(requirements);
   const createGroup = async () => {
     // verify correct inputs
     let inputIsValid = false;
@@ -124,13 +125,18 @@ function SelfAssignmentPage() {
 
     // this should be if requierements is valid
     let updatedRequirements;
-    if (requirements.length > 0) {
-      updatedRequirements = requirements.map((requirement) => {
-        return { ...requirement, met: false };
-      });
-    } else {
-      updatedRequirements = null;
+    if (requirements.length === 1 && requirements[0].label === '') {
+      // no requirements were input
+      updatedRequirements = [];
     }
+
+    // if (requirements.length > 0) {
+    //   updatedRequirements = requirements.map((requirement) => {
+    //     return { ...requirement, met: false };
+    //   });
+    // } else {
+    //   updatedRequirements = null;
+    // }
 
     // the total number of people should be > 1 ie at least 2! It can be 2 buddies or 1 buddy 1 mentor. CHECK THAT TOO
     // THE ABOVE IS JUST A BASIC INPUT VALIDATION !! - MUST BE IMPROVED

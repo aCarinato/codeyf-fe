@@ -95,11 +95,15 @@ function CompletionPage() {
 
   //   check if all tasks are marked as completed
   const checkCompletion = () => {
-    setAllRequirementsMet(
-      group.requirements
-        .map((requirement) => requirement.met)
-        .every((val) => val === true)
-    );
+    if (group.requirements.length === 0) {
+      setAllRequirementsMet(true);
+    } else {
+      setAllRequirementsMet(
+        group.requirements
+          .map((requirement) => requirement.met)
+          .every((val) => val === true)
+      );
+    }
   };
 
   //   check if all team members have approved
@@ -117,11 +121,13 @@ function CompletionPage() {
   };
 
   useEffect(() => {
-    if (group && group.requirements && group.requirements.length > 0) {
+    if (group && group.requirements) {
       checkCompletion();
       checkApprovals();
     }
   }, [group.requirements]);
+
+  // console.log(allRequirementsMet);
 
   const closeGroup = async () => {
     try {
@@ -151,14 +157,21 @@ function CompletionPage() {
         <SpinningLoader />
       ) : organiserOnly ? (
         <div>
-          <p>
-            Still no other participants in this team: it will be possible to
-            mark the criteria for completion once there are other participants
-            who can review and approve
-          </p>
+          <p>Still no other participants in this team:</p>
+          {group.requirements.length > 0 ? (
+            <p>
+              it will be possible to mark the criteria for completion once there
+              are other participants who can review and approve
+            </p>
+          ) : (
+            <p>
+              to add this project to the history you need the approval of other
+              team memebers.
+            </p>
+          )}
           <br></br>
           <p>
-            To add other participants go to{' '}
+            To add other team members go to{' '}
             <Link href={`/projects/coding-groups/${groupId}/manage/`}>
               manage team project
             </Link>{' '}
@@ -168,25 +181,38 @@ function CompletionPage() {
         <>
           <h2>Project Completion</h2>
           <br></br>
-          <h4>Check the tasks completed</h4>
           {group.requirements && group.requirements.length > 0 && (
-            <ul className="no-bullets">
-              {group.requirements.map((requirement) => (
-                <li key={requirement.idx}>
-                  <CheckRequirementCard
-                    requirement={requirement}
-                    checkCompletion={() => markCompletion(requirement.idx)}
-                  />
-                </li>
-              ))}
-            </ul>
+            <>
+              <h4>Check the tasks completed</h4>
+              <ul className="no-bullets">
+                {group.requirements.map((requirement) => (
+                  <li key={requirement.idx}>
+                    <CheckRequirementCard
+                      requirement={requirement}
+                      checkCompletion={() => markCompletion(requirement.idx)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {group.requirements && group.requirements.length === 0 && (
+            <>
+              <p>No project requirements to be marked as completed</p>
+            </>
           )}
           <br></br>
           {allRequirementsMet && (
             <>
               {group.approvals.length > 0 ? (
                 <>
-                  <h4>Confirmation from other team members</h4>
+                  <h4>
+                    Confirmation from other team members to{' '}
+                    {group.requirements.length > 0 && (
+                      <span>mark requirements as completed and</span>
+                    )}{' '}
+                    close the project
+                  </h4>
                   <ul>
                     {group.approvals.map((approval) => (
                       <ApprovalsCard
