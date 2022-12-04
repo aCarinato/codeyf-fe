@@ -117,6 +117,18 @@ function MyGroupsPage() {
         <SpinningLoader />
       ) : (
         <>
+          <h4>Team projects completed</h4>
+          <br></br>
+          {groupsCompleted.length > 0 ? (
+            <div className="flex">
+              {groupsCompleted.map((group) => (
+                <GroupCard key={group._id} group={group} />
+              ))}
+            </div>
+          ) : (
+            <div>Not yet completed any team project</div>
+          )}
+          <br></br>
           <h4>Team projects organised and managed by me</h4>
           <br></br>
           {groupsOrganised.length > 0 ? (
@@ -151,18 +163,6 @@ function MyGroupsPage() {
             </div>
           ) : (
             <div>Currently not participating as a mentor to any team</div>
-          )}
-          <br></br>
-          <h4>Team projects completed</h4>
-          <br></br>
-          {groupsCompleted.length > 0 ? (
-            <div className="flex">
-              {groupsCompleted.map((group) => (
-                <GroupCard key={group._id} group={group} />
-              ))}
-            </div>
-          ) : (
-            <div>Not yet completed any team project</div>
           )}
         </>
       )}

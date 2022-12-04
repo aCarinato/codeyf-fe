@@ -113,7 +113,11 @@ function CreateNewAssignmentPage() {
         <>
           <h2>Create a new Assignment</h2>
           <br></br>
-          <BtnCTA label="create" onCLickAction={createAssignment} />
+          <BtnCTA
+            label="create"
+            classname="btn-dark"
+            onCLickAction={createAssignment}
+          />
           <br></br>
           <TextInput
             required={true}
@@ -209,6 +213,9 @@ function CreateNewAssignmentPage() {
           <br></br>
           <AddMockupFields mockups={mockups} setMockups={setMockups} />
           <br></br>
+          <label className="form-label">
+            Requirements for success completion
+          </label>
           <OneColAddField
             label="requirements"
             values={requirements}

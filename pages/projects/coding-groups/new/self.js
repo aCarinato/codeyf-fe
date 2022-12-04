@@ -12,6 +12,7 @@ import Select from '../../../../components/UI/form/Select';
 import Selections from '../../../../components/UI/form/Selections';
 import BtnCTA from '../../../../components/UI/BtnCTA';
 import UserRoute from '../../../../components/routes/UserRoute';
+import OneColAddField from '../../../../components/UI/form/OneColAddField';
 // data
 import { allTopics } from '../../../../data/allTopics';
 import { allTechStacks } from '../../../../data/allTechStacks';
@@ -21,9 +22,9 @@ import axios from 'axios';
 import { useMainContext } from '../../../../context/Context';
 
 function SelfAssignmentPage() {
-  const { authState } = useMainContext();
+  const { authState, currentUser } = useMainContext();
 
-  //   const router = useRouter()
+  // console.log(currentUser);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -35,14 +36,12 @@ function SelfAssignmentPage() {
   const [topics, setTopics] = useState([]);
   const [learning, setLearning] = useState([]);
   const [picture, setPicture] = useState({});
+  const [requirements, setRequirements] = useState([{ idx: '0', label: '' }]);
 
   //   new group
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const [newGroupId, setNewGroupId] = useState('');
-
-  //   useEffect(() => {
-  //     if (success) router.push()
-  //   }, [success])
 
   // toggle functions
   const yesOrNoOptions = [
@@ -122,6 +121,17 @@ function SelfAssignmentPage() {
     } else {
       inputIsValid = true;
     }
+
+    // this should be if requierements is valid
+    let updatedRequirements;
+    if (requirements.length > 0) {
+      updatedRequirements = requirements.map((requirement) => {
+        return { ...requirement, met: false };
+      });
+    } else {
+      updatedRequirements = null;
+    }
+
     // the total number of people should be > 1 ie at least 2! It can be 2 buddies or 1 buddy 1 mentor. CHECK THAT TOO
     // THE ABOVE IS JUST A BASIC INPUT VALIDATION !! - MUST BE IMPROVED
     // console.log(inputIsValid);
@@ -141,8 +151,9 @@ function SelfAssignmentPage() {
         topics,
         learning,
         picture,
+        requirements: updatedRequirements,
       };
-
+      // console.log(newGroup);
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API}/groups/new`,
@@ -158,7 +169,8 @@ function SelfAssignmentPage() {
           setSuccess(true);
           setNewGroupId(res.data.newGroupId);
         } else {
-          setSuccess(false);
+          // setSuccess(false);
+          setError('An error occurred');
           console.log('An error occurred');
         }
       } catch (err) {
@@ -198,21 +210,24 @@ function SelfAssignmentPage() {
             <h2>Self Assignment</h2>
             <Link href="/projects/coding-groups/new/">go back</Link>
           </div>
+          <h3>Mandatory fields</h3>
           <br></br>
           <TextInput
             required={true}
-            label="Name (max 40 characters)"
+            label="Name"
             value={name}
+            placeholder="max 40 characters"
             onChange={(e) => setName(e.target.value)}
           />
           <br></br>
           <TextArea
             required={true}
-            label="short description (max 80 characters)"
+            label="short description"
             maxLength="79"
             nRows="2"
             nCols="50"
             value={description}
+            placeholder="max 80 characters"
             onChange={(e) => setDescription(e.target.value)}
           />
           <br></br>
@@ -221,14 +236,15 @@ function SelfAssignmentPage() {
           <NumberInput
             required={true}
             label="Max number of buddies"
-            min="1"
+            min="2"
+            placeholder="min 2 buddies"
             value={nBuddies}
             onChange={(e) => setNBuddies(e.target.value)}
           />
           <br></br>
           <DateInput
             required={true}
-            label="Deadline"
+            label="(Estimated) deadline"
             min={minDateISO}
             value={deadline}
             onChange={(e) => {
@@ -252,7 +268,7 @@ function SelfAssignmentPage() {
             onChange={toggleMentorRequired}
           />
           <br></br>
-          {mentorRequired && (
+          {mentorRequired && currentUser.isMentor && (
             <RadioBox
               required={true}
               label="Do you want to mentor the group? (you can participate as a buddy, as a mentor or both)"
@@ -312,6 +328,17 @@ function SelfAssignmentPage() {
             }}
           />
           <Selections selections={learning} setSelections={setLearning} />
+          <br></br>
+          <h3>Optional fields</h3>
+          <br></br>
+          <label className="form-label">
+            Requirements for success completion
+          </label>
+          <OneColAddField
+            label="requirements"
+            values={requirements}
+            setValues={setRequirements}
+          />
           <br></br>
           <div>
             <BtnCTA

@@ -77,10 +77,15 @@ function StatusPage() {
   useEffect(() => {
     if (groupId !== undefined && groupId.length > 0) {
       isCurrentUserInGroup();
-      alreadyApproved();
     }
   }, [groupId, group]);
   // console.log(`eitherBuddyOrMentor: ${eitherBuddyOrMentor}`);
+
+  useEffect(() => {
+    if (eitherBuddyOrMentor) {
+      alreadyApproved();
+    }
+  }, []);
 
   //   check if all tasks are marked as completed
   const checkCompletion = () => {
@@ -127,19 +132,18 @@ function StatusPage() {
       ) : (
         <div>
           <h2>Completion</h2>
-          {group.proposedAssignment &&
-            group.proposedAssignment.requirements.length > 0 && (
-              <ul className="no-bullets">
-                {group.requirements.map((requirement) => (
-                  <li key={requirement.idx}>
-                    <CheckRequirementCard
-                      requirement={requirement}
-                      checkCompletion={() => {}}
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
+          {group.requirements && group.requirements.length > 0 && (
+            <ul className="no-bullets">
+              {group.requirements.map((requirement) => (
+                <li key={requirement.idx}>
+                  <CheckRequirementCard
+                    requirement={requirement}
+                    checkCompletion={() => {}}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
           {group &&
             group.organiser &&
             group.organiser._id === authState.userId &&

@@ -4,7 +4,7 @@ function OneColAddField(props) {
   const { label, values, setValues } = props;
   return (
     <div>
-      <p className="form-label">Requirements for successful completion</p>
+      {/* <p className="form-label">Requirements for successful completion</p> */}
       <div className={classes['box-0']}>
         <div className={classes['number-col']}>#</div>
         <div className={classes['text-input-col']}>{label}</div>

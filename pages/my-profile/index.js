@@ -42,6 +42,17 @@ function MyProfile() {
                     profile
                   </p>
                 </Link>
+                <br></br>
+                <p>Once you complete your profile you will be able to:</p>
+                <br></br>
+                <ul>
+                  <li>Pick individual assignments</li>
+                  <li>Create and manage team projects</li>
+                  <li>Participate to team projects</li>
+                  <li>
+                    Appear on the list of buddies and beign found by others
+                  </li>
+                </ul>
               </Fragment>
             ) : (
               <Fragment>

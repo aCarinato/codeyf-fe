@@ -148,7 +148,7 @@ function GroupsPage() {
   return (
     <Fragment>
       <div>
-        <h1>Coding Groups</h1>
+        <h1>Coding Teams</h1>
         <h4 className="h4-header">To learn with and from the others</h4>
         <br></br>
       </div>
@@ -211,7 +211,7 @@ function GroupsPage() {
           >
             {!mobileView && <div></div>}
             <BtnCTA
-              label="Create New Group"
+              label="Create New Team"
               classname="btn-dark"
               onCLickAction={() => router.push('/projects/coding-groups/new')}
             />
