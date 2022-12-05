@@ -17,6 +17,7 @@ import { useMainContext } from '../../../../context/Context';
 
 function CreateGroupPage() {
   const { authState, currentUser } = useMainContext();
+
   // clear the assignment when group created
   const [pickedAssignmentId, setPickedAssignmentId] = useState('');
   const [assignment, setAssignment] = useState({});
@@ -27,6 +28,13 @@ function CreateGroupPage() {
   const [organiserIsMentor, setOrganiserIsMentor] = useState(false);
   const [mentorRequired, setMentorRequired] = useState(null);
   const [picture, setPicture] = useState({});
+
+  // input touched
+  const [nBuddiesTouched, setNBuddiesTouched] = useState(false);
+  const [organiserIsBuddyTouched, setOrganiserIsBuddyTouched] = useState(false);
+  const [mentorRequiredTouched, setMentorRequiredTouched] = useState(false);
+  const [organiserIsMentorTouched, setOrganiserIsMentorTouched] =
+    useState(false);
 
   //   new group
   const [success, setSuccess] = useState(false);
@@ -39,6 +47,9 @@ function CreateGroupPage() {
       }
     }
   }, []);
+
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // REMOVE THE COOKIE ON PAGE CHANGE!!!
 
   const fetchAssignement = async () => {
     try {
@@ -90,6 +101,7 @@ function CreateGroupPage() {
   ];
 
   const toggleOrganiserIsBuddy = (e) => {
+    setOrganiserIsBuddyTouched(true);
     // console.log(e.target.value);
     if (e.target.value === '1') {
       setOrganiserIsBuddy(true);
@@ -106,10 +118,12 @@ function CreateGroupPage() {
     }
     if (e.target.value === '2') {
       setMentorRequired(false);
+      setOrganiserIsMentor(false);
     }
   };
 
   const toggleOrganiserIsMentor = (e) => {
+    setOrganiserIsMentorTouched(true);
     // console.log(e.target.value);
     if (e.target.value === '1') {
       setOrganiserIsMentor(true);
@@ -119,8 +133,40 @@ function CreateGroupPage() {
     }
   };
 
+  // CHECK INPUT VALIDITY
+  const nBuddiesIsValid =
+    nBuddies > 0 && nBuddies <= assignment.maxTeamMemebers;
+  const nBuddiesIsInvalid = !nBuddiesIsValid && nBuddiesTouched;
+
+  const organiserIsBuddyIsValid = organiserIsBuddy || organiserIsMentor;
+  const organiserIsBuddyIsInvalid =
+    !organiserIsBuddyIsValid && organiserIsBuddyTouched;
+
+  const mentorRequiredIsValid = mentorRequired !== null;
+  const mentorRequiredIsInvalid =
+    !mentorRequiredIsValid && mentorRequiredTouched;
+
+  const organiserIsMentorIsValid = organiserIsBuddy || organiserIsMentor;
+  const organiserIsMentorIsInvalid =
+    !organiserIsMentorIsValid && organiserIsMentorTouched;
+
+  let formIsValid;
+  if (
+    nBuddiesIsValid &&
+    organiserIsBuddyIsValid &&
+    mentorRequiredIsValid &&
+    organiserIsMentorIsValid
+  )
+    formIsValid = true;
+
+  console.log(`organiserIsMentorIsValid: ${organiserIsMentorIsValid}`);
+  console.log(`formIsValid: ${formIsValid}`);
   //   THIS SHOULD BECOME A HELPER FUNCTION
   const createGroup = async () => {
+    setNBuddiesTouched(true);
+    setOrganiserIsBuddyTouched(true);
+    setOrganiserIsMentorTouched(true);
+    setMentorRequiredTouched(true);
     // verify correct inputs
     let inputIsValid = false;
     // if the organiser is neither a buddy or a mentor
@@ -171,28 +217,29 @@ function CreateGroupPage() {
         requirements,
         approvals: [],
       };
+
       // console.log(newGroup);
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/groups/new`,
-          { organiserIsBuddy, organiserIsMentor, newGroup },
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          }
-        );
-        // console.log(res.data.success);
-        if (res.data.success) {
-          setSuccess(true);
-          setNewGroupId(res.data.newGroupId);
-        } else {
-          setSuccess(false);
-          console.log('An error occurred');
-        }
-      } catch (err) {
-        console.log(err);
-      }
+      // try {
+      //   const res = await axios.post(
+      //     `${process.env.NEXT_PUBLIC_API}/groups/new`,
+      //     { organiserIsBuddy, organiserIsMentor, newGroup },
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${authState.token}`,
+      //       },
+      //     }
+      //   );
+      //   // console.log(res.data.success);
+      //   if (res.data.success) {
+      //     setSuccess(true);
+      //     setNewGroupId(res.data.newGroupId);
+      //   } else {
+      //     setSuccess(false);
+      //     console.log('An error occurred');
+      //   }
+      // } catch (err) {
+      //   console.log(err);
+      // }
     } else {
       console.log('some input is invalid');
     }
@@ -208,7 +255,7 @@ function CreateGroupPage() {
   );
 
   return (
-    <>
+    <UserRoute>
       {loading ? (
         <SpinningLoader />
       ) : success ? (
@@ -263,12 +310,15 @@ function CreateGroupPage() {
 
           <NumberInput
             required={true}
-            label={`Max number of buddies (this assignment allows for max ${assignment.maxTeamMemebers} but it's possible to choose less)`}
+            label={`Max number of buddies`}
             min="1"
-            placeholder={assignment.maxTeamMemebers}
+            placeholder={`max ${assignment.maxTeamMemebers} team members`}
             max={assignment.maxTeamMemebers}
             value={nBuddies}
             onChange={(e) => setNBuddies(e.target.value)}
+            onBlur={() => setNBuddiesTouched(true)}
+            isInvalid={nBuddiesIsInvalid}
+            errorMsg={`Must be greater than zero and less than ${assignment.maxTeamMemebers}`}
           />
           <br></br>
           {assignment.completionTime && assignment.completionTime > 0 && (
@@ -286,10 +336,13 @@ function CreateGroupPage() {
           <br></br>
           <RadioBox
             required={true}
-            label="Do you want to participate as buddy? (you can participate as a buddy, as a mentor or both)"
+            label="Do you want to participate as buddy?"
             options={yesOrNoOptions}
             name="organiser-is-buddy"
             onChange={toggleOrganiserIsBuddy}
+            isInvalid={organiserIsBuddyIsInvalid}
+            errorMsg={`You need to participate as a buddy, as a mentor or both `}
+            // onBlur={() => console.log('blurred')}
           />
           <br></br>
           <RadioBox
@@ -298,15 +351,19 @@ function CreateGroupPage() {
             options={yesOrNoOptions}
             name="mentor-required"
             onChange={toggleMentorRequired}
+            isInvalid={mentorRequiredIsInvalid}
+            errorMsg={`Select an option`}
           />
           <br></br>
-          {mentorRequired && currentUser.isMentor && (
+          {mentorRequired && currentUser && currentUser.isMentor && (
             <RadioBox
               required={true}
               label="Do you want to mentor the group? (you can participate as a buddy, as a mentor or both)"
               options={yesOrNoOptions}
               name="organiser-is-mentor"
               onChange={toggleOrganiserIsMentor}
+              isInvalid={organiserIsMentorIsInvalid}
+              errorMsg={`You need to participate as a buddy, as a mentor or both `}
             />
           )}
           <br></br>
@@ -336,7 +393,7 @@ function CreateGroupPage() {
           <br></br>
         </>
       )}
-    </>
+    </UserRoute>
   );
 }
 
