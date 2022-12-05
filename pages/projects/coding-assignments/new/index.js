@@ -58,6 +58,25 @@ function CreateNewAssignmentPage() {
 
   // console.log(completionTime);
 
+  // input touched
+  // const [requirementsTouched, setRequirementsTouched] = useState(false);
+  const [requirementsTouched, setRequirementsTouched] = useState([
+    { idx: '0', isTouched: false },
+  ]);
+
+  // console.log(requirementsTouched);
+
+  const requirementsIsValid = requirements
+    .map((requirement) => requirement.label)
+    .every((item) => item.length > 0);
+
+  // const requirementsIsInvalid = !requirementsIsValid;
+
+  console.log(`requirementsIsValid: ${requirementsIsValid}`);
+
+  let formIsValid;
+  if (requirementsIsValid) formIsValid = true;
+
   const createAssignment = async () => {
     // VALIDATIONS
     // 1) Total number of people from roles must be <= max n participants
@@ -110,7 +129,7 @@ function CreateNewAssignmentPage() {
       {success ? (
         successMsg
       ) : (
-        <>
+        <div className="creation-form-layout">
           <h2>Create a new Assignment</h2>
           <br></br>
           <BtnCTA
@@ -220,6 +239,8 @@ function CreateNewAssignmentPage() {
             label="requirements"
             values={requirements}
             setValues={setRequirements}
+            touched={requirementsTouched}
+            setTouched={setRequirementsTouched}
           />
           <br></br>
           <RadioBox
@@ -241,7 +262,7 @@ function CreateNewAssignmentPage() {
             setSteps={setSteps}
             idealTeam={idealTeam}
           />
-        </>
+        </div>
       )}
     </UserRoute>
   );

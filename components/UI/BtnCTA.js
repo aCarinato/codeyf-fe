@@ -8,6 +8,7 @@ function BtnCTA({
   onCLickAction,
   icon = false,
   iconType,
+  disabled = false,
 }) {
   // const { type, classname, label, onCLickAction } = props;
   return (
@@ -15,6 +16,7 @@ function BtnCTA({
       type={type}
       className={classes[`${classname}`]}
       onClick={onCLickAction}
+      disabled={disabled}
     >
       {label} {icon && <Icon icon={iconType} />}
     </button>

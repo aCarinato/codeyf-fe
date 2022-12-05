@@ -76,6 +76,8 @@ Spacing System (px)
 
   /* Radius */
   --main-border-radius: 1.2rem;
+
+  --main-disabled-color: rgba(119, 127, 142, 0.45);
 }
 
 html {
@@ -149,6 +151,7 @@ textarea {
   color: var(--main-text-color);
   border: 0.5px solid var(--main-text-color);
   border-radius: 1rem;
+  width: 100%;
   /* border-color: var(--main-text-color); */
 }
 

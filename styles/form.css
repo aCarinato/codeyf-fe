@@ -1,6 +1,13 @@
 /* ----------- */
 /*    FORMS    */
 /* ----------- */
+
+/* creation forms: new assignment, new team */
+.creation-form-layout {
+  width: 75%;
+  margin: auto;
+}
+
 .container {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 12px 2px rgba(0, 0, 0, 0.2);
   border-radius: 0.5rem;
@@ -42,6 +49,7 @@
 
 /* INPUTS */
 
+/* number */
 .number-input {
   width: 20rem;
   border: 0.3px solid var(--main-tints-color);

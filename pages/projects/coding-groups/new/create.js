@@ -135,7 +135,7 @@ function CreateGroupPage() {
 
   // CHECK INPUT VALIDITY
   const nBuddiesIsValid =
-    nBuddies > 0 && nBuddies <= assignment.maxTeamMemebers;
+    nBuddies > 1 && nBuddies <= assignment.maxTeamMemebers;
   const nBuddiesIsInvalid = !nBuddiesIsValid && nBuddiesTouched;
 
   const organiserIsBuddyIsValid = organiserIsBuddy || organiserIsMentor;
@@ -159,44 +159,22 @@ function CreateGroupPage() {
   )
     formIsValid = true;
 
-  console.log(`organiserIsMentorIsValid: ${organiserIsMentorIsValid}`);
-  console.log(`formIsValid: ${formIsValid}`);
+  // console.log(`organiserIsMentorIsValid: ${organiserIsMentorIsValid}`);
+  // console.log(`formIsValid: ${formIsValid}`);
   //   THIS SHOULD BECOME A HELPER FUNCTION
   const createGroup = async () => {
     setNBuddiesTouched(true);
     setOrganiserIsBuddyTouched(true);
     setOrganiserIsMentorTouched(true);
     setMentorRequiredTouched(true);
-    // verify correct inputs
-    let inputIsValid = false;
-    // if the organiser is neither a buddy or a mentor
-    if (
-      (organiserIsBuddy === null || !organiserIsBuddy) &&
-      (organiserIsMentor === null || !organiserIsMentor)
-    ) {
-      console.log('ti ga da essar buddy / mentor o tutti do');
-      return;
-    }
 
-    if (
-      organiserIsBuddy === null ||
-      ((mentorRequired === null || mentorRequired) &&
-        organiserIsMentor === null)
-    ) {
-      inputIsValid = false;
-    } else {
-      inputIsValid = true;
-    }
     // add field to each requirement
     // const requirements =assignment.requirements.map(item => ({...item, met:false}))
     const requirements = assignment.requirements.map((element) => {
       return { ...element, met: false };
     });
 
-    // the total number of people should be > 1 ie at least 2! It can be 2 buddies or 1 buddy 1 mentor. CHECK THAT TOO
-    // THE ABOVE IS JUST A BASIC INPUT VALIDATION !! - MUST BE IMPROVED
-    // console.log(inputIsValid);
-    if (inputIsValid) {
+    if (formIsValid) {
       const newGroup = {
         organiser: '',
         name: assignment.name,
@@ -218,28 +196,27 @@ function CreateGroupPage() {
         approvals: [],
       };
 
-      // console.log(newGroup);
-      // try {
-      //   const res = await axios.post(
-      //     `${process.env.NEXT_PUBLIC_API}/groups/new`,
-      //     { organiserIsBuddy, organiserIsMentor, newGroup },
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${authState.token}`,
-      //       },
-      //     }
-      //   );
-      //   // console.log(res.data.success);
-      //   if (res.data.success) {
-      //     setSuccess(true);
-      //     setNewGroupId(res.data.newGroupId);
-      //   } else {
-      //     setSuccess(false);
-      //     console.log('An error occurred');
-      //   }
-      // } catch (err) {
-      //   console.log(err);
-      // }
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/groups/new`,
+          { organiserIsBuddy, organiserIsMentor, newGroup },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        // console.log(res.data.success);
+        if (res.data.success) {
+          setSuccess(true);
+          setNewGroupId(res.data.newGroupId);
+        } else {
+          setSuccess(false);
+          console.log('An error occurred');
+        }
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       console.log('some input is invalid');
     }
@@ -261,8 +238,8 @@ function CreateGroupPage() {
       ) : success ? (
         successMsg
       ) : (
-        <>
-          <div className="flex">
+        <div className="creation-form-layout">
+          <div className="flex flex-justify-space-between ">
             <h2>Project based on "{assignment.name}"</h2>
             <Link href="/projects/coding-groups/new/select-assignment">
               go back
@@ -318,7 +295,7 @@ function CreateGroupPage() {
             onChange={(e) => setNBuddies(e.target.value)}
             onBlur={() => setNBuddiesTouched(true)}
             isInvalid={nBuddiesIsInvalid}
-            errorMsg={`Must be greater than zero and less than ${assignment.maxTeamMemebers}`}
+            errorMsg={`Must be greater than one and up to ${assignment.maxTeamMemebers}`}
           />
           <br></br>
           {assignment.completionTime && assignment.completionTime > 0 && (
@@ -386,12 +363,13 @@ function CreateGroupPage() {
               classname="btn-dark"
               label="create"
               onCLickAction={createGroup}
+              disabled={formIsValid !== true ? true : false}
             />
           </div>
           <br></br>
           <br></br>
           <br></br>
-        </>
+        </div>
       )}
     </UserRoute>
   );
