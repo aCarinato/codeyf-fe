@@ -74,6 +74,9 @@ Spacing System (px)
   --main-cta-light-hover-color: #8dace5;
   --main-btnlight-color-tint: rgba(204, 232, 255, 0.15);
 
+  /* inputs */
+  --main-input-error-bgr: #fff7fc;
+
   /* Radius */
   --main-border-radius: 1.2rem;
 

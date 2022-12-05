@@ -50,8 +50,9 @@ function OneColAddField(props) {
           <input
             className={
               touched[touched.map((elem) => elem.idx).indexOf('0')].isTouched &&
-              values[values.map((elem) => elem.idx).indexOf('0')].label
-                .length === 0
+              values[
+                values.map((elem) => elem.idx).indexOf('0')
+              ].label.trim() === ''
                 ? classes['text-input-invalid']
                 : classes['text-input']
             }
@@ -77,8 +78,8 @@ function OneColAddField(props) {
             }
           />
           {touched[touched.map((elem) => elem.idx).indexOf('0')].isTouched &&
-          values[values.map((elem) => elem.idx).indexOf('0')].label.length ===
-            0 ? (
+          values[values.map((elem) => elem.idx).indexOf('0')].label.trim() ===
+            '' ? (
             <p className="input-error-msg">Input a valid requirement</p>
           ) : (
             <p className="input-error-msg-none">none</p>
@@ -97,8 +98,9 @@ function OneColAddField(props) {
                   className={
                     touched[touched.map((elem) => elem.idx).indexOf(item.idx)]
                       .isTouched &&
-                    values[values.map((elem) => elem.idx).indexOf(item.idx)]
-                      .label.length === 0
+                    values[
+                      values.map((elem) => elem.idx).indexOf(item.idx)
+                    ].label.trim() === ''
                       ? classes['text-input-invalid']
                       : classes['text-input']
                   }
@@ -132,8 +134,9 @@ function OneColAddField(props) {
                 />
                 {touched[touched.map((elem) => elem.idx).indexOf(item.idx)]
                   .isTouched &&
-                values[values.map((elem) => elem.idx).indexOf(item.idx)].label
-                  .length === 0 ? (
+                values[
+                  values.map((elem) => elem.idx).indexOf(item.idx)
+                ].label.trim() === '' ? (
                   <p className="input-error-msg">Input a valid requirement</p>
                 ) : (
                   <p className="input-error-msg-none">none</p>
