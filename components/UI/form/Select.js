@@ -8,17 +8,24 @@ function Select(props) {
 
   return (
     <div className={classes['box-0']}>
-      <label className={classes['select-label']}>
-        {label} {required && <sup>*</sup>}
-      </label>
-      <select name={name} onChange={onChange}>
-        <option value="null-value">-- SELECT --</option>
-        {options.map((option) => (
-          <option key={option._id} value={option._id}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className={classes['box-1']}>
+        <label className={classes['select-label']}>
+          {label} {required && <sup>*</sup>}
+        </label>
+        <select
+          name={name}
+          onChange={onChange}
+          className={classes['select-dropdown']}
+        >
+          <option value="null-value">-- SELECT --</option>
+          {options.map((option) => (
+            <option key={option._id} value={option._id}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {isInvalid ? (
         <p className="input-error-msg">{errorMsg}</p>
       ) : (

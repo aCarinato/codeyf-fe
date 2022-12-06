@@ -1,9 +1,10 @@
-// import classes from './Selections.module.css'
+import classes from './Selections.module.css';
 
 function Selections(props) {
   const { selections, setSelections, disabled = false } = props;
   return (
-    <div className="flex flex-justify-flex-start gap-12">
+    <div className="flex flex-justify-center flex-vertical-items-center gap-12 width-70">
+      {/* <div className={classes['tech-span-box']}> */}
       {selections.map((selection) => (
         <div className="tech-span" key={selection._id}>
           {selection.label}{' '}
@@ -21,6 +22,7 @@ function Selections(props) {
           )}
         </div>
       ))}
+      {/* </div> */}
     </div>
   );
 }

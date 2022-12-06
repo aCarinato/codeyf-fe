@@ -1,7 +1,18 @@
 .box-0 {
-  width: 100%;
+  width: 30%;
+}
+
+.box-1 {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .select-label {
-  width: 45%;
+  font-weight: bold;
+  width: 40%;
+  margin-bottom: 0.2rem;
+}
+
+.select-dropdown {
+  width: 16rem;
 }

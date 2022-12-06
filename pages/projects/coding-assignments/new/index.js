@@ -66,6 +66,7 @@ function CreateNewAssignmentPage() {
   const [difficultyTouched, setDifficultyTouched] = useState(false);
   const [topicsTouched, setTopicsTouched] = useState(false);
   const [learningTouched, setLearningTouched] = useState(false);
+  const [maxTeamMemebersTouched, setMaxTeamMemebersTouched] = useState(false);
   const [requirementsTouched, setRequirementsTouched] = useState([
     { idx: '0', isTouched: false },
   ]);
@@ -86,6 +87,8 @@ function CreateNewAssignmentPage() {
   const topicsIsInvalid = !topicsIsValid && topicsTouched;
   const learningIsInvalid = !learningIsValid && learningTouched;
   const difficultyIsInvalid = !difficultyIsValid && difficultyTouched;
+  const maxTeamMemebersIsInvalid =
+    !maxTeamMemebersIsValid && maxTeamMemebersTouched;
 
   const requirementsIsValid = requirements
     .map((requirement) => requirement.label)
@@ -115,6 +118,7 @@ function CreateNewAssignmentPage() {
     setDifficultyTouched(true);
     setTopicsTouched(true);
     setLearningTouched(true);
+    setMaxTeamMemebersTouched(true);
     // VALIDATIONS
     // 1) Total number of people from roles must be <= max n participants
 
@@ -219,62 +223,68 @@ function CreateNewAssignmentPage() {
             errorMsg={`Select an option`}
           />
           <br></br>
-          <Select
-            required={true}
-            label="Topics"
-            name="topics"
-            options={allTopics}
-            onChange={(e) => {
-              setTopicsTouched(true);
-              if (e.target.value !== 'null-value') {
-                // console.log(e.target.value);
-                setTopics((prev) => {
-                  let idx = topics
-                    .map((topic) => topic._id)
-                    .indexOf(e.target.value);
-                  if (idx === -1) {
-                    let newTopic = allTopics.filter(
-                      (topic) => topic._id === e.target.value
-                    )[0];
-                    return [...prev, newTopic];
-                  } else {
-                    return prev;
-                  }
-                });
-              }
-            }}
-            isInvalid={topicsIsInvalid}
-            errorMsg={`Select at least one option`}
-          />
-          <Selections selections={topics} setSelections={setTopics} />
+          <div className="flex flex-justify-space-between">
+            <Select
+              required={true}
+              label="Topics"
+              name="topics"
+              options={allTopics}
+              onChange={(e) => {
+                setTopicsTouched(true);
+                if (e.target.value !== 'null-value') {
+                  // console.log(e.target.value);
+                  setTopics((prev) => {
+                    let idx = topics
+                      .map((topic) => topic._id)
+                      .indexOf(e.target.value);
+                    if (idx === -1) {
+                      let newTopic = allTopics.filter(
+                        (topic) => topic._id === e.target.value
+                      )[0];
+                      return [...prev, newTopic];
+                    } else {
+                      return prev;
+                    }
+                  });
+                }
+              }}
+              isInvalid={topicsIsInvalid}
+              errorMsg={`Select at least one option`}
+            />
+            <Selections selections={topics} setSelections={setTopics} />
+          </div>
+
           <br></br>
-          <Select
-            required={true}
-            label="Techs involved"
-            name="techs"
-            options={allTechStacks}
-            onChange={(e) => {
-              setLearningTouched(true);
-              if (e.target.value !== 'null-value') {
-                setLearning((prev) => {
-                  let idx = learning
-                    .map((learn) => learn._id)
-                    .indexOf(e.target.value);
-                  if (idx === -1) {
-                    let newLearn = allTechStacks.filter(
-                      (learn) => learn._id === e.target.value
-                    )[0];
-                    return [...prev, newLearn];
-                  } else {
-                    return prev;
-                  }
-                });
-              }
-            }}
-            isInvalid={learningIsInvalid}
-            errorMsg={`Select at least one option`}
-          />
-          <Selections selections={learning} setSelections={setLearning} />
+          <div className="flex flex-justify-space-between">
+            <Select
+              required={true}
+              label="Techs involved"
+              name="techs"
+              options={allTechStacks}
+              onChange={(e) => {
+                setLearningTouched(true);
+                if (e.target.value !== 'null-value') {
+                  setLearning((prev) => {
+                    let idx = learning
+                      .map((learn) => learn._id)
+                      .indexOf(e.target.value);
+                    if (idx === -1) {
+                      let newLearn = allTechStacks.filter(
+                        (learn) => learn._id === e.target.value
+                      )[0];
+                      return [...prev, newLearn];
+                    } else {
+                      return prev;
+                    }
+                  });
+                }
+              }}
+              isInvalid={learningIsInvalid}
+              errorMsg={`Select at least one option`}
+            />
+            <Selections selections={learning} setSelections={setLearning} />
+          </div>
+
           <br></br>
           <AddMockupFields mockups={mockups} setMockups={setMockups} />
           <br></br>
@@ -294,19 +304,12 @@ function CreateNewAssignmentPage() {
             label="Max number of team members"
             options={allParticipants}
             name="max-team-size"
-            onChange={(e) => setMaxTeamMemebers(e.target.value)}
-          />
-          <br></br>
-          <AddIdealTeamFields
-            idealTeam={idealTeam}
-            setIdealTeam={setIdealTeam}
-            setSteps={setSteps}
-          />
-          <br></br>
-          <AddStepsFields
-            steps={steps}
-            setSteps={setSteps}
-            idealTeam={idealTeam}
+            onChange={(e) => {
+              setMaxTeamMemebersTouched(true);
+              setMaxTeamMemebers(e.target.value);
+            }}
+            isInvalid={maxTeamMemebersIsInvalid}
+            errorMsg={`Select an option`}
           />
           <br></br>
           <h3>Optional fields</h3>
@@ -319,6 +322,18 @@ function CreateNewAssignmentPage() {
           />
           <br></br>
           <CompletionTime setCompletionTime={setCompletionTime} />
+          <br></br>
+          <AddIdealTeamFields
+            idealTeam={idealTeam}
+            setIdealTeam={setIdealTeam}
+            setSteps={setSteps}
+          />
+          <br></br>
+          <AddStepsFields
+            steps={steps}
+            setSteps={setSteps}
+            idealTeam={idealTeam}
+          />
           <br></br>
           <BtnCTA
             label="create assignment"
