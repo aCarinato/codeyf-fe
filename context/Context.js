@@ -392,6 +392,8 @@ export function ContextProvider({ children }) {
       isAdmin: '',
     });
 
+    setCurrentUser(null);
+
     if (socket.current) {
       // if (authState && authState.username !== '') {
 

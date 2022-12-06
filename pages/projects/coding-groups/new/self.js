@@ -100,7 +100,7 @@ function SelfAssignmentPage() {
       console.log(err);
     }
   };
-  console.log(requirements);
+  // console.log(requirements);
   const createGroup = async () => {
     // verify correct inputs
     let inputIsValid = false;
@@ -211,7 +211,7 @@ function SelfAssignmentPage() {
       {success ? (
         successMsg
       ) : (
-        <>
+        <div className="creation-form-layout">
           <div className="flex">
             <h2>Self Assignment</h2>
             <Link href="/projects/coding-groups/new/">go back</Link>
@@ -356,7 +356,7 @@ function SelfAssignmentPage() {
           <br></br>
           <br></br>
           <br></br>
-        </>
+        </div>
       )}
     </UserRoute>
   );

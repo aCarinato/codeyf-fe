@@ -9,7 +9,7 @@ function AddIdealTeamFields(props) {
       <div className="grid grid---4cols-10305010 margin-6auto">
         <div className="center-text">#</div>
         <div className="center-text">N. people</div>
-        <div className="center-text">Role</div>
+        <div className="center-text">Role name</div>
         <div className="center-text">
           <button
             className="btn-circle"

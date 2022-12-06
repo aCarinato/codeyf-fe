@@ -1,4 +1,8 @@
 .box-0 {
+  width: 100%;
+}
+
+.box-1 {
   display: flex;
   /* flex-wrap: wrap; */
   justify-content: space-evenly;

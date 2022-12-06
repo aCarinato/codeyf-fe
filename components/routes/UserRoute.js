@@ -19,6 +19,7 @@ const UserRoute = ({ children }) => {
 
     const getCurrentUser = async () => {
       try {
+        console.log('Executing getCurrentUser()');
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
           {

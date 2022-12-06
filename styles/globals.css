@@ -74,8 +74,13 @@ Spacing System (px)
   --main-cta-light-hover-color: #8dace5;
   --main-btnlight-color-tint: rgba(204, 232, 255, 0.15);
 
+  /* inputs */
+  --main-input-error-bgr: #fff7fc;
+
   /* Radius */
   --main-border-radius: 1.2rem;
+
+  --main-disabled-color: rgba(119, 127, 142, 0.45);
 }
 
 html {
@@ -132,24 +137,6 @@ fieldset {
 
 sup {
   color: var(--main-error-color);
-}
-
-input {
-  padding: 1rem;
-  font-family: 'Montserrat', sans-serif;
-  color: var(--main-text-color);
-  border: 0.5px solid var(--main-text-color);
-  border-radius: 1rem;
-  /* border-color: var(--main-text-color); */
-}
-
-textarea {
-  padding: 1rem;
-  font-family: 'Montserrat', sans-serif;
-  color: var(--main-text-color);
-  border: 0.5px solid var(--main-text-color);
-  border-radius: 1rem;
-  /* border-color: var(--main-text-color); */
 }
 
 /* img {

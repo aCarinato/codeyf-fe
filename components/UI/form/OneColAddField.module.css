@@ -13,14 +13,34 @@
 }
 
 .text-input-col {
-  width: 70%;
+  width: 85%;
 }
 
 .text-input {
-  width: 100%;
+  width: 95%;
+  border: 0.3px solid var(--main-tints-color);
+}
+
+.text-input:focus {
+  outline: none !important;
+  border: 1.6px solid var(--main-tints-color);
+}
+
+.text-input-invalid {
+  outline: none !important;
+  border: 1px solid var(--main-error-color);
+  background-color: var(--main-input-error-bgr);
+  width: 95%;
+}
+
+.text-input-invalid:focus {
+  outline: none !important;
+  border: 1.6px solid var(--main-error-color);
+  /* background-color: #ffe1f4;
+  width: 20rem; */
 }
 
 .btn-col {
-  width: 10%;
+  width: 5%;
   text-align: center;
 }

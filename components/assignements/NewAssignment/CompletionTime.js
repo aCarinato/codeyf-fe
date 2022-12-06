@@ -3,7 +3,11 @@ import classes from './CompletionTime.module.css';
 import { useEffect, useState } from 'react';
 
 function CompletionTime(props) {
-  const { setCompletionTime } = props;
+  const {
+    setCompletionTime,
+    setCompletionTimeTouched,
+    completionTimeIsInvalid,
+  } = props;
 
   const [n, setN] = useState('');
   const [unit, setUnit] = useState('');
@@ -26,23 +30,29 @@ function CompletionTime(props) {
   }, [n, unit]);
 
   return (
-    <div>
+    <div className={classes['box-0']}>
       <label className="myform-label bold">
         Estimated time for completion (assuming about a couple of hours spent
         per day)
       </label>
-      <div className={classes['box-0']}>
+      <div className={classes['box-1']}>
         <div>
           <input
+            className={
+              completionTimeIsInvalid ? 'text-input-invalid' : 'text-input'
+            }
             type="number"
             value={n}
             min={1}
+            placeholder="amount"
             //   max={max && max}
             onChange={(e) => setN(e.target.value)}
+            onBlur={(e) => setCompletionTimeTouched(true)}
           />
         </div>
         <div>
           <select
+            className={completionTimeIsInvalid ? 'select-invalid' : ''}
             name={unit}
             onChange={(e) => {
               if (e.target.value !== 'null-value') {
@@ -59,6 +69,11 @@ function CompletionTime(props) {
           </select>
         </div>
       </div>
+      {completionTimeIsInvalid ? (
+        <p className="input-error-msg">{`enter a valid value`}</p>
+      ) : (
+        <p className="input-error-msg-none">none</p>
+      )}
     </div>
   );
 }

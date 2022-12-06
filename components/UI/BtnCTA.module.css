@@ -15,6 +15,10 @@
   background-color: var(--main-cta-light-hover-color);
 }
 
+.btn-light:disabled {
+  cursor: auto;
+}
+
 .btn-dark-sm {
   background-color: var(--main-primary-color);
   padding: 0.5rem 1.2rem;
@@ -30,6 +34,7 @@
 
 .btn-dark-sm:hover {
   background-color: var(--main-tints-color);
+  background-color: var(--main-primary-color);
 }
 
 .btn-dark {
@@ -45,6 +50,11 @@
 
 .btn-dark:hover {
   background-color: var(--main-tints-color);
+}
+
+.btn-dark:disabled {
+  cursor: auto;
+  background-color: var(--main-disabled-color);
 }
 
 .btn-light-big {

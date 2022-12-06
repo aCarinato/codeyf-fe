@@ -7,10 +7,13 @@ function TextArea(props) {
     label,
     value,
     onChange,
+    onBlur,
     maxLength,
     nRows,
     nCols,
     placeholder,
+    isInvalid,
+    errorMsg,
   } = props;
   return (
     <div>
@@ -18,16 +21,22 @@ function TextArea(props) {
         {label} {required && <sup>*</sup>}
       </label>
       <textarea
+        className={isInvalid ? 'text-input-invalid' : 'text-input'}
         type="text"
         disabled={disabled}
-        maxLength={maxLength}
+        placeholder={placeholder && placeholder}
+        maxLength={maxLength && maxLength}
         rows={nRows}
         cols={nCols}
         value={value}
         onChange={onChange}
-        // onBlur={() => setShortDescriptionTouched(true)}
-        placeholder={placeholder && placeholder}
+        onBlur={onBlur}
       />
+      {isInvalid ? (
+        <p className="input-error-msg">{errorMsg}</p>
+      ) : (
+        <p className="input-error-msg-none">none</p>
+      )}
     </div>
   );
 }
