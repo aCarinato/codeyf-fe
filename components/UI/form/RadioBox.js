@@ -1,9 +1,11 @@
+import classes from './RadioBox.module.css';
+
 function RadioBox(props) {
   const { required, label, options, name, onChange, isInvalid, errorMsg } =
     props;
   return (
     <div>
-      <fieldset>
+      <fieldset className={isInvalid ? classes['input-invalid'] : ''}>
         <legend>
           {label} {required && <sup>*</sup>}
         </legend>
@@ -15,10 +17,6 @@ function RadioBox(props) {
               name={name}
               value={option.value}
               onChange={(e) => onChange(e)}
-              // onBlur={() => onBlur()}
-              // checked={
-              //     option.indexOf(skill._id) === -1 ? false : true
-              //   }
             />
             <label htmlFor={option.value}>{option.label}</label>
           </div>

@@ -80,7 +80,7 @@ function OneColAddField(props) {
           {touched[touched.map((elem) => elem.idx).indexOf('0')].isTouched &&
           values[values.map((elem) => elem.idx).indexOf('0')].label.trim() ===
             '' ? (
-            <p className="input-error-msg">Input a valid requirement</p>
+            <p className="input-error-msg">Enter a non empty value</p>
           ) : (
             <p className="input-error-msg-none">none</p>
           )}
@@ -137,7 +137,7 @@ function OneColAddField(props) {
                 values[
                   values.map((elem) => elem.idx).indexOf(item.idx)
                 ].label.trim() === '' ? (
-                  <p className="input-error-msg">Input a valid requirement</p>
+                  <p className="input-error-msg">Enter a non empty value</p>
                 ) : (
                   <p className="input-error-msg-none">none</p>
                 )}

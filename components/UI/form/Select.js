@@ -12,25 +12,31 @@ function Select(props) {
         <label className={classes['select-label']}>
           {label} {required && <sup>*</sup>}
         </label>
-        <select
-          name={name}
-          onChange={onChange}
-          className={classes['select-dropdown']}
-        >
-          <option value="null-value">-- SELECT --</option>
-          {options.map((option) => (
-            <option key={option._id} value={option._id}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div>
+          <select
+            // className={isInvalid ? 'select-invalid' : ''}
+            name={name}
+            onChange={onChange}
+            className={
+              isInvalid
+                ? classes['select-dropdown-invalid']
+                : classes['select-dropdown']
+            }
+          >
+            <option value="null-value">-- SELECT --</option>
+            {options.map((option) => (
+              <option key={option._id} value={option._id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {isInvalid ? (
+            <p className="input-error-msg">{errorMsg}</p>
+          ) : (
+            <p className="input-error-msg-none">none</p>
+          )}
+        </div>
       </div>
-
-      {isInvalid ? (
-        <p className="input-error-msg">{errorMsg}</p>
-      ) : (
-        <p className="input-error-msg-none">none</p>
-      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import OneColAddField from '../../../../components/UI/form/OneColAddField';
 import AddMockupFields from '../../../../components/assignements/NewAssignment/AddMockupFields';
 import AddIdealTeamFields from '../../../../components/assignements/NewAssignment/AddIdealTeamFields';
 import AddStepsFields from '../../../../components/assignements/NewAssignment/AddStepsFields';
+import AddResources from '../../../../components/assignements/NewAssignment/AddResources';
 import BtnCTA from '../../../../components/UI/BtnCTA';
 // data
 import { allParticipants } from '../../../../data/assignements/allParticipants';
@@ -49,8 +50,8 @@ function CreateNewAssignmentPage() {
       idx: '0',
       name: '',
       link: '',
-      type: '',
-      upvotes: '',
+      // type: '',
+      upvotes: 0,
     },
   ]);
   //   new assignment
@@ -70,7 +71,7 @@ function CreateNewAssignmentPage() {
   const [requirementsTouched, setRequirementsTouched] = useState([
     { idx: '0', isTouched: false },
   ]);
-
+  const [completionTimeTouched, setCompletionTimeTouched] = useState(false);
   // console.log(requirementsTouched);
 
   const nameIsValid = name.trim() !== '';
@@ -80,6 +81,7 @@ function CreateNewAssignmentPage() {
   const maxTeamMemebersIsValid = maxTeamMemebers > 0;
   const topicsIsValid = topics.length > 0;
   const learningIsValid = learning.length > 0;
+  const completionTimeIsValid = completionTime > 0;
 
   const nameIsInvalid = !nameIsValid && nameTouched;
   const headlineIsInvalid = !headlineIsValid && headlineTouched;
@@ -89,6 +91,9 @@ function CreateNewAssignmentPage() {
   const difficultyIsInvalid = !difficultyIsValid && difficultyTouched;
   const maxTeamMemebersIsInvalid =
     !maxTeamMemebersIsValid && maxTeamMemebersTouched;
+
+  const completionTimeIsInvalid =
+    !completionTimeIsValid && completionTimeTouched;
 
   const requirementsIsValid = requirements
     .map((requirement) => requirement.label)
@@ -105,7 +110,8 @@ function CreateNewAssignmentPage() {
     maxTeamMemebersIsValid &&
     topicsIsValid &&
     learningIsValid &&
-    requirementsIsValid
+    requirementsIsValid &&
+    completionTimeIsValid
   )
     formIsValid = true;
 
@@ -119,6 +125,13 @@ function CreateNewAssignmentPage() {
     setTopicsTouched(true);
     setLearningTouched(true);
     setMaxTeamMemebersTouched(true);
+    setRequirementsTouched((prev) =>
+      prev.map((req) => {
+        return { ...req, isTouched: true };
+      })
+    );
+    setCompletionTimeTouched(true);
+
     // VALIDATIONS
     // 1) Total number of people from roles must be <= max n participants
 
@@ -136,23 +149,27 @@ function CreateNewAssignmentPage() {
       maxTeamMemebers,
       idealTeam,
       steps,
+      resources,
+      // isPublic: true,
     };
 
-    // try {
-    //   const res = await axios.post(
-    //     `${process.env.NEXT_PUBLIC_API}/assignments/new`,
-    //     { newAssignment },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${authState.token}`,
-    //       },
-    //     }
-    //   );
-    //   console.log(res);
-    //   if (res.data.success) setSuccess(true);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    console.log(newAssignment);
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/assignments/new`,
+        { newAssignment },
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      console.log(res);
+      if (res.data.success) setSuccess(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const successMsg = (
@@ -173,7 +190,9 @@ function CreateNewAssignmentPage() {
         <div className="creation-form-layout">
           <h2>Create a new Assignment</h2>
           <br></br>
+          <br></br>
           <h3>Mandatory fields</h3>
+          <hr></hr>
           <br></br>
           <TextInput
             required={true}
@@ -232,7 +251,6 @@ function CreateNewAssignmentPage() {
               onChange={(e) => {
                 setTopicsTouched(true);
                 if (e.target.value !== 'null-value') {
-                  // console.log(e.target.value);
                   setTopics((prev) => {
                     let idx = topics
                       .map((topic) => topic._id)
@@ -283,10 +301,11 @@ function CreateNewAssignmentPage() {
               errorMsg={`Select at least one option`}
             />
             <Selections selections={learning} setSelections={setLearning} />
+            <br></br>
           </div>
 
           <br></br>
-          <AddMockupFields mockups={mockups} setMockups={setMockups} />
+
           <br></br>
           <label className="form-label">
             Requirements for success completion <sup>*</sup>
@@ -312,7 +331,18 @@ function CreateNewAssignmentPage() {
             errorMsg={`Select an option`}
           />
           <br></br>
+          <CompletionTime
+            setCompletionTime={setCompletionTime}
+            setCompletionTimeTouched={setCompletionTimeTouched}
+            completionTimeIsInvalid={completionTimeIsInvalid}
+          />
+          <br></br>
           <h3>Optional fields</h3>
+          <hr></hr>
+          <br></br>
+          <AddMockupFields mockups={mockups} setMockups={setMockups} />
+          <br></br>
+          <AddResources resources={resources} setResources={setResources} />
           <br></br>
           <TextInput
             required={false}
@@ -321,8 +351,7 @@ function CreateNewAssignmentPage() {
             onChange={(e) => setRepo(e.target.value)}
           />
           <br></br>
-          <CompletionTime setCompletionTime={setCompletionTime} />
-          <br></br>
+
           <AddIdealTeamFields
             idealTeam={idealTeam}
             setIdealTeam={setIdealTeam}

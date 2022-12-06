@@ -46,7 +46,7 @@ function AddStepsFields(props) {
       <p className="form-label">Steps for completion</p>
       <div className="grid grid---4cols-10305010">
         <div className="center-text">#</div>
-        <div className="center-text">Role</div>
+        <div className="center-text">Role name</div>
         <div className="center-text">Tasks</div>
         <div className="center-text">
           <button
