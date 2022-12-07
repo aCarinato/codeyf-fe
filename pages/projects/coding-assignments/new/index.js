@@ -25,9 +25,13 @@ import axios from 'axios';
 // context
 import { useMainContext } from '../../../../context/Context';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function CreateNewAssignmentPage() {
   const { authState, currentUser } = useMainContext();
+
+  const router = useRouter();
+
   // console.log(currentUser);
   const [name, setName] = useState('');
   const [headline, setHeadline] = useState('');
@@ -119,58 +123,62 @@ function CreateNewAssignmentPage() {
   // console.log(`formIsValid: ${formIsValid}`);
 
   const createAssignment = async () => {
-    setNameTouched(true);
-    setHeadlineTouched(true);
-    setDescriptionTouched(true);
-    setDifficultyTouched(true);
-    setTopicsTouched(true);
-    setLearningTouched(true);
-    setMaxTeamMemebersTouched(true);
-    setRequirementsTouched((prev) =>
-      prev.map((req) => {
-        return { ...req, isTouched: true };
-      })
-    );
-    setCompletionTimeTouched(true);
+    if (authState && authState.token && authState.token.length > 0) {
+      setNameTouched(true);
+      setHeadlineTouched(true);
+      setDescriptionTouched(true);
+      setDifficultyTouched(true);
+      setTopicsTouched(true);
+      setLearningTouched(true);
+      setMaxTeamMemebersTouched(true);
+      setRequirementsTouched((prev) =>
+        prev.map((req) => {
+          return { ...req, isTouched: true };
+        })
+      );
+      setCompletionTimeTouched(true);
 
-    // VALIDATIONS
-    // 1) Total number of people from roles must be <= max n participants
-    if (formIsValid) {
-      const newAssignment = {
-        name,
-        headline,
-        description,
-        difficulty,
-        completionTime,
-        repo,
-        topics,
-        learning,
-        requirements,
-        mockups,
-        maxTeamMemebers,
-        idealTeam,
-        steps,
-        resources,
-        // isPublic: true,
-      };
+      // VALIDATIONS
+      // 1) Total number of people from roles must be <= max n participants
+      if (formIsValid) {
+        const newAssignment = {
+          name,
+          headline,
+          description,
+          difficulty,
+          completionTime,
+          repo,
+          topics,
+          learning,
+          requirements,
+          mockups,
+          maxTeamMemebers,
+          idealTeam,
+          steps,
+          resources,
+          // isPublic: true,
+        };
 
-      // console.log(newAssignment);
+        // console.log(newAssignment);
 
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/assignments/new`,
-          { newAssignment },
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
-          }
-        );
-        console.log(res);
-        if (res.data.success) setSuccess(true);
-      } catch (err) {
-        console.log(err);
+        try {
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_API}/assignments/new`,
+            { newAssignment },
+            {
+              headers: {
+                Authorization: `Bearer ${authState.token}`,
+              },
+            }
+          );
+          // console.log(res);
+          if (res.data.success) setSuccess(true);
+        } catch (err) {
+          console.log(err);
+        }
       }
+    } else {
+      router.push('/login');
     }
   };
 
@@ -185,7 +193,7 @@ function CreateNewAssignmentPage() {
   );
 
   return (
-    <UserRoute>
+    <>
       {success ? (
         successMsg
       ) : currentUser && currentUser.isMentor ? (
@@ -385,18 +393,18 @@ function CreateNewAssignmentPage() {
       ) : (
         <div>
           <p>
-            You need to be a mentor in order to make a public assignment that
-            other people can use for their individual or team projects
+            You need to be a mentor in order to make an assignment that other
+            people can use for their individual or team projects
           </p>
           <br></br>
           <p>
-            You can still create a private assignment to work on individually or
-            with a team. To do so{' '}
+            You can still create a project to work on individually or with a
+            team. To do so{' '}
             <Link href="/projects/coding-groups/new/self">click here</Link>.
           </p>
         </div>
       )}
-    </UserRoute>
+    </>
   );
 }
 

@@ -1,12 +1,11 @@
+// react / next
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
-// import { people } from '../data/people';
-// import { groups } from '../data/groups';
-import { assignements } from '../data/assignements';
 // own components
 import SpinningLoader from '../components/UI/SpinningLoader';
 import MySlider from '../components/UI/MySlider';
-// import MessageForm from '../components/message/MessageForm';
+import BtnCTA from '../components/UI/BtnCTA';
 // context
 import { useMainContext } from '../context/Context';
 // packages
@@ -15,6 +14,8 @@ import { Icon } from '@iconify/react';
 
 function HomePage() {
   const { authState } = useMainContext();
+
+  const router = useRouter();
 
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -119,11 +120,27 @@ function HomePage() {
   return (
     <Fragment>
       <h1>The Coding Community</h1>
-      <h4 className="h4-header">
-        Build your skill set. Find projects and people to code with, mentor and
-        learn from
-      </h4>
       <br></br>
+      <div className="flex flex-justify-space-between">
+        <div>
+          <h3 className="h4-header">Build your skill set.</h3>
+          <h3 className="h4-header">
+            Find projects and people to code with, mentor and learn from
+          </h3>
+        </div>
+        <div>
+          <BtnCTA
+            label="start a project"
+            classname="btn-dark"
+            onCLickAction={() => {
+              router.push('/new-project');
+            }}
+          />
+        </div>
+      </div>
+
+      <br></br>
+
       <br></br>
       <h3>
         Coding buddies{' '}

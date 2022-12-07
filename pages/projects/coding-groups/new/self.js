@@ -20,9 +20,12 @@ import { allTechStacks } from '../../../../data/allTechStacks';
 import axios from 'axios';
 // context
 import { useMainContext } from '../../../../context/Context';
+import { useRouter } from 'next/router';
 
 function SelfAssignmentPage() {
   const { authState, currentUser } = useMainContext();
+
+  const router = useRouter();
 
   // console.log(currentUser);
 
@@ -174,76 +177,80 @@ function SelfAssignmentPage() {
     formIsValid = true;
 
   const createGroup = async () => {
-    setNameTouched(true);
-    setDescriptionTouched(true);
-    setNBuddiesTouched(true);
-    setDeadlineTouched(true);
-    setOrganiserIsBuddyTouched(true);
-    setOrganiserIsMentorTouched(true);
-    setMentorRequiredTouched(true);
-    setTopicsTouched(true);
-    setLearningTouched(true);
-    // setRequirementsTouched((prev) =>
-    //   prev.map((req) => {
-    //     return { ...req, isTouched: true };
-    //   })
-    // );
+    if (authState && authState.token && authState.token.length > 0) {
+      setNameTouched(true);
+      setDescriptionTouched(true);
+      setNBuddiesTouched(true);
+      setDeadlineTouched(true);
+      setOrganiserIsBuddyTouched(true);
+      setOrganiserIsMentorTouched(true);
+      setMentorRequiredTouched(true);
+      setTopicsTouched(true);
+      setLearningTouched(true);
+      // setRequirementsTouched((prev) =>
+      //   prev.map((req) => {
+      //     return { ...req, isTouched: true };
+      //   })
+      // );
 
-    // this should be if requierements is valid
-    let updatedRequirements;
-    if (requirements.length === 1 && requirements[0].label === '') {
-      // no requirements were input
-      updatedRequirements = [];
-    } else {
-      updatedRequirements = requirements;
-    }
-
-    if (formIsValid) {
-      const newGroup = {
-        organiser: '',
-        name,
-        description,
-        deadline,
-        nBuddies,
-        buddies: [],
-        //   buddiesFilled: { type: Boolean, default: false },
-        mentorRequired,
-        //   nMentorsRequired: { type: Number, default: 1 },
-        mentors: [],
-        //   mentorsFilled: { type: Boolean, default: false },
-        topics,
-        learning,
-        picture,
-        requirements: updatedRequirements,
-      };
-      console.log(newGroup);
+      // this should be if requierements is valid
+      let updatedRequirements;
+      if (requirements.length === 1 && requirements[0].label === '') {
+        // no requirements were input
+        updatedRequirements = [];
+      } else {
+        updatedRequirements = requirements;
+      }
 
       if (formIsValid) {
-        try {
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API}/groups/new`,
-            { organiserIsBuddy, organiserIsMentor, newGroup },
-            {
-              headers: {
-                Authorization: `Bearer ${authState.token}`,
-              },
+        const newGroup = {
+          organiser: '',
+          name,
+          description,
+          deadline,
+          nBuddies,
+          buddies: [],
+          //   buddiesFilled: { type: Boolean, default: false },
+          mentorRequired,
+          //   nMentorsRequired: { type: Number, default: 1 },
+          mentors: [],
+          //   mentorsFilled: { type: Boolean, default: false },
+          topics,
+          learning,
+          picture,
+          requirements: updatedRequirements,
+        };
+        console.log(newGroup);
+
+        if (formIsValid) {
+          try {
+            const res = await axios.post(
+              `${process.env.NEXT_PUBLIC_API}/groups/new`,
+              { organiserIsBuddy, organiserIsMentor, newGroup },
+              {
+                headers: {
+                  Authorization: `Bearer ${authState.token}`,
+                },
+              }
+            );
+            // console.log(res.data.success);
+            if (res.data.success) {
+              setSuccess(true);
+              setNewGroupId(res.data.newGroupId);
+            } else {
+              // setSuccess(false);
+              setError('An error occurred');
+              console.log('An error occurred');
             }
-          );
-          // console.log(res.data.success);
-          if (res.data.success) {
-            setSuccess(true);
-            setNewGroupId(res.data.newGroupId);
-          } else {
-            // setSuccess(false);
-            setError('An error occurred');
-            console.log('An error occurred');
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
+      } else {
+        console.log('some input is invalid');
       }
     } else {
-      console.log('some input is invalid');
+      router.push('/login');
     }
   };
 
@@ -267,7 +274,7 @@ function SelfAssignmentPage() {
   // console.log(minDateISO);
 
   return (
-    <UserRoute>
+    <>
       {success ? (
         successMsg
       ) : (
@@ -279,6 +286,7 @@ function SelfAssignmentPage() {
           <h3>Mandatory fields</h3>
           <br></br>
           <TextInput
+            // disabled={authState && authState.token.length > 0 ? false : true}
             required={true}
             label="Name (max 30 characters)"
             value={name}
@@ -290,6 +298,7 @@ function SelfAssignmentPage() {
           />
           <br></br>
           <TextArea
+            // disabled={authState && authState.token.length > 0 ? false : true}
             required={true}
             label="description"
             nRows="5"
@@ -305,6 +314,7 @@ function SelfAssignmentPage() {
           <ImgUploader img={picture} uploadImg={uploadPicture} />
           <br></br>
           <NumberInput
+            // disabled={authState && authState.token.length > 0 ? false : true}
             min="2"
             placeholder="min 2 buddies"
             value={nBuddies}
@@ -452,7 +462,7 @@ function SelfAssignmentPage() {
           <br></br>
         </div>
       )}
-    </UserRoute>
+    </>
   );
 }
 

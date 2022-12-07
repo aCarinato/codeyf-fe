@@ -1,6 +1,7 @@
 function NumberInput(props) {
   const {
     required,
+    disabled = false,
     label,
     value,
     onChange,
@@ -17,6 +18,7 @@ function NumberInput(props) {
         {label} {required && <sup>*</sup>}
       </label>
       <input
+        disabled={disabled}
         className={isInvalid ? 'number-input-invalid' : 'number-input'}
         type="number"
         value={value}
