@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 // data
-import { assignements } from '../../../data/assignements';
 import { people } from '../../../data/people';
 // own components
 import Rating from '../../../components/UI/Rating';
@@ -23,6 +22,11 @@ function AssignementScreen() {
   const [assignement, setAssignement] = useState({});
   const [creator, setCreator] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [teamConfigurationIsValid, setTeamConfigurationIsValid] =
+    useState(null);
+
+  const [stepsIsValid, setStepsIsValid] = useState(null);
 
   // console.log(query['id-title']);
   const fetchAssignement = async () => {
@@ -57,6 +61,45 @@ function AssignementScreen() {
 
   useEffect(() => {
     fetchCreator();
+  }, [assignement]);
+
+  const checkTeamConfigurationIsValid = () => {
+    if (assignement.idealTeam.length === 1) {
+      if (
+        assignement.idealTeam[0].nPeople !== '' &&
+        assignement.idealTeam[0].role !== ''
+      ) {
+        setTeamConfigurationIsValid(true);
+      } else {
+        setTeamConfigurationIsValid(false);
+      }
+    } else {
+      setTeamConfigurationIsValid(true);
+    }
+  };
+
+  // console.log(assignement.steps[0].tasks);
+  const checkStepsIsValid = () => {
+    if (assignement.steps.length === 1) {
+      // console.log(
+      //   `assignement.steps.length === 1: ${assignement.steps.length === 1}`
+      // );
+      console.log(`assignement.steps[0].tasks: ${assignement.steps[0]}`);
+      if (assignement.steps[0].tasks.length > 0) {
+        setStepsIsValid(true);
+      } else {
+        setStepsIsValid(false);
+      }
+    } else {
+      setStepsIsValid(true);
+    }
+  };
+
+  useEffect(() => {
+    if (assignement && assignement.idealTeam && assignement.steps) {
+      checkTeamConfigurationIsValid();
+      checkStepsIsValid();
+    }
   }, [assignement]);
 
   return (
@@ -150,57 +193,66 @@ function AssignementScreen() {
         )}
 
         <br></br>
-        <h4>Possible team configuration (not mandatory)</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Role id</th>
-              <th>N. people</th>
-              <th>Tasks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {assignement.idealTeam.map((item) => (
-              <tr key={item._id}>
-                <td>{item.idx}</td>
-                <td>{item.nPeople}</td>
-                <td>{item.role}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <br></br>
-        <h4>Possible steps for completion (not mandatory)</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Step Number</th>
-              <th>Role id</th>
-              <th>Tasks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {assignement.steps.map((step) =>
-              step.tasks.map((task) => (
-                <tr key={task.roleId}>
-                  {step.tasks.indexOf(task) === 0 && (
-                    // <td rowSpan={assignement.maxParticipants.toString()}>
-                    <td rowSpan={step.tasks.length}>{step.n}</td>
-                  )}
-                  <td>{task.roleId}</td>
-                  <td>
-                    <p className="text-newline">{task.roleTasks}</p>
-                    {/* <ul>
+        {teamConfigurationIsValid && (
+          <>
+            <h4>Possible team configuration (not mandatory)</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Role id</th>
+                  <th>N. people</th>
+                  <th>Tasks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assignement.idealTeam.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item.idx}</td>
+                    <td>{item.nPeople}</td>
+                    <td>{item.role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <br></br>
+          </>
+        )}
+
+        {stepsIsValid && (
+          <>
+            <h4>Possible steps for completion (not mandatory)</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Step Number</th>
+                  <th>Role id</th>
+                  <th>Tasks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assignement.steps.map((step) =>
+                  step.tasks.map((task) => (
+                    <tr key={task.roleId}>
+                      {step.tasks.indexOf(task) === 0 && (
+                        // <td rowSpan={assignement.maxParticipants.toString()}>
+                        <td rowSpan={step.tasks.length}>{step.n}</td>
+                      )}
+                      <td>{task.roleId}</td>
+                      <td>
+                        <p className="text-newline">{task.roleTasks}</p>
+                        {/* <ul>
                       {task.roleTasks.map((taskName, index) => (
                         <li key={index}>{taskName}</li>
                       ))}
                     </ul> */}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </>
+        )}
         {/* <br></br>
         <div>
           <h4>GitHub repo (completed code):</h4>

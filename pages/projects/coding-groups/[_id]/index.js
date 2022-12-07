@@ -240,6 +240,17 @@ function GroupPage() {
             </div>
           )}
           <br></br>
+          {group.requirements && group.requirements.length > 0 && (
+            <div>
+              <h4>Project requirements:</h4>
+              <ul>
+                {group.requirements.map((requirement) => (
+                  <li key={requirement.idx}>{requirement.label}</li>
+                ))}
+              </ul>
+              <br></br>
+            </div>
+          )}
           <div>
             <h4>Maximum number of participants (buddies):</h4>
             <p>{group.nBuddies}</p>

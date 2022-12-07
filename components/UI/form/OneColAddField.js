@@ -2,7 +2,14 @@ import { useState } from 'react';
 import classes from './OneColAddField.module.css';
 
 function OneColAddField(props) {
-  const { label, values, setValues, touched, setTouched } = props;
+  const {
+    label,
+    values,
+    setValues,
+    touched,
+    setTouched,
+    required = true,
+  } = props;
   // console.log(values);
   return (
     <div>
@@ -15,15 +22,17 @@ function OneColAddField(props) {
             className="btn-circle"
             onClick={() => {
               setTouched((prev) => {
-                let currentID = prev.length;
-                const ids = prev.map((item) => Number(item.idx));
-                if (ids.includes(currentID))
-                  currentID = (Math.max(...ids) + 1).toString();
-                const newValue = {
-                  idx: currentID.toString(),
-                  isTouched: false,
-                };
-                return [...prev, newValue];
+                if (required) {
+                  let currentID = prev.length;
+                  const ids = prev.map((item) => Number(item.idx));
+                  if (ids.includes(currentID))
+                    currentID = (Math.max(...ids) + 1).toString();
+                  const newValue = {
+                    idx: currentID.toString(),
+                    isTouched: false,
+                  };
+                  return [...prev, newValue];
+                }
               });
 
               setValues((prev) => {
@@ -49,11 +58,14 @@ function OneColAddField(props) {
         <div className={classes['text-input-col']}>
           <input
             className={
-              touched[touched.map((elem) => elem.idx).indexOf('0')].isTouched &&
-              values[
-                values.map((elem) => elem.idx).indexOf('0')
-              ].label.trim() === ''
-                ? classes['text-input-invalid']
+              required
+                ? touched[touched.map((elem) => elem.idx).indexOf('0')]
+                    .isTouched &&
+                  values[
+                    values.map((elem) => elem.idx).indexOf('0')
+                  ].label.trim() === ''
+                  ? classes['text-input-invalid']
+                  : classes['text-input']
                 : classes['text-input']
             }
             type="text"
@@ -69,15 +81,18 @@ function OneColAddField(props) {
             }
             onBlur={() =>
               setTouched((prev) => {
-                const index = prev.map((elem) => elem.idx).indexOf('0');
-                if (index !== -1) {
-                  prev[index].isTouched = true;
+                if (required) {
+                  const index = prev.map((elem) => elem.idx).indexOf('0');
+                  if (index !== -1) {
+                    prev[index].isTouched = true;
+                  }
+                  return [...prev];
                 }
-                return [...prev];
               })
             }
           />
-          {touched[touched.map((elem) => elem.idx).indexOf('0')].isTouched &&
+          {required &&
+          touched[touched.map((elem) => elem.idx).indexOf('0')].isTouched &&
           values[values.map((elem) => elem.idx).indexOf('0')].label.trim() ===
             '' ? (
             <p className="input-error-msg">Enter a non empty value</p>
@@ -96,12 +111,15 @@ function OneColAddField(props) {
               <div className={classes['text-input-col']}>
                 <input
                   className={
-                    touched[touched.map((elem) => elem.idx).indexOf(item.idx)]
-                      .isTouched &&
-                    values[
-                      values.map((elem) => elem.idx).indexOf(item.idx)
-                    ].label.trim() === ''
-                      ? classes['text-input-invalid']
+                    required
+                      ? touched[
+                          touched.map((elem) => elem.idx).indexOf(item.idx)
+                        ].isTouched &&
+                        values[
+                          values.map((elem) => elem.idx).indexOf(item.idx)
+                        ].label.trim() === ''
+                        ? classes['text-input-invalid']
+                        : classes['text-input']
                       : classes['text-input']
                   }
                   type="text"
@@ -122,17 +140,20 @@ function OneColAddField(props) {
                   }
                   onBlur={() =>
                     setTouched((prev) => {
-                      const index = prev
-                        .map((elem) => elem.idx)
-                        .indexOf(item.idx);
-                      if (index !== -1) {
-                        prev[index].isTouched = true;
+                      if (required) {
+                        const index = prev
+                          .map((elem) => elem.idx)
+                          .indexOf(item.idx);
+                        if (index !== -1) {
+                          prev[index].isTouched = true;
+                        }
+                        return [...prev];
                       }
-                      return [...prev];
                     })
                   }
                 />
-                {touched[touched.map((elem) => elem.idx).indexOf(item.idx)]
+                {required &&
+                touched[touched.map((elem) => elem.idx).indexOf(item.idx)]
                   .isTouched &&
                 values[
                   values.map((elem) => elem.idx).indexOf(item.idx)
@@ -147,11 +168,13 @@ function OneColAddField(props) {
                   className="btn-circle"
                   onClick={() => {
                     setTouched((prev) => {
-                      const index = prev
-                        .map((elem) => elem.idx)
-                        .indexOf(item.idx);
-                      prev.splice(index, 1);
-                      return [...prev];
+                      if (required) {
+                        const index = prev
+                          .map((elem) => elem.idx)
+                          .indexOf(item.idx);
+                        prev.splice(index, 1);
+                        return [...prev];
+                      }
                     });
 
                     setValues((prev) => {
