@@ -48,7 +48,7 @@ function SelectAssignmentPage() {
   };
 
   return (
-    <UserRoute>
+    <>
       {loading ? (
         <SpinningLoader />
       ) : (
@@ -91,7 +91,7 @@ function SelectAssignmentPage() {
           </div>
         </>
       )}
-    </UserRoute>
+    </>
   );
 }
 

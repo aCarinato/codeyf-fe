@@ -1,12 +1,11 @@
+// react / next
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
-// import { people } from '../data/people';
-// import { groups } from '../data/groups';
-import { assignements } from '../data/assignements';
 // own components
 import SpinningLoader from '../components/UI/SpinningLoader';
 import MySlider from '../components/UI/MySlider';
-// import MessageForm from '../components/message/MessageForm';
+import BtnCTA from '../components/UI/BtnCTA';
 // context
 import { useMainContext } from '../context/Context';
 // packages
@@ -15,6 +14,8 @@ import { Icon } from '@iconify/react';
 
 function HomePage() {
   const { authState } = useMainContext();
+
+  const router = useRouter();
 
   const [buddies, setBuddies] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -124,6 +125,16 @@ function HomePage() {
         learn from
       </h4>
       <br></br>
+      <div>
+        <BtnCTA
+          label="start a project"
+          classname="btn-dark"
+          onCLickAction={() => {
+            router.push('/new-project');
+          }}
+        />
+      </div>
+
       <br></br>
       <h3>
         Coding buddies{' '}

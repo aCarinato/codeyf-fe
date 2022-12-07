@@ -163,62 +163,66 @@ function CreateGroupPage() {
   // console.log(`formIsValid: ${formIsValid}`);
   //   THIS SHOULD BECOME A HELPER FUNCTION
   const createGroup = async () => {
-    setNBuddiesTouched(true);
-    setOrganiserIsBuddyTouched(true);
-    setOrganiserIsMentorTouched(true);
-    setMentorRequiredTouched(true);
+    if (authState && authState.token && authState.token.length > 0) {
+      setNBuddiesTouched(true);
+      setOrganiserIsBuddyTouched(true);
+      setOrganiserIsMentorTouched(true);
+      setMentorRequiredTouched(true);
 
-    // add field to each requirement
-    // const requirements =assignment.requirements.map(item => ({...item, met:false}))
-    const requirements = assignment.requirements.map((element) => {
-      return { ...element, met: false };
-    });
+      // add field to each requirement
+      // const requirements =assignment.requirements.map(item => ({...item, met:false}))
+      const requirements = assignment.requirements.map((element) => {
+        return { ...element, met: false };
+      });
 
-    if (formIsValid) {
-      const newGroup = {
-        organiser: '',
-        name: assignment.name,
-        description: assignment.headline,
-        deadline,
-        nBuddies,
-        buddies: [],
-        //   buddiesFilled: { type: Boolean, default: false },
-        mentorRequired,
-        //   nMentorsRequired: { type: Number, default: 1 },
-        mentors: [],
-        //   mentorsFilled: { type: Boolean, default: false },
-        topics: assignment.topics,
-        learning: assignment.learning,
-        picture,
-        hasProposedAssignment: true,
-        proposedAssignment: pickedAssignmentId,
-        requirements,
-        approvals: [],
-      };
+      if (formIsValid) {
+        const newGroup = {
+          organiser: '',
+          name: assignment.name,
+          description: assignment.headline,
+          deadline,
+          nBuddies,
+          buddies: [],
+          //   buddiesFilled: { type: Boolean, default: false },
+          mentorRequired,
+          //   nMentorsRequired: { type: Number, default: 1 },
+          mentors: [],
+          //   mentorsFilled: { type: Boolean, default: false },
+          topics: assignment.topics,
+          learning: assignment.learning,
+          picture,
+          hasProposedAssignment: true,
+          proposedAssignment: pickedAssignmentId,
+          requirements,
+          approvals: [],
+        };
 
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/groups/new`,
-          { organiserIsBuddy, organiserIsMentor, newGroup },
-          {
-            headers: {
-              Authorization: `Bearer ${authState.token}`,
-            },
+        try {
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_API}/groups/new`,
+            { organiserIsBuddy, organiserIsMentor, newGroup },
+            {
+              headers: {
+                Authorization: `Bearer ${authState.token}`,
+              },
+            }
+          );
+          // console.log(res.data.success);
+          if (res.data.success) {
+            setSuccess(true);
+            setNewGroupId(res.data.newGroupId);
+          } else {
+            setSuccess(false);
+            console.log('An error occurred');
           }
-        );
-        // console.log(res.data.success);
-        if (res.data.success) {
-          setSuccess(true);
-          setNewGroupId(res.data.newGroupId);
-        } else {
-          setSuccess(false);
-          console.log('An error occurred');
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
+      } else {
+        console.log('some input is invalid');
       }
     } else {
-      console.log('some input is invalid');
+      router.push('/login');
     }
   };
 

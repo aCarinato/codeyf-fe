@@ -4,7 +4,7 @@ import UserRoute from '../../../../components/routes/UserRoute';
 
 function NewGroupPage() {
   return (
-    <UserRoute>
+    <>
       <h2>Create new group</h2>
       <h3>Do you want to pick an assignment?</h3>
       <br></br>
@@ -18,7 +18,7 @@ function NewGroupPage() {
           <Link href="/projects/coding-groups/new/self">No thanks</Link>
         </div>
       </div>
-    </UserRoute>
+    </>
   );
 }
 
