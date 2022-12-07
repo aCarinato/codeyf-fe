@@ -24,10 +24,11 @@ import { allTechStacks } from '../../../../data/allTechStacks';
 import axios from 'axios';
 // context
 import { useMainContext } from '../../../../context/Context';
+import Link from 'next/link';
 
 function CreateNewAssignmentPage() {
-  const { authState } = useMainContext();
-
+  const { authState, currentUser } = useMainContext();
+  // console.log(currentUser);
   const [name, setName] = useState('');
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
@@ -78,7 +79,7 @@ function CreateNewAssignmentPage() {
   const headlineIsValid = headline.trim() !== '';
   const descriptionIsValid = description.trim() !== '';
   const difficultyIsValid = difficulty !== '';
-  const maxTeamMemebersIsValid = maxTeamMemebers > 0;
+  const maxTeamMemebersIsValid = maxTeamMemebers > 0 && maxTeamMemebers < 11;
   const topicsIsValid = topics.length > 0;
   const learningIsValid = learning.length > 0;
   const completionTimeIsValid = completionTime > 0;
@@ -115,7 +116,7 @@ function CreateNewAssignmentPage() {
   )
     formIsValid = true;
 
-  console.log(`formIsValid: ${formIsValid}`);
+  // console.log(`formIsValid: ${formIsValid}`);
 
   const createAssignment = async () => {
     setNameTouched(true);
@@ -134,41 +135,42 @@ function CreateNewAssignmentPage() {
 
     // VALIDATIONS
     // 1) Total number of people from roles must be <= max n participants
+    if (formIsValid) {
+      const newAssignment = {
+        name,
+        headline,
+        description,
+        difficulty,
+        completionTime,
+        repo,
+        topics,
+        learning,
+        requirements,
+        mockups,
+        maxTeamMemebers,
+        idealTeam,
+        steps,
+        resources,
+        // isPublic: true,
+      };
 
-    const newAssignment = {
-      name,
-      headline,
-      description,
-      difficulty,
-      completionTime,
-      repo,
-      topics,
-      learning,
-      requirements,
-      mockups,
-      maxTeamMemebers,
-      idealTeam,
-      steps,
-      resources,
-      // isPublic: true,
-    };
+      // console.log(newAssignment);
 
-    console.log(newAssignment);
-
-    try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/assignments/new`,
-        { newAssignment },
-        {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        }
-      );
-      console.log(res);
-      if (res.data.success) setSuccess(true);
-    } catch (err) {
-      console.log(err);
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/assignments/new`,
+          { newAssignment },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        console.log(res);
+        if (res.data.success) setSuccess(true);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -186,7 +188,7 @@ function CreateNewAssignmentPage() {
     <UserRoute>
       {success ? (
         successMsg
-      ) : (
+      ) : currentUser && currentUser.isMentor ? (
         <div className="creation-form-layout">
           <h2>Create a new Assignment</h2>
           <br></br>
@@ -308,7 +310,7 @@ function CreateNewAssignmentPage() {
 
           <br></br>
           <label className="form-label">
-            Requirements for success completion <sup>*</sup>
+            Requirements for successful completion <sup>*</sup>
           </label>
           <OneColAddField
             label="requirements"
@@ -338,6 +340,12 @@ function CreateNewAssignmentPage() {
           />
           <br></br>
           <h3>Optional fields</h3>
+          <br></br>
+          <p>
+            Although optional, these can be very useful tips and indications to
+            give students more background and help with the assignment
+            completion!
+          </p>
           <hr></hr>
           <br></br>
           <AddMockupFields mockups={mockups} setMockups={setMockups} />
@@ -373,6 +381,19 @@ function CreateNewAssignmentPage() {
           <br></br>
           <br></br>
           <br></br>
+        </div>
+      ) : (
+        <div>
+          <p>
+            You need to be a mentor in order to make a public assignment that
+            other people can use for their individual or team projects
+          </p>
+          <br></br>
+          <p>
+            You can still create a private assignment to work on individually or
+            with a team. To do so{' '}
+            <Link href="/projects/coding-groups/new/self">click here</Link>.
+          </p>
         </div>
       )}
     </UserRoute>
