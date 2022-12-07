@@ -16,12 +16,12 @@ function TeamTypePage() {
 
   return (
     <div>
-      <h3>Do you want to work on a project as a buddy or mentor?</h3>
+      <h3>Do you want to work on a project as a student or mentor?</h3>
       {/* <p>Even as a mentor you can still participate to the project</p> */}
       <br></br>
       <div className="flex">
         <div className="pointer" onClick={() => setBuddyOrMentor('buddy')}>
-          <p className={buddyOrMentor === 'buddy' ? 'bold' : ''}>Buddy</p>
+          <p className={buddyOrMentor === 'buddy' ? 'bold' : ''}>Student</p>
         </div>
         <div className="pointer" onClick={() => setBuddyOrMentor('mentor')}>
           <p className={buddyOrMentor === 'mentor' ? 'bold' : ''}>Mentor</p>
