@@ -58,12 +58,13 @@ function TeamTypePage() {
       {individualOrTeam === 'individual' && buddyOrMentor === 'mentor' && (
         <div>FINISH - Go on select buddies that are looking for a mentor</div>
       )}
-      {individualOrTeam === 'individual' && buddyOrMentor === 'buddy' && (
+      {buddyOrMentor === 'buddy' && individualOrTeam === 'individual' && (
         <>
           <br></br>
           <h3>Do you want to pick an existing assignment for your project?</h3>
         </>
       )}
+      {/* {buddyOrMentor === 'buddy' && individualOrTeam === 'team'  } */}
       {individualOrTeam === 'team' && (
         <>
           <br></br>
@@ -72,7 +73,10 @@ function TeamTypePage() {
           <div className="flex">
             <div
               className="pointer"
-              onClick={() => setExistingOrNewTeam('existing')}
+              onClick={() => {
+                setExistingOrNewTeam('existing');
+                router.push('/projects/coding-groups/');
+              }}
             >
               Yes, check out teams
             </div>
@@ -88,6 +92,7 @@ function TeamTypePage() {
           </div>
         </>
       )}
+
       {/* {teamType && (
         <>
           {' '}

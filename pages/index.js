@@ -120,20 +120,26 @@ function HomePage() {
   return (
     <Fragment>
       <h1>The Coding Community</h1>
-      <h4 className="h4-header">
-        Build your skill set. Find projects and people to code with, mentor and
-        learn from
-      </h4>
       <br></br>
-      <div>
-        <BtnCTA
-          label="start a project"
-          classname="btn-dark"
-          onCLickAction={() => {
-            router.push('/new-project');
-          }}
-        />
+      <div className="flex flex-justify-space-between">
+        <div>
+          <h3 className="h4-header">Build your skill set.</h3>
+          <h3 className="h4-header">
+            Find projects and people to code with, mentor and learn from
+          </h3>
+        </div>
+        <div>
+          <BtnCTA
+            label="start a project"
+            classname="btn-dark"
+            onCLickAction={() => {
+              router.push('/new-project');
+            }}
+          />
+        </div>
       </div>
+
+      <br></br>
 
       <br></br>
       <h3>

@@ -286,6 +286,7 @@ function SelfAssignmentPage() {
           <h3>Mandatory fields</h3>
           <br></br>
           <TextInput
+            // disabled={authState && authState.token.length > 0 ? false : true}
             required={true}
             label="Name (max 30 characters)"
             value={name}
@@ -297,6 +298,7 @@ function SelfAssignmentPage() {
           />
           <br></br>
           <TextArea
+            // disabled={authState && authState.token.length > 0 ? false : true}
             required={true}
             label="description"
             nRows="5"
@@ -312,6 +314,7 @@ function SelfAssignmentPage() {
           <ImgUploader img={picture} uploadImg={uploadPicture} />
           <br></br>
           <NumberInput
+            // disabled={authState && authState.token.length > 0 ? false : true}
             min="2"
             placeholder="min 2 buddies"
             value={nBuddies}
