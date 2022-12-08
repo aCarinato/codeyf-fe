@@ -95,6 +95,7 @@ body {
 
 main {
   /* padding: 0 16.8rem; */
+  margin: 0 auto;
   padding: 4.8rem 15%;
   font-size: 1.6rem;
   height: 100vh;
