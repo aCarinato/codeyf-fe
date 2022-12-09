@@ -170,7 +170,6 @@ function CreateGroupPage() {
       setMentorRequiredTouched(true);
 
       // add field to each requirement
-      // const requirements =assignment.requirements.map(item => ({...item, met:false}))
       const requirements = assignment.requirements.map((element) => {
         return { ...element, met: false };
       });
@@ -367,7 +366,7 @@ function CreateGroupPage() {
               classname="btn-dark"
               label="create"
               onCLickAction={createGroup}
-              disabled={formIsValid !== true ? true : false}
+              // disabled={formIsValid !== true ? true : false}
             />
           </div>
           <br></br>

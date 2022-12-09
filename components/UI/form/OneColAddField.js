@@ -43,6 +43,7 @@ function OneColAddField(props) {
                 const newValue = {
                   idx: currentID.toString(),
                   label: '',
+                  met: false,
                 };
                 return [...prev, newValue];
               });

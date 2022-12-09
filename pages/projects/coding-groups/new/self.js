@@ -130,6 +130,7 @@ function SelfAssignmentPage() {
   };
 
   const toggleOrganiserIsMentor = (e) => {
+    setOrganiserIsMentorTouched(true);
     // console.log(e.target.value);
     if (e.target.value === '1') {
       setOrganiserIsMentor(true);
