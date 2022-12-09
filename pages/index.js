@@ -189,7 +189,7 @@ function HomePage() {
       <br></br>
       <br></br>
       <h3>
-        Groups{' '}
+        Teams{' '}
         <Link href={'/projects/coding-groups'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all

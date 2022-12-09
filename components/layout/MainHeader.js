@@ -34,7 +34,7 @@ function MainHeader() {
   const projectsMenuItems = [
     {
       id: '0',
-      name: 'groups',
+      name: 'teams',
       link: '/projects/coding-groups',
     },
     {

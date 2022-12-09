@@ -108,7 +108,7 @@ function GroupCard(props) {
             <div className="card-footer-profile">
               <Link href={`/projects/coding-groups/${group._id}`}>
                 <a className="main-link">
-                  View Group <Icon icon="akar-icons:people-group" />
+                  View Team <Icon icon="akar-icons:people-group" />
                 </a>
               </Link>
             </div>
