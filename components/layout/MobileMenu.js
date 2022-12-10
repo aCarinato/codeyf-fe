@@ -124,6 +124,16 @@ function MobileMenu(props) {
                   className={classes['menu-sub-li']}
                   onClick={() => setShowMobileMenu(false)}
                 >
+                  <Link href="/projects/individual">
+                    <a className={classes['main-nav-mob-link']}>
+                      individual projects
+                    </a>
+                  </Link>
+                </li>
+                <li
+                  className={classes['menu-sub-li']}
+                  onClick={() => setShowMobileMenu(false)}
+                >
                   <Link href="/projects/coding-assignments">
                     <a className={classes['main-nav-mob-link']}>assignements</a>
                   </Link>

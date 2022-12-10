@@ -46,8 +46,39 @@ function IndividualProjectsPage() {
     }
   };
 
+  const fetchMentors = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/individuals/mentors`
+      );
+
+      if (res.data.success) {
+        setMentors(res.data.mentors);
+        // setFilteredStudents(filteredBuddies);
+        // if (authState && authState.email.length > 0) {
+        //   // filter out current user
+        //   const userEmail = authState.email;
+        //   let allBuddies = res.data.buddies;
+        //   let filteredBuddies = allBuddies.filter(
+        //     (buddy) => buddy.email !== userEmail
+        //   );
+        //   setStudents(filteredBuddies);
+        //   setFilteredStudents(filteredBuddies);
+        // } else {
+        //   setBuddies(res.data.buddies);
+        //   setFilteredBuddies(res.data.buddies);
+        // }
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchStudents();
+    fetchMentors();
   }, []);
 
   return (
@@ -64,9 +95,9 @@ function IndividualProjectsPage() {
       <br></br>
       {studentsActive && (
         <div>
-          <h3>Students seeking mentors</h3>
+          {/* <h3>Students seeking mentors</h3> */}
           {/* <h4 className="h4-header">To guide them in their individual project</h4> */}
-          <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+          <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
             <div>filter</div>
             <div className="flex">
               {students.length > 0 ? (
@@ -86,11 +117,26 @@ function IndividualProjectsPage() {
           </div>
         </div>
       )}
-      <br></br>
-      <div>
-        <h3>Mentors seeking students</h3>
-        {/* <h4 className="h4-header">To guide them in their individual project</h4> */}
-      </div>
+      {!studentsActive && (
+        <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
+          <div>filter</div>
+          <div className="flex">
+            {mentors.length > 0 ? (
+              mentors.map((mentor) => (
+                <GroupCard key={mentor._id} group={mentor} />
+              ))
+            ) : (
+              <p>
+                No buddies found for the filters applied. Please select
+                different search parameters.
+              </p>
+            )}{' '}
+            <div className="white-card"></div>
+            <div className="white-card"></div>
+            <div className="white-card"></div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
