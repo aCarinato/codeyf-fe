@@ -236,7 +236,7 @@ function IndividualSelfProjectPage() {
           try {
             const res = await axios.post(
               `${process.env.NEXT_PUBLIC_API}/groups/new`,
-              { organiserIsBuddy: true, organiserIsMentor: false, newGroup },
+              { organiserIsBuddy, organiserIsMentor, newGroup },
               {
                 headers: {
                   Authorization: `Bearer ${authState.token}`,

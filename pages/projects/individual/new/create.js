@@ -214,28 +214,28 @@ function CreateIndividualPage() {
           requirements,
           approvals: [],
         };
-        console.log(newGroup);
-        // try {
-        //   const res = await axios.post(
-        //     `${process.env.NEXT_PUBLIC_API}/groups/new`,
-        //     { organiserIsBuddy, organiserIsMentor, newGroup },
-        //     {
-        //       headers: {
-        //         Authorization: `Bearer ${authState.token}`,
-        //       },
-        //     }
-        //   );
-        //   // console.log(res.data.success);
-        //   if (res.data.success) {
-        //     setSuccess(true);
-        //     setNewGroupId(res.data.newGroupId);
-        //   } else {
-        //     setSuccess(false);
-        //     console.log('An error occurred');
-        //   }
-        // } catch (err) {
-        //   console.log(err);
-        // }
+        // console.log(newGroup);
+        try {
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_API}/groups/new`,
+            { organiserIsBuddy, organiserIsMentor, newGroup },
+            {
+              headers: {
+                Authorization: `Bearer ${authState.token}`,
+              },
+            }
+          );
+          // console.log(res.data.success);
+          if (res.data.success) {
+            setSuccess(true);
+            setNewGroupId(res.data.newGroupId);
+          } else {
+            setSuccess(false);
+            console.log('An error occurred');
+          }
+        } catch (err) {
+          console.log(err);
+        }
       } else {
         console.log('some input is invalid');
       }

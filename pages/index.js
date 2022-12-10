@@ -23,6 +23,9 @@ function HomePage() {
   const [assignements, setAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [students, setStudents] = useState([]);
+  const [mentorsSeekStudents, setMentorsSeekStudents] = useState([]);
+
   // MESSAGING
   // const [showMsgForm, setShowMsgForm] = useState(false);
   // const [message, setMessage] = useState('');
@@ -60,7 +63,7 @@ function HomePage() {
     try {
       setLoading(true);
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/people/buddies`
+        `${process.env.NEXT_PUBLIC_API}/people/buddies/limit`
       );
 
       if (res.data.success) {
@@ -82,14 +85,73 @@ function HomePage() {
     }
   };
 
+  const fetchStudentsSeekingMentors = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/individuals/students/limit`
+      );
+
+      if (res.data.success) {
+        setStudents(res.data.students);
+        // if (authState && authState.email.length > 0) {
+        //   // filter out current user
+        //   const userEmail = authState.email;
+        //   let allStudents = res.data.students;
+        //   let filteredStudents = allStudents.filter(
+        //     (student) => student.email !== userEmail
+        //   );
+        //   setStudents(filteredStudents);
+        // } else {
+        //   setStudents(res.data.students);
+        // }
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchMentorsSeekingStudents = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/individuals/mentors/limit`
+      );
+
+      if (res.data.success) {
+        setMentorsSeekStudents(res.data.mentors);
+
+        // if (authState && authState.email.length > 0) {
+        //   // filter out current user
+        //   const userEmail = authState.email;
+        //   let allMentors = res.data.mentors;
+        //   let filteredMentors = allMentors.filter(
+        //     (mentor) => mentor.email !== userEmail
+        //   );
+        //   setMentorsSeekStudents(filteredMentors);
+        // } else {
+        //   setMentorsSeekStudents(res.data.mentors);
+        // }
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchBuddies();
     fetchMentors();
+    fetchStudentsSeekingMentors();
+    fetchMentorsSeekingStudents();
   }, [authState && authState.email]);
 
   const fetchGroups = async () => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/groups/`);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/groups/limit`
+      );
       setGroups(res.data.groups);
       // console.log(res);
     } catch (err) {
@@ -104,7 +166,7 @@ function HomePage() {
   const fetchAssignments = async () => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API}/assignments/`
+        `${process.env.NEXT_PUBLIC_API}/assignments/limit`
       );
       setAssignments(res.data.assignments);
       // console.log(res);
@@ -141,9 +203,61 @@ function HomePage() {
 
       <br></br>
 
+      <h3>
+        Assignements{' '}
+        <Link href={'/projects/coding-assignments'}>
+          <a className="light-link">
+            <Icon icon="akar-icons:arrow-right" /> View all
+          </a>
+        </Link>
+      </h3>
+      <div className="overflower">
+        <MySlider array={assignements} type="assignement" />
+      </div>
+
       <br></br>
       <h3>
-        Coding buddies{' '}
+        Team Projects{' '}
+        <Link href={'/projects/coding-groups'}>
+          <a className="light-link">
+            <Icon icon="akar-icons:arrow-right" /> View all
+          </a>
+        </Link>
+      </h3>
+      <div className="overflower">
+        <MySlider array={groups} type="group" />
+      </div>
+      <br></br>
+
+      <br></br>
+      <h3>
+        Individual Projects - Students seeking mentors{' '}
+        <Link href={'/projects/coding-groups'}>
+          <a className="light-link">
+            <Icon icon="akar-icons:arrow-right" /> View all
+          </a>
+        </Link>
+      </h3>
+      <div className="overflower">
+        <MySlider array={students} type="group" />
+      </div>
+      <br></br>
+
+      <h3>
+        Individual Projects - Mentors seeking students{' '}
+        <Link href={'/projects/coding-groups'}>
+          <a className="light-link">
+            <Icon icon="akar-icons:arrow-right" /> View all
+          </a>
+        </Link>
+      </h3>
+      <div className="overflower">
+        <MySlider array={mentorsSeekStudents} type="group" />
+      </div>
+
+      <br></br>
+      <h3>
+        Coding students{' '}
         <Link href={'/people/coding-buddies'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
@@ -187,31 +301,8 @@ function HomePage() {
         )}
       </div>
       <br></br>
+
       <br></br>
-      <h3>
-        Teams{' '}
-        <Link href={'/projects/coding-groups'}>
-          <a className="light-link">
-            <Icon icon="akar-icons:arrow-right" /> View all
-          </a>
-        </Link>
-      </h3>
-      <div className="overflower">
-        <MySlider array={groups} type="group" />
-      </div>
-      <br></br>
-      <br></br>
-      <h3>
-        Assignements{' '}
-        <Link href={'/projects/coding-assignments'}>
-          <a className="light-link">
-            <Icon icon="akar-icons:arrow-right" /> View all
-          </a>
-        </Link>
-      </h3>
-      <div className="overflower">
-        <MySlider array={assignements} type="assignement" />
-      </div>
     </Fragment>
   );
 }

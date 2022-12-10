@@ -42,7 +42,7 @@ function TeamTypePage() {
               className="pointer"
               onClick={() => {
                 // setIndividualOrTeam('individual');
-                router.push('/projects/individual/');
+                router.push('/projects/individual/new');
               }}
             >
               <p className={individualOrTeam === 'individual' ? 'bold' : ''}>
