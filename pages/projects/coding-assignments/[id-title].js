@@ -84,7 +84,7 @@ function AssignementScreen() {
       // console.log(
       //   `assignement.steps.length === 1: ${assignement.steps.length === 1}`
       // );
-      console.log(`assignement.steps[0].tasks: ${assignement.steps[0]}`);
+      // console.log(`assignement.steps[0].tasks: ${assignement.steps[0]}`);
       if (assignement.steps[0].tasks.length > 0) {
         setStepsIsValid(true);
       } else {
@@ -189,6 +189,19 @@ function AssignementScreen() {
                 </a>
               </p>
             </div>
+          </>
+        )}
+        <br></br>
+        {assignement.resources && assignement.resources.length > 0 && (
+          <>
+            <h4>Resources</h4>
+            <ul>
+              {assignement.resources.map((resource) => (
+                <li key={resource.idx}>
+                  <Link href={`${resource.link}`}>{resource.name}</Link>{' '}
+                </li>
+              ))}
+            </ul>
           </>
         )}
 

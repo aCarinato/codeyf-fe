@@ -138,6 +138,17 @@ function CreateNewAssignmentPage() {
       );
       setCompletionTimeTouched(true);
 
+      let updatedResources;
+      if (
+        resources.length === 1 &&
+        (resources[0].name === '' || resources[0].link === '')
+      ) {
+        // no requirements were input
+        updatedResources = [];
+      } else {
+        updatedResources = resources;
+      }
+
       // VALIDATIONS
       // 1) Total number of people from roles must be <= max n participants
       if (formIsValid) {
@@ -155,7 +166,7 @@ function CreateNewAssignmentPage() {
           maxTeamMemebers,
           idealTeam,
           steps,
-          resources,
+          resources: updatedResources,
           // isPublic: true,
         };
 
