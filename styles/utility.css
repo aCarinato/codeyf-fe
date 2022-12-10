@@ -4,6 +4,10 @@
 
 /* WIDTH */
 
+.width-50 {
+  width: 50%;
+}
+
 .width-45 {
   width: 45%;
   /* text-align: center; */

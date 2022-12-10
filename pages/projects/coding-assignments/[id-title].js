@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { people } from '../../../data/people';
 // own components
 import Rating from '../../../components/UI/Rating';
+import BtnCTA from '../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
 
@@ -84,7 +85,7 @@ function AssignementScreen() {
       // console.log(
       //   `assignement.steps.length === 1: ${assignement.steps.length === 1}`
       // );
-      console.log(`assignement.steps[0].tasks: ${assignement.steps[0]}`);
+      // console.log(`assignement.steps[0].tasks: ${assignement.steps[0]}`);
       if (assignement.steps[0].tasks.length > 0) {
         setStepsIsValid(true);
       } else {
@@ -108,14 +109,21 @@ function AssignementScreen() {
       <Fragment>
         <div className="flex flex-justify-space-between">
           <h2>{assignement.name}</h2>
-          {creator && creator.username && (
+          <div>
+            <BtnCTA
+              label="pick assignment"
+              classname="btn-dark"
+              onCLickAction={() => {}}
+            />
+          </div>
+          {/* {creator && creator.username && (
             <p>
               posted by:{' '}
               <Link href={`/people/coding-buddies/${creator.username}`}>
                 <a>{creator.username}</a>
               </Link>
             </p>
-          )}
+          )} */}
         </div>
         <br></br>
         <div className="flex flex-justify-space-between">
@@ -189,6 +197,19 @@ function AssignementScreen() {
                 </a>
               </p>
             </div>
+          </>
+        )}
+        <br></br>
+        {assignement.resources && assignement.resources.length > 0 && (
+          <>
+            <h4>Resources</h4>
+            <ul>
+              {assignement.resources.map((resource) => (
+                <li key={resource.idx}>
+                  <Link href={`${resource.link}`}>{resource.name}</Link>{' '}
+                </li>
+              ))}
+            </ul>
           </>
         )}
 

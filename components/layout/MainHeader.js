@@ -39,6 +39,11 @@ function MainHeader() {
     },
     {
       id: '1',
+      name: 'individual projects',
+      link: '/projects/individual',
+    },
+    {
+      id: '2',
       name: 'assignments',
       link: '/projects/coding-assignments',
     },
