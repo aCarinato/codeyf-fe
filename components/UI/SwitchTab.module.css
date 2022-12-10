@@ -1,0 +1,24 @@
+.selected-tab {
+  /* color: var(--main-neutral-color); */
+  font-weight: bold;
+  /* border-top: 1px solid var(--main-neutral-color);
+  border-right: 1px solid var(--main-neutral-color); */
+  border-bottom: 1.4px solid var(--main-text-color);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0 0.25rem 0 0;
+}
+
+.unselected-tab {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--main-neutral-color);
+  color: var(--main-text-color);
+  /* color: rgb(171, 171, 171); */
+  /* border-top: 0.5px solid rgb(171, 171, 171); */
+  background-color: rgb(240, 240, 240);
+}
+
+.spanSelected {
+  font-weight: bold;
+}
