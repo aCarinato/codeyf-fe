@@ -15,22 +15,45 @@ import axios from 'axios';
 // context
 import { useMainContext } from '../../../../context/Context';
 
-function CreateGroupPage() {
-  const { authState, currentUser } = useMainContext();
+function CreateIndividualPage() {
+  const { authState, currentUser, setCurrentUser } = useMainContext();
+
+  const getCurrentUser = async () => {
+    try {
+      // console.log('Executing getCurrentUser()');
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      if (data.ok) {
+        setCurrentUser(data.user);
+      }
+    } catch (err) {
+      //   router.push('/login');
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (authState && authState.token.length > 0) getCurrentUser();
+  }, [authState && authState.token]);
 
   // clear the assignment when group created
   const [pickedAssignmentId, setPickedAssignmentId] = useState('');
   const [assignment, setAssignment] = useState({});
   const [loading, setLoading] = useState(false);
-  const [nBuddies, setNBuddies] = useState('');
+  // const [nBuddies, setNBuddies] = useState('');
   const [deadline, setDeadline] = useState('');
   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
-  const [organiserIsMentor, setOrganiserIsMentor] = useState(false);
+  const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
   const [mentorRequired, setMentorRequired] = useState(null);
   const [picture, setPicture] = useState({});
 
   // input touched
-  const [nBuddiesTouched, setNBuddiesTouched] = useState(false);
   const [organiserIsBuddyTouched, setOrganiserIsBuddyTouched] = useState(false);
   const [mentorRequiredTouched, setMentorRequiredTouched] = useState(false);
   const [organiserIsMentorTouched, setOrganiserIsMentorTouched] =
@@ -72,8 +95,6 @@ function CreateGroupPage() {
       fetchAssignement();
     }
   }, [pickedAssignmentId]);
-
-  //   console.log(assignment);
 
   // date setting
   useEffect(() => {
@@ -118,7 +139,7 @@ function CreateGroupPage() {
     }
     if (e.target.value === '2') {
       setMentorRequired(false);
-      setOrganiserIsMentor(false);
+      // setOrganiserIsMentor(false);
     }
   };
 
@@ -134,11 +155,9 @@ function CreateGroupPage() {
   };
 
   // CHECK INPUT VALIDITY
-  const nBuddiesIsValid =
-    nBuddies > 1 && nBuddies <= assignment.maxTeamMemebers;
-  const nBuddiesIsInvalid = !nBuddiesIsValid && nBuddiesTouched;
-
-  const organiserIsBuddyIsValid = organiserIsBuddy || organiserIsMentor;
+  const organiserIsBuddyIsValid =
+    (organiserIsBuddy && !organiserIsMentor) ||
+    (!organiserIsBuddy && organiserIsBuddy !== null && organiserIsMentor);
   const organiserIsBuddyIsInvalid =
     !organiserIsBuddyIsValid && organiserIsBuddyTouched;
 
@@ -146,25 +165,25 @@ function CreateGroupPage() {
   const mentorRequiredIsInvalid =
     !mentorRequiredIsValid && mentorRequiredTouched;
 
-  const organiserIsMentorIsValid = organiserIsBuddy || organiserIsMentor;
+  const organiserIsMentorIsValid =
+    (organiserIsBuddy && organiserIsMentor !== null && !organiserIsMentor) ||
+    (!organiserIsBuddy && organiserIsMentor);
   const organiserIsMentorIsInvalid =
     !organiserIsMentorIsValid && organiserIsMentorTouched;
 
   let formIsValid;
   if (
-    nBuddiesIsValid &&
     organiserIsBuddyIsValid &&
     mentorRequiredIsValid &&
     organiserIsMentorIsValid
   )
     formIsValid = true;
+  // console.log(`organiserIsBuddy: ${organiserIsBuddy}`);
+  // console.log(`organiserIsMentor: ${organiserIsMentor}`);
+  // console.log(formIsValid);
 
-  // console.log(`organiserIsMentorIsValid: ${organiserIsMentorIsValid}`);
-  // console.log(`formIsValid: ${formIsValid}`);
-  //   THIS SHOULD BECOME A HELPER FUNCTION
   const createGroup = async () => {
     if (authState && authState.token && authState.token.length > 0) {
-      setNBuddiesTouched(true);
       setOrganiserIsBuddyTouched(true);
       setOrganiserIsMentorTouched(true);
       setMentorRequiredTouched(true);
@@ -180,7 +199,7 @@ function CreateGroupPage() {
           name: assignment.name,
           description: assignment.headline,
           deadline,
-          nBuddies,
+          nBuddies: 1,
           buddies: [],
           //   buddiesFilled: { type: Boolean, default: false },
           mentorRequired,
@@ -195,7 +214,7 @@ function CreateGroupPage() {
           requirements,
           approvals: [],
         };
-
+        // console.log(newGroup);
         try {
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API}/groups/new`,
@@ -235,7 +254,7 @@ function CreateGroupPage() {
   );
 
   return (
-    <UserRoute>
+    <>
       {loading ? (
         <SpinningLoader />
       ) : success ? (
@@ -248,6 +267,11 @@ function CreateGroupPage() {
               go back
             </Link>
           </div>
+          <br></br>
+          <p>
+            NOTE: if you want to add the project to your history once it is
+            completed you will need a mentor review.
+          </p>
           <br></br>
           <TextInput
             required={false}
@@ -287,19 +311,6 @@ function CreateGroupPage() {
               <br></br>
             </>
           )}
-
-          <NumberInput
-            required={true}
-            label={`Max number of buddies`}
-            min="1"
-            placeholder={`max ${assignment.maxTeamMemebers} team members`}
-            max={assignment.maxTeamMemebers}
-            value={nBuddies}
-            onChange={(e) => setNBuddies(e.target.value)}
-            onBlur={() => setNBuddiesTouched(true)}
-            isInvalid={nBuddiesIsInvalid}
-            errorMsg={`Must be greater than one and up to ${assignment.maxTeamMemebers}`}
-          />
           <br></br>
           {assignment.completionTime && assignment.completionTime > 0 && (
             <>
@@ -316,13 +327,12 @@ function CreateGroupPage() {
           <br></br>
           <RadioBox
             required={true}
-            label="Do you want to participate as buddy?"
-            options={yesOrNoOptions}
+            label="Do you want to participate as a student?"
             name="organiser-is-buddy"
+            options={yesOrNoOptions}
             onChange={toggleOrganiserIsBuddy}
             isInvalid={organiserIsBuddyIsInvalid}
-            errorMsg={`You need to participate as a buddy, as a mentor or both `}
-            // onBlur={() => console.log('blurred')}
+            errorMsg={`You have to participate either as a student or as a mentor`}
           />
           <br></br>
           <RadioBox
@@ -338,12 +348,12 @@ function CreateGroupPage() {
           {mentorRequired && currentUser && currentUser.isMentor && (
             <RadioBox
               required={true}
-              label="Do you want to mentor the group? (you can participate as a buddy, as a mentor or both)"
+              label="Do you want to mentor the student? (you can participate either as a student or as a mentor)"
               options={yesOrNoOptions}
               name="organiser-is-mentor"
               onChange={toggleOrganiserIsMentor}
               isInvalid={organiserIsMentorIsInvalid}
-              errorMsg={`You need to participate as a buddy, as a mentor or both `}
+              errorMsg={`You have to participate either as a student or as a mentor`}
             />
           )}
           <br></br>
@@ -374,8 +384,8 @@ function CreateGroupPage() {
           <br></br>
         </div>
       )}
-    </UserRoute>
+    </>
   );
 }
 
-export default CreateGroupPage;
+export default CreateIndividualPage;

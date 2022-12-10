@@ -117,7 +117,7 @@ function MobileMenu(props) {
                   onClick={() => setShowMobileMenu(false)}
                 >
                   <Link href="/projects/coding-groups">
-                    <a className={classes['main-nav-mob-link']}>groups</a>
+                    <a className={classes['main-nav-mob-link']}>teams</a>
                   </Link>
                 </li>
                 <li

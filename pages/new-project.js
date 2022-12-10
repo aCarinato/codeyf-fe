@@ -40,7 +40,10 @@ function TeamTypePage() {
           <div className="flex">
             <div
               className="pointer"
-              onClick={() => setIndividualOrTeam('individual')}
+              onClick={() => {
+                // setIndividualOrTeam('individual');
+                router.push('/projects/individual/new');
+              }}
             >
               <p className={individualOrTeam === 'individual' ? 'bold' : ''}>
                 Individual
@@ -92,21 +95,29 @@ function TeamTypePage() {
           </div>
         </>
       )}
-
-      {/* {teamType && (
+      {/* {individualOrTeam === 'individual' && buddyOrMentor === 'buddy' && (
         <>
-          {' '}
-          <h3>Do you want to pick an assignment?</h3>
+          <br></br>
+          <h3>Do you want to work with an existing team?</h3>
           <br></br>
           <div className="flex">
             <div
               className="pointer"
-              onClick={() => setAssignmentType('existing')}
+              onClick={() => {
+                setExistingOrNewTeam('existing');
+                router.push('/projects/coding-groups/');
+              }}
             >
-              Yes, check out existing assignments
+              Yes, check out teams
             </div>
-            <div className="pointer" onClick={() => setAssignmentType('own')}>
-              No thanks, I will make my own
+            <div
+              className="pointer"
+              onClick={() => {
+                setExistingOrNewTeam('new');
+                router.push('/projects/coding-groups/new');
+              }}
+            >
+              No thanks, I will make a new team
             </div>
           </div>
         </>
