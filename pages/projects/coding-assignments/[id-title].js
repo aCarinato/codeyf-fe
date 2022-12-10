@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { people } from '../../../data/people';
 // own components
 import Rating from '../../../components/UI/Rating';
+import BtnCTA from '../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
 
@@ -108,14 +109,21 @@ function AssignementScreen() {
       <Fragment>
         <div className="flex flex-justify-space-between">
           <h2>{assignement.name}</h2>
-          {creator && creator.username && (
+          <div>
+            <BtnCTA
+              label="pick assignment"
+              classname="btn-dark"
+              onCLickAction={() => {}}
+            />
+          </div>
+          {/* {creator && creator.username && (
             <p>
               posted by:{' '}
               <Link href={`/people/coding-buddies/${creator.username}`}>
                 <a>{creator.username}</a>
               </Link>
             </p>
-          )}
+          )} */}
         </div>
         <br></br>
         <div className="flex flex-justify-space-between">
