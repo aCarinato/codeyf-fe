@@ -205,5 +205,13 @@ select:focus {
 
 /* IMAGE */
 .img-input-container {
+  width: 25%;
+  margin: 0.8rem 0;
+}
+
+.img-input {
   width: 100%;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }

@@ -1,8 +1,16 @@
 import classes from './Select.module.css';
 
 function Select(props) {
-  const { label, required, name, options, onChange, isInvalid, errorMsg } =
-    props;
+  const {
+    label,
+    required,
+    name,
+    defaultValue,
+    options,
+    onChange,
+    isInvalid,
+    errorMsg,
+  } = props;
   //   options must have an _id and label => [
   //   { _id: '0', label: 'styling' },
 
@@ -16,6 +24,7 @@ function Select(props) {
           <select
             // className={isInvalid ? 'select-invalid' : ''}
             name={name}
+            defaultValue={defaultValue && defaultValue}
             onChange={onChange}
             className={
               isInvalid
