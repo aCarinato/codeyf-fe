@@ -111,7 +111,8 @@ function EditAccount() {
   const learningIsInvalid =
     !learningIsValid || (!learningIsValid && learningTouched);
 
-  const teachingIsValid = currentUser.isMentor ? teaching.length > 0 : true;
+  const teachingIsValid =
+    currentUser !== null && currentUser.isMentor ? teaching.length > 0 : true;
   const teachingIsInvalid =
     !teachingIsValid || (!teachingIsValid && teachingTouched);
 
@@ -408,7 +409,7 @@ function EditAccount() {
               // errorMsg={`Enter a non empty value`}
             />
             <br></br>
-            {currentUser.isMentor && (
+            {currentUser && currentUser.isMentor && (
               <>
                 <div className="flex flex-justify-space-between">
                   <Select
