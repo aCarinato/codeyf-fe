@@ -73,6 +73,7 @@ function AssignementFilter(props) {
 
     setTopicsCheckedIndex(newCheckedIndex);
   };
+
   // console.log(topicsCheckedIndex);
   return (
     <Fragment>
@@ -139,6 +140,28 @@ function AssignementFilter(props) {
               name={item.label}
               value={item.label}
               onChange={() => toggleTopics(item._id)}
+              // onChange={() =>
+              //   setTopicsCheckedIndex((prev) => {
+              //     let currentIndex;
+              //     currentIndex = prev.indexOf(item._id);
+              //     // console.log(`currentIndex: ${currentIndex}`);
+              //     if (currentIndex === -1) {
+              //       return [...prev, item._id];
+              //     } else {
+              //       // let upd = prev.filter(
+              //       //   (index) => index !== currentIndex.toString()
+              //       // );
+              //       // console.log(
+              //       //   `prev.includes(currentIndex): ${prev.includes(
+              //       //     currentIndex.toString()
+              //       //   )}`
+              //       // );
+              //       return prev.filter(
+              //         (index) => index !== currentIndex.toString()
+              //       );
+              //     }
+              //   })
+              // }
               checked={
                 topicsCheckedIndex.indexOf(item._id) === -1 ? false : true
               }

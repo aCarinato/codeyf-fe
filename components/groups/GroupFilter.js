@@ -1,223 +1,155 @@
-import { useEffect, useState } from 'react';
-// data
-// import { allMentorWantedSelections } from '../../data/allMentorWanted';
-// import { allMentorFoundSelections } from '../../data/allMentorFound';
-// import { allLearning } from '../../data/allLearning';
-// helper functions
-import { checkboxSelection, arrayEquals } from '../../lib/helper/functions';
+import { allNumbersOfParticipants } from '../../data/allNumbersOfParticipants';
+import { allTechStacks } from '../../data/allTechStacks';
+import { allTopics } from '../../data/allTopics';
+import { allMentorWanted } from '../../data/allMentorWanted';
 
 function GroupFilter(props) {
   const {
-    groups,
-    nParticipants,
-    setNParticipants,
-    setFilteredGroups,
-    allNumbersOfParticipants,
-    mentorWanted,
-    setMentorWanted,
-    allMentorWantedSelections,
-    allMentorWantedSelectionsValues,
-    mentorFound,
-    setMentorFound,
-    allMentorFoundSelectionsValues,
-    learning,
-    setLearning,
-    allLearningNames,
-    allMentorFoundSelections,
-    allLearning,
+    mentorCheckedIndex,
+    setMentorCheckedIndex,
+    participantsCheckedIndex,
+    setParticipantsCheckedIndex,
+    stackCheckedIndex,
+    setStackCheckedIndex,
+    topicsCheckedIndex,
+    setTopicsCheckedIndex,
   } = props;
 
-  useEffect(() => {
-    let remainingGroups;
-    // console.log('**************************************');
-    remainingGroups = groups.filter((group) => {
-      //   console.log('GROUP N: ' + group.id);
+  const toggleParticipants = (id) => {
+    let currentIndex;
+    currentIndex = participantsCheckedIndex.indexOf(id);
+    const newCheckedIndex = [...participantsCheckedIndex];
 
-      //   console.log(mentorWanted.includes('no'));
-      //   console.log(group.mentorRequired === 'no');
+    if (currentIndex === -1) {
+      newCheckedIndex.push(id);
+    } else {
+      newCheckedIndex.splice(currentIndex, 1);
+    }
 
-      if (mentorWanted.includes('no') && group.mentorRequired === 'no') {
-        // console.log('CONDIZIONE SODDISFETTA');
+    setParticipantsCheckedIndex(newCheckedIndex);
+  };
 
-        // ++++++++++++++++++++++++++++
-        // filter number of participants
-        let nParticipantsCondition;
+  const toggleStack = (id) => {
+    let currentIndex;
+    currentIndex = stackCheckedIndex.indexOf(id);
+    const newCheckedIndex = [...stackCheckedIndex];
 
-        // Transform the array in true or false
-        if (arrayEquals(nParticipants, [])) {
-          nParticipantsCondition = true;
-        } else {
-          nParticipantsCondition = nParticipants.includes(
-            group.nBuddies.toString()
-          );
-        }
+    if (currentIndex === -1) {
+      newCheckedIndex.push(id);
+    } else {
+      newCheckedIndex.splice(currentIndex, 1);
+    }
 
-        // ++++++++++++++++++++++++++++
-        //   filter learning
-        let learningCondition;
-        //   console.log(learning);
-        learningCondition = group.learning.filter((learn) =>
-          learning.includes(learn)
-        );
+    setStackCheckedIndex(newCheckedIndex);
+  };
 
-        if (arrayEquals(learning, [])) {
-          learningCondition = true;
-        } else if (!arrayEquals(learningCondition, [])) {
-          learningCondition = true;
-        } else {
-          learningCondition = false;
-        }
-        return true && learningCondition && nParticipantsCondition;
-      } else {
-        // ++++++++++++++++++++++++++++
-        // filter number of participants
-        let nParticipantsCondition;
-        if (arrayEquals(nParticipants, [])) {
-          nParticipantsCondition = true;
-        } else {
-          nParticipantsCondition = nParticipants.includes(
-            group.nBuddies.toString()
-          );
-        }
-        // ++++++++++++++++++++++++++++
-        // filter if the group already has a mentor
-        let mentorWantedCondition;
-        mentorWantedCondition = mentorWanted.includes(group.mentorRequired);
+  const toggleTopics = (id) => {
+    let currentIndex;
+    currentIndex = topicsCheckedIndex.indexOf(id);
+    const newCheckedIndex = [...topicsCheckedIndex];
 
-        if (arrayEquals(mentorWanted, [])) mentorWantedCondition = true;
+    if (currentIndex === -1) {
+      newCheckedIndex.push(id);
+    } else {
+      newCheckedIndex.splice(currentIndex, 1);
+    }
 
-        // console.log('Mentor wanted selected?');
-        // console.log(mentorWantedCondition);
+    setTopicsCheckedIndex(newCheckedIndex);
+  };
 
-        let groupHasAllMentors; // can also mean no mentor required
-        groupHasAllMentors =
-          group.mentors.length === group.nMentorsRequired ? 'yes' : 'no';
+  const toggleMentorWanted = (value) => {
+    let currentIndex;
+    currentIndex = mentorCheckedIndex.indexOf(value);
+    const newCheckedIndex = [...mentorCheckedIndex];
+    // console.log(`currentIndex === -1: ${currentIndex === -1}`);
+    if (currentIndex === -1) {
+      newCheckedIndex.push(value);
+    } else {
+      //   const mentorIdx = allMentorWanted
+      //     .map((item) => item.value)
+      //     .indexOf(value);
+      //   console.log(`mentorIdx: ${mentorIdx}`);
+      newCheckedIndex.splice(currentIndex, 1);
+      //   newCheckedIndex.splice(allMentorWanted[mentorIdx].value, 1);
+    }
 
-        let mentorFoundCondition;
-        mentorFoundCondition = mentorFound.includes(groupHasAllMentors);
-        if (arrayEquals(mentorFound, []) || groupHasAllMentors === 'yes')
-          mentorFoundCondition = true;
-
-        // selected (in the checkbox) 'mentor is required but not found already'
-        if (arrayEquals(mentorFound, ['no']) && groupHasAllMentors === 'yes')
-          mentorFoundCondition = false;
-
-        //   filter learning
-        let learningCondition;
-        //   console.log(learning);
-        learningCondition = group.learning.filter((learn) =>
-          learning.includes(learn)
-        );
-
-        if (arrayEquals(learning, [])) {
-          learningCondition = true;
-        } else if (!arrayEquals(learningCondition, [])) {
-          learningCondition = true;
-        } else {
-          learningCondition = false;
-        }
-
-        return (
-          mentorWantedCondition &&
-          mentorFoundCondition &&
-          learningCondition &&
-          nParticipantsCondition
-        );
-      }
-    });
-
-    setFilteredGroups(remainingGroups);
-  }, [nParticipants, mentorWanted, mentorFound, learning]);
+    setMentorCheckedIndex(newCheckedIndex);
+  };
 
   return (
-    <div>
-      <h3>Filter Groups</h3>
-      <br></br>
+    <>
       <fieldset>
-        <legend>Number of participants (buddies and mentors)</legend>
-        {allNumbersOfParticipants.map((option) => (
-          <div key={option.id}>
+        <legend>Mentor wanted?</legend>
+        {allMentorWanted.map((item) => (
+          <div key={item.id}>
             <input
               type="checkbox"
-              name={option.value}
-              value={option.value}
-              onChange={(e) =>
-                checkboxSelection(
-                  e,
-                  nParticipants,
-                  setNParticipants,
-                  allNumbersOfParticipants
-                )
+              name={item.label}
+              value={item.label}
+              onChange={() => toggleMentorWanted(item.value)}
+              checked={
+                mentorCheckedIndex.indexOf(item.value) === -1 ? false : true
               }
             />
-            <label htmlFor={option.value}> {option.value}</label>
+            <label htmlFor={item.label}>{item.label}</label>
           </div>
         ))}
       </fieldset>
       <br></br>
       <fieldset>
-        <legend>Mentor wanted</legend>
-        {allMentorWantedSelections.map((option) => (
-          <div key={option.id}>
+        <legend>Max n. participants</legend>
+        {allNumbersOfParticipants.map((item) => (
+          <div key={item.id}>
             <input
               type="checkbox"
-              name={option.label}
-              value={option.label}
-              onChange={(e) =>
-                checkboxSelection(
-                  e,
-                  mentorWanted,
-                  setMentorWanted,
-                  allMentorWantedSelectionsValues
-                )
+              name={item.value}
+              value={item.value}
+              onChange={() => toggleParticipants(item.id)}
+              checked={
+                participantsCheckedIndex.indexOf(item.id) === -1 ? false : true
               }
             />
-            <label htmlFor={option.label}> {option.label}</label>
+            <label htmlFor={item.value}>{item.value}</label>
           </div>
         ))}
       </fieldset>
       <br></br>
       <fieldset>
-        <legend>Mentor found already</legend>
-        {allMentorFoundSelections.map((option) => (
-          <div key={option.id}>
+        <legend>Tech Stack</legend>
+        {allTechStacks.map((item) => (
+          <div key={item._id}>
             <input
               type="checkbox"
-              name={option.label}
-              value={option.label}
-              onChange={(e) =>
-                checkboxSelection(
-                  e,
-                  mentorFound,
-                  setMentorFound,
-                  allMentorFoundSelectionsValues
-                )
+              name={item.value}
+              value={item.label}
+              onChange={() => toggleStack(item._id)}
+              checked={
+                stackCheckedIndex.indexOf(item._id) === -1 ? false : true
               }
             />
-            <label htmlFor={option.label}> {option.label}</label>
+            <label htmlFor={item.label}>{item.label}</label>
           </div>
         ))}
       </fieldset>
       <br></br>
       <fieldset>
-        <legend>Wants to learn</legend>
-        {allLearning.map((learn) => (
-          <div key={learn.id}>
+        <legend>Topics</legend>
+        {allTopics.map((item) => (
+          <div key={item._id}>
             <input
-              //   onChange={selectLearning}
-              onChange={(e) =>
-                checkboxSelection(e, learning, setLearning, allLearningNames)
-              }
               type="checkbox"
-              id={learn.name}
-              name={learn.name}
-              value={learn.name}
+              name={item.label}
+              value={item.label}
+              onChange={() => toggleTopics(item._id)}
+              checked={
+                topicsCheckedIndex.indexOf(item._id) === -1 ? false : true
+              }
             />
-            <label htmlFor={learn.name}> {learn.name}</label>
+            <label htmlFor={item.label}>{item.label}</label>
           </div>
         ))}
       </fieldset>
-    </div>
+    </>
   );
 }
 
