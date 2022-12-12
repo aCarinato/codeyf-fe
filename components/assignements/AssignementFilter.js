@@ -1,17 +1,21 @@
 // next/react
 import { Fragment } from 'react';
+// own components
+import { allDifficulty } from '../../data/assignements/allDifficulty';
+import { allNumbersOfParticipants } from '../../data/allNumbersOfParticipants';
+import { allTechStacks } from '../../data/allTechStacks';
+import { allTopics } from '../../data/allTopics';
 
 function AssignementFilter(props) {
   const {
-    allDifficulty,
     difficultyCheckedIndex,
     setDifficultyCheckedIndex,
-    allParticipants,
     participantsCheckedIndex,
     setParticipantsCheckedIndex,
-    allStack,
     stackCheckedIndex,
     setStackCheckedIndex,
+    topicsCheckedIndex,
+    setTopicsCheckedIndex,
   } = props;
 
   const toggleDifficulty = (id) => {
@@ -56,6 +60,20 @@ function AssignementFilter(props) {
     setStackCheckedIndex(newCheckedIndex);
   };
 
+  const toggleTopics = (id) => {
+    let currentIndex;
+    currentIndex = topicsCheckedIndex.indexOf(id);
+    const newCheckedIndex = [...topicsCheckedIndex];
+
+    if (currentIndex === -1) {
+      newCheckedIndex.push(id);
+    } else {
+      newCheckedIndex.splice(currentIndex, 1);
+    }
+
+    setTopicsCheckedIndex(newCheckedIndex);
+  };
+  // console.log(topicsCheckedIndex);
   return (
     <Fragment>
       <fieldset>
@@ -75,26 +93,28 @@ function AssignementFilter(props) {
           </div>
         ))}
       </fieldset>
+      <br></br>
       <fieldset>
         <legend>Max n. participants</legend>
-        {allParticipants.map((item) => (
-          <div key={item._id}>
+        {allNumbersOfParticipants.map((item) => (
+          <div key={item.id}>
             <input
               type="checkbox"
               name={item.value}
-              value={item.label}
-              onChange={() => toggleParticipants(item._id)}
+              value={item.value}
+              onChange={() => toggleParticipants(item.id)}
               checked={
-                participantsCheckedIndex.indexOf(item._id) === -1 ? false : true
+                participantsCheckedIndex.indexOf(item.id) === -1 ? false : true
               }
             />
-            <label htmlFor={item.label}>{item.label}</label>
+            <label htmlFor={item.value}>{item.value}</label>
           </div>
         ))}
       </fieldset>
+      <br></br>
       <fieldset>
-        <legend>Stack</legend>
-        {allStack.map((item) => (
+        <legend>Tech Stack</legend>
+        {allTechStacks.map((item) => (
           <div key={item._id}>
             <input
               type="checkbox"
@@ -103,6 +123,24 @@ function AssignementFilter(props) {
               onChange={() => toggleStack(item._id)}
               checked={
                 stackCheckedIndex.indexOf(item._id) === -1 ? false : true
+              }
+            />
+            <label htmlFor={item.label}>{item.label}</label>
+          </div>
+        ))}
+      </fieldset>
+      <br></br>
+      <fieldset>
+        <legend>Topics</legend>
+        {allTopics.map((item) => (
+          <div key={item._id}>
+            <input
+              type="checkbox"
+              name={item.label}
+              value={item.label}
+              onChange={() => toggleTopics(item._id)}
+              checked={
+                topicsCheckedIndex.indexOf(item._id) === -1 ? false : true
               }
             />
             <label htmlFor={item.label}>{item.label}</label>

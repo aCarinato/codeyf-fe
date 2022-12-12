@@ -8,13 +8,8 @@ import BtnCTA from '../../../components/UI/BtnCTA';
 import AssignementFilter from '../../../components/assignements/AssignementFilter';
 import AssignementFilterMobile from '../../../components/assignements/AssignementFilterMobile';
 // own functions
-import { functFilterAssignements } from '../../../lib/helper/assignements/filterFunction';
+import { filterAssignements } from '../../../lib/helper/assignements/filterFunction';
 // import { averageRate } from '../../../lib/helper/reviewFunctions';
-// data
-// import { assignements } from '../../../data/assignements';
-import { allDifficulty } from '../../../data/assignements/allDifficulty';
-import { allParticipants } from '../../../data/assignements/allParticipants';
-import { allStack } from '../../../data/assignements/allStack';
 // context
 import { useMainContext } from '../../../context/Context';
 // libs
@@ -31,6 +26,7 @@ function AssignmentsScreen() {
   const [difficultyCheckedIndex, setDifficultyCheckedIndex] = useState([]);
   const [participantsCheckedIndex, setParticipantsCheckedIndex] = useState([]);
   const [stackCheckedIndex, setStackCheckedIndex] = useState([]);
+  const [topicsCheckedIndex, setTopicsCheckedIndex] = useState([]);
   // mobile filter
   const [showFilter, setShowFilter] = useState(false);
 
@@ -41,6 +37,7 @@ function AssignmentsScreen() {
         `${process.env.NEXT_PUBLIC_API}/assignments/`
       );
       if (res.data.success) {
+        setAssignments(res.data.assignments);
         setFilteredAssignements(res.data.assignments);
       }
       setLoading(false);
@@ -49,6 +46,8 @@ function AssignmentsScreen() {
       console.log(err);
     }
   };
+
+  // console.log(assignments);
 
   useEffect(() => {
     fetchAssignments();
@@ -60,22 +59,29 @@ function AssignmentsScreen() {
 
   useEffect(() => {
     if (!mobileView) {
-      functFilterAssignements(
+      filterAssignements(
         assignments,
         difficultyCheckedIndex,
         participantsCheckedIndex,
         stackCheckedIndex,
+        topicsCheckedIndex,
         setFilteredAssignements
       );
     }
-  }, [difficultyCheckedIndex, participantsCheckedIndex, stackCheckedIndex]);
+  }, [
+    difficultyCheckedIndex,
+    participantsCheckedIndex,
+    stackCheckedIndex,
+    topicsCheckedIndex,
+  ]);
 
   const mobileFilterAssignements = () => {
-    functFilterAssignements(
+    filterAssignements(
       assignments,
       difficultyCheckedIndex,
       participantsCheckedIndex,
       stackCheckedIndex,
+      topicsCheckedIndex,
       setFilteredAssignements
     );
   };
@@ -94,15 +100,14 @@ function AssignmentsScreen() {
           <br></br>
           {showFilter && (
             <AssignementFilterMobile
-              allDifficulty={allDifficulty}
               difficultyCheckedIndex={difficultyCheckedIndex}
               setDifficultyCheckedIndex={setDifficultyCheckedIndex}
-              allParticipants={allParticipants}
               participantsCheckedIndex={participantsCheckedIndex}
               setParticipantsCheckedIndex={setParticipantsCheckedIndex}
-              allStack={allStack}
               stackCheckedIndex={stackCheckedIndex}
               setStackCheckedIndex={setStackCheckedIndex}
+              topicsCheckedIndex={topicsCheckedIndex}
+              setTopicsCheckedIndex={setTopicsCheckedIndex}
               mobileFilterAssignements={mobileFilterAssignements}
               onClose={() => setShowFilter(false)}
             />
@@ -111,15 +116,14 @@ function AssignmentsScreen() {
             {!mobileView && (
               <div>
                 <AssignementFilter
-                  allDifficulty={allDifficulty}
                   difficultyCheckedIndex={difficultyCheckedIndex}
                   setDifficultyCheckedIndex={setDifficultyCheckedIndex}
-                  allParticipants={allParticipants}
                   participantsCheckedIndex={participantsCheckedIndex}
                   setParticipantsCheckedIndex={setParticipantsCheckedIndex}
-                  allStack={allStack}
                   stackCheckedIndex={stackCheckedIndex}
                   setStackCheckedIndex={setStackCheckedIndex}
+                  topicsCheckedIndex={topicsCheckedIndex}
+                  setTopicsCheckedIndex={setTopicsCheckedIndex}
                 />
               </div>
             )}
