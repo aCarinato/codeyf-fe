@@ -58,7 +58,7 @@ function AssignementScreen() {
     }
   }, [assignmentID]);
 
-  // console.log(assignement);
+  console.log(assignement);
 
   useEffect(() => {
     fetchCreator();
@@ -108,22 +108,30 @@ function AssignementScreen() {
     assignement.name && (
       <Fragment>
         <div className="flex flex-justify-space-between">
-          <h2>{assignement.name}</h2>
+          <div>
+            <h2>{assignement.name}</h2>
+            {/* <p>
+              created by:{' '}
+              <Link
+                href={`/people/coding-mentors/${assignement.createdBy.username}`}
+              >
+                {assignement.createdBy.username}
+              </Link>
+            </p> */}
+          </div>
+
           <div>
             <BtnCTA
               label="pick assignment"
               classname="btn-dark"
               onCLickAction={() => {}}
             />
-          </div>
-          {/* {creator && creator.username && (
             <p>
-              posted by:{' '}
-              <Link href={`/people/coding-buddies/${creator.username}`}>
-                <a>{creator.username}</a>
+              <Link href={`/projects/coding-assignments`}>
+                Back to assignments
               </Link>
             </p>
-          )} */}
+          </div>
         </div>
         <br></br>
         <div className="flex flex-justify-space-between">

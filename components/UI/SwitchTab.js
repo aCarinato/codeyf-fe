@@ -18,7 +18,7 @@ function SwitchTab(props) {
             studentsActive ? classes['selected-tab'] : classes['unselected-tab']
           }
         >
-          Students seeking mentors
+          Mentee seeks mentor
         </div>
       </div>
       <div
@@ -32,7 +32,7 @@ function SwitchTab(props) {
               : classes['unselected-tab']
           }
         >
-          Mentors seeking students
+          Mentor seeks mentee
         </div>
       </div>
     </div>

@@ -92,7 +92,7 @@ function GroupsPage() {
           onClose={() => setShowFilter(false)}
         />
       )}
-      <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+      <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
         {!mobileView && (
           <div>
             <GroupFilter
