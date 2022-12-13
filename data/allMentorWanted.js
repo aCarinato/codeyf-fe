@@ -1,4 +1,4 @@
-export const allMentorWantedSelections = [
-  { id: '0', label: 'yes' },
-  { id: '1', label: 'no' },
+export const allMentorWanted = [
+  { id: '0', label: 'yes', value: true },
+  { id: '1', label: 'no', value: false },
 ];

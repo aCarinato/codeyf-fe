@@ -217,6 +217,22 @@ function GroupPage() {
         <Fragment>
           <div className="flex flex-justify-space-between">
             <h2>{group.name}</h2>
+            <p>
+              <Link href={`/projects/coding-groups`}>Back</Link>
+            </p>
+          </div>
+          <br></br>
+          <div className="flex flex-justify-space-between">
+            {group.organiser && group.organiser.username && (
+              <div>
+                Organised by:{' '}
+                <Link
+                  href={`/people/coding-buddies/${group.organiser.username}`}
+                >
+                  {group.organiser.username}
+                </Link>
+              </div>
+            )}
             {!group.isClosed && (
               <div className="flex">
                 <div>
@@ -301,33 +317,39 @@ function GroupPage() {
             </>
           )}
           <br></br>
-          <h4>Organiser:</h4>
-          <br></br>
-          {group.organiser && group.organiser.username && (
-            <div className="grid grid--2cols">
-              <div>
-                <BuddyCard
-                  key={group.organiser._id}
-                  userId={group.organiser._id}
-                  username={group.organiser.username}
-                  handle={group.organiser.handle}
-                  description={group.organiser.shortDescription}
-                  country={group.organiser.country}
-                  learning={group.organiser.learning}
-                  profilePic={group.organiser.profilePic}
-                />
-              </div>
 
-              {!group.isClosed && group.organiser._id === authState.userId && (
-                <div>
-                  <p>
-                    <Link href={`/projects/coding-groups/${groupId}/manage`}>
-                      Manage group
-                    </Link>
-                  </p>
-                </div>
-              )}
-            </div>
+          {group.organiser && group.organiser.username && (
+            <>
+              {/* <h4>Organiser:</h4>
+              <br></br> */}
+              <div className="grid grid--2cols">
+                {/* <div>
+                  <BuddyCard
+                    key={group.organiser._id}
+                    userId={group.organiser._id}
+                    username={group.organiser.username}
+                    handle={group.organiser.handle}
+                    description={group.organiser.shortDescription}
+                    country={group.organiser.country}
+                    learning={group.organiser.learning}
+                    profilePic={group.organiser.profilePic}
+                  />
+                </div> */}
+
+                {!group.isClosed &&
+                  group.organiser._id === authState.userId && (
+                    <div>
+                      <p>
+                        <Link
+                          href={`/projects/coding-groups/${groupId}/manage`}
+                        >
+                          Manage group
+                        </Link>
+                      </p>
+                    </div>
+                  )}
+              </div>
+            </>
           )}
 
           <div>

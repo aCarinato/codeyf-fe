@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 // own components
 import SwitchTab from '../../../components/UI/SwitchTab';
 import GroupCard from '../../../components/groups/GroupCard';
+import IndividualFilter from '../../../components/individual/IndividualFilter';
+import IndividualFilterMobile from '../../../components/individual/IndividualFilterMobile';
+import BtnCTA from '../../../components/UI/BtnCTA';
+// own funcs
+import { filterIndividuals } from '../../../lib/helper/individuals/filterFunctions';
 // libs
 import axios from 'axios';
 // context
@@ -15,6 +20,13 @@ function IndividualProjectsPage() {
 
   const [students, setStudents] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [filteredMentors, setFilteredMentors] = useState([]);
+
+  // FILTER
+  const [showFilter, setShowFilter] = useState(false);
+  const [stackCheckedIndex, setStackCheckedIndex] = useState([]);
+  const [topicsCheckedIndex, setTopicsCheckedIndex] = useState([]);
 
   const fetchStudents = async () => {
     try {
@@ -25,6 +37,7 @@ function IndividualProjectsPage() {
 
       if (res.data.success) {
         setStudents(res.data.students);
+        setFilteredStudents(res.data.students);
         // setFilteredStudents(filteredBuddies);
         // if (authState && authState.email.length > 0) {
         //   // filter out current user
@@ -55,6 +68,7 @@ function IndividualProjectsPage() {
 
       if (res.data.success) {
         setMentors(res.data.mentors);
+        setFilteredMentors(res.data.mentors);
         // setFilteredStudents(filteredBuddies);
         // if (authState && authState.email.length > 0) {
         //   // filter out current user
@@ -81,6 +95,26 @@ function IndividualProjectsPage() {
     fetchMentors();
   }, []);
 
+  useEffect(() => {
+    if (!mobileView) {
+      if (studentsActive) {
+        filterIndividuals(
+          students,
+          stackCheckedIndex,
+          topicsCheckedIndex,
+          setFilteredStudents
+        );
+      } else {
+        filterIndividuals(
+          mentors,
+          stackCheckedIndex,
+          topicsCheckedIndex,
+          setFilteredMentors
+        );
+      }
+    }
+  }, [stackCheckedIndex, topicsCheckedIndex]);
+
   return (
     <>
       <h1>Individual Projects</h1>
@@ -88,55 +122,100 @@ function IndividualProjectsPage() {
         Students and mentors looking for one-to-one learning experiences
       </h4>
       <br></br>
+      {showFilter && (
+        <IndividualFilterMobile
+          stackCheckedIndex={stackCheckedIndex}
+          setStackCheckedIndex={setStackCheckedIndex}
+          topicsCheckedIndex={topicsCheckedIndex}
+          setTopicsCheckedIndex={setTopicsCheckedIndex}
+          filterIndividuals={() => {
+            if (studentsActive) {
+              filterIndividuals(
+                students,
+                stackCheckedIndex,
+                topicsCheckedIndex,
+                setFilteredStudents
+              );
+            } else {
+              filterIndividuals(
+                mentors,
+                stackCheckedIndex,
+                topicsCheckedIndex,
+                setFilteredMentors
+              );
+            }
+          }}
+          onClose={() => setShowFilter(false)}
+        />
+      )}
       <SwitchTab
         studentsActive={studentsActive}
         setStudentsActive={setStudentsActive}
       />
       <br></br>
-      {studentsActive && (
+      <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
+        {!mobileView && (
+          <div>
+            <IndividualFilter
+              stackCheckedIndex={stackCheckedIndex}
+              setStackCheckedIndex={setStackCheckedIndex}
+              topicsCheckedIndex={topicsCheckedIndex}
+              setTopicsCheckedIndex={setTopicsCheckedIndex}
+            />
+          </div>
+        )}
         <div>
-          {/* <h3>Students seeking mentors</h3> */}
-          {/* <h4 className="h4-header">To guide them in their individual project</h4> */}
-          <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
-            <div>filter</div>
-            <div className="flex">
-              {students.length > 0 ? (
-                students.map((student) => (
+          <div
+            className={
+              mobileView
+                ? 'flex flex-justify-center'
+                : 'flex flex-justify-space-between'
+            }
+          >
+            {!mobileView && <div></div>}
+            <BtnCTA
+              label="Create New"
+              classname="btn-dark"
+              onCLickAction={() => router.push('/individual/new')}
+            />
+          </div>
+          <br></br>
+          <div className="flex">
+            {mobileView && (
+              <BtnCTA
+                label="filter groups"
+                classname="btn-light-big"
+                onCLickAction={() => setShowFilter(true)}
+                icon={true}
+                iconType="ci:filter-outline"
+              />
+            )}
+            {studentsActive && filteredStudents.length > 0
+              ? filteredStudents.map((student) => (
                   <GroupCard key={student._id} group={student} />
                 ))
-              ) : (
-                <p>
-                  No buddies found for the filters applied. Please select
-                  different search parameters.
-                </p>
-              )}{' '}
-              <div className="white-card"></div>
-              <div className="white-card"></div>
-              <div className="white-card"></div>
-            </div>
-          </div>
-        </div>
-      )}
-      {!studentsActive && (
-        <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
-          <div>filter</div>
-          <div className="flex">
-            {mentors.length > 0 ? (
-              mentors.map((mentor) => (
-                <GroupCard key={mentor._id} group={mentor} />
-              ))
-            ) : (
-              <p>
-                No buddies found for the filters applied. Please select
-                different search parameters.
-              </p>
-            )}{' '}
+              : studentsActive && (
+                  <p>
+                    No buddies found for the filters applied. Please select
+                    different search parameters.
+                  </p>
+                )}
+            {!studentsActive && filteredMentors.length > 0
+              ? filteredMentors.map((mentor) => (
+                  <GroupCard key={mentor._id} group={mentor} />
+                ))
+              : !studentsActive && (
+                  <p>
+                    No mentors found for the filters applied. Please select
+                    different search parameters.
+                  </p>
+                )}
             <div className="white-card"></div>
             <div className="white-card"></div>
             <div className="white-card"></div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

@@ -1,20 +1,17 @@
 import Modal from '../UI/Modal';
-import AssignementFilter from './AssignementFilter';
+import IndividualFilter from './IndividualFilter';
 import BtnCTA from '../UI/BtnCTA';
 
-function AssignementFilterMobile(props) {
+function IndividualFilterMobile(props) {
   const {
-    difficultyCheckedIndex,
-    setDifficultyCheckedIndex,
-    participantsCheckedIndex,
-    setParticipantsCheckedIndex,
     stackCheckedIndex,
     setStackCheckedIndex,
     topicsCheckedIndex,
     setTopicsCheckedIndex,
-    mobileFilterAssignements,
+    filterIndividuals,
     onClose,
   } = props;
+
   return (
     <Modal onClose={onClose}>
       <div className="mobile-filter-body">
@@ -23,7 +20,7 @@ function AssignementFilterMobile(props) {
             label="APPLY FILTERS"
             classname="btn-light-big"
             onCLickAction={() => {
-              mobileFilterAssignements();
+              filterIndividuals();
               onClose();
             }}
             icon={true}
@@ -34,11 +31,7 @@ function AssignementFilterMobile(props) {
           </div>
         </div>
         <div>
-          <AssignementFilter
-            difficultyCheckedIndex={difficultyCheckedIndex}
-            setDifficultyCheckedIndex={setDifficultyCheckedIndex}
-            participantsCheckedIndex={participantsCheckedIndex}
-            setParticipantsCheckedIndex={setParticipantsCheckedIndex}
+          <IndividualFilter
             stackCheckedIndex={stackCheckedIndex}
             setStackCheckedIndex={setStackCheckedIndex}
             topicsCheckedIndex={topicsCheckedIndex}
@@ -50,4 +43,4 @@ function AssignementFilterMobile(props) {
   );
 }
 
-export default AssignementFilterMobile;
+export default IndividualFilterMobile;

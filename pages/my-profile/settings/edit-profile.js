@@ -16,7 +16,7 @@ import { allTopics } from '../../../data/allTopics';
 import { allTechStacks } from '../../../data/allTechStacks';
 // libs
 import axios from 'axios';
-// context +31644638690
+// context
 import { useMainContext } from '../../../context/Context';
 import BtnCTA from '../../../components/UI/BtnCTA';
 
