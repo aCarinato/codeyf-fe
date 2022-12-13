@@ -53,10 +53,6 @@ function AssignmentsScreen() {
     fetchAssignments();
   }, []);
 
-  // useEffect(() => {
-  //   setFilteredAssignements(assignments);
-  // }, []);
-
   useEffect(() => {
     if (!mobileView) {
       filterAssignements(
@@ -74,17 +70,6 @@ function AssignmentsScreen() {
     stackCheckedIndex,
     topicsCheckedIndex,
   ]);
-
-  const mobileFilterAssignements = () => {
-    filterAssignements(
-      assignments,
-      difficultyCheckedIndex,
-      participantsCheckedIndex,
-      stackCheckedIndex,
-      topicsCheckedIndex,
-      setFilteredAssignements
-    );
-  };
 
   return (
     <>
@@ -108,7 +93,16 @@ function AssignmentsScreen() {
               setStackCheckedIndex={setStackCheckedIndex}
               topicsCheckedIndex={topicsCheckedIndex}
               setTopicsCheckedIndex={setTopicsCheckedIndex}
-              mobileFilterAssignements={mobileFilterAssignements}
+              mobileFilterAssignements={() =>
+                filterAssignements(
+                  assignments,
+                  difficultyCheckedIndex,
+                  participantsCheckedIndex,
+                  stackCheckedIndex,
+                  topicsCheckedIndex,
+                  setFilteredAssignements
+                )
+              }
               onClose={() => setShowFilter(false)}
             />
           )}
