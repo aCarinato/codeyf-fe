@@ -228,9 +228,9 @@ function CreateNewAssignmentPage() {
           <br></br>
           <TextInput
             required={true}
-            label="Headline (max 40 characters)"
+            label="Headline (max 32 characters)"
             value={headline}
-            maxLength={50}
+            maxLength={32}
             onChange={(e) => setHeadline(e.target.value)}
             onBlur={() => setHeadlineTouched(true)}
             isInvalid={headlineIsInvalid}

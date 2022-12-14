@@ -87,7 +87,7 @@ function MySlider(props) {
             id={assignement._id}
             title={assignement.name}
             description={assignement.headline}
-            difficulty={assignement.difficulty.label}
+            difficulty={assignement.difficulty}
             maxParticipants={assignement.maxTeamMemebers}
             stack={assignement.learning}
             reviews={assignement.reviews}

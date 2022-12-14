@@ -14,7 +14,7 @@
   /* aspect-ratio: 1 / 1; */
   text-align: center;
   width: 24.8rem;
-  height: 28.2rem;
+  /* height: 28.2rem; */
   /* border: 1px solid black; */
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
 
 .card-group-header {
   display: flex;
-  height: 5.8rem;
+  height: 5.2rem;
   align-items: center;
   justify-content: center;
 }
@@ -71,22 +71,26 @@
 }
 
 .card-description {
-  padding: 1.2rem;
+  padding: 0.8rem;
   font-size: 1.3rem;
   font-style: italic;
 }
 
 .card-learning {
   font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.6rem 0;
 }
 
 .tech-span-box {
+  height: 9.2rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
   /* align-items: flex-start; */
   flex-grow: 1;
+  padding: 0.4rem 0.4rem;
 }
 
 .tech-span-box-left {
@@ -99,15 +103,22 @@
 }
 
 .tech-span {
+  display: flex;
   margin: 0.1rem 0.3rem;
   padding: 0.4rem 1.2rem;
-  border-radius: 2rem;
-  border: 1.5px solid #4a34d8;
+  /* border-radius: 0.6rem; */
+  border-radius: 2rem 0.6rem 0.6rem 2rem;
+  border: 1.5px solid var(--main-tints-color);
   /* background-color: #4a34d8; */
   font-style: italic;
-  color: #4a34d8;
+  color: var(--main-tints-color);
   /* cursor: pointer; */
   font-size: 1.2rem;
+}
+
+.tag-div {
+  margin-right: 0.8rem;
+  margin-left: -0.6rem;
 }
 
 .card-group-available {
@@ -122,15 +133,21 @@
 
 .card-footer {
   display: flex;
-  padding: 1.2rem 1.2rem;
+  justify-content: center;
+  padding: 0.8rem 1.2rem 1.6rem;
   /* background-color: #a0cdf1; */
 }
 
 .card-footer-profile {
-  flex-grow: 1;
+  width: fit-content;
+  /* flex-grow: 1; */
   font-weight: bold;
   font-size: 1.2rem;
-  padding-top: 0.5rem;
+  /* padding-top: 0.5rem; */
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+  border-radius: 2rem;
+  background-color: var(--main-btnlight-color);
 }
 
 .card-footer-message {

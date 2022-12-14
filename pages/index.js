@@ -231,7 +231,7 @@ function HomePage() {
 
       <br></br>
       <h3>
-        Individual Projects - Students seeking mentors{' '}
+        Individual Projects - Mentees seek mentors{' '}
         <Link href={'/projects/individual'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
@@ -244,7 +244,7 @@ function HomePage() {
       <br></br>
 
       <h3>
-        Individual Projects - Mentors seeking students{' '}
+        Individual Projects - Mentors seek mentees{' '}
         <Link href={'/projects/individual'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all

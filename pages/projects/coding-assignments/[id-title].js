@@ -151,11 +151,13 @@ function AssignementScreen() {
           </div>
           {assignement.completionTime && (
             <div>
-              <h4>Approx. completion time (couple hours a day)</h4>
+              <h4>Approx. completion time</h4>
               <p>
                 {assignement.completionTime < 7
-                  ? `${assignement.completionTime} days`
-                  : `${Math.ceil(assignement.completionTime / 7)} weeks`}
+                  ? `${assignement.completionTime} days (couple of hours a day)`
+                  : `${Math.ceil(
+                      assignement.completionTime / 7
+                    )} weeks (couple of hours a day)`}
               </p>
             </div>
           )}
@@ -180,18 +182,20 @@ function AssignementScreen() {
         <h4>Tech stack:</h4>
         <div className="flex flex-justify-flex-start">
           {assignement.learning.map((item) => (
-            <span key={item._id} className={`tech-span`}>
-              {item.label}
-            </span>
+            <div key={item._id} className={`tech-span`}>
+              <div className="tag-div">o</div>
+              <span>{item.label}</span>
+            </div>
           ))}
         </div>
         <br></br>
         <h4>Main topics:</h4>
         <div className="flex flex-justify-flex-start">
           {assignement.topics.map((item) => (
-            <span key={item._id} className={`tech-span`}>
-              {item.label}
-            </span>
+            <div key={item._id} className={`tech-span`}>
+              <div className="tag-div">o</div>
+              <span>{item.label}</span>
+            </div>
           ))}
         </div>
         {assignement.repo && assignement.repo.length > 0 && (
