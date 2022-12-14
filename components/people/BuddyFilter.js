@@ -31,19 +31,19 @@ function BuddyFilter(props) {
     setLearningCheckedIndex(newCheckedIndex);
   };
 
-  const toggleSkills = (id) => {
-    let currentIndex;
-    currentIndex = skillsCheckedIndex.indexOf(id);
-    const newCheckedIndex = [...skillsCheckedIndex];
+  // const toggleSkills = (id) => {
+  //   let currentIndex;
+  //   currentIndex = skillsCheckedIndex.indexOf(id);
+  //   const newCheckedIndex = [...skillsCheckedIndex];
 
-    if (currentIndex === -1) {
-      newCheckedIndex.push(id);
-    } else {
-      newCheckedIndex.splice(currentIndex, 1);
-    }
+  //   if (currentIndex === -1) {
+  //     newCheckedIndex.push(id);
+  //   } else {
+  //     newCheckedIndex.splice(currentIndex, 1);
+  //   }
 
-    setSkillsCheckedIndex(newCheckedIndex);
-  };
+  //   setSkillsCheckedIndex(newCheckedIndex);
+  // };
 
   return (
     <div className="filter-container">
@@ -115,7 +115,7 @@ function BuddyFilter(props) {
         ))}
       </fieldset>
       <br></br>
-      <fieldset>
+      {/* <fieldset>
         <legend>SKILLS</legend>
         {allSkillsLevel.map((skill) => (
           <div key={skill._id}>
@@ -131,7 +131,7 @@ function BuddyFilter(props) {
             <label htmlFor={skill.label}> {skill.label}</label>
           </div>
         ))}
-      </fieldset>
+      </fieldset> */}
     </div>
   );
 }

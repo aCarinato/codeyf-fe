@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 // own components
 import SwitchTab from '../../../components/UI/SwitchTab';
 import GroupCard from '../../../components/groups/GroupCard';
+import IndividualCard from '../../../components/individual/IndividualCard';
 import IndividualFilter from '../../../components/individual/IndividualFilter';
 import IndividualFilterMobile from '../../../components/individual/IndividualFilterMobile';
 import BtnCTA from '../../../components/UI/BtnCTA';
@@ -14,6 +16,8 @@ import { useMainContext } from '../../../context/Context';
 
 function IndividualProjectsPage() {
   const { mobileView } = useMainContext();
+
+  const router = useRouter();
 
   const [studentsActive, setStudentsActive] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -174,9 +178,9 @@ function IndividualProjectsPage() {
           >
             {!mobileView && <div></div>}
             <BtnCTA
-              label="Create New"
+              label="Create New Project"
               classname="btn-dark"
-              onCLickAction={() => router.push('/individual/new')}
+              onCLickAction={() => router.push('/projects/individual/new')}
             />
           </div>
           <br></br>
@@ -192,7 +196,11 @@ function IndividualProjectsPage() {
             )}
             {studentsActive && filteredStudents.length > 0
               ? filteredStudents.map((student) => (
-                  <GroupCard key={student._id} group={student} />
+                  <IndividualCard
+                    key={student._id}
+                    group={student}
+                    type="mentee"
+                  />
                 ))
               : studentsActive && (
                   <p>
@@ -202,7 +210,11 @@ function IndividualProjectsPage() {
                 )}
             {!studentsActive && filteredMentors.length > 0
               ? filteredMentors.map((mentor) => (
-                  <GroupCard key={mentor._id} group={mentor} />
+                  <IndividualCard
+                    key={mentor._id}
+                    group={mentor}
+                    type="mentor"
+                  />
                 ))
               : !studentsActive && (
                   <p>

@@ -12,6 +12,7 @@ function AssignementCard(props) {
     difficulty,
     maxParticipants,
     stack,
+    profilePic,
     reviews,
   } = props;
 
@@ -20,26 +21,45 @@ function AssignementCard(props) {
   return (
     <div className="main-card-container">
       {' '}
-      <div className="card-group-header">
-        <h4>{title}</h4>
+      <div className="card-header">
+        <div className="card-img-container">
+          <img
+            className="card-img"
+            src={
+              profilePic && profilePic.url && profilePic.url !== ''
+                ? profilePic.url
+                : '/img/default-task.png'
+            }
+          />
+        </div>
+        <div className="card-header-username-country">
+          <p className="card-header-username">{title}</p>
+          <p className="card-header-description">{description}</p>
+        </div>
       </div>
-      <div>{description}</div>
-      <br></br>
+      {/* <div className="card-group-header">
+        <h4>{title}</h4>
+      </div> */}
+      {/* <div className="card-description">{description}</div> */}
       <p className="card-learning">Tech stack:</p>
       <div className="tech-span-box">
-        {stack.slice(0, 7).map((item) => (
-          <span
-            key={item._id}
-            className={`tech-span tech-span---${item.label}`}
-          >
-            {item.label}
-          </span>
+        {stack.slice(0, 4).map((item) => (
+          <div key={item._id} className={`tech-span tech-span---${item.label}`}>
+            <div className="tag-div">o</div>
+            <span>{item.label}</span>
+          </div>
         ))}
+        {stack.length > 4 && (
+          <div className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>more...</span>
+          </div>
+        )}
       </div>
       <div className="flex">
-        <div className={classes['div-45']}>
+        {/* <div className={classes['div-45']}>
           Up to {maxParticipants} participants
-        </div>
+        </div> */}
         <div className={classes['div-45']}>
           {difficulty === '0'
             ? 'Beginner'
@@ -49,13 +69,12 @@ function AssignementCard(props) {
         </div>
       </div>
       <div className="card-footer">
-        <div className="card-footer-profile">
-          <Link href={`/projects/coding-assignments/${id}-${title}`}>
-            <a className="main-link">
-              View Assignment <Icon icon="fluent:task-list-ltr-20-filled" />
-            </a>
-          </Link>
-        </div>
+        <Link href={`/projects/coding-assignments/${id}-${title}`}>
+          <div className="card-footer-cta">
+            view assignment <Icon icon="fluent:task-list-ltr-20-filled" />
+          </div>
+        </Link>
+        {/* </div> */}
         {/* <div>
           {average} <Icon icon="ant-design:star-filled" />
         </div> */}

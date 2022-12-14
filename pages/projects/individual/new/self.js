@@ -449,7 +449,7 @@ function IndividualSelfProjectPage() {
           <div>
             <BtnCTA
               classname="btn-dark"
-              label="create group"
+              label="create project"
               onCLickAction={createIndividualProject}
             />
           </div>

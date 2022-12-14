@@ -374,7 +374,7 @@ function CreateIndividualPage() {
           <div>
             <BtnCTA
               classname="btn-dark"
-              label="create"
+              label="create project"
               onCLickAction={createGroup}
               // disabled={formIsValid !== true ? true : false}
             />

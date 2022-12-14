@@ -17,9 +17,6 @@ function MentorCard(props) {
     country,
     teaching,
     profilePic,
-    // setShowMsgForm,
-    // setRecipient,
-    // setSuccessMsg,
   } = props;
 
   const { authState, chats, setChats } = useMainContext();
@@ -58,16 +55,6 @@ function MentorCard(props) {
     }
   };
 
-  // const clickMessageHandler = () => {
-  //   if (authState && authState.email.length > 0) {
-  //     setShowMsgForm(true);
-  //     setRecipient(username);
-  //     setSuccessMsg(false);
-  //   } else {
-  //     router.push('/login');
-  //   }
-  // };
-
   return (
     <div className="main-card-container">
       <div className="card-header">
@@ -82,9 +69,7 @@ function MentorCard(props) {
           />
         </div>
         <div className="card-header-username-country">
-          {/* <div> */}
           <p className="card-header-username">{username}</p>
-          {/* <p>{username}</p> */}
           <p className="card-header-country">{country}</p>
         </div>
       </div>
@@ -93,14 +78,21 @@ function MentorCard(props) {
 
       <p className="card-learning">Teaching:</p>
       <div className="tech-span-box">
-        {teaching.slice(0, 6).map((item) => (
-          <span className={`tech-span tech-span---${item._id}`} key={item._id}>
-            {item.label}
-          </span>
+        {teaching.slice(0, 4).map((item) => (
+          <div key={item._id} className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>{item.label}</span>
+          </div>
         ))}
+        {teaching.length > 4 && (
+          <div className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>more...</span>
+          </div>
+        )}
       </div>
       <div className="card-footer">
-        <div className="card-footer-profile">
+        <div className="card-footer-cta">
           <Link href={`/people/coding-mentors/${handle}`}>
             <a className="main-link">
               View Profile <Icon icon="bx:user" />
@@ -111,6 +103,7 @@ function MentorCard(props) {
           <div className="card-footer-message">
             <BtnCTA
               label="message"
+              classname="btn-light-small"
               onCLickAction={addChat}
               icon={true}
               iconType="ant-design:message-outlined"

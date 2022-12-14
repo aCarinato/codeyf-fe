@@ -100,9 +100,7 @@ function BuddyCard(props) {
           />
         </div>
         <div className="card-header-username-country">
-          {/* <div> */}
           <p className="card-header-username">{username}</p>
-          {/* <p>{username}</p> */}
           <p className="card-header-country">{country}</p>
         </div>
       </div>
@@ -111,28 +109,30 @@ function BuddyCard(props) {
 
       <p className="card-learning">Is learning / wants to learn:</p>
       <div className="tech-span-box">
-        {learning.slice(0, 6).map((item) => (
-          <span
-            className={`tech-span tech-span---${item.label}`}
-            key={item._id}
-          >
-            {item.label}
-          </span>
+        {learning.slice(0, 4).map((item) => (
+          <div key={item._id} className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>{item.label}</span>
+          </div>
         ))}
+        {learning.length > 4 && (
+          <div className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>more...</span>
+          </div>
+        )}
       </div>
       <div className="card-footer">
-        <div className="card-footer-profile">
-          <Link href={`/people/coding-buddies/${handle}`}>
-            <a className="main-link">
-              View Profile <Icon icon="bx:user" />
-            </a>
-          </Link>
-        </div>
+        <Link href={`/people/coding-buddies/${handle}`}>
+          <div className="card-footer-cta">
+            view profile <Icon icon="bx:user" />
+          </div>
+        </Link>
         {authState.userId !== userId && (
           <div className="card-footer-message">
             <BtnCTA
               label="message"
-              // onCLickAction={() => addChat(userId, username)}
+              classname="btn-light-small"
               onCLickAction={addChat}
               icon={true}
               iconType="ant-design:message-outlined"

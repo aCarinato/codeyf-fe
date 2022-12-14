@@ -3,6 +3,7 @@ import BuddyCard from '../people/BuddyCard';
 import GroupCard from '../groups/GroupCard';
 import MentorCard from '../people/MentorCard';
 import AssignementCard from '../assignements/AssignementCard';
+import IndividualCard from '../individual/IndividualCard';
 
 function MySlider(props) {
   const { array, type, setShowMsgForm, setRecipient, setSuccessMsg } = props;
@@ -15,13 +16,26 @@ function MySlider(props) {
     items = array.filter((item) => item.isMentor);
   }
 
-  if (type === 'group') {
+  if (
+    type === 'group' ||
+    type === 'assignement' ||
+    type === 'mentee' ||
+    type === 'mentoring'
+  ) {
     items = array;
   }
 
-  if (type === 'assignement') {
-    items = array;
-  }
+  // if (type === 'assignement') {
+  //   items = array;
+  // }
+
+  // if (type === 'mentee') {
+  //   items = array;
+  // }
+
+  // if (type === 'mentor') {
+  //   items = array;
+  // }
 
   let slicedItems;
 
@@ -87,10 +101,26 @@ function MySlider(props) {
             id={assignement._id}
             title={assignement.name}
             description={assignement.headline}
-            difficulty={assignement.difficulty.label}
+            difficulty={assignement.difficulty}
             maxParticipants={assignement.maxTeamMemebers}
             stack={assignement.learning}
             reviews={assignement.reviews}
+          />
+        ))}
+      {type === 'mentee' &&
+        slicedItems.map((individual) => (
+          <IndividualCard
+            key={individual._id}
+            group={individual}
+            type="mentee"
+          />
+        ))}
+      {type === 'mentoring' &&
+        slicedItems.map((individual) => (
+          <IndividualCard
+            key={individual._id}
+            group={individual}
+            type="mentor"
           />
         ))}
     </div>

@@ -53,7 +53,7 @@ function CompleteProfileForm() {
 
   //   INPUT VALIDITY
   const shortDescriptionIsValid =
-    shortDescription.trim() !== '' && shortDescription.length < 80;
+    shortDescription.trim() !== '' && shortDescription.length < 33;
   const shortDescriptionIsInvalid =
     !shortDescriptionIsValid && shortDescriptionTouched;
 
@@ -358,7 +358,7 @@ function CompleteProfileForm() {
           <div className="padding-3rem">
             <div className="myform-input-section">
               <label className="myform-label bold" htmlFor="short-description">
-                short description (max 80 characters) <sup>*</sup>
+                short description (max 32 characters) <sup>*</sup>
               </label>
               <textarea
                 className={
@@ -369,7 +369,7 @@ function CompleteProfileForm() {
                 id="short-description"
                 name="short-description"
                 type="text"
-                maxLength="79"
+                maxLength="32"
                 rows="2"
                 cols="50"
                 value={shortDescription}

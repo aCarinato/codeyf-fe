@@ -1,9 +1,10 @@
 .btn-light {
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--main-btnlight-color);
   padding: 0.5rem 1.2rem;
   cursor: pointer;
   color: var(--main-primary-color);
-  font-weight: bold;
+  font-weight: 600;
   border: none;
   font-size: 1.2rem;
   border-radius: 2.2rem;
@@ -20,11 +21,12 @@
 }
 
 .btn-dark-sm {
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--main-primary-color);
   padding: 0.5rem 1.2rem;
   cursor: pointer;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   border: none;
   font-size: 1.2rem;
   border-radius: 2.2rem;
@@ -38,11 +40,12 @@
 }
 
 .btn-dark {
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--main-primary-color);
   padding: 1.2rem 2.4rem;
   cursor: pointer;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   border: none;
   font-size: 1.4rem;
   border-radius: 2.2rem;
@@ -58,18 +61,35 @@
 }
 
 .btn-light-big {
+  font-family: 'Montserrat', sans-serif;
   background-color: white;
   padding: 1.2rem 2.4rem;
   cursor: pointer;
   color: var(--main-primary-color);
-  font-weight: bold;
-  border: none;
+  font-weight: 600;
   font-size: 1.4rem;
   border: 1px solid var(--main-primary-color);
   border-radius: 2.2rem;
 }
 
 .btn-light-big:hover {
+  background-color: var(--main-primary-color);
+  color: white;
+}
+
+.btn-light-small {
+  font-family: 'Montserrat', sans-serif;
+  background-color: white;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  color: var(--main-primary-color);
+  font-weight: 600;
+  font-size: 1.2rem;
+  border: 1px solid var(--main-primary-color);
+  border-radius: 2.2rem;
+}
+
+.btn-light-small:hover {
   background-color: var(--main-primary-color);
   color: white;
 }
