@@ -4,30 +4,7 @@ import { Icon } from '@iconify/react';
 import BtnCTA from '../UI/BtnCTA';
 
 function GroupCard(props) {
-  const {
-    group,
-    // id,
-    // name,
-    // techStack,
-    // nBuddies,
-    // buddies,
-    mode = 'viewer',
-    status,
-  } = props;
-  //   const techStack = group.techStack;
-  // let availabilityStatus;
-
-  // const availableSpots = nBuddies - buddies.length;
-
-  // if (availableSpots > 0) {
-  //   availabilityStatus = (
-  //     <p className="card-group-available">
-  //       {availableSpots} more spots available!
-  //     </p>
-  //   );
-  // } else {
-  //   availabilityStatus = <p className="card-group-unavailable">Group filled</p>;
-  // }
+  const { group } = props;
 
   // buddies availability
   let availableBuddySpots;
@@ -133,62 +110,22 @@ function GroupCard(props) {
 
       <div className="flex">
         <div className={classes['div-45']}>
-          {/* <p>Up to {group.nBuddies} participants</p> */}
           {!group.isClosed && buddyAvailbilityDisplay}
         </div>
         <div className={classes['div-45']}>
-          {/* {group.mentorRequired ? <p>Mentor wanted</p> : <p>No mentor</p>} */}
-
           {!group.isClosed && group.mentorRequired
             ? mentorAvailbilityDisplay
             : !group.isClosed && 'Mentor not required'}
         </div>
       </div>
+
       <div className="card-footer">
         <Link href={`/projects/coding-groups/${group._id}`}>
           <div className="card-footer-cta">
-            View Team <Icon icon="akar-icons:people-group" />
+            view project <Icon icon="akar-icons:people-group" />
           </div>
         </Link>
       </div>
-
-      {/* <p>Max {group.nBuddies} buddies</p>
-      {!group.isClosed && buddyAvailbilityDisplay}
-      {!group.isClosed && mentorAvailbilityDisplay}
-      <div className="card-footer">
-        {mode === 'viewer' ? (
-          <>
-            <div className="card-footer-profile">
-              <Link href={`/projects/coding-groups/${group._id}`}>
-                <a className="main-link">
-                  View Team <Icon icon="akar-icons:people-group" />
-                </a>
-              </Link>
-            </div>
-          </>
-        ) : (
-          <>
-            {status === 'draft' && (
-              <div className="card-footer-profile">
-                <Link href={`/projects/coding-groups/${group._id}/edit`}>
-                  <a className="main-link">
-                    Edit <Icon icon="akar-icons:edit" />
-                  </a>
-                </Link>
-              </div>
-            )}
-            {status === 'active' && (
-              <div className="card-footer-profile">
-                <Link href={`/projects/coding-groups/${group._id}/manage`}>
-                  <a className="main-link">
-                    Mark completion <Icon icon="fa6-solid:trophy" />
-                  </a>
-                </Link>
-              </div>
-            )}
-          </>
-        )}
-      </div> */}
     </div>
   );
 }

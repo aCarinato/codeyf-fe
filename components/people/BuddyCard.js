@@ -109,14 +109,18 @@ function BuddyCard(props) {
 
       <p className="card-learning">Is learning / wants to learn:</p>
       <div className="tech-span-box">
-        {learning.slice(0, 6).map((item) => (
-          <span
-            className={`tech-span tech-span---${item.label}`}
-            key={item._id}
-          >
-            {item.label}
-          </span>
+        {learning.slice(0, 4).map((item) => (
+          <div key={item._id} className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>{item.label}</span>
+          </div>
         ))}
+        {learning.length > 4 && (
+          <div className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>more...</span>
+          </div>
+        )}
       </div>
       <div className="card-footer">
         <Link href={`/people/coding-buddies/${handle}`}>

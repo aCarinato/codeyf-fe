@@ -1,19 +1,18 @@
 // react / next
-import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
-// libs
-import axios from 'axios';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 // own components
 import SpinningLoader from '../../../../components/UI/SpinningLoader';
 import AssignementCard from '../../../../components/assignements/AssignementCard';
-import BuddyCard from '../../../../components/people/BuddyCard';
 import MentorCard from '../../../../components/people/MentorCard';
-import BtnCTA from '../../../../components/UI/BtnCTA';
+import BuddyCard from '../../../../components/people/BuddyCard';
+// libs
+import axios from 'axios';
 // context
 import { useMainContext } from '../../../../context/Context';
 
-function GroupPage() {
+function IndividualProjectPage() {
   const { authState, chats, setChats } = useMainContext();
 
   const router = useRouter();
@@ -23,14 +22,10 @@ function GroupPage() {
   const [group, setGroup] = useState({});
   const [loading, setLoading] = useState(false);
 
-  //   people
-  // const [organiser, setOrganiser] = useState({});
-  const [buddies, setBuddies] = useState([]);
+  const [mentee, setMentee] = useState([]);
   const [mentor, setMentor] = useState({});
 
-  // console.log(group);
-
-  const fetchGroup = async () => {
+  const fetchIndividual = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
@@ -39,7 +34,7 @@ function GroupPage() {
       // console.log(res);
       setGroup(res.data.group);
       // setOrganiser(res.data.group.organiser);
-      setBuddies(res.data.group.buddies);
+      setMentee(res.data.group.buddies);
       setMentor(res.data.group.mentors[0]);
       setLoading(false);
     } catch (err) {
@@ -49,52 +44,9 @@ function GroupPage() {
 
   useEffect(() => {
     if (groupId !== undefined && groupId.length > 0) {
-      fetchGroup();
+      fetchIndividual();
     }
   }, [groupId]);
-
-  const addChat = async () => {
-    if (authState && authState.email.length > 0) {
-      // console.log(user);
-      const alreadyInChat =
-        chats.length > 0 &&
-        chats.filter((chat) => chat.messagesWith === group.organiser._id)
-          .length > 0;
-
-      if (alreadyInChat) {
-        return router.push(`/my-profile/chats?message=${group.organiser._id}`);
-      }
-      //
-      else {
-        const newChat = {
-          messagesWith: group.organiser._id,
-          username: group.organiser.username,
-          profilePicUrl:
-            group.organiser.profilePic &&
-            group.organiser.profilePic.url &&
-            group.organiser.profilePic.url !== ''
-              ? group.organiser.profilePic.url
-              : '/img/default-pic.png',
-          lastMessage: '',
-          date: Date.now(),
-        };
-
-        setChats((prev) => [newChat, ...prev]);
-
-        return router.push(
-          `/my-profile/chats?message=${group.organiser._id}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
-
-        //   return router.push(`/messages?message=${user._id}`);
-      }
-    } else {
-      router.push('/login');
-    }
-  };
 
   // buddies availability
   let availableBuddySpots;
@@ -146,77 +98,17 @@ function GroupPage() {
       );
     }
   }
-  // else if (group && group !== {} && !group.mentorRequired) {
-  //   mentorAvailbilityStatus = 'unrequired';
-  //   mentorAvailbilityDisplay = <p>No mentor required for this project</p>;
-  // }
-
-  // CTA
-  let sectionCTA;
-  if (group && group.organiser && group.organiser._id !== authState.userId) {
-    if (
-      buddyAvailbilityStatus === 'filled' &&
-      mentorAvailbilityStatus === 'available'
-    ) {
-      sectionCTA = (
-        <>
-          <p>
-            Message the organiser to enquire or to request joining as a mentor
-          </p>
-          <BtnCTA
-            classname="btn-dark"
-            label="Message"
-            onCLickAction={addChat}
-          />
-        </>
-      );
-    } else if (
-      buddyAvailbilityStatus === 'available' &&
-      (mentorAvailbilityStatus === 'filled' ||
-        mentorAvailbilityStatus === 'unrequired')
-    ) {
-      sectionCTA = (
-        <>
-          <p>
-            Message the organiser to enquire or to request joining as a buddy
-          </p>
-          <BtnCTA
-            classname="btn-dark"
-            label="Message"
-            onCLickAction={addChat}
-          />
-        </>
-      );
-    } else if (
-      buddyAvailbilityStatus === 'available' &&
-      mentorAvailbilityStatus === 'available'
-    ) {
-      sectionCTA = (
-        <>
-          <p>
-            Message the organiser to enquire or to request joining as a mentor
-            or buddy (yes, you can be both!)
-          </p>
-          <BtnCTA
-            classname="btn-dark"
-            label="Message"
-            onCLickAction={addChat}
-          />
-        </>
-      );
-    }
-  }
 
   return (
     <>
       {loading ? (
         <SpinningLoader />
       ) : (
-        <Fragment>
+        <>
           <div className="flex flex-justify-space-between">
             <h2>{group.name}</h2>
             <p>
-              <Link href={`/projects/coding-groups`}>Back</Link>
+              <Link href={`/projects/individual`}>Back</Link>
             </p>
           </div>
           <br></br>
@@ -231,7 +123,7 @@ function GroupPage() {
                 </Link>
               </div>
             )}
-            {!group.isClosed && (
+            {/* {!group.isClosed && (
               <div className="flex">
                 <div>
                   {buddyAvailbilityDisplay}
@@ -244,7 +136,7 @@ function GroupPage() {
                     <BtnCTA classname="btn-light-big" label="Mentor Group" />
                   )}
               </div>
-            )}
+            )} */}
           </div>
           <br></br>
           {group.description && (
@@ -265,10 +157,6 @@ function GroupPage() {
               <br></br>
             </div>
           )}
-          <div>
-            <h4>Maximum number of participants (buddies):</h4>
-            <p>{group.nBuddies}</p>
-          </div>
           <br></br>
           {!group.isClosed && group.deadline && (
             <div>
@@ -280,20 +168,6 @@ function GroupPage() {
                   year: 'numeric',
                 })}
               </p>
-            </div>
-          )}
-          <br></br>
-          {group.isClosed ? (
-            <div>
-              <Link href={`/projects/coding-groups/${groupId}/status`}>
-                Achieved project goals
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <Link href={`/projects/coding-groups/${groupId}/status`}>
-                View completion status
-              </Link>
             </div>
           )}
           <br></br>
@@ -320,6 +194,21 @@ function GroupPage() {
                 </div>
               ))}
           </div>
+          <br></br>
+          {group.isClosed ? (
+            <div>
+              <Link href={`/projects/coding-groups/${groupId}/status`}>
+                Achieved project goals
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <Link href={`/projects/coding-groups/${groupId}/status`}>
+                View completion status
+              </Link>
+            </div>
+          )}
+          <br></br>
 
           {group.hasProposedAssignment && (
             <>
@@ -342,20 +231,20 @@ function GroupPage() {
           {group.organiser && group.organiser.username && (
             <>
               {/* <h4>Organiser:</h4>
-              <br></br> */}
+          <br></br> */}
               <div className="grid grid--2cols">
                 {/* <div>
-                  <BuddyCard
-                    key={group.organiser._id}
-                    userId={group.organiser._id}
-                    username={group.organiser.username}
-                    handle={group.organiser.handle}
-                    description={group.organiser.shortDescription}
-                    country={group.organiser.country}
-                    learning={group.organiser.learning}
-                    profilePic={group.organiser.profilePic}
-                  />
-                </div> */}
+              <BuddyCard
+                key={group.organiser._id}
+                userId={group.organiser._id}
+                username={group.organiser.username}
+                handle={group.organiser.handle}
+                description={group.organiser.shortDescription}
+                country={group.organiser.country}
+                learning={group.organiser.learning}
+                profilePic={group.organiser.profilePic}
+              />
+            </div> */}
 
                 {!group.isClosed &&
                   group.organiser._id === authState.userId && (
@@ -375,12 +264,12 @@ function GroupPage() {
 
           <div>
             <br></br>
-            <h4>Coding buddies</h4>
+            <h4>Mentee</h4>
             <br></br>
-            {buddies && buddies.length > 0 ? (
+            {mentee && mentee.length > 0 ? (
               <div className="flex flex-justify-flex-start">
                 {' '}
-                {buddies.map((buddy) => (
+                {mentee.map((buddy) => (
                   <BuddyCard
                     key={buddy._id}
                     userId={buddy._id}
@@ -394,19 +283,19 @@ function GroupPage() {
                 ))}
               </div>
             ) : (
-              <div>
-                <p>No buddies yet</p>
+              <div className="card-group-available">
+                Mentee position available!
               </div>
             )}
           </div>
           <br></br>
 
           {/* {group.mentorRequired && (
-            <>
-              <h4>Mentor</h4>
-              <br></br>
-            </>
-          )} */}
+        <>
+          <h4>Mentor</h4>
+          <br></br>
+        </>
+      )} */}
           <h4>Mentor</h4>
           <br></br>
           {group.isClosed ? (
@@ -434,61 +323,33 @@ function GroupPage() {
             ''
           )}
 
-          {
-            !group.isClosed &&
-              (group.mentorRequired ? (
-                mentorAvailbilityStatus === 'filled' ? (
-                  <div>
-                    <MentorCard
-                      key={mentor._id}
-                      userId={mentor._id}
-                      username={mentor.username}
-                      handle={mentor.handle}
-                      description={mentor.shortDescription}
-                      country={mentor.country}
-                      teaching={mentor.teaching}
-                      profilePic={mentor.profilePic}
-                    />
-                  </div>
-                ) : (
-                  <div className="card-group-available">
-                    Mentor position available!
-                  </div>
-                )
+          {!group.isClosed &&
+            (group.mentorRequired ? (
+              mentorAvailbilityStatus === 'filled' ? (
+                <div>
+                  <MentorCard
+                    key={mentor._id}
+                    userId={mentor._id}
+                    username={mentor.username}
+                    handle={mentor.handle}
+                    description={mentor.shortDescription}
+                    country={mentor.country}
+                    teaching={mentor.teaching}
+                    profilePic={mentor.profilePic}
+                  />
+                </div>
               ) : (
-                <div>No mentor required for this project</div>
-              ))
-            // (group.mentorRequired ? (
-            //   mentorAvailbilityStatus === 'filled' ? (
-            //     <div>
-            //       <MentorCard
-            //         key={mentor._id}
-            //         userId={mentor._id}
-            //         username={mentor.username}
-            //         handle={mentor.handle}
-            //         description={mentor.shortDescription}
-            //         country={mentor.country}
-            //         teaching={mentor.teaching}
-            //         profilePic={mentor.profilePic}
-            //       />
-            //     </div>
-            //   ) : mentorAvailbilityStatus === 'available' ? (
-            //     <div className="card-group-available">
-            //       Mentor position available!
-            //     </div>
-            //   ) : (
-            //     <div>No mentor required for this project</div>
-            //   )
-            // ) : (
-            //   ''
-            // ))
-          }
-        </Fragment>
+                <div className="card-group-available">
+                  Mentor position available!
+                </div>
+              )
+            ) : (
+              <div>No mentor required for this project</div>
+            ))}
+        </>
       )}
     </>
   );
 }
 
-export default GroupPage;
-
-// http://localhost:3000/projects/coding-groups/636b5bf80f7fa60c9716fa6e
+export default IndividualProjectPage;

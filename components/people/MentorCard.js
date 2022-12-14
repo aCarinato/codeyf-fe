@@ -78,11 +78,18 @@ function MentorCard(props) {
 
       <p className="card-learning">Teaching:</p>
       <div className="tech-span-box">
-        {teaching.slice(0, 6).map((item) => (
-          <span className={`tech-span tech-span---${item._id}`} key={item._id}>
-            {item.label}
-          </span>
+        {teaching.slice(0, 4).map((item) => (
+          <div key={item._id} className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>{item.label}</span>
+          </div>
         ))}
+        {teaching.length > 4 && (
+          <div className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>more...</span>
+          </div>
+        )}
       </div>
       <div className="card-footer">
         <div className="card-footer-cta">

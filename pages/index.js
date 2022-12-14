@@ -239,7 +239,7 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider array={students} type="group" />
+        <MySlider array={students} type="mentee" />
       </div>
       <br></br>
 
@@ -252,7 +252,7 @@ function HomePage() {
         </Link>
       </h3>
       <div className="overflower">
-        <MySlider array={mentorsSeekStudents} type="group" />
+        <MySlider array={mentorsSeekStudents} type="mentoring" />
       </div>
 
       <br></br>

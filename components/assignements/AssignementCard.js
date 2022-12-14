@@ -71,7 +71,7 @@ function AssignementCard(props) {
       <div className="card-footer">
         <Link href={`/projects/coding-assignments/${id}-${title}`}>
           <div className="card-footer-cta">
-            View Assignment <Icon icon="fluent:task-list-ltr-20-filled" />
+            view assignment <Icon icon="fluent:task-list-ltr-20-filled" />
           </div>
         </Link>
         {/* </div> */}
