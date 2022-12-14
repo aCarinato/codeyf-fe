@@ -58,7 +58,7 @@ function AssignementScreen() {
     }
   }, [assignmentID]);
 
-  console.log(assignement);
+  // console.log(assignement);
 
   useEffect(() => {
     fetchCreator();

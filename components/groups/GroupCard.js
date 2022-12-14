@@ -46,7 +46,7 @@ function GroupCard(props) {
       buddyAvailbilityDisplay = (
         <p className="card-group-available">
           {availableBuddySpots} buddy position
-          {availableBuddySpots > 1 && <span>s</span>} available!
+          {availableBuddySpots > 1 && <span>s</span>} still available!
         </p>
       );
     }
@@ -74,7 +74,7 @@ function GroupCard(props) {
       mentorAvailbilityDisplay = (
         <p className="card-group-available">
           {availableMentorSpots} mentor position
-          {availableMentorSpots > 1 && <span>s</span>} available!
+          {availableMentorSpots > 1 && <span>s</span>} still available!
         </p>
       );
     }
@@ -86,20 +86,73 @@ function GroupCard(props) {
 
   return (
     <div className="main-card-container">
-      <div className="card-group-header">
+      {/* <div className="card-group-header">
         <h4>{group.name}</h4>
+      </div> */}
+      <div className="card-header">
+        <div className="card-img-container">
+          <img
+            className="card-img"
+            src={
+              group.picture && group.picture.url && group.picture.url !== ''
+                ? group.picture.url
+                : '/img/default-group.png'
+            }
+          />
+        </div>
+        <div className="card-header-username-country">
+          <p className="card-header-username">{group.name}</p>
+          <p className="card-header-description">{group.description}</p>
+        </div>
+      </div>
+      {/* <div className="card-description">{group.description}</div> */}
+
+      <p className="card-learning">Tech stack:</p>
+      <div className="tech-span-box">
+        {group.learning.slice(0, 4).map((item) => (
+          <div key={item._id} className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>{item.label}</span>
+          </div>
+        ))}
+        {group.learning.length > 4 && (
+          <div className={`tech-span`}>
+            <div className="tag-div">o</div>
+            <span>more...</span>
+          </div>
+        )}
       </div>
 
-      {/* <p>{description}</p> */}
-      <p className="card-learning">Group topics:</p>
-      <div className="tech-span-box">
-        {group.learning.slice(0, 7).map((item) => (
-          <span key={item._id} className={`tech-span tech-span---${item}`}>
-            {item.label}
-          </span>
-        ))}
+      <div className={classes['div-participants']}>
+        {group.mentorRequired
+          ? `Up to ${
+              Number(group.nBuddies) + Number(group.nMentorsRequired)
+            } participants`
+          : `Up to ${group.nBuddies} participants`}
       </div>
-      <p>Max {group.nBuddies} buddies</p>
+
+      <div className="flex">
+        <div className={classes['div-45']}>
+          {/* <p>Up to {group.nBuddies} participants</p> */}
+          {!group.isClosed && buddyAvailbilityDisplay}
+        </div>
+        <div className={classes['div-45']}>
+          {/* {group.mentorRequired ? <p>Mentor wanted</p> : <p>No mentor</p>} */}
+
+          {!group.isClosed && group.mentorRequired
+            ? mentorAvailbilityDisplay
+            : !group.isClosed && 'Mentor not required'}
+        </div>
+      </div>
+      <div className="card-footer">
+        <Link href={`/projects/coding-groups/${group._id}`}>
+          <div className="card-footer-cta">
+            View Team <Icon icon="akar-icons:people-group" />
+          </div>
+        </Link>
+      </div>
+
+      {/* <p>Max {group.nBuddies} buddies</p>
       {!group.isClosed && buddyAvailbilityDisplay}
       {!group.isClosed && mentorAvailbilityDisplay}
       <div className="card-footer">
@@ -112,14 +165,6 @@ function GroupCard(props) {
                 </a>
               </Link>
             </div>
-            {/* <div className="card-footer-message">
-              <BtnCTA
-                label="Message"
-                onCLickAction={() => {}}
-                icon={true}
-                iconType="ant-design:message-outlined"
-              />
-            </div> */}
           </>
         ) : (
           <>
@@ -143,7 +188,7 @@ function GroupCard(props) {
             )}
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

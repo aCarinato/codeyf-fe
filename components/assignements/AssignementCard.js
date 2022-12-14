@@ -12,6 +12,7 @@ function AssignementCard(props) {
     difficulty,
     maxParticipants,
     stack,
+    profilePic,
     reviews,
   } = props;
 
@@ -20,26 +21,26 @@ function AssignementCard(props) {
   return (
     <div className="main-card-container">
       {' '}
-      <div className="card-group-header">
-        <h4>{title}</h4>
+      <div className="card-header">
+        <div className="card-img-container">
+          <img
+            className="card-img"
+            src={
+              profilePic && profilePic.url && profilePic.url !== ''
+                ? profilePic.url
+                : '/img/default-task.png'
+            }
+          />
+        </div>
+        <div className="card-header-username-country">
+          <p className="card-header-username">{title}</p>
+          <p className="card-header-description">{description}</p>
+        </div>
       </div>
-      <div className="card-description">{description}</div>
-      {/* <br></br> */}
-      {/* <p className="card-learning">Topics:</p>
-      <div className="tech-span-box">
-        {topics.slice(0, 2).map((item) => (
-          <div key={item._id} className={`tech-span tech-span---${item.label}`}>
-            <div className="tag-div">o</div>
-            <span>{item.label}</span>
-          </div>
-        ))}
-        {topics.length > 2 && (
-          <div className={`tech-span`}>
-            <div className="tag-div">o</div>
-            <span>more...</span>
-          </div>
-        )}
+      {/* <div className="card-group-header">
+        <h4>{title}</h4>
       </div> */}
+      {/* <div className="card-description">{description}</div> */}
       <p className="card-learning">Tech stack:</p>
       <div className="tech-span-box">
         {stack.slice(0, 4).map((item) => (
@@ -56,9 +57,9 @@ function AssignementCard(props) {
         )}
       </div>
       <div className="flex">
-        <div className={classes['div-45']}>
+        {/* <div className={classes['div-45']}>
           Up to {maxParticipants} participants
-        </div>
+        </div> */}
         <div className={classes['div-45']}>
           {difficulty === '0'
             ? 'Beginner'
@@ -71,7 +72,7 @@ function AssignementCard(props) {
         {/* <div className="card-footer-profile"> */}
         <Link href={`/projects/coding-assignments/${id}-${title}`}>
           {/* <a className="main-link"> */}
-          <div className="card-footer-profile">
+          <div className="card-footer-cta">
             View Assignment <Icon icon="fluent:task-list-ltr-20-filled" />
           </div>
           {/* </a> */}
