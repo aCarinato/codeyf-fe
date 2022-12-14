@@ -273,6 +273,26 @@ function IndividualSelfProjectPage() {
     </div>
   );
 
+  const uploadPicture = async (e) => {
+    const file = e.target.files[0];
+    let formData = new FormData();
+    formData.append('image', file);
+    // console.log([...formData]);
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/user/upload-image`,
+        formData
+      );
+      // console.log('uploaded image => ', data);
+      setPicture({
+        url: data.url,
+        public_id: data.public_id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // date setting
   const today = new Date();
   const nDaysToAdd = 1;
@@ -323,8 +343,8 @@ function IndividualSelfProjectPage() {
             isInvalid={descriptionIsInvalid}
             errorMsg={`Enter a non empty value`}
           />
-          {/* <br></br>
-          <ImgUploader img={picture} uploadImg={uploadPicture} /> */}
+          <br></br>
+          <ImgUploader img={picture} uploadImg={uploadPicture} />
           <br></br>
           <DateInput
             required={true}

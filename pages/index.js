@@ -192,7 +192,7 @@ function HomePage() {
         </div>
         <div>
           <BtnCTA
-            label="start a project"
+            label="Start a Project"
             classname="btn-dark"
             onCLickAction={() => {
               router.push('/new-project');

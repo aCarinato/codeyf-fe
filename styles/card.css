@@ -26,7 +26,7 @@
 
 .card-header {
   display: flex;
-  height: 7.8rem;
+  height: 8.8rem;
 }
 
 .card-group-header {
@@ -42,12 +42,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 5.8rem;
+  width: 5.6rem;
   margin: 0.4rem 0rem 0.4rem 1.2rem;
 }
 
 .card-img {
-  width: 100%;
+  /* width: 100%; */
   border-radius: 50%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
@@ -67,6 +67,7 @@
 
 .card-header-username {
   font-weight: bold;
+  font-size: 1.4rem;
   /* flex-grow: 1; */
 }
 

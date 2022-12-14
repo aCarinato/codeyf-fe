@@ -189,7 +189,7 @@ function CreateGroupPage() {
           //   mentorsFilled: { type: Boolean, default: false },
           topics: assignment.topics,
           learning: assignment.learning,
-          picture,
+          picture: assignment.picture,
           hasProposedAssignment: true,
           proposedAssignment: pickedAssignmentId,
           requirements,

@@ -334,6 +334,7 @@ function GroupPage() {
                 maxParticipants={group.proposedAssignment.maxTeamMemebers}
                 stack={group.proposedAssignment.learning}
                 reviews={group.proposedAssignment.reviews}
+                picture={group.proposedAssignment.picture}
               />
             </>
           )}

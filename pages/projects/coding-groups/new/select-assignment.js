@@ -68,6 +68,7 @@ function SelectAssignmentPage() {
                       maxParticipants={assignement.maxTeamMemebers}
                       stack={assignement.learning}
                       reviews={assignement.reviews}
+                      picture={assignement.picture}
                     />
                   }
                   btn={

@@ -12,7 +12,7 @@ function AssignementCard(props) {
     difficulty,
     maxParticipants,
     stack,
-    profilePic,
+    picture,
     reviews,
   } = props;
 
@@ -26,8 +26,8 @@ function AssignementCard(props) {
           <img
             className="card-img"
             src={
-              profilePic && profilePic.url && profilePic.url !== ''
-                ? profilePic.url
+              picture && picture.url && picture.url !== ''
+                ? picture.url
                 : '/img/default-task.png'
             }
           />
@@ -44,7 +44,7 @@ function AssignementCard(props) {
       <p className="card-learning">Tech stack:</p>
       <div className="tech-span-box">
         {stack.slice(0, 4).map((item) => (
-          <div key={item._id} className={`tech-span tech-span---${item.label}`}>
+          <div key={item._id} className={`tech-span`}>
             <div className="tag-div">o</div>
             <span>{item.label}</span>
           </div>
@@ -57,9 +57,6 @@ function AssignementCard(props) {
         )}
       </div>
       <div className="flex">
-        {/* <div className={classes['div-45']}>
-          Up to {maxParticipants} participants
-        </div> */}
         <div className={classes['div-45']}>
           {difficulty === '0'
             ? 'Beginner'

@@ -7,6 +7,7 @@ import SpinningLoader from '../../../../components/UI/SpinningLoader';
 import TextInput from '../../../../components/UI/form/TextInput';
 import TextArea from '../../../../components/UI/form/TextArea';
 import NumberInput from '../../../../components/UI/form/NumberInput';
+import ImgUploader from '../../../../components/UI/form/ImgUploader';
 import RadioBox from '../../../../components/UI/form/RadioBox';
 import Selections from '../../../../components/UI/form/Selections';
 import BtnCTA from '../../../../components/UI/BtnCTA';
@@ -47,6 +48,7 @@ function CreateIndividualPage() {
   const [assignment, setAssignment] = useState({});
   const [loading, setLoading] = useState(false);
   // const [nBuddies, setNBuddies] = useState('');
+  // const [picture, setPicture] = useState({});
   const [deadline, setDeadline] = useState('');
   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
   const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
@@ -208,13 +210,13 @@ function CreateIndividualPage() {
           //   mentorsFilled: { type: Boolean, default: false },
           topics: assignment.topics,
           learning: assignment.learning,
-          picture,
+          picture: assignment.picture,
           hasProposedAssignment: true,
           proposedAssignment: pickedAssignmentId,
           requirements,
           approvals: [],
         };
-        // console.log(newGroup);
+        console.log(newGroup);
         try {
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API}/groups/new`,
@@ -311,7 +313,6 @@ function CreateIndividualPage() {
               <br></br>
             </>
           )}
-          <br></br>
           {assignment.completionTime && assignment.completionTime > 0 && (
             <>
               <TextInput
