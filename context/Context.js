@@ -125,7 +125,7 @@ export function ContextProvider({ children }) {
           }
         );
         if (data.ok) {
-          setOk(true);
+          // setOk(true);
           setCurrentUser(data.user);
         }
       } catch (err) {

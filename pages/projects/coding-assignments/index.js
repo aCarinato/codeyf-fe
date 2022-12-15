@@ -106,7 +106,7 @@ function AssignmentsScreen() {
               onClose={() => setShowFilter(false)}
             />
           )}
-          <div className={mobileView ? 'grid' : `grid grid---2cols-15-85`}>
+          <div className={mobileView ? 'grid' : `grid grid---2cols-20-80`}>
             {!mobileView && (
               <div>
                 <AssignementFilter
@@ -138,8 +138,8 @@ function AssignmentsScreen() {
                   }
                 />
               </div>
-              <br></br>
-              <div className="flex">
+              {/* <br></br> */}
+              <div className="flex gap-12 padding-12rem">
                 {mobileView && (
                   <BtnCTA
                     label="filter assignments"

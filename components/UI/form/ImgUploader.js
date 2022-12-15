@@ -11,7 +11,7 @@ function ImgUploader(props) {
       ) : (
         <>
           <label className="myform-label bold">
-            Profile picture
+            picture
             {/* <sup>*</sup> */}
           </label>
           {img && img.url && (
