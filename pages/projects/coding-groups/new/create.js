@@ -178,6 +178,7 @@ function CreateGroupPage() {
         const newGroup = {
           organiser: '',
           name: assignment.name,
+          headline: assignment.headline,
           description: assignment.headline,
           deadline,
           nBuddies,

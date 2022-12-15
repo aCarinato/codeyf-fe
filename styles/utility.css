@@ -73,6 +73,10 @@
   white-space: pre-wrap;
 }
 
+.font-12 {
+  font-size: 1.4rem;
+}
+
 /* BORDER */
 .border-top-primary {
   border-top: 1px solid var(--main-primary-color);

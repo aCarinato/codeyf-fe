@@ -10,6 +10,7 @@ import ApprovalsCard from '../../../../../components/groups/manage/ApprovalsCard
 import BtnCTA from '../../../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
+import { Icon } from '@iconify/react';
 // context
 import { useMainContext } from '../../../../../context/Context';
 
@@ -249,7 +250,10 @@ function CompletionPage() {
             !group.isClosed &&
             !success && (
               <div>
-                <p>All members approved! You can close the project</p>
+                <p>
+                  <Icon icon="fluent-mdl2:waitlist-confirm-mirrored" /> All
+                  members approved! You can close the project
+                </p>
 
                 <BtnCTA label="close team" onCLickAction={closeGroup} />
               </div>

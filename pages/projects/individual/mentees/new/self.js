@@ -51,6 +51,7 @@ function IndividualSelfProjectPage() {
   const router = useRouter();
 
   const [name, setName] = useState('');
+  const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState('');
   //   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
@@ -70,6 +71,7 @@ function IndividualSelfProjectPage() {
 
   // input touched
   const [nameTouched, setNameTouched] = useState(false);
+  const [headlineTouched, setHeadlineTouched] = useState(false);
   const [descriptionTouched, setDescriptionTouched] = useState(false);
   // const [nBuddiesTouched, setNBuddiesTouched] = useState(false);
   const [deadlineTouched, setDeadlineTouched] = useState(false);
@@ -89,6 +91,9 @@ function IndividualSelfProjectPage() {
   // input validity
   const nameIsValid = name.trim() !== '';
   const nameIsInvalid = !nameIsValid && nameTouched;
+
+  const headlineIsValid = headline.trim() !== '';
+  const headlineIsInvalid = !headlineIsValid && headlineTouched;
 
   const descriptionIsValid = description.trim() !== '';
   const descriptionIsInvalid = !descriptionIsValid && descriptionTouched;
@@ -163,17 +168,11 @@ function IndividualSelfProjectPage() {
 
   let formIsValid;
   if (
-    // nameIsValid &&
-    // descriptionIsValid &&
-    // deadlineIsValid &&
-    // topicsIsValid &&
-    // learningIsValid
     nameIsValid &&
+    headlineIsValid &&
     descriptionIsValid &&
     deadlineIsValid &&
-    // organiserIsBuddyIsValid &&
     mentorRequiredIsValid &&
-    // organiserIsMentorIsValid &&
     topicsIsValid &&
     learningIsValid
     // requirementsIsValid &&
@@ -185,6 +184,7 @@ function IndividualSelfProjectPage() {
   const createIndividualProject = async () => {
     if (authState && authState.token && authState.token.length > 0) {
       setNameTouched(true);
+      setHeadlineTouched(true);
       setDescriptionTouched(true);
       setDeadlineTouched(true);
       //   setOrganiserIsBuddyTouched(true);
@@ -215,6 +215,7 @@ function IndividualSelfProjectPage() {
         const newGroup = {
           organiser: '',
           name,
+          headline,
           description,
           deadline,
           nBuddies: 1,
@@ -327,6 +328,17 @@ function IndividualSelfProjectPage() {
             onChange={(e) => setName(e.target.value)}
             onBlur={() => setNameTouched(true)}
             isInvalid={nameIsInvalid}
+            errorMsg={`Enter a non empty value`}
+          />
+          <br></br>
+          <TextInput
+            required={true}
+            label="Headline (max 32 characters)"
+            value={headline}
+            maxLength={32}
+            onChange={(e) => setHeadline(e.target.value)}
+            onBlur={() => setHeadlineTouched(true)}
+            isInvalid={headlineIsInvalid}
             errorMsg={`Enter a non empty value`}
           />
           <br></br>

@@ -231,7 +231,7 @@ function CreateNewAssignmentPage() {
     </div>
   );
 
-  console.log(`currentUser.isMentor: ${currentUser && currentUser.isMentor}`);
+  // console.log(`currentUser.isMentor: ${currentUser && currentUser.isMentor}`);
 
   return (
     <>

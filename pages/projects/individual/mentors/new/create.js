@@ -47,19 +47,8 @@ function CreateIndividualPage() {
   const [pickedAssignmentId, setPickedAssignmentId] = useState('');
   const [assignment, setAssignment] = useState({});
   const [loading, setLoading] = useState(false);
-  // const [nBuddies, setNBuddies] = useState('');
-  // const [picture, setPicture] = useState({});
   const [deadline, setDeadline] = useState('');
-  //   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
-  //   const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
-  const [mentorRequired, setMentorRequired] = useState(null);
   const [picture, setPicture] = useState({});
-
-  // input touched
-  //   const [organiserIsBuddyTouched, setOrganiserIsBuddyTouched] = useState(false);
-  const [mentorRequiredTouched, setMentorRequiredTouched] = useState(false);
-  //   const [organiserIsMentorTouched, setOrganiserIsMentorTouched] =
-  //     useState(false);
 
   //   new group
   const [success, setSuccess] = useState(false);
@@ -116,131 +105,55 @@ function CreateIndividualPage() {
     }
   }, [assignment.completionTime]);
 
-  // toggle functions
-  const yesOrNoOptions = [
-    { value: 1, label: 'Yes' },
-    { value: 2, label: 'No' },
-    // { value: 3, label: 'Nice to have but not mandatory' },
-  ];
-
-  //   const toggleOrganiserIsBuddy = (e) => {
-  //     setOrganiserIsBuddyTouched(true);
-  //     // console.log(e.target.value);
-  //     if (e.target.value === '1') {
-  //       setOrganiserIsBuddy(true);
-  //     }
-  //     if (e.target.value === '2') {
-  //       setOrganiserIsBuddy(false);
-  //     }
-  //   };
-
-  const toggleMentorRequired = (e) => {
-    // console.log(e.target.value);
-    if (e.target.value === '1') {
-      setMentorRequired(true);
-    }
-    if (e.target.value === '2') {
-      setMentorRequired(false);
-      // setOrganiserIsMentor(false);
-    }
-  };
-
-  //   const toggleOrganiserIsMentor = (e) => {
-  //     setOrganiserIsMentorTouched(true);
-  //     // console.log(e.target.value);
-  //     if (e.target.value === '1') {
-  //       setOrganiserIsMentor(true);
-  //     }
-  //     if (e.target.value === '2') {
-  //       setOrganiserIsMentor(false);
-  //     }
-  //   };
-
-  // CHECK INPUT VALIDITY
-  //   const organiserIsBuddyIsValid =
-  //     (organiserIsBuddy && !organiserIsMentor) ||
-  //     (!organiserIsBuddy && organiserIsBuddy !== null && organiserIsMentor);
-  //   const organiserIsBuddyIsInvalid =
-  //     !organiserIsBuddyIsValid && organiserIsBuddyTouched;
-
-  const mentorRequiredIsValid = mentorRequired !== null;
-  const mentorRequiredIsInvalid =
-    !mentorRequiredIsValid && mentorRequiredTouched;
-
-  //   const organiserIsMentorIsValid =
-  //     (organiserIsBuddy && organiserIsMentor !== null && !organiserIsMentor) ||
-  //     (!organiserIsBuddy && organiserIsMentor);
-  //   const organiserIsMentorIsInvalid =
-  //     !organiserIsMentorIsValid && organiserIsMentorTouched;
-
-  let formIsValid;
-  if (
-    // organiserIsBuddyIsValid &&
-    mentorRequiredIsValid
-    // organiserIsMentorIsValid
-  )
-    formIsValid = true;
-  // console.log(`organiserIsBuddy: ${organiserIsBuddy}`);
-  // console.log(`organiserIsMentor: ${organiserIsMentor}`);
-  // console.log(formIsValid);
-
   const createGroup = async () => {
     if (authState && authState.token && authState.token.length > 0) {
-      //   setOrganiserIsBuddyTouched(true);
-      //   setOrganiserIsMentorTouched(true);
-      setMentorRequiredTouched(true);
-
       // add field to each requirement
       const requirements = assignment.requirements.map((element) => {
         return { ...element, met: false };
       });
 
-      if (formIsValid) {
-        const newGroup = {
-          organiser: '',
-          name: assignment.name,
-          headline: assignment.headline,
-          description: assignment.headline,
-          deadline,
-          nBuddies: 1,
-          buddies: [],
-          //   buddiesFilled: { type: Boolean, default: false },
-          mentorRequired,
-          //   nMentorsRequired: { type: Number, default: 1 },
-          mentors: [],
-          //   mentorsFilled: { type: Boolean, default: false },
-          topics: assignment.topics,
-          learning: assignment.learning,
-          picture: assignment.picture,
-          hasProposedAssignment: true,
-          proposedAssignment: pickedAssignmentId,
-          requirements,
-          approvals: [],
-        };
-        // console.log(newGroup);
-        try {
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API}/groups/new`,
-            { organiserIsBuddy: true, organiserIsMentor: false, newGroup },
-            {
-              headers: {
-                Authorization: `Bearer ${authState.token}`,
-              },
-            }
-          );
-          // console.log(res.data.success);
-          if (res.data.success) {
-            setSuccess(true);
-            setNewGroupId(res.data.newGroupId);
-          } else {
-            setSuccess(false);
-            console.log('An error occurred');
+      const newGroup = {
+        organiser: '',
+        name: assignment.name,
+        headline: assignment.headline,
+        description: assignment.headline,
+        deadline,
+        nBuddies: 1,
+        buddies: [],
+        //   buddiesFilled: { type: Boolean, default: false },
+        mentorRequired: true,
+        //   nMentorsRequired: { type: Number, default: 1 },
+        mentors: [],
+        //   mentorsFilled: { type: Boolean, default: false },
+        topics: assignment.topics,
+        learning: assignment.learning,
+        picture: assignment.picture,
+        hasProposedAssignment: true,
+        proposedAssignment: pickedAssignmentId,
+        requirements,
+        approvals: [],
+      };
+      // console.log(newGroup);
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/groups/new`,
+          { organiserIsBuddy: false, organiserIsMentor: true, newGroup },
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
           }
-        } catch (err) {
-          console.log(err);
+        );
+        // console.log(res.data.success);
+        if (res.data.success) {
+          setSuccess(true);
+          setNewGroupId(res.data.newGroupId);
+        } else {
+          setSuccess(false);
+          console.log('An error occurred');
         }
-      } else {
-        console.log('some input is invalid');
+      } catch (err) {
+        console.log(err);
       }
     } else {
       router.push('/login');
@@ -270,11 +183,11 @@ function CreateIndividualPage() {
               go back
             </Link>
           </div>
-          <br></br>
+          {/* <br></br>
           <p>
             NOTE: if you want to add the project to your history once it is
             completed you will need a mentor review.
-          </p>
+          </p> */}
           <br></br>
           <TextInput
             required={false}
@@ -326,39 +239,6 @@ function CreateIndividualPage() {
               <br></br>
             </>
           )}
-          {/* <br></br>
-          <RadioBox
-            required={true}
-            label="Do you want to participate as a student?"
-            name="organiser-is-buddy"
-            options={yesOrNoOptions}
-            onChange={toggleOrganiserIsBuddy}
-            isInvalid={organiserIsBuddyIsInvalid}
-            errorMsg={`You have to participate either as a student or as a mentor`}
-          /> */}
-          <br></br>
-          <RadioBox
-            required={true}
-            label="Mentor required?"
-            options={yesOrNoOptions}
-            name="mentor-required"
-            onChange={toggleMentorRequired}
-            isInvalid={mentorRequiredIsInvalid}
-            errorMsg={`Select an option`}
-          />
-          <br></br>
-          {/* {mentorRequired && currentUser && currentUser.isMentor && (
-            <RadioBox
-              required={true}
-              label="Do you want to mentor the student? (you can participate either as a student or as a mentor)"
-              options={yesOrNoOptions}
-              name="organiser-is-mentor"
-              onChange={toggleOrganiserIsMentor}
-              isInvalid={organiserIsMentorIsInvalid}
-              errorMsg={`You have to participate either as a student or as a mentor`}
-            />
-          )}
-          <br></br> */}
           {assignment.topics && assignment.topics.length > 0 && (
             <div>
               <label className="myform-label bold">Topics</label>

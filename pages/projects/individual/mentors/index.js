@@ -121,7 +121,9 @@ function IndividualProjectsPage() {
             <BtnCTA
               label="Create New Project"
               classname="btn-dark"
-              onCLickAction={() => router.push('/projects/individual/new')}
+              onCLickAction={() =>
+                router.push('/projects/individual/mentors/new')
+              }
             />
           </div>
           <br></br>

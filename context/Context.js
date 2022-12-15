@@ -96,8 +96,8 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     if (authState.token.length > 0) {
       if (isJwtExpired(authState.token)) {
-        console.log('isExpired is:', isJwtExpired(authState.token));
         router.push('/login');
+        console.log('isExpired is:', isJwtExpired(authState.token));
         localStorage.removeItem('codeyful-user-auth');
         setAuthState({
           userId: '',
@@ -108,7 +108,7 @@ export function ContextProvider({ children }) {
         });
       }
     }
-  }, [authState.token.length]);
+  }, [authState.token && authState.token.length]);
 
   useEffect(() => {
     // let cancel = false;
