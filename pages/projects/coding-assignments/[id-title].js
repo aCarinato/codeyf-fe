@@ -10,8 +10,12 @@ import BtnCTA from '../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
 import { Icon } from '@iconify/react';
+// context
+import { useMainContext } from '../../../context/Context';
 
 function AssignementScreen() {
+  const { mobileView } = useMainContext();
+
   const router = useRouter();
   const { query } = router;
 
@@ -110,7 +114,25 @@ function AssignementScreen() {
       <Fragment>
         <div className="flex flex-justify-space-between">
           <div>
-            <h2>{assignement.name}</h2>
+            <div className="flex">
+              {assignement && (
+                <div className="id-img-container">
+                  <img
+                    className="card-img"
+                    src={
+                      assignement.picture &&
+                      assignement.picture.url &&
+                      assignement.picture.url !== ''
+                        ? assignement.picture.url
+                        : '/img/default-task.png'
+                    }
+                  />
+                </div>
+              )}
+              <h2 className={mobileView ? 'padding-2rem-tb' : 'padding-2rem'}>
+                {assignement.name}
+              </h2>
+            </div>
 
             {/* <p>
               created by:{' '}
@@ -145,32 +167,6 @@ function AssignementScreen() {
             <h4 className="headers">Description:</h4>
             <p>{assignement.headline}</p>
           </div>
-          <div>
-            <h4 className="headers">Difficulty:</h4>
-            <p>
-              {assignement.difficulty === '0'
-                ? 'Beginner'
-                : assignement.difficulty === '1'
-                ? 'Intermediate'
-                : 'Advanced'}
-            </p>
-          </div>
-          {assignement.completionTime && (
-            <div>
-              <h4 className="headers">Approx. completion time</h4>
-              <p>
-                {assignement.completionTime < 7
-                  ? `${assignement.completionTime} days (couple of hours a day)`
-                  : `${Math.ceil(
-                      assignement.completionTime / 7
-                    )} weeks (couple of hours a day)`}
-              </p>
-            </div>
-          )}
-          <div>
-            <h4 className="headers">Max. number of participants:</h4>
-            <p>{assignement.maxTeamMemebers}</p>
-          </div>
         </div>
         <br></br>
         <div>
@@ -192,7 +188,7 @@ function AssignementScreen() {
         <div className="flex">
           <div className="width-50">
             <h4 className="headers">Main topics:</h4>
-            <div className="flex flex-justify-flex-start">
+            <div className="flex flex-justify-flex-start padding-2rem-r">
               {assignement.topics.map((item) => (
                 <div key={item._id} className={`tech-span`}>
                   <div className="tag-div">o</div>
@@ -203,7 +199,7 @@ function AssignementScreen() {
           </div>
           <div className="width-50">
             <h4 className="headers">Tech stack:</h4>
-            <div className="flex flex-justify-flex-start">
+            <div className="flex flex-justify-flex-start padding-2rem-r">
               {assignement.learning.map((item) => (
                 <div key={item._id} className={`tech-span`}>
                   <div className="tag-div">o</div>
@@ -211,6 +207,43 @@ function AssignementScreen() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+        <br></br>
+        <div className="flex flex-justify-space-between">
+          <div>
+            <h4 className="headers">Difficulty:</h4>
+            <p>
+              {assignement.difficulty === '0' ? (
+                <>
+                  beginner <Icon icon="carbon:skill-level-basic" />
+                </>
+              ) : assignement.difficulty === '1' ? (
+                <>
+                  intermediate <Icon icon="carbon:skill-level-intermediate" />
+                </>
+              ) : (
+                <>
+                  advanced <Icon icon="carbon:skill-level-advanced" />
+                </>
+              )}
+            </p>
+          </div>
+          {assignement.completionTime && (
+            <div>
+              <h4 className="headers">Approx. completion time</h4>
+              <p>
+                {assignement.completionTime < 7
+                  ? `${assignement.completionTime} days (a couple of hours each day)`
+                  : `${Math.ceil(
+                      assignement.completionTime / 7
+                    )} weeks (a couple of hours each day)`}
+              </p>
+            </div>
+          )}
+          <div>
+            <h4 className="headers">Max. number of participants:</h4>
+            <p>{assignement.maxTeamMemebers}</p>
           </div>
         </div>
 
@@ -233,8 +266,13 @@ function AssignementScreen() {
             <h4 className="headers">Resources</h4>
             <ul>
               {assignement.resources.map((resource) => (
-                <li key={resource.idx}>
-                  <Link href={`${resource.link}`}>{resource.name}</Link>{' '}
+                <li className="list-completion" key={resource.idx}>
+                  <Link href={`${resource.link}`}>
+                    <p>
+                      <Icon icon="ic:baseline-menu-book" />{' '}
+                      <span className="link-text">{resource.name}</span>
+                    </p>
+                  </Link>{' '}
                 </li>
               ))}
             </ul>
@@ -247,12 +285,18 @@ function AssignementScreen() {
             <h4 className="headers">
               Possible team configuration (not mandatory)
             </h4>
-            <table>
+            <table className="id-table">
               <thead>
                 <tr>
-                  <th>Role id</th>
-                  <th>N. people</th>
-                  <th>Tasks</th>
+                  <th>
+                    role id <Icon icon="tabler:id" />
+                  </th>
+                  <th>
+                    N. people <Icon icon="fluent:people-24-filled" />
+                  </th>
+                  <th>
+                    main tasks <Icon icon="fluent-mdl2:process-meta-task" />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -274,12 +318,18 @@ function AssignementScreen() {
             <h4 className="headers">
               Possible steps for completion (not mandatory)
             </h4>
-            <table>
+            <table className="id-table">
               <thead>
                 <tr>
-                  <th>Step Number</th>
-                  <th>Role id</th>
-                  <th>Tasks</th>
+                  <th>
+                    Step Number <Icon icon="icons8:cat-footprint" />
+                  </th>
+                  <th>
+                    Role id <Icon icon="tabler:id" />
+                  </th>
+                  <th>
+                    Tasks <Icon icon="fluent-mdl2:process-meta-task" />
+                  </th>
                 </tr>
               </thead>
               <tbody>

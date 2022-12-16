@@ -47,6 +47,16 @@
   padding: 3rem;
 }
 
+/* poadding top bottom (tb) */
+.padding-2rem-tb {
+  padding: 2rem 0;
+}
+
+/* poadding right (r) */
+.padding-2rem-r {
+  padding-right: 2rem;
+}
+
 /* MESSAGES */
 .availability-msg {
   color: var(--main-success-color);

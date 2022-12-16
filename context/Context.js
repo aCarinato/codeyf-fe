@@ -106,6 +106,7 @@ export function ContextProvider({ children }) {
           token: '',
           isAdmin: '',
         });
+        if (typeof window !== 'undefined') window.location.reload(true);
       }
     }
   }, [authState.token && authState.token.length]);

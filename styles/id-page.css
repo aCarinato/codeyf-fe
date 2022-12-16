@@ -10,3 +10,25 @@
   list-style: none;
   margin-bottom: 1.2rem;
 }
+
+.id-img-container {
+  /* width: 25%; */
+  /* padding: 0.4rem 0.8rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 5.6rem;
+  margin: 0.4rem 0rem 0.4rem 0rem;
+}
+
+.id-table th {
+  padding: 2.8rem;
+}
+
+.id-table td {
+  padding: 2.8rem;
+}
+
+/* .id-table-cell {
+  padding: 2rem;
+} */
