@@ -17,6 +17,7 @@ import {
   calcMentorAvailabilityMsg,
   calcMentorAvailabilityCTA,
 } from '../../../../lib/helper/groups/availability';
+import addChat from '../../../../lib/helper/chats/addChat';
 // libs
 import axios from 'axios';
 import { Icon } from '@iconify/react';
@@ -68,59 +69,15 @@ function GroupPage() {
     }
   }, [groupId]);
 
-  const addChat = async () => {
-    if (authState && authState.email.length > 0) {
-      // console.log(user);
-      const alreadyInChat =
-        chats.length > 0 &&
-        chats.filter((chat) => chat.messagesWith === group.organiser._id)
-          .length > 0;
-
-      if (alreadyInChat) {
-        return router.push(`/my-profile/chats?message=${group.organiser._id}`);
-      }
-      //
-      else {
-        const newChat = {
-          messagesWith: group.organiser._id,
-          username: group.organiser.username,
-          profilePicUrl:
-            group.organiser.profilePic &&
-            group.organiser.profilePic.url &&
-            group.organiser.profilePic.url !== ''
-              ? group.organiser.profilePic.url
-              : '/img/default-pic.png',
-          lastMessage: '',
-          date: Date.now(),
-        };
-
-        setChats((prev) => [newChat, ...prev]);
-
-        return router.push(
-          `/my-profile/chats?message=${group.organiser._id}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
-
-        //   return router.push(`/messages?message=${user._id}`);
-      }
-    } else {
-      router.push('/login');
-    }
-  };
-
   useEffect(() => {
     if (group && group !== {}) {
       setBuddyAvailabilityMsg(calcBuddyAvailabilityMsg(group));
       setBuddyAvailability(calcBuddyAvailabilityCTA(group, currentUser));
       setMentorAvailabilityMsg(calcMentorAvailabilityMsg(group));
-      // const temp = calcMentorAvailabilityCTA(group, currentUser);
       setMentorAvailability(calcMentorAvailabilityCTA(group, currentUser));
     }
   }, [group, currentUser]);
-  // console.log(`mentorAvailbility: ${mentorAvailbility}`);
+
   return (
     <>
       {loading ? (
@@ -195,6 +152,9 @@ function GroupPage() {
                     buddyAvailbilityMsg={buddyAvailbilityMsg}
                     mentorAvailbility={mentorAvailbility}
                     mentorAvailbilityMsg={mentorAvailbilityMsg}
+                    addChat={() =>
+                      addChat(authState, chats, setChats, group, router)
+                    }
                   />
                 )}
             </div>
@@ -311,22 +271,7 @@ function GroupPage() {
 
           {group.organiser && group.organiser.username && (
             <>
-              {/* <h4>Organiser:</h4>
-              <br></br> */}
               <div className="grid grid--2cols">
-                {/* <div>
-                  <BuddyCard
-                    key={group.organiser._id}
-                    userId={group.organiser._id}
-                    username={group.organiser.username}
-                    handle={group.organiser.handle}
-                    description={group.organiser.shortDescription}
-                    country={group.organiser.country}
-                    learning={group.organiser.learning}
-                    profilePic={group.organiser.profilePic}
-                  />
-                </div> */}
-
                 {!group.isClosed &&
                   group.organiser._id === authState.userId && (
                     <div>
@@ -414,55 +359,29 @@ function GroupPage() {
             ''
           )}
 
-          {
-            !group.isClosed &&
-              (group.mentorRequired ? (
-                group.mentorsFilled ? (
-                  <div>
-                    <MentorCard
-                      key={mentor._id}
-                      userId={mentor._id}
-                      username={mentor.username}
-                      handle={mentor.handle}
-                      description={mentor.shortDescription}
-                      country={mentor.country}
-                      teaching={mentor.teaching}
-                      profilePic={mentor.profilePic}
-                    />
-                  </div>
-                ) : (
-                  <div className="card-group-available">
-                    Mentor position available!
-                  </div>
-                )
+          {!group.isClosed &&
+            (group.mentorRequired ? (
+              group.mentorsFilled ? (
+                <div>
+                  <MentorCard
+                    key={mentor._id}
+                    userId={mentor._id}
+                    username={mentor.username}
+                    handle={mentor.handle}
+                    description={mentor.shortDescription}
+                    country={mentor.country}
+                    teaching={mentor.teaching}
+                    profilePic={mentor.profilePic}
+                  />
+                </div>
               ) : (
-                <div>No mentor required for this project</div>
-              ))
-            // (group.mentorRequired ? (
-            //   mentorAvailbilityStatus === 'filled' ? (
-            //     <div>
-            //       <MentorCard
-            //         key={mentor._id}
-            //         userId={mentor._id}
-            //         username={mentor.username}
-            //         handle={mentor.handle}
-            //         description={mentor.shortDescription}
-            //         country={mentor.country}
-            //         teaching={mentor.teaching}
-            //         profilePic={mentor.profilePic}
-            //       />
-            //     </div>
-            //   ) : mentorAvailbilityStatus === 'available' ? (
-            //     <div className="card-group-available">
-            //       Mentor position available!
-            //     </div>
-            //   ) : (
-            //     <div>No mentor required for this project</div>
-            //   )
-            // ) : (
-            //   ''
-            // ))
-          }
+                <div className="card-group-available">
+                  Mentor position available!
+                </div>
+              )
+            ) : (
+              <div>No mentor required for this project</div>
+            ))}
         </Fragment>
       )}
     </>
@@ -470,5 +389,3 @@ function GroupPage() {
 }
 
 export default GroupPage;
-
-// http://localhost:3000/projects/coding-groups/636b5bf80f7fa60c9716fa6e

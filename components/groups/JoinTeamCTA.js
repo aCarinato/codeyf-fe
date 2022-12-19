@@ -4,8 +4,6 @@ import Link from 'next/link';
 import BtnCTA from '../UI/BtnCTA';
 // styles
 import classes from './JoinTeamCTA.module.css';
-// context
-// import { useMainContext } from '../../context/Context';
 
 // if it is organsier there should be the organiser tab
 // if not there should be this.
@@ -17,6 +15,7 @@ function JoinTeamCTA(props) {
     buddyAvailbilityMsg,
     mentorAvailbility,
     mentorAvailbilityMsg,
+    addChat,
   } = props;
 
   let textCTA = '';
@@ -57,7 +56,7 @@ function JoinTeamCTA(props) {
             <BtnCTA
               classname="btn-dark"
               label="Message"
-              onCLickAction={() => {}}
+              onCLickAction={addChat}
             />
           </div>
         </>
@@ -100,9 +99,3 @@ function JoinTeamCTA(props) {
 }
 
 export default JoinTeamCTA;
-
-// Hi Melani, I'm wondering if:
-// You're still deciding / planning
-// My last message made you change your mind from yes to no
-// Your mind was always no
-// You lost your phone
