@@ -140,13 +140,6 @@ function HomePage() {
     }
   };
 
-  useEffect(() => {
-    fetchBuddies();
-    fetchMentors();
-    fetchStudentsSeekingMentors();
-    fetchMentorsSeekingStudents();
-  }, [authState && authState.email]);
-
   const fetchGroups = async () => {
     try {
       const res = await axios.get(
@@ -158,10 +151,6 @@ function HomePage() {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    fetchGroups();
-  }, []);
 
   const fetchAssignments = async () => {
     try {
@@ -176,8 +165,21 @@ function HomePage() {
   };
 
   useEffect(() => {
+    fetchBuddies();
+    fetchMentors();
+    fetchGroups();
     fetchAssignments();
-  }, []);
+    fetchStudentsSeekingMentors();
+    fetchMentorsSeekingStudents();
+  }, [authState && authState.email]);
+
+  // useEffect(() => {
+  //   fetchGroups();
+  // }, []);
+
+  // useEffect(() => {
+  //   fetchAssignments();
+  // }, []);
 
   return (
     <Fragment>
