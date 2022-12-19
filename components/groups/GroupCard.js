@@ -79,7 +79,9 @@ function GroupCard(props) {
         </div>
         <div className="card-header-username-country">
           <p className="card-header-username">{group.name}</p>
-          <p className="card-header-description">{group.description}</p>
+          {group.headline && (
+            <p className="card-header-description">{group.headline}</p>
+          )}
         </div>
       </div>
       {/* <div className="card-description">{group.description}</div> */}

@@ -184,7 +184,7 @@ function IndividualProjectsPage() {
             />
           </div>
           <br></br>
-          <div className="flex">
+          <div className="flex gap-12 padding-12rem">
             {mobileView && (
               <BtnCTA
                 label="filter groups"

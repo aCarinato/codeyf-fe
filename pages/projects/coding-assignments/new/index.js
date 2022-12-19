@@ -6,6 +6,7 @@ import TextInput from '../../../../components/UI/form/TextInput';
 import TextArea from '../../../../components/UI/form/TextArea';
 import RadioBox from '../../../../components/UI/form/RadioBox';
 import CompletionTime from '../../../../components/assignements/NewAssignment/CompletionTime';
+import ImgUploader from '../../../../components/UI/form/ImgUploader';
 import Select from '../../../../components/UI/form/Select';
 import Selections from '../../../../components/UI/form/Selections';
 import OneColAddField from '../../../../components/UI/form/OneColAddField';
@@ -37,6 +38,7 @@ function CreateNewAssignmentPage() {
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState('');
+  const [picture, setPicture] = useState({});
   const [completionTime, setCompletionTime] = useState('');
   const [repo, setRepo] = useState('');
   const [topics, setTopics] = useState([]);
@@ -61,7 +63,7 @@ function CreateNewAssignmentPage() {
   ]);
   //   new assignment
   const [success, setSuccess] = useState(false);
-
+  const [error, setError] = useState(false);
   // console.log(completionTime);
 
   // input touched
@@ -106,6 +108,26 @@ function CreateNewAssignmentPage() {
 
   // const requirementsIsInvalid = !requirementsIsValid;
 
+  const uploadPicture = async (e) => {
+    const file = e.target.files[0];
+    let formData = new FormData();
+    formData.append('image', file);
+    // console.log([...formData]);
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/user/upload-image`,
+        formData
+      );
+      // console.log('uploaded image => ', data);
+      setPicture({
+        url: data.url,
+        public_id: data.public_id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   let formIsValid;
   if (
     nameIsValid &&
@@ -123,7 +145,7 @@ function CreateNewAssignmentPage() {
   // console.log(`formIsValid: ${formIsValid}`);
 
   const createAssignment = async () => {
-    if (authState && authState.token && authState.token.length > 0) {
+    if (currentUser !== null && currentUser.isMentor) {
       setNameTouched(true);
       setHeadlineTouched(true);
       setDescriptionTouched(true);
@@ -149,8 +171,6 @@ function CreateNewAssignmentPage() {
         updatedResources = resources;
       }
 
-      // VALIDATIONS
-      // 1) Total number of people from roles must be <= max n participants
       if (formIsValid) {
         const newAssignment = {
           name,
@@ -167,6 +187,7 @@ function CreateNewAssignmentPage() {
           idealTeam,
           steps,
           resources: updatedResources,
+          picture,
           // isPublic: true,
         };
 
@@ -189,9 +210,16 @@ function CreateNewAssignmentPage() {
         }
       }
     } else {
-      router.push('/login');
+      setError(true);
     }
   };
+
+  // if (authState && authState.token && authState.token.length > 0) {
+  //   // VALIDATIONS
+  //   // 1) Total number of people from roles must be <= max n participants
+  // } else {
+  //   router.push('/login');
+  // }
 
   const successMsg = (
     <div>
@@ -203,11 +231,13 @@ function CreateNewAssignmentPage() {
     </div>
   );
 
+  // console.log(`currentUser.isMentor: ${currentUser && currentUser.isMentor}`);
+
   return (
     <>
       {success ? (
         successMsg
-      ) : currentUser && currentUser.isMentor ? (
+      ) : (
         <div className="creation-form-layout">
           <h2>Create a new Assignment</h2>
           <br></br>
@@ -249,6 +279,8 @@ function CreateNewAssignmentPage() {
             isInvalid={descriptionIsInvalid}
             errorMsg={`Enter a non empty value`}
           />
+          <br></br>
+          <ImgUploader img={picture} uploadImg={uploadPicture} />
           <br></br>
           <RadioBox
             required={true}
@@ -401,7 +433,8 @@ function CreateNewAssignmentPage() {
           <br></br>
           <br></br>
         </div>
-      ) : (
+      )}
+      {error && (
         <div>
           <p>
             You need to be a mentor in order to make an assignment that other
@@ -412,6 +445,11 @@ function CreateNewAssignmentPage() {
             You can still create a project to work on individually or with a
             team. To do so{' '}
             <Link href="/projects/coding-groups/new/self">click here</Link>.
+          </p>
+          <br></br>
+          <p>
+            If you do not have an account{' '}
+            <Link href="login">create account</Link>
           </p>
         </div>
       )}

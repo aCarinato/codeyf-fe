@@ -9,8 +9,13 @@ import Rating from '../../../components/UI/Rating';
 import BtnCTA from '../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
+import { Icon } from '@iconify/react';
+// context
+import { useMainContext } from '../../../context/Context';
 
 function AssignementScreen() {
+  const { mobileView } = useMainContext();
+
   const router = useRouter();
   const { query } = router;
 
@@ -109,7 +114,26 @@ function AssignementScreen() {
       <Fragment>
         <div className="flex flex-justify-space-between">
           <div>
-            <h2>{assignement.name}</h2>
+            <div className="flex">
+              {assignement && (
+                <div className="id-img-container">
+                  <img
+                    className="card-img"
+                    src={
+                      assignement.picture &&
+                      assignement.picture.url &&
+                      assignement.picture.url !== ''
+                        ? assignement.picture.url
+                        : '/img/default-task.png'
+                    }
+                  />
+                </div>
+              )}
+              <h2 className={mobileView ? 'padding-2rem-tb' : 'padding-2rem'}>
+                {assignement.name}
+              </h2>
+            </div>
+
             {/* <p>
               created by:{' '}
               <Link
@@ -121,83 +145,124 @@ function AssignementScreen() {
           </div>
 
           <div>
-            <BtnCTA
-              label="pick assignment"
-              classname="btn-dark"
-              onCLickAction={() => {}}
-            />
-            <p>
-              <Link href={`/projects/coding-assignments`}>
-                Back to assignments
-              </Link>
-            </p>
+            <div className="center-text">
+              <BtnCTA
+                label="pick assignment"
+                classname="btn-dark"
+                onCLickAction={() => {}}
+              />
+            </div>
+            <br></br>
+
+            <Link href={`/projects/coding-assignments`}>
+              <p className="link-text font-12">
+                <Icon icon="material-symbols:arrow-back" /> back to assignments
+              </p>
+            </Link>
           </div>
         </div>
         <br></br>
         <div className="flex flex-justify-space-between">
           <div>
-            <h4>Description:</h4>
+            <h4 className="headers">Description:</h4>
             <p>{assignement.headline}</p>
-          </div>
-          <div>
-            <h4>Difficulty:</h4>
-            <p>
-              {assignement.difficulty === '0'
-                ? 'Beginner'
-                : assignement.difficulty === '1'
-                ? 'Intermediate'
-                : 'Advanced'}
-            </p>
-          </div>
-          {assignement.completionTime && (
-            <div>
-              <h4>Approx. completion time</h4>
-              <p>
-                {assignement.completionTime < 7
-                  ? `${assignement.completionTime} days (couple of hours a day)`
-                  : `${Math.ceil(
-                      assignement.completionTime / 7
-                    )} weeks (couple of hours a day)`}
-              </p>
-            </div>
-          )}
-          <div>
-            <h4>Max. number of participants:</h4>
-            <p>{assignement.maxTeamMemebers}</p>
           </div>
         </div>
         <br></br>
         <div>
-          <h4>Details</h4>
-          <p className="text-newline">{assignement.description}</p>
+          <h4 className="headers">Details</h4>
+          <p className="text-newline description">{assignement.description}</p>
         </div>
         <br></br>
-        <h4>Functionalities required for successful completion</h4>
+        <h4 className="headers">
+          Functionalities required for successful completion
+        </h4>
         <ul>
           {assignement.requirements.map((item) => (
-            <li key={item._id}>{item.label}</li>
+            <li key={item._id} className="list-completion">
+              <Icon icon="material-symbols:check-circle" /> {item.label}
+            </li>
           ))}
         </ul>
         <br></br>
-        <h4>Tech stack:</h4>
-        <div className="flex flex-justify-flex-start">
-          {assignement.learning.map((item) => (
-            <div key={item._id} className={`tech-span`}>
-              <div className="tag-div">o</div>
-              <span>{item.label}</span>
+        <div className="flex">
+          <div className={!mobileView && 'width-50'}>
+            <h4 className="headers">
+              Main topics <Icon icon="icon-park-outline:topic" />
+            </h4>
+            <div className="flex flex-justify-flex-start padding-2rem-r">
+              {assignement.topics.map((item) => (
+                <div key={item._id} className={`tech-span`}>
+                  <div className="tag-div">o</div>
+                  <span>{item.label}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className={!mobileView && 'width-50'}>
+            <h4 className="headers">
+              Tech stack <Icon icon="bi:stack" />
+            </h4>
+            <div className="flex flex-justify-flex-start padding-2rem-r">
+              {assignement.learning.map((item) => (
+                <div key={item._id} className={`tech-span`}>
+                  <div className="tag-div">o</div>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         <br></br>
-        <h4>Main topics:</h4>
-        <div className="flex flex-justify-flex-start">
-          {assignement.topics.map((item) => (
-            <div key={item._id} className={`tech-span`}>
-              <div className="tag-div">o</div>
-              <span>{item.label}</span>
+        <div className="flex flex-justify-space-between">
+          <div>
+            <h4 className="headers">
+              Difficulty{' '}
+              {assignement.difficulty === '0' ? (
+                <>
+                  <Icon icon="carbon:skill-level-basic" />
+                </>
+              ) : assignement.difficulty === '1' ? (
+                <>
+                  <Icon icon="carbon:skill-level-intermediate" />
+                </>
+              ) : (
+                <>
+                  <Icon icon="carbon:skill-level-advanced" />
+                </>
+              )}
+            </h4>
+            <p>
+              {assignement.difficulty === '0' ? (
+                <>beginner</>
+              ) : assignement.difficulty === '1' ? (
+                <>intermediate</>
+              ) : (
+                <>advanced</>
+              )}
+            </p>
+          </div>
+          {assignement.completionTime && (
+            <div>
+              <h4 className="headers">
+                Approx. completion time{' '}
+                <Icon icon="mdi:clipboard-text-date-outline" />
+              </h4>
+              <p>
+                {assignement.completionTime < 7
+                  ? `${assignement.completionTime} days (a couple of hours each day)`
+                  : `${Math.ceil(
+                      assignement.completionTime / 7
+                    )} weeks (a couple of hours each day)`}
+              </p>
             </div>
-          ))}
+          )}
+          <div>
+            <h4 className="headers">Max. number of participants:</h4>
+            <p>{assignement.maxTeamMemebers}</p>
+          </div>
         </div>
+
         {assignement.repo && assignement.repo.length > 0 && (
           <>
             <br></br>
@@ -214,11 +279,16 @@ function AssignementScreen() {
         <br></br>
         {assignement.resources && assignement.resources.length > 0 && (
           <>
-            <h4>Resources</h4>
+            <h4 className="headers">Resources</h4>
             <ul>
               {assignement.resources.map((resource) => (
-                <li key={resource.idx}>
-                  <Link href={`${resource.link}`}>{resource.name}</Link>{' '}
+                <li className="list-completion" key={resource.idx}>
+                  <Link href={`${resource.link}`}>
+                    <p>
+                      <Icon icon="ic:baseline-menu-book" />{' '}
+                      <span className="link-text">{resource.name}</span>
+                    </p>
+                  </Link>{' '}
                 </li>
               ))}
             </ul>
@@ -228,13 +298,21 @@ function AssignementScreen() {
         <br></br>
         {teamConfigurationIsValid && (
           <>
-            <h4>Possible team configuration (not mandatory)</h4>
-            <table>
+            <h4 className="headers">
+              Possible team configuration (not mandatory)
+            </h4>
+            <table className="id-table">
               <thead>
                 <tr>
-                  <th>Role id</th>
-                  <th>N. people</th>
-                  <th>Tasks</th>
+                  <th>
+                    role id <Icon icon="tabler:id" />
+                  </th>
+                  <th>
+                    N. people <Icon icon="fluent:people-24-filled" />
+                  </th>
+                  <th>
+                    main tasks <Icon icon="fluent-mdl2:process-meta-task" />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -253,13 +331,21 @@ function AssignementScreen() {
 
         {stepsIsValid && (
           <>
-            <h4>Possible steps for completion (not mandatory)</h4>
-            <table>
+            <h4 className="headers">
+              Possible steps for completion (not mandatory)
+            </h4>
+            <table className="id-table">
               <thead>
                 <tr>
-                  <th>Step Number</th>
-                  <th>Role id</th>
-                  <th>Tasks</th>
+                  <th>
+                    Step Number <Icon icon="icons8:cat-footprint" />
+                  </th>
+                  <th>
+                    Role id <Icon icon="tabler:id" />
+                  </th>
+                  <th>
+                    Tasks <Icon icon="fluent-mdl2:process-meta-task" />
+                  </th>
                 </tr>
               </thead>
               <tbody>

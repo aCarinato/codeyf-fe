@@ -1,16 +1,16 @@
 // react / next
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 // own components
-import UserRoute from '../../../../components/routes/UserRoute';
-import SpinningLoader from '../../../../components/UI/SpinningLoader';
-import CardSelector from '../../../../components/UI/CardSelector';
-import AssignementCard from '../../../../components/assignements/AssignementCard';
-import BtnCTA from '../../../../components/UI/BtnCTA';
+// import UserRoute from '../../../../components/routes/UserRoute';
+import SpinningLoader from '../../../../../components/UI/SpinningLoader';
+import CardSelector from '../../../../../components/UI/CardSelector';
+import AssignementCard from '../../../../../components/assignements/AssignementCard';
 // libs
 import axios from 'axios';
+import BtnCTA from '../../../../../components/UI/BtnCTA';
 
-function SelectAssignmentPage() {
+function SelectIndividualAssignmentPage() {
   const router = useRouter();
 
   const [assignements, setAssignments] = useState(false);
@@ -44,7 +44,7 @@ function SelectAssignmentPage() {
     }
 
     // setPickedAssignmentId(selectedId);
-    router.push('/projects/coding-groups/new/create');
+    router.push('/projects/individual/mentees/new/create');
   };
 
   return (
@@ -68,7 +68,6 @@ function SelectAssignmentPage() {
                       maxParticipants={assignement.maxTeamMemebers}
                       stack={assignement.learning}
                       reviews={assignement.reviews}
-                      picture={assignement.picture}
                     />
                   }
                   btn={
@@ -96,4 +95,4 @@ function SelectAssignmentPage() {
   );
 }
 
-export default SelectAssignmentPage;
+export default SelectIndividualAssignmentPage;

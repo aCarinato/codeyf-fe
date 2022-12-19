@@ -104,6 +104,7 @@ function MySlider(props) {
             difficulty={assignement.difficulty}
             maxParticipants={assignement.maxTeamMemebers}
             stack={assignement.learning}
+            picture={assignement.picture}
             reviews={assignement.reviews}
           />
         ))}

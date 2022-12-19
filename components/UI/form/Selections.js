@@ -4,25 +4,25 @@ function Selections(props) {
   const { selections, setSelections, disabled = false } = props;
   return (
     <div className="flex flex-justify-center flex-vertical-items-center gap-12 width-70">
-      {/* <div className={classes['tech-span-box']}> */}
       {selections.map((selection) => (
         <div className="tech-span" key={selection._id}>
-          {selection.label}{' '}
-          {!disabled && (
+          {disabled ? (
+            <div className="tag-div">o</div>
+          ) : (
             <span
-              className="pointer"
+              className="tag-div pointer"
               onClick={() =>
                 setSelections((prev) =>
                   prev.filter((item) => item._id !== selection._id)
                 )
               }
             >
-              x
+              X
             </span>
           )}
+          <span>{selection.label}</span>
         </div>
       ))}
-      {/* </div> */}
     </div>
   );
 }

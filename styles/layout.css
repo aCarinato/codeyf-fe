@@ -21,6 +21,10 @@
   grid-template-columns: 15% 85%;
 }
 
+.grid---2cols-70-30 {
+  grid-template-columns: 70% 30%;
+}
+
 .grid---2cols-85-15 {
   grid-template-columns: 85% 15%;
 }
@@ -107,6 +111,10 @@
 
 @media (max-width: 768px) {
   .grid--2cols {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .grid---2cols-70-30 {
     grid-template-columns: repeat(1, 1fr);
   }
 }

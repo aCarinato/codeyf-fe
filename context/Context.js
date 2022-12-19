@@ -96,8 +96,8 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     if (authState.token.length > 0) {
       if (isJwtExpired(authState.token)) {
-        console.log('isExpired is:', isJwtExpired(authState.token));
         router.push('/login');
+        console.log('isExpired is:', isJwtExpired(authState.token));
         localStorage.removeItem('codeyful-user-auth');
         setAuthState({
           userId: '',
@@ -106,9 +106,43 @@ export function ContextProvider({ children }) {
           token: '',
           isAdmin: '',
         });
+        if (typeof window !== 'undefined') window.location.reload(true);
       }
     }
-  }, [authState.token.length]);
+  }, [authState.token && authState.token.length]);
+
+  useEffect(() => {
+    // let cancel = false;
+
+    const getCurrentUser = async () => {
+      try {
+        // console.log('Executing getCurrentUser()');
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState.token}`,
+            },
+          }
+        );
+        if (data.ok) {
+          // setOk(true);
+          setCurrentUser(data.user);
+        }
+      } catch (err) {
+        //   router.push('/login');
+        console.log(err);
+      }
+    };
+
+    if (authState && authState.token.length > 0) getCurrentUser();
+
+    // REDIRECT USER IF ALREADY LOGGED IN
+    // if (authState && authState.token.length === 0) router.push('/login');
+    // return () => {
+    //   cancel = true;
+    // };
+  }, [authState && authState.token]);
 
   // SOCKET
   const [chats, setChats] = useState([]);

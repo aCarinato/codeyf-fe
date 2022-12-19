@@ -1,0 +1,33 @@
+.box-0 {
+  /* aspect-ratio: 1 / 1; */
+  /* text-align: center; */
+  /* width: 24.8rem; */
+  /* height: 28.2rem; */
+  /* border: 1px solid black; */
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  /* box-shadow: 0px 0px 25px 0px rgba(13, 0, 134, 0.1); */
+  box-shadow: 0 1px 4px rgba(13, 0, 134, 0.1),
+    0 1px 12px 1px rgba(13, 0, 134, 0.1);
+  border-radius: var(--main-border-radius);
+  padding: 1.2rem;
+}
+
+.card-header {
+  display: flex;
+  height: 5.2rem;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.p-enquiry {
+  font-size: 1.2rem;
+  white-space: pre-wrap;
+}
+
+.p-enquiry-complete {
+  font-size: 1.2rem;
+  white-space: pre-wrap;
+  font-weight: bold;
+}

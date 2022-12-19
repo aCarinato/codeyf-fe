@@ -35,12 +35,26 @@
 }
 
 /* PADDING */
+.padding-12rem {
+  padding: 1.2rem;
+}
+
 .padding-2rem {
   padding: 2rem;
 }
 
 .padding-3rem {
   padding: 3rem;
+}
+
+/* poadding top bottom (tb) */
+.padding-2rem-tb {
+  padding: 2rem 0;
+}
+
+/* poadding right (r) */
+.padding-2rem-r {
+  padding-right: 2rem;
 }
 
 /* MESSAGES */
@@ -69,6 +83,10 @@
   white-space: pre-wrap;
 }
 
+.font-12 {
+  font-size: 1.4rem;
+}
+
 /* BORDER */
 .border-top-primary {
   border-top: 1px solid var(--main-primary-color);
@@ -87,4 +105,8 @@
 /* LISTS */
 .no-bullets {
   list-style-type: none;
+}
+
+.invisible {
+  visibility: hidden;
 }

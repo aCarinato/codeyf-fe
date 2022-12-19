@@ -192,7 +192,7 @@ function HomePage() {
         </div>
         <div>
           <BtnCTA
-            label="start a project"
+            label="Start a Project"
             classname="btn-dark"
             onCLickAction={() => {
               router.push('/new-project');
@@ -232,7 +232,7 @@ function HomePage() {
       <br></br>
       <h3>
         Individual Projects - Mentees seek mentors{' '}
-        <Link href={'/projects/individual'}>
+        <Link href={'/projects/individual/mentees'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
           </a>
@@ -245,7 +245,7 @@ function HomePage() {
 
       <h3>
         Individual Projects - Mentors seek mentees{' '}
-        <Link href={'/projects/individual'}>
+        <Link href={'/projects/individual/mentors'}>
           <a className="light-link">
             <Icon icon="akar-icons:arrow-right" /> View all
           </a>

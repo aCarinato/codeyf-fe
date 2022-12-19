@@ -1,5 +1,6 @@
 // next react
 import { Fragment, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 // own functions
 import { filterBuddies } from '../../../lib/helper/buddies/filterFunctions';
 // own components
@@ -16,6 +17,9 @@ import axios from 'axios';
 
 function CodingBuddiesScreen() {
   const { mobileView, authState, socket } = useMainContext();
+
+  const router = useRouter();
+
   const [buddies, setBuddies] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -132,39 +136,56 @@ function CodingBuddiesScreen() {
                 />
               </div>
             )}
-
-            <div className="flex">
-              {mobileView && (
-                <BtnCTA
-                  label="filter buddies"
-                  classname="btn-light-big"
-                  onCLickAction={() => setShowFilter(true)}
-                  icon={true}
-                  iconType="ci:filter-outline"
-                />
-              )}
-              {filteredBuddies.length > 0 ? (
-                filteredBuddies.map((buddy) => (
-                  <BuddyCard
-                    key={buddy._id}
-                    userId={buddy._id}
-                    username={buddy.username}
-                    handle={buddy.handle}
-                    description={buddy.shortDescription}
-                    country={buddy.country}
-                    learning={buddy.learning}
-                    profilePic={buddy.profilePic}
+            <div>
+              {authState && authState.token.length === 0 && (
+                <div
+                  className={
+                    mobileView
+                      ? 'flex flex-justify-center'
+                      : 'flex flex-justify-space-between'
+                  }
+                >
+                  {!mobileView && <div></div>}
+                  <BtnCTA
+                    label="Create Profile"
+                    classname="btn-dark"
+                    onCLickAction={() => router.push('/login')}
                   />
-                ))
-              ) : (
-                <p>
-                  No buddies found for the filters applied. Please select
-                  different search parameters.
-                </p>
-              )}{' '}
-              <div className="white-card"></div>
-              <div className="white-card"></div>
-              <div className="white-card"></div>
+                </div>
+              )}
+              <div className="flex gap-12 padding-12rem">
+                {mobileView && (
+                  <BtnCTA
+                    label="filter buddies"
+                    classname="btn-light-big"
+                    onCLickAction={() => setShowFilter(true)}
+                    icon={true}
+                    iconType="ci:filter-outline"
+                  />
+                )}
+                {filteredBuddies.length > 0 ? (
+                  filteredBuddies.map((buddy) => (
+                    <BuddyCard
+                      key={buddy._id}
+                      userId={buddy._id}
+                      username={buddy.username}
+                      handle={buddy.handle}
+                      description={buddy.shortDescription}
+                      country={buddy.country}
+                      learning={buddy.learning}
+                      profilePic={buddy.profilePic}
+                    />
+                  ))
+                ) : (
+                  <p>
+                    No buddies found for the filters applied. Please select
+                    different search parameters.
+                  </p>
+                )}{' '}
+                <div className="white-card"></div>
+                <div className="white-card"></div>
+                <div className="white-card"></div>
+              </div>
             </div>
           </div>
           {/* {showMsgForm && (

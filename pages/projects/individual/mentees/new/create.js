@@ -2,39 +2,64 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 // own components
-import UserRoute from '../../../../components/routes/UserRoute';
-import SpinningLoader from '../../../../components/UI/SpinningLoader';
-import TextInput from '../../../../components/UI/form/TextInput';
-import TextArea from '../../../../components/UI/form/TextArea';
-import NumberInput from '../../../../components/UI/form/NumberInput';
-import RadioBox from '../../../../components/UI/form/RadioBox';
-import Selections from '../../../../components/UI/form/Selections';
-import BtnCTA from '../../../../components/UI/BtnCTA';
+// import UserRoute from '../../../../components/routes/UserRoute';
+import SpinningLoader from '../../../../../components/UI/SpinningLoader';
+import TextInput from '../../../../../components/UI/form/TextInput';
+import TextArea from '../../../../../components/UI/form/TextArea';
+// import NumberInput from '../../../../components/UI/form/NumberInput';
+// import ImgUploader from '../../../../components/UI/form/ImgUploader';
+import RadioBox from '../../../../../components/UI/form/RadioBox';
+import Selections from '../../../../../components/UI/form/Selections';
+import BtnCTA from '../../../../../components/UI/BtnCTA';
 // libs
 import axios from 'axios';
 // context
-import { useMainContext } from '../../../../context/Context';
+import { useMainContext } from '../../../../../context/Context';
 
-function CreateGroupPage() {
-  const { authState, currentUser } = useMainContext();
+function CreateIndividualPage() {
+  const { authState, currentUser, setCurrentUser } = useMainContext();
+
+  const getCurrentUser = async () => {
+    try {
+      // console.log('Executing getCurrentUser()');
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/auth/current-user`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
+      if (data.ok) {
+        setCurrentUser(data.user);
+      }
+    } catch (err) {
+      //   router.push('/login');
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (authState && authState.token.length > 0) getCurrentUser();
+  }, [authState && authState.token]);
 
   // clear the assignment when group created
   const [pickedAssignmentId, setPickedAssignmentId] = useState('');
   const [assignment, setAssignment] = useState({});
   const [loading, setLoading] = useState(false);
-  const [nBuddies, setNBuddies] = useState('');
+  // const [nBuddies, setNBuddies] = useState('');
+  // const [picture, setPicture] = useState({});
   const [deadline, setDeadline] = useState('');
-  const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
-  const [organiserIsMentor, setOrganiserIsMentor] = useState(false);
+  //   const [organiserIsBuddy, setOrganiserIsBuddy] = useState(null);
+  //   const [organiserIsMentor, setOrganiserIsMentor] = useState(null);
   const [mentorRequired, setMentorRequired] = useState(null);
   const [picture, setPicture] = useState({});
 
   // input touched
-  const [nBuddiesTouched, setNBuddiesTouched] = useState(false);
-  const [organiserIsBuddyTouched, setOrganiserIsBuddyTouched] = useState(false);
+  //   const [organiserIsBuddyTouched, setOrganiserIsBuddyTouched] = useState(false);
   const [mentorRequiredTouched, setMentorRequiredTouched] = useState(false);
-  const [organiserIsMentorTouched, setOrganiserIsMentorTouched] =
-    useState(false);
+  //   const [organiserIsMentorTouched, setOrganiserIsMentorTouched] =
+  //     useState(false);
 
   //   new group
   const [success, setSuccess] = useState(false);
@@ -73,8 +98,6 @@ function CreateGroupPage() {
     }
   }, [pickedAssignmentId]);
 
-  //   console.log(assignment);
-
   // date setting
   useEffect(() => {
     if (assignment.completionTime && assignment.completionTime > 0) {
@@ -100,16 +123,16 @@ function CreateGroupPage() {
     // { value: 3, label: 'Nice to have but not mandatory' },
   ];
 
-  const toggleOrganiserIsBuddy = (e) => {
-    setOrganiserIsBuddyTouched(true);
-    // console.log(e.target.value);
-    if (e.target.value === '1') {
-      setOrganiserIsBuddy(true);
-    }
-    if (e.target.value === '2') {
-      setOrganiserIsBuddy(false);
-    }
-  };
+  //   const toggleOrganiserIsBuddy = (e) => {
+  //     setOrganiserIsBuddyTouched(true);
+  //     // console.log(e.target.value);
+  //     if (e.target.value === '1') {
+  //       setOrganiserIsBuddy(true);
+  //     }
+  //     if (e.target.value === '2') {
+  //       setOrganiserIsBuddy(false);
+  //     }
+  //   };
 
   const toggleMentorRequired = (e) => {
     // console.log(e.target.value);
@@ -118,55 +141,53 @@ function CreateGroupPage() {
     }
     if (e.target.value === '2') {
       setMentorRequired(false);
-      setOrganiserIsMentor(false);
+      // setOrganiserIsMentor(false);
     }
   };
 
-  const toggleOrganiserIsMentor = (e) => {
-    setOrganiserIsMentorTouched(true);
-    // console.log(e.target.value);
-    if (e.target.value === '1') {
-      setOrganiserIsMentor(true);
-    }
-    if (e.target.value === '2') {
-      setOrganiserIsMentor(false);
-    }
-  };
+  //   const toggleOrganiserIsMentor = (e) => {
+  //     setOrganiserIsMentorTouched(true);
+  //     // console.log(e.target.value);
+  //     if (e.target.value === '1') {
+  //       setOrganiserIsMentor(true);
+  //     }
+  //     if (e.target.value === '2') {
+  //       setOrganiserIsMentor(false);
+  //     }
+  //   };
 
   // CHECK INPUT VALIDITY
-  const nBuddiesIsValid =
-    nBuddies > 1 && nBuddies <= assignment.maxTeamMemebers;
-  const nBuddiesIsInvalid = !nBuddiesIsValid && nBuddiesTouched;
-
-  const organiserIsBuddyIsValid = organiserIsBuddy || organiserIsMentor;
-  const organiserIsBuddyIsInvalid =
-    !organiserIsBuddyIsValid && organiserIsBuddyTouched;
+  //   const organiserIsBuddyIsValid =
+  //     (organiserIsBuddy && !organiserIsMentor) ||
+  //     (!organiserIsBuddy && organiserIsBuddy !== null && organiserIsMentor);
+  //   const organiserIsBuddyIsInvalid =
+  //     !organiserIsBuddyIsValid && organiserIsBuddyTouched;
 
   const mentorRequiredIsValid = mentorRequired !== null;
   const mentorRequiredIsInvalid =
     !mentorRequiredIsValid && mentorRequiredTouched;
 
-  const organiserIsMentorIsValid = organiserIsBuddy || organiserIsMentor;
-  const organiserIsMentorIsInvalid =
-    !organiserIsMentorIsValid && organiserIsMentorTouched;
+  //   const organiserIsMentorIsValid =
+  //     (organiserIsBuddy && organiserIsMentor !== null && !organiserIsMentor) ||
+  //     (!organiserIsBuddy && organiserIsMentor);
+  //   const organiserIsMentorIsInvalid =
+  //     !organiserIsMentorIsValid && organiserIsMentorTouched;
 
   let formIsValid;
   if (
-    nBuddiesIsValid &&
-    organiserIsBuddyIsValid &&
-    mentorRequiredIsValid &&
-    organiserIsMentorIsValid
+    // organiserIsBuddyIsValid &&
+    mentorRequiredIsValid
+    // organiserIsMentorIsValid
   )
     formIsValid = true;
+  // console.log(`organiserIsBuddy: ${organiserIsBuddy}`);
+  // console.log(`organiserIsMentor: ${organiserIsMentor}`);
+  // console.log(formIsValid);
 
-  // console.log(`organiserIsMentorIsValid: ${organiserIsMentorIsValid}`);
-  // console.log(`formIsValid: ${formIsValid}`);
-  //   THIS SHOULD BECOME A HELPER FUNCTION
   const createGroup = async () => {
     if (authState && authState.token && authState.token.length > 0) {
-      setNBuddiesTouched(true);
-      setOrganiserIsBuddyTouched(true);
-      setOrganiserIsMentorTouched(true);
+      //   setOrganiserIsBuddyTouched(true);
+      //   setOrganiserIsMentorTouched(true);
       setMentorRequiredTouched(true);
 
       // add field to each requirement
@@ -181,7 +202,7 @@ function CreateGroupPage() {
           headline: assignment.headline,
           description: assignment.headline,
           deadline,
-          nBuddies,
+          nBuddies: 1,
           buddies: [],
           //   buddiesFilled: { type: Boolean, default: false },
           mentorRequired,
@@ -196,11 +217,11 @@ function CreateGroupPage() {
           requirements,
           approvals: [],
         };
-
+        // console.log(newGroup);
         try {
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API}/groups/new`,
-            { organiserIsBuddy, organiserIsMentor, newGroup },
+            { organiserIsBuddy: true, organiserIsMentor: false, newGroup },
             {
               headers: {
                 Authorization: `Bearer ${authState.token}`,
@@ -236,7 +257,7 @@ function CreateGroupPage() {
   );
 
   return (
-    <UserRoute>
+    <>
       {loading ? (
         <SpinningLoader />
       ) : success ? (
@@ -249,6 +270,11 @@ function CreateGroupPage() {
               go back
             </Link>
           </div>
+          <br></br>
+          <p>
+            NOTE: if you want to add the project to your history once it is
+            completed you will need a mentor review.
+          </p>
           <br></br>
           <TextInput
             required={false}
@@ -288,20 +314,6 @@ function CreateGroupPage() {
               <br></br>
             </>
           )}
-
-          <NumberInput
-            required={true}
-            label={`Max number of buddies`}
-            min="1"
-            placeholder={`max ${assignment.maxTeamMemebers} team members`}
-            max={assignment.maxTeamMemebers}
-            value={nBuddies}
-            onChange={(e) => setNBuddies(e.target.value)}
-            onBlur={() => setNBuddiesTouched(true)}
-            isInvalid={nBuddiesIsInvalid}
-            errorMsg={`Must be greater than one and up to ${assignment.maxTeamMemebers}`}
-          />
-          <br></br>
           {assignment.completionTime && assignment.completionTime > 0 && (
             <>
               <TextInput
@@ -314,17 +326,16 @@ function CreateGroupPage() {
               <br></br>
             </>
           )}
-          <br></br>
+          {/* <br></br>
           <RadioBox
             required={true}
-            label="Do you want to participate as buddy?"
-            options={yesOrNoOptions}
+            label="Do you want to participate as a student?"
             name="organiser-is-buddy"
+            options={yesOrNoOptions}
             onChange={toggleOrganiserIsBuddy}
             isInvalid={organiserIsBuddyIsInvalid}
-            errorMsg={`You need to participate as a buddy, as a mentor or both `}
-            // onBlur={() => console.log('blurred')}
-          />
+            errorMsg={`You have to participate either as a student or as a mentor`}
+          /> */}
           <br></br>
           <RadioBox
             required={true}
@@ -336,18 +347,18 @@ function CreateGroupPage() {
             errorMsg={`Select an option`}
           />
           <br></br>
-          {mentorRequired && currentUser && currentUser.isMentor && (
+          {/* {mentorRequired && currentUser && currentUser.isMentor && (
             <RadioBox
               required={true}
-              label="Do you want to mentor the group? (you can participate as a buddy, as a mentor or both)"
+              label="Do you want to mentor the student? (you can participate either as a student or as a mentor)"
               options={yesOrNoOptions}
               name="organiser-is-mentor"
               onChange={toggleOrganiserIsMentor}
               isInvalid={organiserIsMentorIsInvalid}
-              errorMsg={`You need to participate as a buddy, as a mentor or both `}
+              errorMsg={`You have to participate either as a student or as a mentor`}
             />
           )}
-          <br></br>
+          <br></br> */}
           {assignment.topics && assignment.topics.length > 0 && (
             <div>
               <label className="myform-label bold">Topics</label>
@@ -365,7 +376,7 @@ function CreateGroupPage() {
           <div>
             <BtnCTA
               classname="btn-dark"
-              label="create"
+              label="create project"
               onCLickAction={createGroup}
               // disabled={formIsValid !== true ? true : false}
             />
@@ -375,8 +386,8 @@ function CreateGroupPage() {
           <br></br>
         </div>
       )}
-    </UserRoute>
+    </>
   );
 }
 
-export default CreateGroupPage;
+export default CreateIndividualPage;

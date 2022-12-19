@@ -1,5 +1,6 @@
 // next react
 import { Fragment, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 // own components
 import SpinningLoader from '../../../components/UI/SpinningLoader';
 import MentorCard from '../../../components/people/MentorCard';
@@ -16,6 +17,9 @@ import axios from 'axios';
 
 function MentorsPage() {
   const { mobileView, authState } = useMainContext();
+
+  const router = useRouter();
+
   const [mentors, setMentors] = useState([]);
   const [filteredMentors, setFilteredMentors] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -167,42 +171,60 @@ function MentorsPage() {
                 />
               </div>
             )}
-
-            <div className="flex">
-              {mobileView && (
-                <BtnCTA
-                  label="filter mentors"
-                  classname="btn-light-big"
-                  onCLickAction={() => setShowFilter(true)}
-                  icon={true}
-                  iconType="ci:filter-outline"
-                />
-              )}
-              {filteredMentors.length > 0 ? (
-                filteredMentors.map((mentor) => (
-                  <MentorCard
-                    key={mentor._id}
-                    userId={mentor._id}
-                    username={mentor.username}
-                    handle={mentor.handle}
-                    description={mentor.shortDescription}
-                    country={mentor.country}
-                    teaching={mentor.teaching}
-                    profilePic={mentor.profilePic}
-                    // setShowMsgForm={setShowMsgForm}
-                    // setRecipient={setRecipient}
-                    // setSuccessMsg={setSuccessMsg}
+            <div>
+              {authState && authState.token.length === 0 && (
+                <div
+                  className={
+                    mobileView
+                      ? 'flex flex-justify-center'
+                      : 'flex flex-justify-space-between'
+                  }
+                >
+                  {!mobileView && <div></div>}
+                  <BtnCTA
+                    label="Create Profile"
+                    classname="btn-dark"
+                    onCLickAction={() => router.push('/login')}
                   />
-                ))
-              ) : (
-                <p>
-                  No mentors found for the filters applied. Please select
-                  different search parameters.
-                </p>
-              )}{' '}
-              <div className="white-card"></div>
-              <div className="white-card"></div>
-              <div className="white-card"></div>
+                </div>
+              )}
+
+              <div className="flex gap-12 padding-12rem">
+                {mobileView && (
+                  <BtnCTA
+                    label="filter mentors"
+                    classname="btn-light-big"
+                    onCLickAction={() => setShowFilter(true)}
+                    icon={true}
+                    iconType="ci:filter-outline"
+                  />
+                )}
+                {filteredMentors.length > 0 ? (
+                  filteredMentors.map((mentor) => (
+                    <MentorCard
+                      key={mentor._id}
+                      userId={mentor._id}
+                      username={mentor.username}
+                      handle={mentor.handle}
+                      description={mentor.shortDescription}
+                      country={mentor.country}
+                      teaching={mentor.teaching}
+                      profilePic={mentor.profilePic}
+                      // setShowMsgForm={setShowMsgForm}
+                      // setRecipient={setRecipient}
+                      // setSuccessMsg={setSuccessMsg}
+                    />
+                  ))
+                ) : (
+                  <p>
+                    No mentors found for the filters applied. Please select
+                    different search parameters.
+                  </p>
+                )}{' '}
+                <div className="white-card"></div>
+                <div className="white-card"></div>
+                <div className="white-card"></div>
+              </div>
             </div>
           </div>
           {/* {showMsgForm && (
