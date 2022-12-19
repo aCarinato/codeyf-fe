@@ -186,8 +186,10 @@ function AssignementScreen() {
         </ul>
         <br></br>
         <div className="flex">
-          <div className="width-50">
-            <h4 className="headers">Main topics:</h4>
+          <div className={!mobileView && 'width-50'}>
+            <h4 className="headers">
+              Main topics <Icon icon="icon-park-outline:topic" />
+            </h4>
             <div className="flex flex-justify-flex-start padding-2rem-r">
               {assignement.topics.map((item) => (
                 <div key={item._id} className={`tech-span`}>
@@ -197,8 +199,10 @@ function AssignementScreen() {
               ))}
             </div>
           </div>
-          <div className="width-50">
-            <h4 className="headers">Tech stack:</h4>
+          <div className={!mobileView && 'width-50'}>
+            <h4 className="headers">
+              Tech stack <Icon icon="bi:stack" />
+            </h4>
             <div className="flex flex-justify-flex-start padding-2rem-r">
               {assignement.learning.map((item) => (
                 <div key={item._id} className={`tech-span`}>
@@ -212,26 +216,38 @@ function AssignementScreen() {
         <br></br>
         <div className="flex flex-justify-space-between">
           <div>
-            <h4 className="headers">Difficulty:</h4>
-            <p>
+            <h4 className="headers">
+              Difficulty{' '}
               {assignement.difficulty === '0' ? (
                 <>
-                  beginner <Icon icon="carbon:skill-level-basic" />
+                  <Icon icon="carbon:skill-level-basic" />
                 </>
               ) : assignement.difficulty === '1' ? (
                 <>
-                  intermediate <Icon icon="carbon:skill-level-intermediate" />
+                  <Icon icon="carbon:skill-level-intermediate" />
                 </>
               ) : (
                 <>
-                  advanced <Icon icon="carbon:skill-level-advanced" />
+                  <Icon icon="carbon:skill-level-advanced" />
                 </>
+              )}
+            </h4>
+            <p>
+              {assignement.difficulty === '0' ? (
+                <>beginner</>
+              ) : assignement.difficulty === '1' ? (
+                <>intermediate</>
+              ) : (
+                <>advanced</>
               )}
             </p>
           </div>
           {assignement.completionTime && (
             <div>
-              <h4 className="headers">Approx. completion time</h4>
+              <h4 className="headers">
+                Approx. completion time{' '}
+                <Icon icon="mdi:clipboard-text-date-outline" />
+              </h4>
               <p>
                 {assignement.completionTime < 7
                   ? `${assignement.completionTime} days (a couple of hours each day)`
