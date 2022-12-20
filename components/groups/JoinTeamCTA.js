@@ -39,11 +39,12 @@ function JoinTeamCTA(props) {
         Enquire with the organiser to join as a mentor
       </div>
     );
-  } else if (!buddyAvailbility && !mentorAvailbility) {
-    textCTA = (
-      <div className={classes['p-enquiry-complete']}>Team complete</div>
-    );
   }
+  // else if (!buddyAvailbility && !mentorAvailbility) { // i should consider if the user is already in the group
+  //   textCTA = (
+  //     <div className={classes['p-enquiry-complete']}>Team complete</div>
+  //   );
+  // }
 
   sectionCTA = (
     <>
