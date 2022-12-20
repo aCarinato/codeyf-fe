@@ -70,7 +70,12 @@ function GroupPage() {
   }, [groupId]);
 
   useEffect(() => {
-    if (group && group !== {}) {
+    //     console.log(`Object.keys(group).length === 0 &&
+    // group.constructor === Object: ${
+    //       Object.keys(group).length === 0 && group.constructor === Object
+    //     }`);
+
+    if (!(Object.keys(group).length === 0 && group.constructor === Object)) {
       setBuddyAvailabilityMsg(calcBuddyAvailabilityMsg(group));
       setBuddyAvailability(calcBuddyAvailabilityCTA(group, currentUser));
       setMentorAvailabilityMsg(calcMentorAvailabilityMsg(group));
@@ -157,6 +162,24 @@ function GroupPage() {
                     }
                   />
                 )}
+              {group.organiser && group.organiser.username && (
+                <>
+                  <div className="grid grid--2cols">
+                    {!group.isClosed &&
+                      group.organiser._id === authState.userId && (
+                        <div>
+                          <p>
+                            <Link
+                              href={`/projects/coding-groups/${groupId}/manage`}
+                            >
+                              Manage group
+                            </Link>
+                          </p>
+                        </div>
+                      )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <br></br>
@@ -268,25 +291,6 @@ function GroupPage() {
             </>
           )}
           <br></br>
-
-          {group.organiser && group.organiser.username && (
-            <>
-              <div className="grid grid--2cols">
-                {!group.isClosed &&
-                  group.organiser._id === authState.userId && (
-                    <div>
-                      <p>
-                        <Link
-                          href={`/projects/coding-groups/${groupId}/manage`}
-                        >
-                          Manage group
-                        </Link>
-                      </p>
-                    </div>
-                  )}
-              </div>
-            </>
-          )}
           <div className="flex flex-justify-flex-start">
             <h4 className="headers">Maximum number of buddies: </h4>
             <span className="invisible">0</span>

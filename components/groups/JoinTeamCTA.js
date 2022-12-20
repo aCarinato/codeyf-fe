@@ -24,7 +24,7 @@ function JoinTeamCTA(props) {
   if (buddyAvailbility && mentorAvailbility) {
     textCTA = (
       <div className={classes['p-enquiry']}>
-        Enquire with the organiser to join as a buddy or as a mentor
+        Enquire with the organiser to join the team
       </div>
     );
   } else if (buddyAvailbility && !mentorAvailbility) {
