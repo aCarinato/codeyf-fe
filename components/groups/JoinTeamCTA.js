@@ -89,11 +89,8 @@ function JoinTeamCTA(props) {
           </div>
         </div>
       </div>
-      <br></br>
       {buddyAvailbilityMsg}
-      <br></br>
       {mentorAvailbilityMsg}
-      <br></br>
       {sectionCTA}
     </div>
   );

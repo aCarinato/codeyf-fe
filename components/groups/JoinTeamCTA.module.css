@@ -24,6 +24,8 @@
 .p-enquiry {
   font-size: 1.2rem;
   white-space: pre-wrap;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
 }
 
 .p-enquiry-complete {

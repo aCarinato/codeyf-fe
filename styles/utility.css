@@ -34,6 +34,11 @@
   margin: auto;
 }
 
+.margin-tp-12 {
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
 /* PADDING */
 .padding-12rem {
   padding: 1.2rem;
